@@ -1,0 +1,24 @@
+pandoc: 2.14.0.3
+pkgdown: 1.6.1
+pkgdown_sha: ~
+articles:
+  algorithm: algorithm.html
+  competing: competing.html
+  forestWgt: forestWgt.html
+  getstarted: getstarted.html
+  hybrid: hybrid.html
+  imbalance: imbalance.html
+  installation: installation.html
+  minidep: minidep.html
+  mvsplit: mvsplit.html
+  parallel: parallel.html
+  partial: partial.html
+  rfsrc-subsample: rfsrc-subsample.html
+  sidClustering: sidClustering.html
+  speedup: speedup.html
+  survival: survival.html
+last_built: 2022-03-03T23:17Z
+urls:
+  reference: https://luminwin.github.io/randomForestSRC//reference
+  article: https://luminwin.github.io/randomForestSRC//articles
+
