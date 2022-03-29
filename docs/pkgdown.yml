@@ -13,12 +13,12 @@ articles:
   mvsplit: mvsplit.html
   parallel: parallel.html
   partial: partial.html
-  rfsrc-subsample: rfsrc-subsample.html
   sidClustering: sidClustering.html
   speedup: speedup.html
   survival: survival.html
-last_built: 2022-03-03T23:17Z
+  vimp: vimp.html
+last_built: 2022-03-29T00:36Z
 urls:
-  reference: https://luminwin.github.io/randomForestSRC//reference
-  article: https://luminwin.github.io/randomForestSRC//articles
+  reference: http://www.randomforestsrc.org/reference
+  article: http://www.randomforestsrc.org/articles
 
