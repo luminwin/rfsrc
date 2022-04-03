@@ -151,7 +151,7 @@
                         <h4 class="author">
 <a href="https://ishwaran.org/ishwaran.html">Hemant Ishwaran</a> <br><br> Min Lu <br><br> Udaya B. Kogalur</h4>
             
-            <h4 class="date">2022-03-28</h4>
+            <h4 class="date">2022-04-02</h4>
       
       
       <div class="hidden name"><code>speedup.Rmd</code></div>
@@ -288,17 +288,20 @@ font-size: 16px;
 <a href="#c-index-calculation-for-big-survival-data-sets" class="anchor"></a>C-index calculation for big survival data sets</h2>
 <p>The C-index is computationally expensive and requires approximately <span class="math inline">\(O(n^2)\)</span> calculations where <span class="math inline">\(n\)</span> is the sample size. This makes it infeasible for large survival data sets. The solution is to turn of the C-calculation by turning off all performance requests when training the forest. This is accomplished using the option <code>perf.type='none'</code>. Thus a generic training call would look something like:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">o</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">my.time</span>,<span class="va">my.cens</span><span class="op">)</span><span class="op">~</span><span class="va">.</span>,<span class="va">my.data</span>,perf.type<span class="op">=</span><span class="st">"none"</span><span class="op">)</span></code></pre></div>
-<p>It is also recommended to set <code>nodesize</code> to a reasonably large value.</p>
+<code class="sourceCode R"><span class="va">o</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu">Surv</span><span class="op">(</span><span class="va">my.time</span>,<span class="va">my.cens</span><span class="op">)</span><span class="op">~</span><span class="va">.</span>,<span class="va">my.data</span>,perf.type<span class="op">=</span><span class="st">"none"</span><span class="op">)</span></code></pre></div>
+<p>It is also recommended to set <code>nodesize</code> to a reasonably large value. Also, assuming the user is interested in measuring performance of their model, consider using the Brier score which is very fast. This can be obtained using the function <code>get.brier.survival</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">bs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot.survival.rfsrc.html">get.brier.survival</a></span><span class="op">(</span><span class="va">o</span><span class="op">)</span></code></pre></div>
+<p>See the <a href="survival.html">vignette for Random Survival Forests</a> for more details about the Brier score.</p>
 <br><br><p class="comment">
 <strong> Cite this vignette as </strong> <br> H. Ishwaran, M. Lu, and U. B. Kogalur. 2021. “randomForestSRC: speedup random forest analyses vignette.” <a href="http://randomforestsrc.org/articles/speedup.html" class="uri">http://randomforestsrc.org/articles/speedup.html</a>.
 </p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="sc">@</span>misc{HemantSpeed,</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    author <span class="ot">=</span> <span class="st">"Hemant Ishwaran and Min Lu and Udaya B. Kogalur"</span>,</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    title <span class="ot">=</span> {{randomForestSRC}<span class="sc">:</span> speedup random forest analyses vignette},</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    year <span class="ot">=</span> {<span class="dv">2021</span>},</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    url <span class="ot">=</span> {http<span class="sc">:</span><span class="er">//</span>randomforestsrc.org<span class="sc">/</span>articles<span class="sc">/</span>speedup.html}</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="sc">@</span>misc{HemantSpeed,</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    author <span class="ot">=</span> <span class="st">"Hemant Ishwaran and Min Lu and Udaya B. Kogalur"</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    title <span class="ot">=</span> {{randomForestSRC}<span class="sc">:</span> speedup random forest analyses vignette},</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    year <span class="ot">=</span> {<span class="dv">2021</span>},</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    url <span class="ot">=</span> {http<span class="sc">:</span><span class="er">//</span>randomforestsrc.org<span class="sc">/</span>articles<span class="sc">/</span>speedup.html}</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 <div id="references" class="section level2 unnumbered">
 <h2 class="hasAnchor">
