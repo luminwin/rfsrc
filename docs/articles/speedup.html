@@ -151,7 +151,7 @@
                         <h4 class="author">
 <a href="https://ishwaran.org/ishwaran.html">Hemant Ishwaran</a> <br><br> Min Lu <br><br> Udaya B. Kogalur</h4>
             
-            <h4 class="date">2022-04-02</h4>
+            <h4 class="date">2022-04-14</h4>
       
       
       <div class="hidden name"><code>speedup.Rmd</code></div>
@@ -293,6 +293,16 @@ font-size: 16px;
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">bs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot.survival.rfsrc.html">get.brier.survival</a></span><span class="op">(</span><span class="va">o</span><span class="op">)</span></code></pre></div>
 <p>See the <a href="survival.html">vignette for Random Survival Forests</a> for more details about the Brier score.</p>
+</div>
+<div id="save-memory" class="section level2">
+<h2 class="hasAnchor">
+<a href="#save-memory" class="anchor"></a>Save memory</h2>
+<p>Use option <code>save.memory="TRUE"</code> for big data competing risk and survival models. By default the package stores terminal node quantities to be used in prediction for test data but this can be memory intensive for big data.</p>
+</div>
+<div id="block-size" class="section level2">
+<h2 class="hasAnchor">
+<a href="#block-size" class="anchor"></a>Block size</h2>
+<p>Make sure <code>block.size="NULL"</code> (or set to number of trees) so that the cumulative error is calculated only once.</p>
 <br><br><p class="comment">
 <strong> Cite this vignette as </strong> <br> H. Ishwaran, M. Lu, and U. B. Kogalur. 2021. “randomForestSRC: speedup random forest analyses vignette.” <a href="http://randomforestsrc.org/articles/speedup.html" class="uri">http://randomforestsrc.org/articles/speedup.html</a>.
 </p>

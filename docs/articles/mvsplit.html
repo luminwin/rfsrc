@@ -151,7 +151,7 @@
                         <h4 class="author">
 <a href="https://ishwaran.org/ishwaran.html">Hemant Ishwaran</a> <br><br> Fei Tang <br><br> Min Lu <br><br> Udaya B. Kogalur</h4>
             
-            <h4 class="date">2022-03-28</h4>
+            <h4 class="date">2022-04-14</h4>
       
       
       <div class="hidden name"><code>mvsplit.Rmd</code></div>
@@ -203,15 +203,20 @@ D_q(s,t)
 =\sum_{j=1}^q \left\{\sum_{i\in t_L}(Y_{i,j}-\overline{Y}_{{t_{L_j}}})^2 
  + \sum_{i\in t_R}(Y_{i,j}-\overline{Y}_{{t_{R_j}}})^2\right\}
 \]</span> where <span class="math inline">\(\overline{Y}_{{t_{L_j}}}\)</span> and <span class="math inline">\(\overline{Y}_{{t_{R_j}}}\)</span> are the sample means of the <span class="math inline">\(j\)</span>-th response coordinate in the left and right daughter nodes. The goal is to minimize <span class="math inline">\(D_q(s,t)\)</span>.</p>
-<p>It is important to recognize that the multivariate splitting rule can only be effective if each outcome coordinate is measured on the same scale, otherwise we could have a coordinate <span class="math inline">\(j\)</span>, with say very large values, and its contribution would dominate <span class="math inline">\(D_q(s,t)\)</span>. We therefore calibrate <span class="math inline">\(D_q(s,t)\)</span> by assuming that each coordinate has been standardized according to <span class="math display">\[
+<p>It is important to recognize that the multivariate splitting rule can only be effective if each outcome coordinate is measured on the same scale, otherwise we could have a coordinate <span class="math inline">\(j\)</span>, with say very large values, and its contribution would dominate <span class="math inline">\(D_q(s,t)\)</span>. We therefore calibrate <span class="math inline">\(D_q(s,t)\)</span> by assuming that each coordinate has been standardized according to</p>
+<div id="section" class="section level4">
+<h4 class="hasAnchor">
+<a href="#section" class="anchor"></a>(1)</h4>
+<p><span class="math display">\[
 \frac{1}{n}\sum_{i\in t} Y_{i,j} = 0,\hskip10pt
 \frac{1}{n}\sum_{i\in t} Y_{i,j}^2 = 1,\hskip10pt
 1\le j\le q.
 \label{y.stand.assumption}
 \]</span> The standardization is applied prior to splitting a node. To make this standardization clear, we denote the standardized responses by <span class="math inline">\(Y_{i,j}^*\)</span>. With some elementary manipulations, it can be verified that minimizing <span class="math inline">\(D_q(s,t)\)</span> is equivalent to maximizing</p>
-<div id="section" class="section level4">
+</div>
+<div id="section-1" class="section level4">
 <h4 class="hasAnchor">
-<a href="#section" class="anchor"></a>(1)</h4>
+<a href="#section-1" class="anchor"></a>(2)</h4>
 <p><span class="math display">\[\begin{equation}
 D_q^*(s,t) = \sum_{j=1}^q \left\{ \frac{1}{n_L}\left(\sum_{i\in
   t_L}Y_{i,j}^*\right)^2 + \frac{1}{n_R}\left(\sum_{i\in t_R}Y_{i,j}^*\right)^2
@@ -229,9 +234,9 @@ G(s,t) =
 \frac{1}{n_L}\left(\sum_{i\in t_L} Z_{i(c)}\right)^2 
 + \frac{1}{n_R}\left(\sum_{i\in t_R} Z_{i(c)}\right)^2 \right]
 \]</span> where <span class="math inline">\(Z_{i(c)}=1_{\{Y_i=c\}}\)</span>. Now consider the multivariate classification scenario, where each outcome coordinate <span class="math inline">\(Y_{i,j}\)</span> for <span class="math inline">\(q+1\le j\le p\)</span> is a class label from <span class="math inline">\(\{1,\ldots,C_j\}\)</span> for <span class="math inline">\(C_j\ge 2\)</span>. We apply the Gini split-statistic to each coordinate yielding the extended Gini splitting rule (<span class="math inline">\(r=p-q\)</span>)</p>
-<div id="section-1" class="section level4">
+<div id="section-2" class="section level4">
 <h4 class="hasAnchor">
-<a href="#section-1" class="anchor"></a>(2)</h4>
+<a href="#section-2" class="anchor"></a>(3)</h4>
 <p><span class="math display">\[
 G_r^*(s,t)  = 
 \sum_{j=q+1}^p \left[ \frac{1}{C_j}\sum_{c=1}^{C_j} \left\{
@@ -245,7 +250,7 @@ G_r^*(s,t)  =
 <div id="multivariate-normalized-composite-splitting-rule" class="section level2">
 <h2 class="hasAnchor">
 <a href="#multivariate-normalized-composite-splitting-rule" class="anchor"></a>Multivariate normalized composite splitting rule</h2>
-<p>Observe that <a href="#section">(1)</a> and <a href="#section-1">(2)</a> are equivalent optimization problems, with optimization over <span class="math inline">\(Y_{i,j}^*\)</span> for regression and <span class="math inline">\(Z_{i(c),j}\)</span> for classification. This leads to similar theoretical splitting properties in regression and classification settings <span class="citation">(Ishwaran, 2015)</span>. Given this equivalence, we can combine the two splitting rules to form a composite splitting rule. The mixed outcome splitting rule <span class="math inline">\({\Theta}(s,t)\)</span> is a composite standardized split rule of mean-squared error <a href="#section">(1)</a> and Gini index splitting <a href="#section-1">(2)</a>; i.e., <span class="math display">\[
+<p>Observe that <a href="#section-1">(2)</a> and <a href="#section-2">(3)</a> are equivalent optimization problems, with optimization over <span class="math inline">\(Y_{i,j}^*\)</span> for regression and <span class="math inline">\(Z_{i(c),j}\)</span> for classification. This leads to similar theoretical splitting properties in regression and classification settings <span class="citation">(Ishwaran, 2015)</span>. Given this equivalence, we can combine the two splitting rules to form a composite splitting rule. The mixed outcome splitting rule <span class="math inline">\({\Theta}(s,t)\)</span> is a composite standardized split rule of mean-squared error <a href="#section-1">(2)</a> and Gini index splitting <a href="#section-2">(3)</a>; i.e., <span class="math display">\[
 {\Theta}(s,t) = D_q^*(s,t)+G_r^*(s,t).
 \]</span> The best split for <span class="math inline">\(X\)</span> is the value of <span class="math inline">\(s\)</span> maximizing <span class="math inline">\({\Theta}(s,t)\)</span>.</p>
 </div>
@@ -254,8 +259,8 @@ G_r^*(s,t)  =
 <a href="#unsupervised-splitting" class="anchor"></a>Unsupervised splitting</h2>
 <p>In usupervised mode, there is no response outcome and only feature data. Therefore in order to split the tree, the features take turns acting as the <span class="math inline">\(Y\)</span>-outcome and <span class="math inline">\(X\)</span>-variables. Specifically, <code>mtry</code> <span class="math inline">\(X\)</span>-variables are randomly selected for splitting the node. Then for each of these randomly selected features, <code>ytry</code> variables are selected from the remaining features to act as the target pseduo-outcomes. Splitting uses the multivariate normalized composite splitting rule just described. As illustration, the following equivalent unsupervised calls set <code>mtry</code> to 10 and <code>ytry</code> to 5:</p>
 <p><br></p>
-<p><code>rfsrc(data = my.data, ytry = 5, mtry = 10)</code></p>
-<p><code>rfsrc(Unsupervised(5) ~ ., my.data, mtry = 10)</code></p>
+<p><code><a href="../reference/rfsrc.html">rfsrc(data = my.data, ytry = 5, mtry = 10)</a></code></p>
+<p><code><a href="../reference/rfsrc.html">rfsrc(Unsupervised(5) ~ ., my.data, mtry = 10)</a></code></p>
 </div>
 <div id="mahalanobis-distance" class="section level2">
 <h2 class="hasAnchor">
@@ -283,7 +288,7 @@ d_{r+1}=\cdots=d_p=0.
 <div id="mahalanobis-splitting-rule" class="section level3">
 <h3 class="hasAnchor">
 <a href="#mahalanobis-splitting-rule" class="anchor"></a>Mahalanobis splitting rule</h3>
-<p>We use Theorem 1 to develop an efficient multivariate splitting rule based on Mahalanobis distance. Hereafter, we we assume all coordinates of <span class="math inline">\({\bf Y}\)</span> are continuous: thus <span class="math inline">\(q=p\)</span> and <span class="math inline">\({\bf Y}=(Y_1,\ldots,Y_p)^T\in\mathbb{R}^p\)</span>. Consider splitting a tree node <span class="math inline">\(t\)</span>. Let <span class="math inline">\({\bf L}_t^*\)</span> be the outcome matrix for <span class="math inline">\(t\)</span> formed by ``row-stacking’’ the centered <span class="math inline">\({\bf Y}\)</span> values in <span class="math inline">\(t\)</span> (we use a <span class="math inline">\(*\)</span> notation to emphasize that the matrix is centered) <span class="math display">\[
+<p>We use Theorem 1 to develop an efficient multivariate splitting rule based on Mahalanobis distance. Also we will no longer require the standardization used earlier <a href="#section">(1)</a>. Hereafter, we we assume all coordinates of <span class="math inline">\({\bf Y}\)</span> are continuous: thus <span class="math inline">\(q=p\)</span> and <span class="math inline">\({\bf Y}=(Y_1,\ldots,Y_p)^T\in\mathbb{R}^p\)</span>. Consider splitting a tree node <span class="math inline">\(t\)</span>. Let <span class="math inline">\({\bf L}_t^*\)</span> be the outcome matrix for <span class="math inline">\(t\)</span> formed by ``row-stacking’’ the centered <span class="math inline">\({\bf Y}\)</span> values in <span class="math inline">\(t\)</span> (we use a <span class="math inline">\(*\)</span> notation to emphasize that the matrix is centered) <span class="math display">\[
 {\bf L}_t^* = 
 \left(\begin{array}{c}
     ({\bf Y}_1 -\overline{{\bf Y}}_t)^T \\ 
