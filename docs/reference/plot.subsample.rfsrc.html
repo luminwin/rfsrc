@@ -49,7 +49,7 @@
 <meta property="og:title" content="Plot Subsampled VIMP Confidence Intervals — plot.subsample.rfsrc" />
 <meta property="og:description" content="Plots VIMP (variable importance) confidence regions obtained from
   subsampling a forest." />
-<meta property="og:image" content="http://randomforestsrc.org/logo.svg" />
+<meta property="og:image" content="https://www.randomforestsrc.org/logo.svg" />
 
 
 
@@ -91,7 +91,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Development version">3.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Development version">3.1.0</span>
       </span>
     </div>
 
@@ -148,7 +148,7 @@
       <a href="../articles/sidClustering.html">sidClustering</a>
     </li>
     <li>
-      <a href="../articles/vimp.html">Variable Importance (VIMP) with Subsampling Inference</a>
+      <a href="../articles/rfsrc-subsample.html">Variable Importance (VIMP) with Subsampling Inference</a>
     </li>
     <li>
       <a href="../articles/minidep.html">Minimal Depth</a>
@@ -206,7 +206,7 @@
   subsampling a forest.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>plot.subsample</span><span class='op'>(</span><span class='va'>x</span>, alpha <span class='op'>=</span> <span class='fl'>.01</span>,
+    <pre class="usage"><span class='fu'>plot.subsample</span><span class='op'>(</span><span class='va'>x</span>, alpha <span class='op'>=</span> <span class='fl'>.01</span>, <span class='va'>xvar.names</span>,
  standardize <span class='op'>=</span> <span class='cn'>TRUE</span>, normal <span class='op'>=</span> <span class='cn'>TRUE</span>, jknife <span class='op'>=</span> <span class='cn'>TRUE</span>,
  <span class='va'>target</span>, m.target <span class='op'>=</span> <span class='cn'>NULL</span>, pmax <span class='op'>=</span> <span class='fl'>75</span>, main <span class='op'>=</span> <span class='st'>""</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
@@ -220,6 +220,11 @@
     <tr>
       <th>alpha</th>
       <td><p>Desired level of significance.</p></td>
+    </tr>
+    <tr>
+      <th>xvar.names</th>
+      <td><p>Names of the x-variables to be used.  If not
+  specified all variables used.</p></td>
     </tr>
     <tr>
       <th>standardize</th>
@@ -274,6 +279,9 @@
   "col.axis", "cex.main",
   "col.main", "sub", "cex.sub", "col.sub", 
   "ylab", "cex.lab", "col.lab"</p>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>Invisibly, returns the boxplot data that is plotted.</p>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Hemant Ishwaran and Udaya B. Kogalur</p>
@@ -296,9 +304,10 @@
 <span class='va'>o</span> <span class='op'>&lt;-</span> <span class='fu'><a href='rfsrc.html'>rfsrc</a></span><span class='op'>(</span><span class='va'>Ozone</span> <span class='op'>~</span> <span class='va'>.</span>, <span class='va'>airquality</span><span class='op'>)</span>
 <span class='va'>oo</span> <span class='op'>&lt;-</span> <span class='fu'><a href='subsample.rfsrc.html'>subsample</a></span><span class='op'>(</span><span class='va'>o</span><span class='op'>)</span>
 <span class='fu'>plot.subsample</span><span class='op'>(</span><span class='va'>oo</span><span class='op'>)</span>
+<span class='fu'>plot.subsample</span><span class='op'>(</span><span class='va'>oo</span>, xvar.names <span class='op'>=</span> <span class='va'>o</span><span class='op'>$</span><span class='va'>xvar.names</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>]</span><span class='op'>)</span>
 <span class='fu'>plot.subsample</span><span class='op'>(</span><span class='va'>oo</span>, jknife <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 <span class='fu'>plot.subsample</span><span class='op'>(</span><span class='va'>oo</span>, alpha <span class='op'>=</span> <span class='fl'>.01</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>oo</span>,cex.axis<span class='op'>=</span><span class='fl'>.5</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>oo</span>,cex.axis<span class='op'>=</span><span class='fl'>.5</span><span class='op'>)</span>
 <span class='co'># }</span>
 </pre>
   </div>
@@ -312,7 +321,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://ishwaran.org/ishwaran.html'>Hemant Ishwaran</a>, Udaya B. Kogalur.</p>
+  <p>Developed by <a href='https://www.luminwin.net'>Min Lu</a>.</p>
 </div>
 
 <div class="pkgdown">

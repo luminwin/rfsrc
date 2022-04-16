@@ -56,7 +56,7 @@ The data involve 2231 patients with systolic heart failure who
   exercise stress test results.  A key variable of interest is
   peak VO2 (mL/kg per min), the peak respiratory exchange ratio.
   More details regarding the data can be found in Hsich et al. (2011)." />
-<meta property="og:image" content="http://randomforestsrc.org/logo.svg" />
+<meta property="og:image" content="https://www.randomforestsrc.org/logo.svg" />
 
 
 
@@ -98,7 +98,7 @@ The data involve 2231 patients with systolic heart failure who
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Development version">3.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Development version">3.1.0</span>
       </span>
     </div>
 
@@ -155,7 +155,7 @@ The data involve 2231 patients with systolic heart failure who
       <a href="../articles/sidClustering.html">sidClustering</a>
     </li>
     <li>
-      <a href="../articles/vimp.html">Variable Importance (VIMP) with Subsampling Inference</a>
+      <a href="../articles/rfsrc-subsample.html">Variable Importance (VIMP) with Subsampling Inference</a>
     </li>
     <li>
       <a href="../articles/minidep.html">Minimal Depth</a>
@@ -262,7 +262,7 @@ The data involve 2231 patients with systolic heart failure who
 <span class='co'>## compare the two plots</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>mfrow<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>    
 
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/lowess.html'>lowess</a></span><span class='op'>(</span><span class='va'>pdta.m</span><span class='op'>$</span><span class='va'>x</span>, <span class='va'>pdta.m</span><span class='op'>$</span><span class='va'>yhat</span>, f <span class='op'>=</span> <span class='fl'>2</span><span class='op'>/</span><span class='fl'>3</span><span class='op'>)</span>,
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/lowess.html'>lowess</a></span><span class='op'>(</span><span class='va'>pdta.m</span><span class='op'>$</span><span class='va'>x</span>, <span class='va'>pdta.m</span><span class='op'>$</span><span class='va'>yhat</span>, f <span class='op'>=</span> <span class='fl'>2</span><span class='op'>/</span><span class='fl'>3</span><span class='op'>)</span>,
      type <span class='op'>=</span> <span class='st'>"l"</span>, xlab <span class='op'>=</span> <span class='st'>"peak VO2"</span>, ylab <span class='op'>=</span> <span class='st'>"adjusted mortality"</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/rug.html'>rug</a></span><span class='op'>(</span><span class='va'>o</span><span class='op'>$</span><span class='va'>xvar</span><span class='op'>$</span><span class='va'>peak.vo2</span><span class='op'>)</span>
 
@@ -284,7 +284,7 @@ The data involve 2231 patients with systolic heart failure who
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://ishwaran.org/ishwaran.html'>Hemant Ishwaran</a>, Udaya B. Kogalur.</p>
+  <p>Developed by <a href='https://www.luminwin.net'>Min Lu</a>.</p>
 </div>
 
 <div class="pkgdown">

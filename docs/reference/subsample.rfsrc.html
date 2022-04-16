@@ -49,7 +49,7 @@
 <meta property="og:title" content="Subsample Forests for VIMP Confidence Intervals — subsample.rfsrc" />
 <meta property="og:description" content="Use subsampling to calculate confidence intervals and standard
   errors for VIMP (variable importance). Applies to all families." />
-<meta property="og:image" content="http://randomforestsrc.org/logo.svg" />
+<meta property="og:image" content="https://www.randomforestsrc.org/logo.svg" />
 
 
 
@@ -91,7 +91,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Development version">3.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Development version">3.1.0</span>
       </span>
     </div>
 
@@ -148,7 +148,7 @@
       <a href="../articles/sidClustering.html">sidClustering</a>
     </li>
     <li>
-      <a href="../articles/vimp.html">Variable Importance (VIMP) with Subsampling Inference</a>
+      <a href="../articles/rfsrc-subsample.html">Variable Importance (VIMP) with Subsampling Inference</a>
     </li>
     <li>
       <a href="../articles/minidep.html">Minimal Depth</a>
@@ -213,6 +213,7 @@
   stratify <span class='op'>=</span> <span class='cn'>TRUE</span>,
   performance <span class='op'>=</span> <span class='cn'>FALSE</span>,
   joint <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  xvar.names <span class='op'>=</span> <span class='cn'>NULL</span>,
   bootstrap <span class='op'>=</span> <span class='cn'>FALSE</span>,
   verbose <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
@@ -249,9 +250,13 @@
     </tr>
     <tr>
       <th>joint</th>
-      <td><p>Include the VIMP for all variables jointly perturbed?
-    This is useful reference problems where one might be suspicious that
-    many (or all) variables are noise.</p></td>
+      <td><p>Joint VIMP for all variables? Users can also request joint
+    VIMP for specific variables using <code>xvar.names</code>.</p></td>
+    </tr>
+    <tr>
+      <th>xvar.names</th>
+      <td><p>Specifies variables for calculating joint VIMP.  By
+    default all variables are used.</p></td>
     </tr>
     <tr>
       <th>bootstrap</th>
@@ -268,31 +273,32 @@
 
     
 
-<p>Given a forest object, subsamples the data and constructs subsampled
-  forests to estimate standard errors and confidence intervals for VIMP
-  (Ishwaran and Lu, 2019).  If bootstrapping is requested, a double
-  bootstrap is applied in place of subsampling.  The option
-  <code>performance</code> can also be used to obtain standard errors and
-  confidence regions for the ensemble out-of-sample performance.</p>
-<p>If VIMP is not present in the original forest object, the algorithm
-  will first need to calculate VIMP.  Therefore, if the user plans to
-  make repeated calls to <code>subsample</code>, it is advisable to include
-  VIMP in the original grow call.  Subsampled forests are calculated
-  using the same tuning parameters as the original forest.  While a
-  sophisticated algorithm is utilized to acquire as many of these
-  parameters as possible, keep in mind there are some conditions where
-  this will fail: for example there are certain settings where the user
-  has specified non-standard sampling in the grow forest.</p>  
+<p>Using a previously trained forest, subsamples the data and constructs
+  subsampled forests to estimate standard errors and confidence
+  intervals for VIMP (Ishwaran and Lu, 2019).  If bootstrapping is
+  requested, a double bootstrap is applied in place of subsampling.
+  Additionally, <code>performance="TRUE"</code> constructs standard errors and
+  confidence regions for the error rate (OOB performance) of the
+  trained forest.</p>
+<p>If the trained forest does not have VIMP values, the algorithm will
+  first need to calculate VIMP.  Therefore, if the user plans to make
+  repeated calls to <code>subsample</code>, it is advisable to include VIMP in
+  the original grow call.  Subsampled forests are calculated using the
+  same tuning parameters as the original forest.  While a sophisticated
+  algorithm is utilized to acquire as many of these parameters as
+  possible, keep in mind there are some conditions where this will fail:
+  for example there are certain settings where the user has specified
+  non-standard sampling in the grow forest.</p>  
 <p>Delete-d jackknife estimators of the variance (Shao and Wu, 1989) are
   returned alongside subsampled variance estimators (Politis and Romano,
-  1994).  While these two methods are closely related, estimated
-  standard error for VIMP from delete-d estimators are generally larger
-  than from subsampled estimators, which is a form of bias correction,
-  which occurs primarily for variables with true signal.  Confidence
-  interval coverage is generally better under delete-d estimators, but
-  undercoverage for strong variables and overcoverage for noise
-  variables is exhibited by both estimators.  This however may be
-  beneficial if the goal is variable selection (Ishwaran and Lu, 2019).</p>
+  1994).  While these methods are closely related, estimated standard
+  error for VIMP from delete-d estimators are generally larger, which is
+  a form of bias correction, and which occurs primarily for variables
+  with true signal.  Confidence interval coverage is generally better
+  under delete-d estimators, but undercoverage for strong variables and
+  overcoverage for noise variables is exhibited by both estimators.
+  This can be considered beneficial if the goal is variable selection
+  (Ishwaran and Lu, 2019).</p>
 <p>By default, stratified subsampling is used for classification,
   survival, and competing risk families.  For classification,
   stratification is on the class label, while for survival and competing
@@ -305,14 +311,14 @@
   stratified sampling is not available for multivariate families --
   users should especially exercise caution when selecting subsampling
   rates here.</p>
-<p>The function <code class='command'>extract.subsample</code> conveniently extracts
+<p>The function <code class='command'>extract.subsample</code> can be used to extract
   information from the subsampled object.  It returns summary
   information (used for plotting confidence intervals) as well as VIMP
   from the original forest and VIMP from the subsampled forests.  Keep in
   mind this subsampled VIMP is "raw" in the sense it equals VIMP
   from a forest constructed with a much smaller sample size. No
   processing of the subsampled VIMP to the original sample size is done.
-  Also, all returned VIMP is "standardized" (this means for regression
+  Also, the returned VIMP is "standardized" (this means for regression
   families, VIMP is standardized by dividing by the variance of Y and
   multiplying by 100.  For all other families, VIMP is scaled by 100).
   Use <code>standardize=FALSE</code> if you want unstandardized VIMP.</p>  
@@ -353,14 +359,14 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># \donttest{</span>
 <span class='co'>## ------------------------------------------------------------</span>
-<span class='co'>## regression example</span>
+<span class='co'>## regression</span>
 <span class='co'>## ------------------------------------------------------------</span>
 
-<span class='co'>## grow the forest - request VIMP</span>
-<span class='va'>reg.o</span> <span class='op'>&lt;-</span> <span class='fu'><a href='rfsrc.html'>rfsrc</a></span><span class='op'>(</span><span class='va'>mpg</span> <span class='op'>~</span> <span class='va'>.</span>, <span class='va'>mtcars</span><span class='op'>)</span>
+<span class='co'>## traing the forest</span>
+<span class='va'>reg.o</span> <span class='op'>&lt;-</span> <span class='fu'><a href='rfsrc.html'>rfsrc</a></span><span class='op'>(</span><span class='va'>Ozone</span> <span class='op'>~</span> <span class='va'>.</span>, <span class='va'>airquality</span><span class='op'>)</span>
 
-<span class='co'>## very small sample size so need largish subratio</span>
-<span class='va'>reg.smp.o</span> <span class='op'>&lt;-</span> <span class='fu'>subsample</span><span class='op'>(</span><span class='va'>reg.o</span>, B <span class='op'>=</span> <span class='fl'>25</span>, subratio <span class='op'>=</span> <span class='fl'>.5</span><span class='op'>)</span>
+<span class='co'>## default subsample call</span>
+<span class='va'>reg.smp.o</span> <span class='op'>&lt;-</span> <span class='fu'>subsample</span><span class='op'>(</span><span class='va'>reg.o</span><span class='op'>)</span>
 
 <span class='co'>## plot confidence regions</span>
 <span class='fu'><a href='plot.subsample.rfsrc.html'>plot.subsample</a></span><span class='op'>(</span><span class='va'>reg.smp.o</span><span class='op'>)</span>
@@ -368,11 +374,10 @@
 <span class='co'>## summary of results</span>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>reg.smp.o</span><span class='op'>)</span>
 
-<span class='co'>## extract subsampled VIMP</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='fu'>extract.subsample</span><span class='op'>(</span><span class='va'>reg.smp.o</span><span class='op'>)</span><span class='op'>$</span><span class='va'>vmpS</span><span class='op'>)</span>
-
-<span class='co'>## extract unstandardized subsampled VIMP</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='fu'>extract.subsample</span><span class='op'>(</span><span class='va'>reg.smp.o</span>, standardize<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span><span class='op'>$</span><span class='va'>vmpS</span><span class='op'>)</span>
+<span class='co'>## subsample call with joint vimp and confidence region for error rate</span>
+<span class='va'>reg.smp.o2</span> <span class='op'>&lt;-</span> <span class='fu'>subsample</span><span class='op'>(</span><span class='va'>reg.o</span>, performance <span class='op'>=</span> <span class='cn'>TRUE</span>,
+           joint <span class='op'>=</span> <span class='cn'>TRUE</span>, xvar.names <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Day"</span>, <span class='st'>"Month"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='plot.subsample.rfsrc.html'>plot.subsample</a></span><span class='op'>(</span><span class='va'>reg.smp.o2</span><span class='op'>)</span>
 
 <span class='co'>## now try the double bootstrap (slow!!)</span>
 <span class='va'>reg.dbs.o</span> <span class='op'>&lt;-</span> <span class='fu'>subsample</span><span class='op'>(</span><span class='va'>reg.o</span>, B <span class='op'>=</span> <span class='fl'>25</span>, bootstrap <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
@@ -380,7 +385,7 @@
 <span class='fu'><a href='plot.subsample.rfsrc.html'>plot.subsample</a></span><span class='op'>(</span><span class='va'>reg.dbs.o</span><span class='op'>)</span>
 
 <span class='co'>## ------------------------------------------------------------</span>
-<span class='co'>## classification example</span>
+<span class='co'>## classification</span>
 <span class='co'>## ------------------------------------------------------------</span>
 
 <span class='co'>## 3 non-linear, 15 linear, and 5 noise variables </span>
@@ -399,8 +404,8 @@
 <span class='op'>}</span>
 
 <span class='co'>## ------------------------------------------------------------</span>
-<span class='co'>## class-imbalanced example</span>
-<span class='co'>## uses q-classifier with G-mean VIMP</span>
+<span class='co'>## class-imbalanced data</span>
+<span class='co'>## uses RFQ classifier with G-mean VIMP</span>
 <span class='co'>## ------------------------------------------------------------</span>
 
 <span class='kw'>if</span> <span class='op'>(</span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='st'><a href='https://github.com/topepo/caret/'>"caret"</a></span>, logical.return <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
@@ -424,21 +429,21 @@
 
   <span class='co'>## subsample the q-classifier</span>
   <span class='va'>smp.oq</span> <span class='op'>&lt;-</span> <span class='fu'>subsample</span><span class='op'>(</span><span class='va'>oq</span>, B <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span>
-  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>smp.oq</span>, cex.axis <span class='op'>=</span> <span class='fl'>.7</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>smp.oq</span>, cex.axis <span class='op'>=</span> <span class='fl'>.7</span><span class='op'>)</span>
 
 <span class='op'>}</span>
 
 <span class='co'>## ------------------------------------------------------------</span>
-<span class='co'>## survival example</span>
+<span class='co'>## survival </span>
 <span class='co'>## ------------------------------------------------------------</span>
 
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>pbc</span>, package <span class='op'>=</span> <span class='st'>"randomForestSRC"</span><span class='op'>)</span>
 <span class='va'>srv.o</span> <span class='op'>&lt;-</span> <span class='fu'><a href='rfsrc.html'>rfsrc</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>days</span>, <span class='va'>status</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>.</span>, <span class='va'>pbc</span><span class='op'>)</span>
 <span class='va'>srv.smp.o</span> <span class='op'>&lt;-</span> <span class='fu'>subsample</span><span class='op'>(</span><span class='va'>srv.o</span>, B <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>srv.smp.o</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>srv.smp.o</span><span class='op'>)</span>
 
 <span class='co'>## ------------------------------------------------------------</span>
-<span class='co'>## competing risk example</span>
+<span class='co'>## competing risks</span>
 <span class='co'>## target event is death (event = 2)</span>
 <span class='co'>## ------------------------------------------------------------</span>
 
@@ -451,7 +456,7 @@
 <span class='op'>}</span>
 
 <span class='co'>## ------------------------------------------------------------</span>
-<span class='co'>## multivariate family</span>
+<span class='co'>## multivariate </span>
 <span class='co'>## ------------------------------------------------------------</span>
 
 <span class='kw'>if</span> <span class='op'>(</span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='st'>"mlbench"</span>, logical.return <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
@@ -461,8 +466,8 @@
   <span class='va'>bh</span><span class='op'>$</span><span class='va'>rm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='va'>bh</span><span class='op'>$</span><span class='va'>rm</span><span class='op'>)</span><span class='op'>)</span>
   <span class='va'>o</span> <span class='op'>&lt;-</span> <span class='fu'><a href='rfsrc.html'>rfsrc</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='va'>medv</span>, <span class='va'>rm</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>.</span>, <span class='va'>bh</span><span class='op'>)</span>
   <span class='va'>so</span> <span class='op'>&lt;-</span> <span class='fu'>subsample</span><span class='op'>(</span><span class='va'>o</span><span class='op'>)</span>
-  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>so</span><span class='op'>)</span>
-  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>so</span>, m.target <span class='op'>=</span> <span class='st'>"rm"</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>so</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>so</span>, m.target <span class='op'>=</span> <span class='st'>"rm"</span><span class='op'>)</span>
 <span class='op'>}</span>
 
 <span class='co'>## ------------------------------------------------------------</span>
@@ -495,7 +500,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://ishwaran.org/ishwaran.html'>Hemant Ishwaran</a>, Udaya B. Kogalur.</p>
+  <p>Developed by <a href='https://www.luminwin.net'>Min Lu</a>.</p>
 </div>
 
 <div class="pkgdown">

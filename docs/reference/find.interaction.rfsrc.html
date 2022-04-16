@@ -48,7 +48,7 @@
 
 <meta property="og:title" content="Find Interactions Between Pairs of Variables — find.interaction.rfsrc" />
 <meta property="og:description" content="Find pairwise interactions between variables." />
-<meta property="og:image" content="http://randomforestsrc.org/logo.svg" />
+<meta property="og:image" content="https://www.randomforestsrc.org/logo.svg" />
 
 
 
@@ -90,7 +90,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Development version">3.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Development version">3.1.0</span>
       </span>
     </div>
 
@@ -147,7 +147,7 @@
       <a href="../articles/sidClustering.html">sidClustering</a>
     </li>
     <li>
-      <a href="../articles/vimp.html">Variable Importance (VIMP) with Subsampling Inference</a>
+      <a href="../articles/rfsrc-subsample.html">Variable Importance (VIMP) with Subsampling Inference</a>
     </li>
     <li>
       <a href="../articles/minidep.html">Minimal Depth</a>
@@ -208,7 +208,7 @@
   importance <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"permute"</span>, <span class='st'>"random"</span>, <span class='st'>"anti"</span>,
                  <span class='st'>"permute.ensemble"</span>, <span class='st'>"random.ensemble"</span>, <span class='st'>"anti.ensemble"</span><span class='op'>)</span>,
   method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"maxsubtree"</span>, <span class='st'>"vimp"</span><span class='op'>)</span>, sorted <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>nvar</span>, nrep <span class='op'>=</span> <span class='fl'>1</span>, 
-  na.action <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"na.omit"</span>, <span class='st'>"na.impute"</span><span class='op'>)</span>,
+  na.action <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"na.omit"</span>, <span class='st'>"na.impute"</span>, <span class='st'>"na.random"</span><span class='op'>)</span>,
   seed <span class='op'>=</span> <span class='cn'>NULL</span>, do.trace <span class='op'>=</span> <span class='cn'>FALSE</span>, verbose <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -405,7 +405,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://ishwaran.org/ishwaran.html'>Hemant Ishwaran</a>, Udaya B. Kogalur.</p>
+  <p>Developed by <a href='https://www.luminwin.net'>Min Lu</a>.</p>
 </div>
 
 <div class="pkgdown">

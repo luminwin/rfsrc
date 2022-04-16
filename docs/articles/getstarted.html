@@ -19,7 +19,7 @@
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Getting starting with the randomForestSRC R-package for random forest analysis of regression, classification, survival and more">
 <meta property="og:description" content="this package">
-<meta property="og:image" content="http://randomforestsrc.org/logo.svg">
+<meta property="og:image" content="https://www.randomforestsrc.org/logo.svg">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -44,7 +44,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Development version">3.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Development version">3.1.0</span>
       </span>
     </div>
 
@@ -101,7 +101,7 @@
       <a href="../articles/sidClustering.html">sidClustering</a>
     </li>
     <li>
-      <a href="../articles/vimp.html">Variable Importance (VIMP) with Subsampling Inference</a>
+      <a href="../articles/rfsrc-subsample.html">Variable Importance (VIMP) with Subsampling Inference</a>
     </li>
     <li>
       <a href="../articles/minidep.html">Minimal Depth</a>
@@ -151,7 +151,7 @@
                         <h4 class="author">
 <a href="https://ishwaran.org/ishwaran.html">Hemant Ishwaran</a> <br><br> Min Lu <br><br> Udaya B. Kogalur</h4>
             
-            <h4 class="date">2022-03-28</h4>
+            <h4 class="date">2022-04-16</h4>
       
       
       <div class="hidden name"><code>getstarted.Rmd</code></div>
@@ -367,34 +367,34 @@ If <span class="math inline">\(\{\varphi, \varphi_1,\ldots,\varphi_B\}\)</span> 
 <tbody>
 <tr class="odd">
 <td>Survival</td>
-<td><code>rfsrc(Surv(time, status) ~ ., data = veteran)</code></td>
+<td><code><a href="../reference/rfsrc.html">rfsrc(Surv(time, status) ~ ., data = veteran)</a></code></td>
 </tr>
 <tr class="even">
 <td>Competing Risk</td>
-<td><code>rfsrc(Surv(time, status) ~ ., data = wihs)</code></td>
+<td><code><a href="../reference/rfsrc.html">rfsrc(Surv(time, status) ~ ., data = wihs)</a></code></td>
 </tr>
 <tr class="odd">
 <td>Regression <br> Quantile Regression</td>
 <td>
-<code>rfsrc(Ozone ~., data = airquality)</code> <br><code>quantreg(mpg ~ ., data = mtcars)</code>
+<code><a href="../reference/rfsrc.html">rfsrc(Ozone ~., data = airquality)</a></code> <br><code><a href="../reference/quantreg.rfsrc.html">quantreg(mpg ~ ., data = mtcars)</a></code>
 </td>
 </tr>
 <tr class="even">
 <td>Classification <br> Imbalanced Two-Class</td>
 <td>
-<code>rfsrc(Species ~., data = iris)</code> <br><code>imbalanced(status ~ ., data = breast)</code>
+<code><a href="../reference/rfsrc.html">rfsrc(Species ~., data = iris)</a></code> <br><code><a href="../reference/imbalanced.rfsrc.html">imbalanced(status ~ ., data = breast)</a></code>
 </td>
 </tr>
 <tr class="odd">
 <td>Multivariate Regression <br> Multivariate Mixed Regression <br> Multivariate Quantile Regression <br> Multivariate Mixed Quantile Regression</td>
 <td>
-<code>rfsrc(Multivar(mpg, cyl) ~., data = mtcars)</code> <br><code>rfsrc(cbind(Species,Sepal.Length)~.,data=iris)</code> <br><code>quantreg(cbind(mpg, cyl) ~ ., data = mtcars)</code> <br><code>quantreg(cbind(Species,Sepal.Length)~.,data=iris)</code>
+<code><a href="../reference/rfsrc.html">rfsrc(Multivar(mpg, cyl) ~., data = mtcars)</a></code> <br><code><a href="../reference/rfsrc.html">rfsrc(cbind(Species,Sepal.Length)~.,data=iris)</a></code> <br><code><a href="../reference/quantreg.rfsrc.html">quantreg(cbind(mpg, cyl) ~ ., data = mtcars)</a></code> <br><code><a href="../reference/quantreg.rfsrc.html">quantreg(cbind(Species,Sepal.Length)~.,data=iris)</a></code>
 </td>
 </tr>
 <tr class="even">
 <td>Unsupervised <br> sidClustering <br> Breiman (Shi-Horvath)</td>
 <td>
-<code>rfsrc(data = mtcars)</code> <br><code>sidClustering(data = mtcars)</code> <br><code>sidClustering(data = mtcars, method = "sh")</code>
+<code><a href="../reference/rfsrc.html">rfsrc(data = mtcars)</a></code> <br><code><a href="../reference/sidClustering.rfsrc.html">sidClustering(data = mtcars)</a></code> <br><code><a href="../reference/sidClustering.rfsrc.html">sidClustering(data = mtcars, method = "sh")</a></code>
 </td>
 </tr>
 </tbody>
@@ -636,7 +636,7 @@ If <span class="math inline">\(\{\varphi, \varphi_1,\ldots,\varphi_B\}\)</span> 
 <span class="va">iris.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">iris</span>, block.size <span class="op">=</span> <span class="fl">1</span>, perf.type <span class="op">=</span> <span class="st">"brier"</span><span class="op">)</span>
 
 <span class="co">## plot the error rate</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">iris.obj</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span><span class="op">(</span><span class="va">iris.obj</span><span class="op">)</span></code></pre></div>
 <p><img src="pic/irisbrier.png" style="width:50.0%"><br></p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># VIMP using brier prediction error</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">vimp</span>(iris.obj)<span class="sc">$</span>importance    </span>
@@ -754,13 +754,13 @@ Ishwaran, H., Kogalur, U. B., Blackstone, E. H., &amp; Lauer, M. S. (2008). Rand
 Ishwaran, Hemant, &amp; Lu, M. (2019). Standard errors and confidence intervals for variable importance in random forest regression, classification, and survival. <em>Statistics in medicine</em>, <em>38</em>(4), 558–582. Wiley Online Library.
 </div>
 <div id="ref-HemantInstall" class="csl-entry">
-Ishwaran, Hemant, Lu, M., &amp; Kogalur, U. B. (2021a). <span class="nocase">randomForestSRC</span>: Installing <span class="nocase">randomForestSRC</span> vignette. Retrieved from <a href="http://randomforestsrc.org/articles/installation.html">http://randomforestsrc.org/articles/installation.html</a>
+Ishwaran, Hemant, Lu, M., &amp; Kogalur, U. B. (2021a). <span class="nocase">randomForestSRC</span>: Installing <span class="nocase">randomForestSRC</span> vignette. Retrieved from <a href="https://luminwin.github.io/randomForestSRC/articles/installation.html">https://luminwin.github.io/randomForestSRC/articles/installation.html</a>
 </div>
 <div id="ref-HemantVIMP" class="csl-entry">
-Ishwaran, Hemant, Lu, M., &amp; Kogalur, U. B. (2021b). <span class="nocase">randomForestSRC</span>: Variable importance <span>(VIMP)</span> with subsampling inference vignette. Retrieved from <a href="http://randomforestsrc.org/articles/vimp.html">http://randomforestsrc.org/articles/vimp.html</a>
+Ishwaran, Hemant, Lu, M., &amp; Kogalur, U. B. (2021b). <span class="nocase">randomForestSRC</span>: Variable importance <span>(VIMP)</span> with subsampling inference vignette. Retrieved from <a href="https://luminwin.github.io/randomForestSRC/articles/rfsrc-subsample.html">https://luminwin.github.io/randomForestSRC/articles/rfsrc-subsample.html</a>
 </div>
 <div id="ref-HemantRFQv" class="csl-entry">
-Ishwaran, Hemant, O’Brien, R., Lu, M., &amp; Kogalur, U. B. (2021). <span class="nocase">randomForestSRC</span>: Random forests quantile classifier <span>(RFQ)</span> vignette. Retrieved from <a href="http://randomforestsrc.org/articles/imbalance.html">http://randomforestsrc.org/articles/imbalance.html</a>
+Ishwaran, Hemant, O’Brien, R., Lu, M., &amp; Kogalur, U. B. (2021). <span class="nocase">randomForestSRC</span>: Random forests quantile classifier <span>(RFQ)</span> vignette. Retrieved from <a href="https://luminwin.github.io/randomForestSRC/articles/imbalance.html">https://luminwin.github.io/randomForestSRC/articles/imbalance.html</a>
 </div>
 <div id="ref-sidclustering" class="csl-entry">
 Mantero, A., &amp; Ishwaran, H. (2021). Unsupervised random forests. <em>Statistical Analysis and Data Mining: The ASA Data Science Journal</em>, <em>14</em>(2), 144–167. Wiley Online Library.
@@ -786,7 +786,7 @@ Ueda, N., &amp; Nakano, R. (1996). Generalization error of ensemble estimators. 
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="https://ishwaran.org/ishwaran.html">Hemant Ishwaran</a>, Udaya B. Kogalur.</p>
+  <p>Developed by <a href="https://www.luminwin.net">Min Lu</a>.</p>
 </div>
 
 <div class="pkgdown">

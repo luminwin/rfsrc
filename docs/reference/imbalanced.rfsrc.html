@@ -52,7 +52,7 @@
   O'Brien and Ishwaran (2017).  Also includes Breiman's balanced random
   forests undersampling of the majority class.  Performance is assesssed
   using the G-mean, but misclassification error can be requested." />
-<meta property="og:image" content="http://randomforestsrc.org/logo.svg" />
+<meta property="og:image" content="https://www.randomforestsrc.org/logo.svg" />
 
 
 
@@ -94,7 +94,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Development version">3.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Development version">3.1.0</span>
       </span>
     </div>
 
@@ -151,7 +151,7 @@
       <a href="../articles/sidClustering.html">sidClustering</a>
     </li>
     <li>
-      <a href="../articles/vimp.html">Variable Importance (VIMP) with Subsampling Inference</a>
+      <a href="../articles/rfsrc-subsample.html">Variable Importance (VIMP) with Subsampling Inference</a>
     </li>
     <li>
       <a href="../articles/minidep.html">Minimal Depth</a>
@@ -467,7 +467,7 @@
 <span class='co'>##----------------------------------------------------------------</span>
 
 <span class='kw'>if</span> <span class='op'>(</span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='st'><a href='https://github.com/topepo/caret/'>"caret"</a></span>, logical.return <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>&amp;</span>
-    <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='st'><a href='http://github.com/ncordon/imbalance'>"imbalance"</a></span>, logical.return <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+    <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='st'>"imbalance"</span>, logical.return <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
 
   <span class='co'>## experimental settings</span>
   <span class='va'>n</span> <span class='op'>&lt;-</span> <span class='fl'>5000</span>
@@ -575,7 +575,7 @@
 
   <span class='co'>## subsample the q-classifier</span>
   <span class='va'>smp.oq</span> <span class='op'>&lt;-</span> <span class='fu'><a href='subsample.rfsrc.html'>subsample</a></span><span class='op'>(</span><span class='va'>oq</span>, B <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span>
-  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>smp.oq</span>, cex.axis <span class='op'>=</span> <span class='fl'>.7</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>smp.oq</span>, cex.axis <span class='op'>=</span> <span class='fl'>.7</span><span class='op'>)</span>
 
 <span class='op'>}</span>
 
@@ -592,7 +592,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://ishwaran.org/ishwaran.html'>Hemant Ishwaran</a>, Udaya B. Kogalur.</p>
+  <p>Developed by <a href='https://www.luminwin.net'>Min Lu</a>.</p>
 </div>
 
 <div class="pkgdown">

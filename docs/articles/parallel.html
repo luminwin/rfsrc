@@ -19,7 +19,7 @@
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Parallel Processing">
 <meta property="og:description" content="this package">
-<meta property="og:image" content="http://randomforestsrc.org/logo.svg">
+<meta property="og:image" content="https://www.randomforestsrc.org/logo.svg">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -44,7 +44,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Development version">3.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Development version">3.1.0</span>
       </span>
     </div>
 
@@ -101,7 +101,7 @@
       <a href="../articles/sidClustering.html">sidClustering</a>
     </li>
     <li>
-      <a href="../articles/vimp.html">Variable Importance (VIMP) with Subsampling Inference</a>
+      <a href="../articles/rfsrc-subsample.html">Variable Importance (VIMP) with Subsampling Inference</a>
     </li>
     <li>
       <a href="../articles/minidep.html">Minimal Depth</a>
@@ -151,7 +151,7 @@
                         <h4 class="author">
 <a href="https://ishwaran.org/ishwaran.html">Hemant Ishwaran</a> <br><br> Min Lu <br><br> Udaya B. Kogalur</h4>
             
-            <h4 class="date">2022-03-28</h4>
+            <h4 class="date">2022-04-16</h4>
       
       
       <div class="hidden name"><code>parallel.Rmd</code></div>
@@ -190,21 +190,21 @@ font-size: 16px;
 <a href="#openmp-parallel-processing-setting-the-number-of-cpus" class="anchor"></a>OpenMP Parallel Processing – Setting the Number of CPUs</h2>
 <p>There are several ways to control the number of CPU cores that the package accesses during OpenMP parallel execution. First, you will need to determine the number of cores on your local machine. Do this by starting an R session and issuing the command <code>detectCores()</code>. You will require the parallel package for this.</p>
 <p>Then you can do the following:</p>
-<p>At the start of every R session, you can set the number of cores accessed during OpenMP parallel execution by issuing the command <code>options(rf.cores = x)</code>, where <code>x</code> is the number of cores. If <code>x</code> is a negative number, the package will access the maximum number of cores on your machine. The options command can also be placed in the users .Rprofile file for convenience. You can, alternatively, initialize the environment variable <code>RF_CORES</code> in your shell environment.</p>
+<p>At the start of every R session, you can set the number of cores accessed during OpenMP parallel execution by issuing the command <code><a href="https://rdrr.io/r/base/options.html">options(rf.cores = x)</a></code>, where <code>x</code> is the number of cores. If <code>x</code> is a negative number, the package will access the maximum number of cores on your machine. The options command can also be placed in the users .Rprofile file for convenience. You can, alternatively, initialize the environment variable <code>RF_CORES</code> in your shell environment.</p>
 <p>The default value for <code>rf.cores</code> is -1 (-1L), if left unspecified, which uses all available cores, with a minimum of two.</p>
 </div>
 <div id="r-side-parallel-processing-setting-the-number-of-cpus" class="section level2">
 <h2 class="hasAnchor">
 <a href="#r-side-parallel-processing-setting-the-number-of-cpus" class="anchor"></a>R-side Parallel Processing – Setting the Number of CPUs</h2>
 <p>The package also implements R-side parallel processing via the <code>parallel</code> package contained in the base <code>R</code> distribution. However, the <code>parallel</code> package must be explicitly loaded to take advantage of this functionality. When this is the case, the R function <code><a href="https://rdrr.io/r/base/lapply.html">lapply()</a></code> is replaced with the parallel version <code>mclapply()</code>. You can set the number of cores accessed by <code>mclapply()</code> by issuing the command</p>
-<p><code>options(mc.cores = x)</code></p>
+<p><code><a href="https://rdrr.io/r/base/options.html">options(mc.cores = x)</a></code></p>
 <p>where <code>x</code> is the number of cores. The options command can also be placed in the users .Rprofile file for convenience. You can, alternatively, initialize the environment variable <code>MC_CORES</code> in your shell environment. See the help files in parallel for more information.</p>
 <p>The default value for <code>mclapply()</code> on non-Windows systems is two (2L) cores. On Windows systems, the default value is one (1L) core.</p>
 <div id="example-setting-the-number-of-cpus" class="section level3">
 <h3 class="hasAnchor">
 <a href="#example-setting-the-number-of-cpus" class="anchor"></a>Example: Setting the Number of CPUs</h3>
 <p>As an example, issuing the following options command uses all available cores for both OpenMP and R-side processing:</p>
-<p><code>options(rf.cores=detectCores(), mc.cores=detectCores())</code></p>
+<p><code><a href="https://rdrr.io/r/base/options.html">options(rf.cores=detectCores(), mc.cores=detectCores())</a></code></p>
 <p>As stated above, this option command can be placed in the users .Rprofile file.</p>
 <br><p class="comment">
 <strong> Cautionary Note on Parallel Execution </strong> <br> 1. Once the package has been compiled with OpenMP enabled, trees will be grown in parallel using the <code>rf.cores</code> option. Independently of this, we also utilize <code>mclapply()</code> to parallelize loops in R-side pre-processing and post-processing of the forest. This is always available and independent of whether the user chooses to compile the package with the OpenMP option enabled. <br> 2. It is important to NOT write programs that fork R processes containing OpenMP threads. That is, one should not use <code>mclapply()</code> around the functions <code><a href="../reference/rfsrc.html">rfsrc()</a></code>, <code><a href="../reference/predict.rfsrc.html">predict.rfsrc()</a></code>, <code>vimp.rfsc()</code>, <code><a href="../reference/var.select.rfsrc.html">var.select.rfsrc()</a></code>, <code><a href="../reference/find.interaction.rfsrc.html">find.interaction.rfsrc()</a></code> and <code><a href="../reference/partial.rfsrc.html">partial.rfsrc()</a></code>. In such a scenario, program execution is not guaranteed.
@@ -233,7 +233,7 @@ font-size: 16px;
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="https://ishwaran.org/ishwaran.html">Hemant Ishwaran</a>, Udaya B. Kogalur.</p>
+  <p>Developed by <a href="https://www.luminwin.net">Min Lu</a>.</p>
 </div>
 
 <div class="pkgdown">

@@ -49,7 +49,7 @@
 <meta property="og:title" content="Extract a Single Tree from a Forest and plot it on your browser — get.tree.rfsrc" />
 <meta property="og:description" content="Extracts a single tree from a forest which can then be plotted on the users
   browser.  Works for all families.  Missing data not permitted." />
-<meta property="og:image" content="http://randomforestsrc.org/logo.svg" />
+<meta property="og:image" content="https://www.randomforestsrc.org/logo.svg" />
 
 
 
@@ -91,7 +91,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Development version">3.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Development version">3.1.0</span>
       </span>
     </div>
 
@@ -148,7 +148,7 @@
       <a href="../articles/sidClustering.html">sidClustering</a>
     </li>
     <li>
-      <a href="../articles/vimp.html">Variable Importance (VIMP) with Subsampling Inference</a>
+      <a href="../articles/rfsrc-subsample.html">Variable Importance (VIMP) with Subsampling Inference</a>
     </li>
     <li>
       <a href="../articles/minidep.html">Minimal Depth</a>
@@ -351,19 +351,19 @@
 <span class='va'>vd</span><span class='op'>$</span><span class='va'>celltype</span><span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>vd</span><span class='op'>$</span><span class='va'>celltype</span><span class='op'>)</span>
 <span class='va'>vd</span><span class='op'>$</span><span class='va'>diagtime</span><span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>vd</span><span class='op'>$</span><span class='va'>diagtime</span><span class='op'>)</span>
 <span class='va'>vd.obj</span> <span class='op'>&lt;-</span> <span class='fu'><a href='rfsrc.html'>rfsrc</a></span><span class='op'>(</span><span class='fu'>Surv</span><span class='op'>(</span><span class='va'>time</span>,<span class='va'>status</span><span class='op'>)</span><span class='op'>~</span><span class='va'>.</span>, <span class='va'>vd</span>, ntree <span class='op'>=</span> <span class='fl'>100</span>, nodesize <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'>get.tree</span><span class='op'>(</span><span class='va'>vd.obj</span>, <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='fu'>get.tree</span><span class='op'>(</span><span class='va'>vd.obj</span>, <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'>## competing risks</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>follic</span>, package <span class='op'>=</span> <span class='st'>"randomForestSRC"</span><span class='op'>)</span>
 <span class='va'>follic.obj</span> <span class='op'>&lt;-</span> <span class='fu'><a href='rfsrc.html'>rfsrc</a></span><span class='op'>(</span><span class='fu'>Surv</span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>status</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>.</span>, <span class='va'>follic</span>, nsplit <span class='op'>=</span> <span class='fl'>3</span>, ntree <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'>get.tree</span><span class='op'>(</span><span class='va'>follic.obj</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='fu'>get.tree</span><span class='op'>(</span><span class='va'>follic.obj</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'>## ------------------------------------------------------------</span>
 <span class='co'>## regression</span>
 <span class='co'>## ------------------------------------------------------------</span>
 
 <span class='va'>airq.obj</span> <span class='op'>&lt;-</span> <span class='fu'><a href='rfsrc.html'>rfsrc</a></span><span class='op'>(</span><span class='va'>Ozone</span> <span class='op'>~</span> <span class='va'>.</span>, data <span class='op'>=</span> <span class='va'>airquality</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'>get.tree</span><span class='op'>(</span><span class='va'>airq.obj</span>, <span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='fu'>get.tree</span><span class='op'>(</span><span class='va'>airq.obj</span>, <span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'>## ------------------------------------------------------------</span>
 <span class='co'>## two-class imbalanced data (see imbalanced function)</span>
@@ -375,8 +375,8 @@
 <span class='va'>breast.obj</span> <span class='op'>&lt;-</span> <span class='fu'><a href='imbalanced.rfsrc.html'>imbalanced</a></span><span class='op'>(</span><span class='va'>f</span>, <span class='va'>breast</span><span class='op'>)</span>
 
 <span class='co'>## compare RFQ to Bayes Rule</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'>get.tree</span><span class='op'>(</span><span class='va'>breast.obj</span>, <span class='fl'>1</span>, class.type <span class='op'>=</span> <span class='st'>"rfq"</span>, ensemble <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'>get.tree</span><span class='op'>(</span><span class='va'>breast.obj</span>, <span class='fl'>1</span>, class.type <span class='op'>=</span> <span class='st'>"bayes"</span>, ensemble <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='fu'>get.tree</span><span class='op'>(</span><span class='va'>breast.obj</span>, <span class='fl'>1</span>, class.type <span class='op'>=</span> <span class='st'>"rfq"</span>, ensemble <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='fu'>get.tree</span><span class='op'>(</span><span class='va'>breast.obj</span>, <span class='fl'>1</span>, class.type <span class='op'>=</span> <span class='st'>"bayes"</span>, ensemble <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'>## ------------------------------------------------------------</span>
 <span class='co'>## classification</span>
@@ -385,13 +385,13 @@
 <span class='va'>iris.obj</span> <span class='op'>&lt;-</span> <span class='fu'><a href='rfsrc.html'>rfsrc</a></span><span class='op'>(</span><span class='va'>Species</span> <span class='op'>~</span><span class='va'>.</span>, data <span class='op'>=</span> <span class='va'>iris</span>, nodesize <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
 
 <span class='co'>## equivalent</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'>get.tree</span><span class='op'>(</span><span class='va'>iris.obj</span>, <span class='fl'>25</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'>get.tree</span><span class='op'>(</span><span class='va'>iris.obj</span>, <span class='fl'>25</span>, class.type <span class='op'>=</span> <span class='st'>"bayes"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='fu'>get.tree</span><span class='op'>(</span><span class='va'>iris.obj</span>, <span class='fl'>25</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='fu'>get.tree</span><span class='op'>(</span><span class='va'>iris.obj</span>, <span class='fl'>25</span>, class.type <span class='op'>=</span> <span class='st'>"bayes"</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'>## predicted probability displayed for terminal nodes</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'>get.tree</span><span class='op'>(</span><span class='va'>iris.obj</span>, <span class='fl'>25</span>, class.type <span class='op'>=</span> <span class='st'>"prob"</span>, target <span class='op'>=</span> <span class='st'>"setosa"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'>get.tree</span><span class='op'>(</span><span class='va'>iris.obj</span>, <span class='fl'>25</span>, class.type <span class='op'>=</span> <span class='st'>"prob"</span>, target <span class='op'>=</span> <span class='st'>"versicolor"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'>get.tree</span><span class='op'>(</span><span class='va'>iris.obj</span>, <span class='fl'>25</span>, class.type <span class='op'>=</span> <span class='st'>"prob"</span>, target <span class='op'>=</span> <span class='st'>"virginica"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='fu'>get.tree</span><span class='op'>(</span><span class='va'>iris.obj</span>, <span class='fl'>25</span>, class.type <span class='op'>=</span> <span class='st'>"prob"</span>, target <span class='op'>=</span> <span class='st'>"setosa"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='fu'>get.tree</span><span class='op'>(</span><span class='va'>iris.obj</span>, <span class='fl'>25</span>, class.type <span class='op'>=</span> <span class='st'>"prob"</span>, target <span class='op'>=</span> <span class='st'>"versicolor"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='fu'>get.tree</span><span class='op'>(</span><span class='va'>iris.obj</span>, <span class='fl'>25</span>, class.type <span class='op'>=</span> <span class='st'>"prob"</span>, target <span class='op'>=</span> <span class='st'>"virginica"</span><span class='op'>)</span><span class='op'>)</span>
 
 
 <span class='co'>## ------------------------------------------------------------</span>
@@ -399,8 +399,8 @@
 <span class='co'>## ------------------------------------------------------------</span>
 
 <span class='va'>mtcars.mreg</span> <span class='op'>&lt;-</span> <span class='fu'><a href='rfsrc.html'>rfsrc</a></span><span class='op'>(</span><span class='fu'>Multivar</span><span class='op'>(</span><span class='va'>mpg</span>, <span class='va'>cyl</span><span class='op'>)</span> <span class='op'>~</span><span class='va'>.</span>, data <span class='op'>=</span> <span class='va'>mtcars</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'>get.tree</span><span class='op'>(</span><span class='va'>mtcars.mreg</span>, <span class='fl'>10</span>, m.target <span class='op'>=</span> <span class='st'>"mpg"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'>get.tree</span><span class='op'>(</span><span class='va'>mtcars.mreg</span>, <span class='fl'>10</span>, m.target <span class='op'>=</span> <span class='st'>"cyl"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='fu'>get.tree</span><span class='op'>(</span><span class='va'>mtcars.mreg</span>, <span class='fl'>10</span>, m.target <span class='op'>=</span> <span class='st'>"mpg"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='fu'>get.tree</span><span class='op'>(</span><span class='va'>mtcars.mreg</span>, <span class='fl'>10</span>, m.target <span class='op'>=</span> <span class='st'>"cyl"</span><span class='op'>)</span><span class='op'>)</span>
 
 
 <span class='co'>## ------------------------------------------------------------</span>
@@ -411,15 +411,15 @@
 <span class='va'>mtcars2</span><span class='op'>$</span><span class='va'>carb</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>mtcars2</span><span class='op'>$</span><span class='va'>carb</span><span class='op'>)</span>
 <span class='va'>mtcars2</span><span class='op'>$</span><span class='va'>cyl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>mtcars2</span><span class='op'>$</span><span class='va'>cyl</span><span class='op'>)</span>
 <span class='va'>mtcars.mix</span> <span class='op'>&lt;-</span> <span class='fu'><a href='rfsrc.html'>rfsrc</a></span><span class='op'>(</span><span class='fu'>Multivar</span><span class='op'>(</span><span class='va'>carb</span>, <span class='va'>mpg</span>, <span class='va'>cyl</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>.</span>, data <span class='op'>=</span> <span class='va'>mtcars2</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'>get.tree</span><span class='op'>(</span><span class='va'>mtcars.mix</span>, <span class='fl'>5</span>, m.target <span class='op'>=</span> <span class='st'>"cyl"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'>get.tree</span><span class='op'>(</span><span class='va'>mtcars.mix</span>, <span class='fl'>5</span>, m.target <span class='op'>=</span> <span class='st'>"carb"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='fu'>get.tree</span><span class='op'>(</span><span class='va'>mtcars.mix</span>, <span class='fl'>5</span>, m.target <span class='op'>=</span> <span class='st'>"cyl"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='fu'>get.tree</span><span class='op'>(</span><span class='va'>mtcars.mix</span>, <span class='fl'>5</span>, m.target <span class='op'>=</span> <span class='st'>"carb"</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'>## ------------------------------------------------------------</span>
 <span class='co'>## unsupervised analysis</span>
 <span class='co'>## ------------------------------------------------------------</span>
 
 <span class='va'>mtcars.unspv</span> <span class='op'>&lt;-</span> <span class='fu'><a href='rfsrc.html'>rfsrc</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>mtcars</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'>get.tree</span><span class='op'>(</span><span class='va'>mtcars.unspv</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='fu'>get.tree</span><span class='op'>(</span><span class='va'>mtcars.unspv</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>
 
 
 
@@ -436,7 +436,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://ishwaran.org/ishwaran.html'>Hemant Ishwaran</a>, Udaya B. Kogalur.</p>
+  <p>Developed by <a href='https://www.luminwin.net'>Min Lu</a>.</p>
 </div>
 
 <div class="pkgdown">

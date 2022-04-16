@@ -47,7 +47,7 @@
 
 
 <meta property="og:title" content="Changelog" />
-<meta property="og:image" content="http://randomforestsrc.org/logo.svg" />
+<meta property="og:image" content="https://www.randomforestsrc.org/logo.svg" />
 
 
 
@@ -89,7 +89,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Development version">3.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Development version">3.1.0</span>
       </span>
     </div>
 
@@ -146,7 +146,7 @@
       <a href="../articles/sidClustering.html">sidClustering</a>
     </li>
     <li>
-      <a href="../articles/vimp.html">Variable Importance (VIMP) with Subsampling Inference</a>
+      <a href="../articles/rfsrc-subsample.html">Variable Importance (VIMP) with Subsampling Inference</a>
     </li>
     <li>
       <a href="../articles/minidep.html">Minimal Depth</a>
@@ -198,6 +198,18 @@
       
     </div>
 
+    <div id="release-310" class="section level2">
+<h2 class="hasAnchor">
+<a href="#release-310" class="anchor"></a>RELEASE 3.1.0</h2>
+<p>Added a new way to deal with missing data in prediction where missing data is assigned randomly by daughter size. Use option na.action=“na.random”. Added enhanced capability to deal with test data with factors. Previously test data with factor levels not matching training data would throw an error. This then required users to apply hot encoding and other inferior workarounds. These workaround are no longer needed. Continued improvements to CPU times for training and prediction. Added a save.memory feature for big survival data to address slow training times that users were experiencing with large competing risk and right censored survival data. Added the ability for users to supply their own sigma matrix for the mahalanobis splitting rule. Added new features to subsample (used for VIMP confidence intervals). Users can now specify variables for joint VIMP confidence intervals and selectively plot confidence intervals using variables of their choosing. VIMP random now also uses daughter sizes as the secondary threshold after considering the primary vimp.threshold.</p>
+<hr>
+</div>
+    <div id="release-310-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#release-310-1" class="anchor"></a>RELEASE 3.1.0</h2>
+<p>Miner changes to donttest examples that caused issues. Continued improvements to overall speed of the package.</p>
+<hr>
+</div>
     <div id="release-302" class="section level2">
 <h2 class="hasAnchor">
 <a href="#release-302" class="anchor"></a>RELEASE 3.0.2</h2>
@@ -470,7 +482,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://ishwaran.org/ishwaran.html'>Hemant Ishwaran</a>, Udaya B. Kogalur.</p>
+  <p>Developed by <a href='https://www.luminwin.net'>Min Lu</a>.</p>
 </div>
 
 <div class="pkgdown">

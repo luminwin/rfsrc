@@ -49,7 +49,7 @@
 <meta property="og:title" content="Impute Only Mode — impute.rfsrc" />
 <meta property="og:description" content="Fast imputation mode.  A random forest is grown and used to impute
   missing data.  No ensemble estimates or error rates are calculated." />
-<meta property="og:image" content="http://randomforestsrc.org/logo.svg" />
+<meta property="og:image" content="https://www.randomforestsrc.org/logo.svg" />
 
 
 
@@ -91,7 +91,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Development version">3.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Development version">3.1.0</span>
       </span>
     </div>
 
@@ -148,7 +148,7 @@
       <a href="../articles/sidClustering.html">sidClustering</a>
     </li>
     <li>
-      <a href="../articles/vimp.html">Variable Importance (VIMP) with Subsampling Inference</a>
+      <a href="../articles/rfsrc-subsample.html">Variable Importance (VIMP) with Subsampling Inference</a>
     </li>
     <li>
       <a href="../articles/minidep.html">Minimal Depth</a>
@@ -456,7 +456,7 @@
   <span class='va'>pt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>fake_data_missing</span><span class='op'>[</span>, <span class='va'>j</span><span class='op'>]</span><span class='op'>)</span>
   <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='va'>fake_data</span><span class='op'>[</span><span class='va'>pt</span>, <span class='va'>j</span><span class='op'>]</span>
   <span class='va'>y</span> <span class='op'>&lt;-</span> <span class='va'>imputed_data</span><span class='op'>[</span><span class='va'>pt</span>, <span class='va'>j</span><span class='op'>]</span>
-  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, pch <span class='op'>=</span> <span class='fl'>16</span>, cex <span class='op'>=</span> <span class='fl'>0.8</span>, xlab <span class='op'>=</span> <span class='st'>"raw data"</span>,
+  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, pch <span class='op'>=</span> <span class='fl'>16</span>, cex <span class='op'>=</span> <span class='fl'>0.8</span>, xlab <span class='op'>=</span> <span class='st'>"raw data"</span>,
     ylab <span class='op'>=</span> <span class='st'>"imputed data"</span>, col <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
   <span class='fu'><a href='https://rdrr.io/r/graphics/points.html'>points</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, pch <span class='op'>=</span> <span class='fl'>1</span>, cex <span class='op'>=</span> <span class='fl'>0.8</span>, col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grDevices/gray.html'>gray</a></span><span class='op'>(</span><span class='fl'>.9</span><span class='op'>)</span><span class='op'>)</span>
   <span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/supsmu.html'>supsmu</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, span <span class='op'>=</span> <span class='fl'>.25</span><span class='op'>)</span>, lty <span class='op'>=</span> <span class='fl'>1</span>, col <span class='op'>=</span> <span class='fl'>4</span>, lwd <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span>
@@ -477,7 +477,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://ishwaran.org/ishwaran.html'>Hemant Ishwaran</a>, Udaya B. Kogalur.</p>
+  <p>Developed by <a href='https://www.luminwin.net'>Min Lu</a>.</p>
 </div>
 
 <div class="pkgdown">

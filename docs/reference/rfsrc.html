@@ -62,21 +62,22 @@ Fast OpenMP parallel computing of random forests (Breiman 2001) for
   single and grouped variables.  Minimal depth variable selection
   (Ishwaran et al. 2010, 2011).  Fast interface for missing data
   imputation using a variety of different random forest methods (Tang
-  and Ishwaran 2017).
+  and Ishwaran 2017).  
 
-New items users should be aware of:
-The default VIMP is no longer &quot;permute&quot; (Breiman-Cutler
-    permutation importance) and has been switched to &quot;anti&quot;
-    (importance=&quot;anti&quot;, importance=TRUE). This calculates
-    VIMP by assigning OOB cases to the opposite (anti) split and is
-    considerably faster.  Note in some situations, such as highly
-    imbalanced classification, permutation VIMP may perform better.
-    Users can always obtain permutation VIMP using
-    importance=&quot;permute&quot;.
-Now available, Mahalanobis splitting for multivariate
-    regression with correlated y-outcomes
-    (splitrule=&quot;mahalanobis&quot;).
-Now available, visualize trees on your Safari or Google Chrome
+New items to be aware of:
+For computational speed, the default VIMP is no longer
+    &quot;permute&quot; (Breiman-Cutler permutation importance) and has been
+    switched to &quot;anti&quot; (importance=&quot;anti&quot;,
+    importance=TRUE; see below for details).  Be aware in some
+    situations, such as highly imbalanced classification, that
+    permutation VIMP may perform better.  Permutation VIMP is 
+    obtained using importance=&quot;permute&quot;.
+save.memory can be used for big data to save memory;
+    especially useful for survival and competing risks.
+Mahalanobis splitting for multivariate regression with
+    correlated y-outcomes (splitrule=&quot;mahalanobis&quot;).  Now allows
+    for a user specified covariance matrix.
+Visualize trees on your Safari or Google Chrome
     browser (works for all families).  See get.tree.
 
     
@@ -97,7 +98,7 @@ Now available, visualize trees on your Safari or Google Chrome
 This is the main entry point to the randomForestSRC
   package.  For more information about this package and OpenMP parallel
   processing, use the command package?randomForestSRC." />
-<meta property="og:image" content="http://randomforestsrc.org/logo.svg" />
+<meta property="og:image" content="https://www.randomforestsrc.org/logo.svg" />
 
 
 
@@ -139,7 +140,7 @@ This is the main entry point to the randomForestSRC
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Development version">3.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Development version">3.1.0</span>
       </span>
     </div>
 
@@ -196,7 +197,7 @@ This is the main entry point to the randomForestSRC
       <a href="../articles/sidClustering.html">sidClustering</a>
     </li>
     <li>
-      <a href="../articles/vimp.html">Variable Importance (VIMP) with Subsampling Inference</a>
+      <a href="../articles/rfsrc-subsample.html">Variable Importance (VIMP) with Subsampling Inference</a>
     </li>
     <li>
       <a href="../articles/minidep.html">Minimal Depth</a>
@@ -265,21 +266,22 @@ This is the main entry point to the randomForestSRC
   single and grouped variables.  Minimal depth variable selection
   (Ishwaran et al. 2010, 2011).  Fast interface for missing data
   imputation using a variety of different random forest methods (Tang
-  and Ishwaran 2017).</p>
+  and Ishwaran 2017).</p>  
 
-<p>New items users should be aware of:</p><ol>
-<li><p>The default VIMP is no longer "permute" (Breiman-Cutler
-    permutation importance) and has been switched to "anti"
-    (<code>importance="anti"</code>, <code>importance=TRUE</code>). This calculates
-    VIMP by assigning OOB cases to the opposite (anti) split and is
-    considerably faster.  Note in some situations, such as highly
-    imbalanced classification, permutation VIMP may perform better.
-    Users can always obtain permutation VIMP using
-    <code>importance="permute"</code>.</p></li>
-<li><p>Now available, Mahalanobis splitting for multivariate
-    regression with correlated y-outcomes
-    (<code>splitrule="mahalanobis"</code>).</p></li>
-<li><p>Now available, visualize trees on your Safari or Google Chrome
+<p>New items to be aware of:</p><ol>
+<li><p>For computational speed, the default VIMP is no longer
+    "permute" (Breiman-Cutler permutation importance) and has been
+    switched to "anti" (<code>importance="anti"</code>,
+    <code>importance=TRUE</code>; see below for details).  Be aware in some
+    situations, such as highly imbalanced classification, that
+    permutation VIMP may perform better.  Permutation VIMP is 
+    obtained using <code>importance="permute"</code>.</p></li>
+<li><p><code>save.memory</code> can be used for big data to save memory;
+    especially useful for survival and competing risks.</p></li>
+<li><p>Mahalanobis splitting for multivariate regression with
+    correlated y-outcomes (<code>splitrule="mahalanobis"</code>).  Now allows
+    for a user specified covariance matrix.</p></li>
+<li><p>Visualize trees on your Safari or Google Chrome
     browser (works for all families).  See <code class='command'><a href='get.tree.rfsrc.html'>get.tree</a></code>.</p>
 <p><!-- %\item Fast hold out VIMP (see \command{\link{holdout.vimp}}). -->
     <!-- %Can be conservative but has good false discovery properties -->
@@ -305,7 +307,7 @@ This is the main entry point to the randomForestSRC
     <pre class="usage"><span class='fu'>rfsrc</span><span class='op'>(</span><span class='va'>formula</span>, <span class='va'>data</span>, ntree <span class='op'>=</span> <span class='fl'>500</span>,
   mtry <span class='op'>=</span> <span class='cn'>NULL</span>, ytry <span class='op'>=</span> <span class='cn'>NULL</span>,
   nodesize <span class='op'>=</span> <span class='cn'>NULL</span>, nodedepth <span class='op'>=</span> <span class='cn'>NULL</span>,
-  splitrule <span class='op'>=</span> <span class='cn'>NULL</span>, nsplit <span class='op'>=</span> <span class='fl'>10</span>,
+  splitrule <span class='op'>=</span> <span class='cn'>NULL</span>, nsplit <span class='op'>=</span> <span class='cn'>NULL</span>,
   importance <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>FALSE</span>, <span class='cn'>TRUE</span>, <span class='st'>"none"</span>, <span class='st'>"anti"</span>, <span class='st'>"permute"</span>, <span class='st'>"random"</span><span class='op'>)</span>,
   block.size <span class='op'>=</span> <span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/any.html'>any</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sets.html'>is.element</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='va'>importance</span><span class='op'>)</span>,
                      <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"none"</span>, <span class='st'>"FALSE"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='cn'>NULL</span> <span class='kw'>else</span> <span class='fl'>10</span>,
@@ -318,6 +320,7 @@ This is the main entry point to the randomForestSRC
   proximity <span class='op'>=</span> <span class='cn'>FALSE</span>, distance <span class='op'>=</span> <span class='cn'>FALSE</span>, forest.wt <span class='op'>=</span> <span class='cn'>FALSE</span>,
   xvar.wt <span class='op'>=</span> <span class='cn'>NULL</span>, yvar.wt <span class='op'>=</span> <span class='cn'>NULL</span>, split.wt <span class='op'>=</span> <span class='cn'>NULL</span>, case.wt  <span class='op'>=</span> <span class='cn'>NULL</span>,
   forest <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  save.memory <span class='op'>=</span> <span class='cn'>FALSE</span>,
   var.used <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>FALSE</span>, <span class='st'>"all.trees"</span>, <span class='st'>"by.tree"</span><span class='op'>)</span>,
   split.depth <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>FALSE</span>, <span class='st'>"all.trees"</span>, <span class='st'>"by.tree"</span><span class='op'>)</span>,
   seed <span class='op'>=</span> <span class='cn'>NULL</span>,
@@ -333,8 +336,9 @@ This is the main entry point to the randomForestSRC
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>formula</th>
-      <td><p>A symbolic description of the model to be fit.  If
-    missing, unsupervised splitting is implemented.</p></td>
+      <td><p>Object of class 'formula' describing the model to fit.
+    Interaction terms are not supported. If missing, unsupervised
+    splitting is implemented.</p></td>
     </tr>
     <tr>
       <th>data</th>
@@ -346,30 +350,28 @@ This is the main entry point to the randomForestSRC
     </tr>
     <tr>
       <th>mtry</th>
-      <td><p>Number of variables randomly selected as candidates for
-    splitting a node.  The default is <code>p</code>/3 for regression,
-    where <code>p</code> equals the number of variables.  For all
-    other families (including unsupervised settings), the default is
-    sqrt(<code>p</code>).  Values are always rounded up.</p></td>
+      <td><p>Number of variables to possibly split at each node.
+    Default is number of variables divided by 3 for regression.  For all
+    other families (including unsupervised settings), the square root
+    of number of variables.  Values are rounded up.</p></td>
     </tr>
     <tr>
       <th>ytry</th>
-      <td><p>For unsupervised forests, sets the number of randomly
-    selected pseudo-outcomes (see below for more details). 
-    The default is <code>ytry</code>=1, which selects one pseudo-outcome.</p></td>
+      <td><p>The number of randomly selected pseudo-outcomes for
+    unsupervised families (see details below).  Default is
+    <code>ytry</code>=1.</p></td>
     </tr>
     <tr>
       <th>nodesize</th>
-      <td><p>Minumum size of terminal node.
-    The defaults are: survival (15), competing risk
-    (15), regression (5), classification (1), mixed outcomes (3),
-    unsupervised (3).  It is recommended to experiment with different
-    <code>nodesize</code> values.</p></td>
+      <td><p>Minumum size of terminal node.  The defaults are:
+    survival (15), competing risk (15), regression (5), classification
+    (1), mixed outcomes (3), unsupervised (3).  It is recommended to
+    experiment with different <code>nodesize</code> values.</p></td>
     </tr>
     <tr>
       <th>nodedepth</th>
-      <td><p>Maximum depth to which a tree should be grown.  The
-    default behaviour is that this parameter is ignored.</p></td>
+      <td><p>Maximum depth to which a tree should be grown.
+    Parameter is ignored by default.</p></td>
     </tr>
     <tr>
       <th>splitrule</th>
@@ -377,48 +379,44 @@ This is the main entry point to the randomForestSRC
     </tr>
     <tr>
       <th>nsplit</th>
-      <td><p>Non-negative integer value for number of random splits
-   to consider for each candidate splitting variable.  This
-   significantly increases speed.  When zero or NULL, uses much slower
-   deterministic splitting where all possible splits considered.</p></td>
+      <td><p>Non-negative integer specifying number of random splits
+    for splitting a variable.  When zero, all split values are
+    used (deterministic splitting), which can be slower.  By default 
+    10 is used except for regression and classification which uses zero
+    (for deterministic splitting).</p></td>
     </tr>
     <tr>
       <th>importance</th>
       <td><p>Method for computing variable importance (VIMP); see
     below.  Default action is <code>importance="none"</code> but VIMP can
-    always be recovered later using <code class='command'>vimp</code> or
-    <code class='command'>predict</code>.</p></td>
+    be recovered later using <code class='command'>vimp</code> or <code class='command'>predict</code>.</p></td>
     </tr>
     <tr>
       <th>block.size</th>
-      <td><p>Should the cumulative error rate be calculated on
-    every tree?  When <code>NULL</code>, it will only be calculated on the
-    last tree and the plot of the cumulative error rate will result in a
-    flat line.  To view the cumulative error rate on every nth tree, set
-    the value to an integer between <code>1</code> and <code>ntree</code>.  As an
-    intended side effect, if importance is requested, VIMP is
-    calculated in "blocks" of size equal to <code>block.size</code>, thus
-    resulting in a useful compromise between ensemble and tree
-    VIMP. The default action is to use 10 trees.</p></td>
+      <td><p>Determines how cumulative error rate is calculated.
+    When <code>NULL</code>, only done once for entire forest; thus plot of the
+    cumulative error rate will result in a flat line.  To view the
+    cumulative error rate on every nth tree, set the value to an integer
+    between <code>1</code> and <code>ntree</code>.  As an intended side effect, if
+    importance is requested, VIMP is calculated in "blocks" of size
+    equal to <code>block.size</code>, thus resulting in a compromise between
+    ensemble and tree VIMP. The default action in that case is to use 10
+    trees.</p></td>
     </tr>
     <tr>
       <th>bootstrap</th>
-      <td><p>Bootstrap protocol.  The default is <code>by.root</code>
-    which bootstraps the data by sampling with or without replacement
-    (by default sampling is without replacement; see the option
-    <code>samptype</code> below).  If <code>none</code> is chosen, the data is not
-    bootstrapped at all.  If <code>by.user</code> is choosen, the bootstrap
-    specified by <code>samp</code> is used.  It is not possible to return OOB
-    ensembles or prediction error if <code>none</code> is in effect.</p></td>
+      <td><p>Bootstrap protocol.  Default is <code>by.root</code> which
+    bootstraps the data by sampling with or without replacement (without
+    replacement is the default; see the option <code>samptype</code> below).
+    If <code>none</code>, the data is not bootstrapped (it is not possible to
+    return OOB ensembles or prediction error in this case).  If
+    <code>by.user</code>, the bootstrap specified by <code>samp</code> is used.</p></td>
     </tr>
     <tr>
       <th>samptype</th>
-      <td><p>Type of bootstrap when <code>by.root</code> is in effect.
-    Choices are <code>swor</code> (sampling without replacement) and
-    <code>swr</code> (sampling with replacement).  Unlike Breiman's random
-    forests, the default action here is sampling without replacement.
-    Thus out-of-bag (OOB) technically means out-of-sample, but for
-    legacy reasons we retain the term OOB.</p></td>
+      <td><p>Type of bootstrap used when <code>by.root</code> is in
+    effect.  Choices are <code>swor</code> (sampling without replacement; 
+    the default) and <code>swr</code> (sampling with replacement).</p></td>
     </tr>
     <tr>
       <th>samp</th>
@@ -433,27 +431,26 @@ This is the main entry point to the randomForestSRC
     </tr>
     <tr>
       <th>sampsize</th>
-      <td><p>Function specifying size of bootstrap data when
-    <code>by.root</code> is in effect.  For sampling without replacement, it is
-    the requested size of the sample, which by default is .632 times the
-    sample size.  For sampling with replacement, it is the sample size.
-    Can also be specified by using a number.</p></td>
+      <td><p>Function specifying bootstrap size when <code>by.root</code>
+    is in effect.  For sampling without replacement, it is the requested
+    size of the sample, which by default is .632 times the sample size.
+    For sampling with replacement, it is the sample size.  Can also be
+    specified using a number.</p></td>
     </tr>
     <tr>
       <th>na.action</th>
       <td><p>Action taken if the data contains <code>NA</code>'s.
-    Possible values are <code>na.omit</code> or <code>na.impute</code>.
-    The default <code>na.omit</code> removes the entire record if
-    even one of its entries is <code>NA</code> (for x-variables this applies only
-    to those specifically listed in 'formula').  Selecting
-    <code>na.impute</code> imputes the data.  Also see the function
-    <code class='command'>impute</code> for fast direct imputation.</p></td>
+    Possible values are <code>na.omit</code> or <code>na.impute</code>.  The default
+    <code>na.omit</code> removes the entire record if any entry is
+    <code>NA</code>. Selecting <code>na.impute</code> imputes the data (see below
+    for details).  Also see the function <code class='command'>impute</code> for fast
+    imputation.</p></td>
     </tr>
     <tr>
       <th>nimpute</th>
       <td><p>Number of iterations of the missing data algorithm.
-    Performance measures such as out-of-bag (OOB) error rates tend to
-    become optimistic if <code>nimpute</code> is greater than 1.</p></td>
+    Performance measures such as out-of-bag (OOB) error rates are
+    optimistic if <code>nimpute</code> is greater than 1.</p></td>
     </tr>
     <tr>
       <th>ntime</th>
@@ -461,10 +458,9 @@ This is the main entry point to the randomForestSRC
     calculations to an <code>ntime</code> grid of time points over the
     observed event times.  Alternatively if a vector of values of length
     greater than one is supplied, it is assumed these are the time
-    points to be used to constrain the calculations (note that the
-    constrained time points used will be the observed event times
-    closest to the user supplied time points).  Setting <code>ntime</code> to
-    zero (or NULL) uses all observed event times.</p></td>
+    points to be used (these will be adjusted to match closest observed
+    event times).  Setting <code>ntime</code> to zero (or NULL) uses all
+    observed event times.</p></td>
     </tr>
     <tr>
       <th>cause</th>
@@ -473,18 +469,20 @@ This is the main entry point to the randomForestSRC
     is the number of event types. If not specified, the default is to
     use a composite splitting rule that averages over all event types.
     Can also be a vector of non-negative weights of length <code>J</code>
-    specifying weights for each event (for example, passing a vector of
-    ones reverts to the default composite split statistic).  Finally,
-    regardless of how <code>cause</code> is specified, the returned forest
-    object always provides estimates for all event types.</p></td>
+    specifying weights for each event (for example, a vector of ones
+    reverts to the default composite split statistic).  Regardless of
+    how <code>cause</code> is specified, estimates for all event types are
+    returned.</p></td>
     </tr>
     <tr>
       <th>perf.type</th>
-      <td><p>Optional character value for requesting metric used
-    for predicted value, variable importance (VIMP) and error rate.  If not
-    specified, values returned are calculated by the default action used
-    for the family. Currently applicable only to classification and
-    multivariate classification; allowed values are
+      <td><p>Optional character value specifying metric used
+    for predicted value, variable importance (VIMP), and error rate.
+    Reverts to the family default metric if not specified.
+    <code>perf.type="none"</code> turns off performance entirely which is a
+    useful way to turn off C-index calculations for big survival data
+    (which can be expensive).  Values allowed for
+    univariate/multivariate classification are:
     <code>perf.type="misclass"</code> (default), <code>perf.type="brier"</code> and
     <code>perf.type="gmean"</code>.</p></td>
     </tr>
@@ -502,39 +500,37 @@ This is the main entry point to the randomForestSRC
     sum of the count of edges from each case to their immediate common
     ancestor node to the sum of the count of edges from each case to the
     root node.  If the cases are co-terminal for a tree, this measure is
-    zero and reduces to 1 - the proximity measure for these cases in a
-    tree. This is an <code>n</code>x<code>n</code> matrix, which can be large.
-    Choices are <code>inbag</code>, <code>oob</code>, <code>all</code>, <code>TRUE</code>,
-    or <code>FALSE</code>.  Setting <code>distance = TRUE</code> is equivalent to
-    <code>distance = "inbag"</code>.</p></td>
+    zero and reduces to 1 - the proximity measure.  This is an
+    <code>n</code>x<code>n</code> matrix, which can be large.  Choices are
+    <code>inbag</code>, <code>oob</code>, <code>all</code>, <code>TRUE</code>, or <code>FALSE</code>.
+    Setting <code>distance = TRUE</code> is equivalent to <code>distance =
+    "inbag"</code>.</p></td>
     </tr>
     <tr>
       <th>forest.wt</th>
-      <td><p>Should the forest weight matrix be
-    calculated?  Creates an <code>n</code>x<code>n</code> matrix which can be
-    used for prediction and constructing customized estimators.  Choices
-    are similar to proximity: <code>inbag</code>, <code>oob</code>, <code>all</code>,
-    <code>TRUE</code>, or <code>FALSE</code>.  The default is <code>TRUE</code> which
-    is equivalent to <code>inbag</code>.</p></td>
+      <td><p>Calculate the forest weight matrix?  Creates an
+    <code>n</code>x<code>n</code> matrix which can be used for prediction and
+    constructing customized estimators.  Choices are similar to
+    proximity: <code>inbag</code>, <code>oob</code>, <code>all</code>, <code>TRUE</code>, or
+    <code>FALSE</code>.  The default is <code>TRUE</code> which is equivalent to
+    <code>inbag</code>.</p></td>
     </tr>
     <tr>
       <th>xvar.wt</th>
       <td><p>Vector of non-negative weights (does not have to sum
     to 1) representing the probability of selecting a variable for
-    splitting.  Default is to use uniform weights.</p></td>
+    splitting.  Default is uniform weights.</p></td>
     </tr>
     <tr>
       <th>yvar.wt</th>
-      <td><p>NOT YET IMPLEMENTED: Vector of non-negative weights
-    (does not have to sum to 1) representing the probability of
-    selecting a outcome as a candidate for the split statistic in
-    unsupervised settings.  Default is to use uniform weights.</p></td>
+      <td><p>Used for sending in features with custom splitting.
+    For expert use only.</p></td>
     </tr>
     <tr>
       <th>split.wt</th>
       <td><p>Vector of non-negative weights used for multiplying
     the split statistic for a variable. A large value encourages the
-    node to split on a specific variable. Default is to use uniform
+    node to split on a specific variable. Default is uniform
     weights.</p></td>
     </tr>
     <tr>
@@ -543,22 +539,30 @@ This is the main entry point to the randomForestSRC
     1) for sampling cases.  Observations with larger weights will be
     selected with higher probability in the bootstrap (or subsampled)
     samples.  It is generally better to use real weights rather than
-    integers. See the example below for the breast data set for an
-    illustration of its use for class imbalanced data.</p></td>
+    integers. See the breast data example below illustrating its use
+    for class imbalanced data.</p></td>
     </tr>
     <tr>
       <th>forest</th>
-      <td><p>Should the forest object be returned?  Used for
-    prediction on new data and required by many of the package
-    functions.</p></td>
+      <td><p>Save key forest values?  Used for prediction on new data
+    and required by many of the package functions. Turn this off if you
+    are only interested in training a forest.</p></td>
+    </tr>
+    <tr>
+      <th>save.memory</th>
+      <td><p>Save memory?  Default is to store terminal node
+    quantities used for prediction on test data.  This yields rapid
+    prediction but can be memory intensive for big data, especially
+    competing risks and survival models.  Turn this flag off in those
+    cases.</p></td>
     </tr>
     <tr>
       <th>var.used</th>
-      <td><p>Return variables used for splitting?  Default is
-    <code>FALSE</code>.  Possible values are <code>all.trees</code> which returns a
-    vector of the number of times a split occurred on a variable, and
-    <code>by.tree</code> which returns a matrix recording the number of times
-    a split occurred on a variable in a specific tree.</p></td>
+      <td><p>Return statistics on number of times a variable split?
+    Default is <code>FALSE</code>.  Possible values are <code>all.trees</code> which
+    returns total number of splits of each variable, and <code>by.tree</code>
+    which returns a matrix of number a splits for each variable for each
+    tree.</p></td>
     </tr>
     <tr>
       <th>split.depth</th>
@@ -620,7 +624,7 @@ This is the main entry point to the randomForestSRC
 <li><p><em>Available splitting rules</em></p>
 <p></p><ul>
 <li><p>Regression analysis:</p><ol>
-<li><p><code>splitrule="mse"</code>: default split rule implements weighted
+<li><p><code>splitrule="mse"</code> (default split rule):  weighted
 	mean-squared error splitting (Breiman et al. 1984, Chapter 8.4).</p></li>
 <li><p><code>splitrule="quantile.regr"</code>: quantile regression splitting via
 	the "check-loss" function.  Requires specifying the target
@@ -629,7 +633,7 @@ This is the main entry point to the randomForestSRC
         regression splitting. See <code>quantreg.rfsrc</code>.</p></li>
 </ol></li>
 <li><p>Classification analysis:</p><ol>
-<li><p><code>splitrule="gini"</code>: default splitrule implements Gini
+<li><p><code>splitrule="gini"</code> (default splitrule): Gini
         index splitting (Breiman et al. 1984, Chapter 4.3).</p></li>
 <li><p><code>splitrule="auc"</code>: AUC (area under the ROC curve) splitting
 	for both two-class and multiclass setttings.  AUC splitting is
@@ -639,7 +643,7 @@ This is the main entry point to the randomForestSRC
 	al. 1984, Chapter 2.5, 4.3).</p></li>
 </ol></li>
 <li><p>Survival analysis:</p><ol>
-<li><p><code>splitrule="logrank"</code>: default splitrule implements
+<li><p><code>splitrule="logrank"</code> (default splitrule):
 	      log-rank splitting (Segal, 1988; Leblanc and Crowley, 1993).</p></li>
 <li><p><code>splitrule="bs.gradient"</code>: gradient-based (global non-quantile)
 	brier score splitting.  The time horizon used for the Brier
@@ -650,7 +654,7 @@ This is the main entry point to the randomForestSRC
         Lausen, 2003).</p></li>
 </ol></li>
 <li><p>Competing risk analysis (for details see Ishwaran et al., 2014):</p><ol>
-<li><p><code>splitrule="logrankCR"</code>: default splitrule implements a modified
+<li><p><code>splitrule="logrankCR"</code> (default splitrule): modified
 	weighted log-rank splitting rule modeled after Gray's test
 	(Gray, 1988).  Use this to find *all* variables 
 	that are informative and when the goal is long term
@@ -667,19 +671,20 @@ This is the main entry point to the randomForestSRC
 	See examples below.</p></li>
 </ol></li>
 <li><p>Multivariate analysis:</p><ol>
-<li><p>Default splitting is the multivariate normalized
-	 composite split rule of mean-squared error and Gini index (Tang
-	 and Ishwaran, 2017).</p></li>
-<li><p>Setting <code>splitrule="mahalanobis"</code> implements
-	 Mahalanobis splitting, which adjusts for correlation.  Only
-	 available for multivariate regression (all outcomes must be
-	 real).</p></li>
+<li><p>Default is the multivariate normalized composite split
+	 rule using mean-squared error and Gini index (Tang and
+	 Ishwaran, 2017).</p></li>
+<li><p><code>splitrule="mahalanobis"</code>: Mahalanobis splitting
+	 that adjusts for correlation (also allows for a user specified
+	 covariance matrix, see example below).  Only works for
+	 multivariate regression (all outcomes must be real).</p></li>
 </ol></li>
 <li><p>Unsupervised analysis: In settings where there is no
-            outcome, unsupervised splitting is invoked.  In this case,
-            the mixed outcome splitting rule (above) is applied.  Also
-            see <code class='command'>sidClustering</code> for a more sophisticated method for
-            unsupervised analysis (Mantero and Ishwaran, 2020).</p></li>
+            outcome, unsupervised splitting that uses pseudo-outcomes is
+            applied using the default multivariate splitting rule (see
+            below for details) Also see <code class='command'>sidClustering</code> for a
+            more sophisticated method for unsupervised analysis (Mantero
+            and Ishwaran, 2020).</p></li>
 <li><p>Custom splitting: All families except unsupervised are
             available for user defined custom splitting.  Some basic
             C-programming skills are required.  The harness for defining
@@ -704,60 +709,69 @@ This is the main entry point to the randomForestSRC
 </ul></li>
 <li><p><em>Improving computational speed</em></p>    
 <p>See the function <code class='command'><a href='rfsrc.fast.html'>rfsrc.fast</a></code> for a fast
-    implementation of <code>rfsrc</code>.  In general, the key methods for
+    implementation of <code>rfsrc</code>.  Key methods for
     increasing speed are as follows:</p>    
 <p></p><ul>
+<li><p><em>Nodesize</em></p>
+<p>Increasing <code>nodesize</code> has the greatest effect in speeding
+	calculations.  In some big data settings this can also lead to
+	better prediction performance.</p></li>
+<li><p><em>Save memory</em></p>
+<p>Use option <code>save.memory="TRUE"</code> for big data competing risk
+	and survival models.  By default the package stores terminal
+	node quantities to be used in prediction for test data but this
+	can be memory intensive for big data.</p></li>
+<li><p><em>Block size</em></p>
+<p>Make sure <code>block.size="NULL"</code> (or set to number of trees)
+	so that the cumulative error is calculated only once.</p></li>
+<li><p><em>Turn off performace</em></p>
+<p>The C-index error rate calculation can be very expensive for big
+	survival data.  Set <code>perf.type="none"</code> to turn this off and
+	all other performance calculations (then consider using the
+	function <code>get.brier.survival</code> as a fast way to get survival
+	performance).</p>
+<p><code>perf.type="none"</code> applies to all other families as well.</p></li>
 <li><p><em>Randomized splitting rules</em></p>
-<p>Computational speed can be significantly improved with randomized
-      splitting invoked by the option <code>nsplit</code>.  When <code>nsplit</code>
-      is set to a non-zero positive integer, a maximum of <code>nsplit</code>
-      split points are chosen randomly for each of the candidate
-      splitting variables when splitting a tree node, thus significantly
-      reducing the cost from having to consider all possible split-values.
-      To revert to traditional deterministic splitting (all split
-      values considered) use <code>nsplit</code>=0.</p>
-<p>Randomized splitting for trees has a long history.  See for
-      example, Loh and Shih (1997), Dietterich (2000), and Lin and Jeon
-      (2006).  Geurts et al. (2006) recently introduced extremely
-      randomized trees using what they call the extra-trees algorithm.
-      We can see that this algorithm essentially corresponds to
-      randomized splitting with <code>nsplit</code>=1.  In our experience
-      however this is not always the optimal value for <code>nsplit</code> and
-      may often be too low. See Ishwaran (2015).</p>
-<p>Finally, for completely randomized (pure random) splitting use
-      <code>splitrule="random"</code>.  In pure splitting, nodes are split by
-      randomly selecting a variable and randomly selecting its split
-      point (Cutler and Zhao, 2001).</p></li>
+<p>Set <code>nsplit</code> to a small non-zero integer value.  Then a
+        maximum of <code>nsplit</code> split points are chosen randomly for
+        each of the candidate splitting variables when splitting a tree
+        node, thus significantly reducing computational costs.</p>
+<p>For more details about randomized splitting see Loh and Shih
+        (1997), Dietterich (2000), and Lin and Jeon (2006).  Geurts et
+        al. (2006) introduced extremely randomized trees using the
+        extra-trees algorithm.  This algorithm corresponds to
+        <code>nsplit</code>=1.  In our experience however this may be too low
+        for general use (Ishwaran, 2015).</p>
+<p>For completely randomized (pure random) splitting use
+        <code>splitrule="random"</code>.  In pure splitting, nodes are split
+        by randomly selecting a variable and randomly selecting its
+        split point (Cutler and Zhao, 2001).</p></li>
 <li><p><em>Subsampling</em></p>
-<p>Subsampling can be used to reduce the size of the in-sample data
-      used to grow a tree and therefore can greatly reduce computational
-      load.  Subsampling is implemented using options <code>sampsize</code>
-      and <code>samptype</code>.  See <code class='command'>rfsrc.fast</code> for a fast forest
-      implementation using subsampling.</p></li>
+<p>Reduce the size of the bootstrap using <code>sampsize</code> and
+        <code>samptype</code>.  See <code class='command'>rfsrc.fast</code> for a fast forest
+        implementation using subsampling.</p></li>
 <li><p><em>Unique time points</em></p>
-<p>Setting <code>ntime</code> to a reasonably small value such as
-      150 (the default) constrains survival ensemble calculations to a
-      restricted grid of time points and significantly improves
-      computational times.</p></li>
-<li><p><em>Large number of variables</em></p>  
-<p>The default setting <code>importance="none"</code> turns off variable
-      importance (VIMP) calculations and considerably reduces
-      computational times.  Variable importance can always
-      be recovered later using functions <code class='command'>vimp</code> or
-      <code class='command'>predict</code>.  Also consider using <code class='command'>max.subtree</code>
-      which calculates minimal depth, a measure of the depth that a
-      variable splits, and yields fast variable selection (Ishwaran,
-      2010).</p></li>
+<p>Setting <code>ntime</code> to a reasonably small value such as 50
+	constrains survival ensemble calculations to a restricted grid
+	of time points and significantly improves computational times.</p></li>
+<li><p><em>Large number of variables</em></p>
+<p>Try filtering variables ahead of time.  Make sure not to request
+	VIMP (variable importance can always be recovered later using
+	<code class='command'>vimp</code> or <code class='command'>predict</code>).  Also if variable
+	selection is desired, but is too slow, consider using
+	<code class='command'>max.subtree</code> which calculates minimal depth, a measure
+	of the depth that a variable splits, and yields fast variable
+	selection (Ishwaran, 2010).</p></li>
 </ul></li>
 <li><p><em>Prediction Error</em></p>    
-<p>Prediction error is calculated using OOB data.  Performance is
-    measured in terms of mean-squared-error for regression, and
-    misclassification error for classification.  A normalized Brier
-    score (relative to a coin-toss) and the AUC (area under the ROC
-    curve) is also provided upon printing a classification forest.
-    Performance for Brier score can be specified using
-    <code>perf.type="brier"</code>.  G-mean performance is also available, see
-    the function <code class='command'>imbalanced</code> for more details.</p>    
+<p>Prediction error is calculated using OOB data.  The metric used is
+    mean-squared-error for regression, and misclassification error for
+    classification.  A normalized Brier score (relative to a coin-toss)
+    and the AUC (area under the ROC curve) is also provided upon
+    printing a classification forest.  Performance for Brier score can
+    be specified using <code>perf.type="brier"</code>.  G-mean performance is
+    also available, see the function <code class='command'>imbalanced</code> for more
+    details.</p>    
 <p>For survival, prediction error is measured by 1-C, where C is
     Harrell's (Harrell et al., 1982) concordance index.  Prediction error
     is between 0 and 1, and measures how well the predictor correctly
@@ -770,15 +784,13 @@ This is the main entry point to the randomForestSRC
     available via classical cross-validation (the user will need to use
     the <code class='command'>predict.rfsrc</code> function).</p></li>
 <li><p><em>Variable Importance (VIMP)</em></p>
-<p>By default, <code>importance=FALSE</code> and VIMP is not calculated
-    unless requested.</p>    
-<p>The option <code>importance="permute"</code> returns permutation VIMP by
-    permuting OOB cases (classical Breiman-Cutler importance). The
-    option <code>importance="random"</code> returns importance by random
-    daughter assignment of OOB cases whenever a split is encountered for
-    the target variable.  The default is <code>importance="anti"</code>
-    (equivalent to <code>importance=TRUE</code>) which assigns OOB cases to
-    the anti (opposite) split.</p>
+<p>VIMP is calculated using OOB data in several ways.
+     <code>importance="permute"</code> yields permutation VIMP (Breiman-Cutler
+     importance) by permuting OOB cases. <code>importance="random"</code> uses
+     random left/right assignments whenever a split is encountered for
+     the target variable.  The default <code>importance="anti"</code>
+     (equivalent to <code>importance=TRUE</code>) assigns cases to the anti
+     (opposite) split.</p>
 <p>VIMP depends upon <code>block.size</code>, an integer value between 1 and
     <code>ntree</code>, specifying number of trees in a block used for VIMP.
     When <code>block.size</code>=1, VIMP is calculated for each tree.  When
@@ -799,10 +811,10 @@ This is the main entry point to the randomForestSRC
 <p>Also see <code class='command'>holdout.vimp</code> for holdout VIMP, which calculates
     importance by holding out variables.  This is more conservative, but
     with good false discovery properties.</p>
-<p>For classification, VIMP is returned as a matrix with with J+1
+<p>For classification, VIMP is returned as a matrix with J+1
     columns where J is the number of classes.  The first column "all" is
-    the unconditional VIMP, while the remaining columns are VIMP
-    conditioned on cases corresponding to that class label.</p></li>
+    the unconditional VIMP, while the remaining columns are conditional VIMP
+    calculated using only OOB cases with the class label.</p></li>
 <li><p><em>Multivariate Forests</em></p>    
 <p>Multivariate forests can be specified in two ways:</p>    
 <p>rfsrc(Multivar(y1, y2, ..., yd) ~ . , my.data, ...)</p>    
@@ -872,9 +884,9 @@ This is the main entry point to the randomForestSRC
 </ul></li>
 </ol></li>
 <li><p><em>Missing data imputation</em></p>    
-<p>Set <code>na.action="na.impute"</code> to impute missing data (both x and
+<p><code>na.action="na.impute"</code> imputes missing data (both x and
     y-variables) using the missing data algorithm of Ishwaran et
-    al. (2008).  However, see the function <code class='command'>impute</code> for an
+    al. (2008).  But also see the <code class='command'>impute</code> for an
     alternate way to do fast and accurate imputation.</p>    
 <p>The missing data algorithm can be iterated by setting <code>nimpute</code>
     to a positive integer greater than 1.  When iterated, at the
@@ -1162,12 +1174,14 @@ This is the main entry point to the randomForestSRC
 <span class='va'>v.obj</span> <span class='op'>&lt;-</span> <span class='fu'>rfsrc</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>status</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>.</span>, data <span class='op'>=</span> <span class='va'>veteran</span>, 
                    ntree <span class='op'>=</span> <span class='fl'>100</span>, block.size <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
 
-<span class='co'>## print tree number 3</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='get.tree.rfsrc.html'>get.tree</a></span><span class='op'>(</span><span class='va'>v.obj</span>, <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
+<span class='co'>## plot tree number 3</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='get.tree.rfsrc.html'>get.tree</a></span><span class='op'>(</span><span class='va'>v.obj</span>, <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='co'>## print the grow object and plot various useful details</span>
+<span class='co'>## print results of trained forest</span>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>v.obj</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>v.obj</span><span class='op'>)</span>
+
+<span class='co'>## plot results of trained forest</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>v.obj</span><span class='op'>)</span>
 
 <span class='co'>## plot survival curves for first 10 individuals -- direct way</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/matplot.html'>matplot</a></span><span class='op'>(</span><span class='va'>v.obj</span><span class='op'>$</span><span class='va'>time.interest</span>, <span class='fl'>100</span> <span class='op'>*</span> <span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span><span class='op'>(</span><span class='va'>v.obj</span><span class='op'>$</span><span class='va'>survival.oob</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='op'>]</span><span class='op'>)</span>,
@@ -1189,6 +1203,15 @@ This is the main entry point to the randomForestSRC
 <span class='va'>pbc.obj</span> <span class='op'>&lt;-</span> <span class='fu'>rfsrc</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>days</span>, <span class='va'>status</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>.</span>, <span class='va'>pbc</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>pbc.obj</span><span class='op'>)</span>
 
+
+<span class='co'>## save.memory example for survival</span>
+<span class='co'>## growing many deep trees creates memory issue without this option!</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>pbc</span>, package <span class='op'>=</span> <span class='st'>"randomForestSRC"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='fu'>rfsrc</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>days</span>, <span class='va'>status</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>.</span>, <span class='va'>pbc</span>, splitrule <span class='op'>=</span> <span class='st'>"random"</span>,
+            ntree <span class='op'>=</span> <span class='fl'>25000</span>, nodesize <span class='op'>=</span> <span class='fl'>1</span>, save.memory <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
+
+
+
 <span class='co'>##------------------------------------------------------------</span>
 <span class='co'>## trees can be plotted for any family </span>
 <span class='co'>## see get.tree for details and more examples</span>
@@ -1200,32 +1223,32 @@ This is the main entry point to the randomForestSRC
 <span class='va'>vd</span><span class='op'>$</span><span class='va'>celltype</span><span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>vd</span><span class='op'>$</span><span class='va'>celltype</span><span class='op'>)</span>
 <span class='va'>vd</span><span class='op'>$</span><span class='va'>diagtime</span><span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>vd</span><span class='op'>$</span><span class='va'>diagtime</span><span class='op'>)</span>
 <span class='va'>vd.obj</span> <span class='op'>&lt;-</span> <span class='fu'>rfsrc</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>,<span class='va'>status</span><span class='op'>)</span><span class='op'>~</span><span class='va'>.</span>, <span class='va'>vd</span>, ntree <span class='op'>=</span> <span class='fl'>100</span>, nodesize <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='get.tree.rfsrc.html'>get.tree</a></span><span class='op'>(</span><span class='va'>vd.obj</span>, <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='get.tree.rfsrc.html'>get.tree</a></span><span class='op'>(</span><span class='va'>vd.obj</span>, <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'>## classification</span>
 <span class='va'>iris.obj</span> <span class='op'>&lt;-</span> <span class='fu'>rfsrc</span><span class='op'>(</span><span class='va'>Species</span> <span class='op'>~</span><span class='va'>.</span>, data <span class='op'>=</span> <span class='va'>iris</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='get.tree.rfsrc.html'>get.tree</a></span><span class='op'>(</span><span class='va'>iris.obj</span>, <span class='fl'>25</span>, class.type <span class='op'>=</span> <span class='st'>"bayes"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='get.tree.rfsrc.html'>get.tree</a></span><span class='op'>(</span><span class='va'>iris.obj</span>, <span class='fl'>25</span>, target <span class='op'>=</span> <span class='st'>"setosa"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='get.tree.rfsrc.html'>get.tree</a></span><span class='op'>(</span><span class='va'>iris.obj</span>, <span class='fl'>25</span>, target <span class='op'>=</span> <span class='st'>"versicolor"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='get.tree.rfsrc.html'>get.tree</a></span><span class='op'>(</span><span class='va'>iris.obj</span>, <span class='fl'>25</span>, target <span class='op'>=</span> <span class='st'>"virginica"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='get.tree.rfsrc.html'>get.tree</a></span><span class='op'>(</span><span class='va'>iris.obj</span>, <span class='fl'>25</span>, class.type <span class='op'>=</span> <span class='st'>"bayes"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='get.tree.rfsrc.html'>get.tree</a></span><span class='op'>(</span><span class='va'>iris.obj</span>, <span class='fl'>25</span>, target <span class='op'>=</span> <span class='st'>"setosa"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='get.tree.rfsrc.html'>get.tree</a></span><span class='op'>(</span><span class='va'>iris.obj</span>, <span class='fl'>25</span>, target <span class='op'>=</span> <span class='st'>"versicolor"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='get.tree.rfsrc.html'>get.tree</a></span><span class='op'>(</span><span class='va'>iris.obj</span>, <span class='fl'>25</span>, target <span class='op'>=</span> <span class='st'>"virginica"</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'>## ------------------------------------------------------------</span>
 <span class='co'>## simple example of VIMP using iris classification</span>
 <span class='co'>## ------------------------------------------------------------</span>
 
-<span class='co'>## directly from grow call </span>
+<span class='co'>## directly from trained forest</span>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='fu'>rfsrc</span><span class='op'>(</span><span class='va'>Species</span><span class='op'>~</span><span class='va'>.</span>,<span class='va'>iris</span>,importance<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>$</span><span class='va'>importance</span><span class='op'>)</span>
 
-<span class='co'>## note by default VIMP (and performance) uses misclassification error,</span>
-<span class='co'>## but brier prediction error can be specified</span>
+<span class='co'>## VIMP (and performance) use misclassification error by default</span>
+<span class='co'>## but brier prediction error can be requested</span>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='fu'>rfsrc</span><span class='op'>(</span><span class='va'>Species</span><span class='op'>~</span><span class='va'>.</span>,<span class='va'>iris</span>,importance<span class='op'>=</span><span class='cn'>TRUE</span>,perf.type<span class='op'>=</span><span class='st'>"brier"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>importance</span><span class='op'>)</span>
 
-<span class='co'>## using vimp function (see vimp help file for details)</span>
+<span class='co'>## example using vimp function (see vimp help file for details)</span>
 <span class='va'>iris.obj</span> <span class='op'>&lt;-</span> <span class='fu'>rfsrc</span><span class='op'>(</span><span class='va'>Species</span> <span class='op'>~</span><span class='va'>.</span>, data <span class='op'>=</span> <span class='va'>iris</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='fu'><a href='vimp.rfsrc.html'>vimp</a></span><span class='op'>(</span><span class='va'>iris.obj</span><span class='op'>)</span><span class='op'>$</span><span class='va'>importance</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='fu'><a href='vimp.rfsrc.html'>vimp</a></span><span class='op'>(</span><span class='va'>iris.obj</span>,perf.type<span class='op'>=</span><span class='st'>"brier"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>importance</span><span class='op'>)</span>
 
-<span class='co'>## hold out vimp (see holdout.vimp help file for details)</span>
+<span class='co'>## example using hold out vimp (see holdout.vimp help file for details)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='fu'><a href='holdout.vimp.rfsrc.html'>holdout.vimp</a></span><span class='op'>(</span><span class='va'>Species</span><span class='op'>~</span><span class='va'>.</span>,<span class='va'>iris</span><span class='op'>)</span><span class='op'>$</span><span class='va'>importance</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='fu'><a href='holdout.vimp.rfsrc.html'>holdout.vimp</a></span><span class='op'>(</span><span class='va'>Species</span><span class='op'>~</span><span class='va'>.</span>,<span class='va'>iris</span>,perf.type<span class='op'>=</span><span class='st'>"brier"</span><span class='op'>)</span><span class='op'>$</span><span class='va'>importance</span><span class='op'>)</span>
 
@@ -1237,7 +1260,7 @@ This is the main entry point to the randomForestSRC
 <span class='co'>## new York air quality measurements</span>
 <span class='va'>o</span> <span class='op'>&lt;-</span> <span class='fu'>rfsrc</span><span class='op'>(</span><span class='va'>Ozone</span> <span class='op'>~</span> <span class='va'>.</span>, data <span class='op'>=</span> <span class='va'>airquality</span><span class='op'>)</span>
 <span class='va'>so</span> <span class='op'>&lt;-</span> <span class='fu'><a href='subsample.rfsrc.html'>subsample</a></span><span class='op'>(</span><span class='va'>o</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>so</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>so</span><span class='op'>)</span>
 
 <span class='co'>## compare with holdout vimp</span>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='fu'><a href='holdout.vimp.rfsrc.html'>holdout.vimp</a></span><span class='op'>(</span><span class='va'>Ozone</span> <span class='op'>~</span> <span class='va'>.</span>, data <span class='op'>=</span> <span class='va'>airquality</span><span class='op'>)</span><span class='op'>$</span><span class='va'>importance</span><span class='op'>)</span>
@@ -1251,12 +1274,11 @@ This is the main entry point to the randomForestSRC
 <span class='va'>pbc.obj2</span> <span class='op'>&lt;-</span> <span class='fu'>rfsrc</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>days</span>, <span class='va'>status</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>.</span>, <span class='va'>pbc</span>,
            nsplit <span class='op'>=</span> <span class='fl'>10</span>, na.action <span class='op'>=</span> <span class='st'>"na.impute"</span><span class='op'>)</span>
 
-
-<span class='co'>## same as above but we iterate the missing data algorithm</span>
+<span class='co'>## same as above but iterate the missing data algorithm</span>
 <span class='va'>pbc.obj3</span> <span class='op'>&lt;-</span> <span class='fu'>rfsrc</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>days</span>, <span class='va'>status</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>.</span>, <span class='va'>pbc</span>,
          na.action <span class='op'>=</span> <span class='st'>"na.impute"</span>, nimpute <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
 
-<span class='co'>## fast way to impute the data (no inference is done)</span>
+<span class='co'>## fast way to impute data (no inference is done)</span>
 <span class='co'>## see impute for more details</span>
 <span class='va'>pbc.imp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='impute.rfsrc.html'>impute</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>days</span>, <span class='va'>status</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>.</span>, <span class='va'>pbc</span>, splitrule <span class='op'>=</span> <span class='st'>"random"</span><span class='op'>)</span>
 
@@ -1295,16 +1317,16 @@ This is the main entry point to the randomForestSRC
   <span class='co'>## compute bootstrap cross-validation estimate of expected Brier score</span>
   <span class='co'>## see Mogensen, Ishwaran and Gerds (2012) Journal of Statistical Software</span>
   <span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>17743</span><span class='op'>)</span>
-  <span class='va'>prederror.pbc</span> <span class='op'>&lt;-</span> <span class='fu'>pec</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>cox.obj</span>,<span class='va'>rfsrc.obj</span><span class='op'>)</span>, data <span class='op'>=</span> <span class='va'>pbc.na</span>, formula <span class='op'>=</span> <span class='va'>pec.f</span>,
+  <span class='va'>prederror.pbc</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/pec/man/pec.html'>pec</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>cox.obj</span>,<span class='va'>rfsrc.obj</span><span class='op'>)</span>, data <span class='op'>=</span> <span class='va'>pbc.na</span>, formula <span class='op'>=</span> <span class='va'>pec.f</span>,
                         splitMethod <span class='op'>=</span> <span class='st'>"bootcv"</span>, B <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span>
   <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>prederror.pbc</span><span class='op'>)</span>
-  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>prederror.pbc</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>prederror.pbc</span><span class='op'>)</span>
 
   <span class='co'>## compute out-of-bag C-index for cox regression and compare to rfsrc</span>
   <span class='va'>rfsrc.obj</span> <span class='op'>&lt;-</span> <span class='fu'>rfsrc</span><span class='op'>(</span><span class='va'>surv.f</span>, <span class='va'>pbc.na</span><span class='op'>)</span>
   <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='st'>"out-of-bag Cox Analysis ..."</span>, <span class='st'>"\n"</span><span class='op'>)</span>
   <span class='va'>cox.err</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>sapply</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>100</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>b</span><span class='op'>)</span> <span class='op'>{</span>
-    <span class='kw'>if</span> <span class='op'>(</span><span class='va'>b</span><span class='op'><a href='https://rdrr.io/r/base/Arithmetic.html'>%%</a></span><span class='fl'>10</span> <span class='op'>==</span> <span class='fl'>0</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='st'>"cox bootstrap:"</span>, <span class='va'>b</span>, <span class='st'>"\n"</span><span class='op'>)</span>
+    <span class='kw'>if</span> <span class='op'>(</span><span class='va'>b</span><span class='op'>%%</span><span class='fl'>10</span> <span class='op'>==</span> <span class='fl'>0</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='st'>"cox bootstrap:"</span>, <span class='va'>b</span>, <span class='st'>"\n"</span><span class='op'>)</span>
     <span class='va'>train</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>pbc.na</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>pbc.na</span><span class='op'>)</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
     <span class='va'>cox.obj</span> <span class='op'>&lt;-</span> <span class='kw'><a href='https://rdrr.io/r/base/conditions.html'>tryCatch</a></span><span class='op'>(</span><span class='op'>{</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/coxph.html'>coxph</a></span><span class='op'>(</span><span class='va'>surv.f</span>, <span class='va'>pbc.na</span><span class='op'>[</span><span class='va'>train</span>, <span class='op'>]</span><span class='op'>)</span><span class='op'>}</span>, error<span class='op'>=</span><span class='kw'>function</span><span class='op'>(</span><span class='va'>ex</span><span class='op'>)</span><span class='op'>{</span><span class='cn'>NULL</span><span class='op'>}</span><span class='op'>)</span>
     <span class='kw'>if</span> <span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NULL.html'>is.null</a></span><span class='op'>(</span><span class='va'>cox.obj</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
@@ -1405,7 +1427,7 @@ This is the main entry point to the randomForestSRC
 <span class='co'>## wisconsin prognostic breast cancer data</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>breast</span>, package <span class='op'>=</span> <span class='st'>"randomForestSRC"</span><span class='op'>)</span>
 <span class='va'>breast.obj</span> <span class='op'>&lt;-</span> <span class='fu'>rfsrc</span><span class='op'>(</span><span class='va'>status</span> <span class='op'>~</span> <span class='va'>.</span>, data <span class='op'>=</span> <span class='va'>breast</span>, block.size<span class='op'>=</span><span class='fl'>1</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>breast.obj</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>breast.obj</span><span class='op'>)</span>
 
 <span class='co'>## ------------------------------------------------------------</span>
 <span class='co'>## big data set, reduce number of variables using simple method</span>
@@ -1486,7 +1508,8 @@ This is the main entry point to the randomForestSRC
 
 
 <span class='co'>## ------------------------------------------------------------</span>
-<span class='co'>## multivariate (bivariate) regression using Mahalanobis splitting</span>
+<span class='co'>## bivariate regression using Mahalanobis splitting</span>
+<span class='co'>## also illustrates user specified covariance matrix</span>
 <span class='co'>## ------------------------------------------------------------</span>
 
 <span class='kw'>if</span> <span class='op'>(</span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='st'>"mlbench"</span>, logical.return <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
@@ -1498,7 +1521,6 @@ This is the main entry point to the randomForestSRC
   <span class='co'>## Mahalanobis splitting  </span>
   <span class='va'>bh.mreg</span> <span class='op'>&lt;-</span> <span class='fu'>rfsrc</span><span class='op'>(</span><span class='va'>f</span>, <span class='va'>BostonHousing</span>, importance <span class='op'>=</span> <span class='cn'>TRUE</span>, splitrule <span class='op'>=</span> <span class='st'>"mahal"</span><span class='op'>)</span>
   
-
   <span class='co'>## performance error and vimp</span>
   <span class='va'>vmp</span> <span class='op'>&lt;-</span> <span class='fu'>get.mv.vimp</span><span class='op'>(</span><span class='va'>bh.mreg</span><span class='op'>)</span>
   <span class='va'>pred</span> <span class='op'>&lt;-</span> <span class='fu'>get.mv.predicted</span><span class='op'>(</span><span class='va'>bh.mreg</span><span class='op'>)</span>
@@ -1507,6 +1529,10 @@ This is the main entry point to the randomForestSRC
   <span class='va'>err.std</span> <span class='op'>&lt;-</span> <span class='fu'>get.mv.error</span><span class='op'>(</span><span class='va'>bh.mreg</span>, standardize <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
   <span class='va'>vmp.std</span> <span class='op'>&lt;-</span> <span class='fu'>get.mv.vimp</span><span class='op'>(</span><span class='va'>bh.mreg</span>, standardize <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
+  <span class='co'>## same analysis, but with user specified covariance matrix</span>
+  <span class='va'>sigma</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cov</a></span><span class='op'>(</span><span class='va'>BostonHousing</span><span class='op'>[</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"lstat"</span>,<span class='st'>"nox"</span><span class='op'>)</span><span class='op'>]</span><span class='op'>)</span>
+  <span class='va'>bh.mreg2</span> <span class='op'>&lt;-</span> <span class='fu'>rfsrc</span><span class='op'>(</span><span class='va'>f</span>, <span class='va'>BostonHousing</span>, splitrule <span class='op'>=</span> <span class='st'>"mahal"</span>, sigma <span class='op'>=</span> <span class='va'>sigma</span><span class='op'>)</span>
+  
 <span class='op'>}</span>
 
 <span class='co'>## ------------------------------------------------------------</span>
@@ -1570,7 +1596,7 @@ This is the main entry point to the randomForestSRC
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://ishwaran.org/ishwaran.html'>Hemant Ishwaran</a>, Udaya B. Kogalur.</p>
+  <p>Developed by <a href='https://www.luminwin.net'>Min Lu</a>.</p>
 </div>
 
 <div class="pkgdown">

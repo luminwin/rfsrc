@@ -49,7 +49,7 @@
 <meta property="og:title" content="Plot Error Rate and Variable Importance from a RF-SRC analysis — plot.rfsrc" />
 <meta property="og:description" content="Plot out-of-bag (OOB) error rates and variable importance (VIMP)
   from a RF-SRC analysis. This is the default plot method for the package." />
-<meta property="og:image" content="http://randomforestsrc.org/logo.svg" />
+<meta property="og:image" content="https://www.randomforestsrc.org/logo.svg" />
 
 
 
@@ -91,7 +91,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Development version">3.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Development version">3.1.0</span>
       </span>
     </div>
 
@@ -148,7 +148,7 @@
       <a href="../articles/sidClustering.html">sidClustering</a>
     </li>
     <li>
-      <a href="../articles/vimp.html">Variable Importance (VIMP) with Subsampling Inference</a>
+      <a href="../articles/rfsrc-subsample.html">Variable Importance (VIMP) with Subsampling Inference</a>
     </li>
     <li>
       <a href="../articles/minidep.html">Minimal Depth</a>
@@ -206,7 +206,7 @@
   from a RF-SRC analysis. This is the default plot method for the package.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>x</span>, m.target <span class='op'>=</span> <span class='cn'>NULL</span>,
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>x</span>, m.target <span class='op'>=</span> <span class='cn'>NULL</span>,
   plots.one.page <span class='op'>=</span> <span class='cn'>TRUE</span>, sorted <span class='op'>=</span> <span class='cn'>TRUE</span>, verbose <span class='op'>=</span> <span class='cn'>TRUE</span>,  <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -267,7 +267,7 @@
 
 <span class='va'>iris.obj</span> <span class='op'>&lt;-</span> <span class='fu'><a href='rfsrc.html'>rfsrc</a></span><span class='op'>(</span><span class='va'>Species</span> <span class='op'>~</span> <span class='va'>.</span>, data <span class='op'>=</span> <span class='va'>iris</span>,
      block.size <span class='op'>=</span> <span class='fl'>1</span>, importance <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>iris.obj</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>iris.obj</span><span class='op'>)</span>
 
 <span class='co'>## ------------------------------------------------------------</span>
 <span class='co'>## competing risk example</span>
@@ -278,7 +278,7 @@
 <span class='kw'>if</span> <span class='op'>(</span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='st'><a href='https://github.com/therneau/survival'>"survival"</a></span>, logical.return <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
   <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>pbc</span>, package <span class='op'>=</span> <span class='st'>"survival"</span><span class='op'>)</span>
   <span class='va'>pbc</span><span class='op'>$</span><span class='va'>id</span> <span class='op'>&lt;-</span> <span class='cn'>NULL</span>
-  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='rfsrc.html'>rfsrc</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>status</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>.</span>, <span class='va'>pbc</span>, block.size <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='rfsrc.html'>rfsrc</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/survival/man/Surv.html'>Surv</a></span><span class='op'>(</span><span class='va'>time</span>, <span class='va'>status</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>.</span>, <span class='va'>pbc</span>, block.size <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
 <span class='op'>}</span>
 
 <span class='co'>## ------------------------------------------------------------</span>
@@ -289,9 +289,9 @@
 <span class='va'>mtcars.new</span><span class='op'>$</span><span class='va'>cyl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>mtcars.new</span><span class='op'>$</span><span class='va'>cyl</span><span class='op'>)</span>
 <span class='va'>mtcars.new</span><span class='op'>$</span><span class='va'>carb</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>mtcars.new</span><span class='op'>$</span><span class='va'>carb</span>, ordered <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='va'>mv.obj</span> <span class='op'>&lt;-</span> <span class='fu'><a href='rfsrc.html'>rfsrc</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='va'>carb</span>, <span class='va'>mpg</span>, <span class='va'>cyl</span><span class='op'>)</span> <span class='op'>~</span><span class='va'>.</span>, data <span class='op'>=</span> <span class='va'>mtcars.new</span>, block.size <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>mv.obj</span>, m.target <span class='op'>=</span> <span class='st'>"carb"</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>mv.obj</span>, m.target <span class='op'>=</span> <span class='st'>"mpg"</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>mv.obj</span>, m.target <span class='op'>=</span> <span class='st'>"cyl"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>mv.obj</span>, m.target <span class='op'>=</span> <span class='st'>"carb"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>mv.obj</span>, m.target <span class='op'>=</span> <span class='st'>"mpg"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>mv.obj</span>, m.target <span class='op'>=</span> <span class='st'>"cyl"</span><span class='op'>)</span>
 
 <span class='co'># }</span>
 </pre>
@@ -306,7 +306,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://ishwaran.org/ishwaran.html'>Hemant Ishwaran</a>, Udaya B. Kogalur.</p>
+  <p>Developed by <a href='https://www.luminwin.net'>Min Lu</a>.</p>
 </div>
 
 <div class="pkgdown">
