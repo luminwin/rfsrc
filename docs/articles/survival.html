@@ -151,7 +151,7 @@
                         <h4 class="author">
 <a href="https://ishwaran.org/ishwaran.html">Hemant Ishwaran</a> <br><br> Michael S. Lauer <br><br> Eugene H. Blackstone <br><br> Min Lu <br><br> Udaya B. Kogalur</h4>
             
-            <h4 class="date">2022-04-16</h4>
+            <h4 class="date">2022-04-23</h4>
       
       
       <div class="hidden name"><code>survival.Rmd</code></div>
@@ -261,7 +261,10 @@ S^{\text{OOB}}(t|{\bf X}_i)=S_h(t),
 \bar{H}_i^{\text{OOB}}(t)=\frac{1}{|O_i|}\sum_{b\in O_i} H_b^{\text{IB}}(t|{\bf X}_i),\quad
 \bar{S}_i^{\text{OOB}}(t)=\frac{1}{|O_i|}\sum_{b\in O_i} S_b^{\text{IB}}(t|{\bf X}_i),
 \quad i=1,\ldots,n.
-\]</span> An important distinction between the two sets of estimators is that OOB estimators are used for inference on the training data and for estimating prediction error. In-bag estimators on the other hand are used for prediction and can be used for any feature <span class="math inline">\({\bf X}\)</span>.</p>
+\]</span></p>
+<br><p class="comment2">
+An important distinction between the two sets of estimators is that OOB estimators are used for inference on the training data and for estimating prediction error. In-bag estimators on the other hand are used for prediction and can be used for any feature <span class="math inline">\({\bf X}\)</span>.
+</p>
 <div id="why-are-two-estimates-provided" class="section level3">
 <h3 class="hasAnchor">
 <a href="#why-are-two-estimates-provided" class="anchor"></a>Why are two estimates provided?</h3>
