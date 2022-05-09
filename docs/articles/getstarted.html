@@ -136,7 +136,15 @@
   </a>
 </li>
       </ul>
-
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/kogalur/randomForestSRC/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
+     
+    GitHub
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -506,6 +514,31 @@ If <span class="math inline">\(\{\varphi, \varphi_1,\ldots,\varphi_B\}\)</span> 
 <h2 id="in-sample-and-out-of-sample-in-bag-and-out-of-bag">In-Sample and Out-of-Sample (In-Bag and Out-of Bag)<a class="anchor" aria-label="anchor" href="#in-sample-and-out-of-sample-in-bag-and-out-of-bag"></a>
 </h2>
 <p>Remember that each tree is grown from a random subset of the data. Thus, the package will return both out-of-sample and in-sample predicted values from the forest, where the former are calculated using the hold out data for each tree, and the latter are from the data used to train the tree (see Breiman 2001 for more details). These values are stored in <code>$predicted.oob</code> and <code>$predicted</code> respectively. The out-of-sample values <code>$predicted.oob</code> should be used for inference on the training data. This is because they are cross-validated and will not over-fit the data. It is generally never recommended to use <code>$predicted</code> from the grow forest. In general, out-of-sample (out-of-bag, OOB) values should always be the preferred choice for analysis on the training data. See the vignette <a href="forestWgt.html">Forest Weights, In-Bag (IB) and Out-of-Bag (OOB) Ensembles</a> for a more formal description of IB and OOB and how these values are used to define the ensemble.</p>
+<p>The following is a simple illustration for regreesion which shows how the error rate is obtained from the OOB predictor:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"randomForestSRC"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="do">## run mtcars, and print out error rate and other information</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>o <span class="ot">&lt;-</span> <span class="fu">rfsrc</span>(mpg<span class="sc">~</span>.,mtcars)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(o)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                          Sample size<span class="sc">:</span> <span class="dv">32</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                      Number of trees<span class="sc">:</span> <span class="dv">500</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>            Forest terminal node size<span class="sc">:</span> <span class="dv">5</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>        Average no. of terminal nodes<span class="sc">:</span> <span class="fl">3.514</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> No. of variables tried at each split<span class="sc">:</span> <span class="dv">4</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>               Total no. of variables<span class="sc">:</span> <span class="dv">10</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>        Resampling used to grow trees<span class="sc">:</span> swor</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>     Resample size used to grow trees<span class="sc">:</span> <span class="dv">20</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                             Analysis<span class="sc">:</span> RF<span class="sc">-</span>R</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                               Family<span class="sc">:</span> regr</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                       Splitting rule<span class="sc">:</span> mse</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                      (OOB) R squared<span class="sc">:</span> <span class="fl">0.78146586</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>    (OOB) Requested performance error<span class="sc">:</span> <span class="fl">7.93805654</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="do">## we can get the error rate (MSE) directly from the OOB ensemble</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="do">## by comparing the response to the OOB predictor</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">mean</span>((o<span class="sc">$</span>yvar <span class="sc">-</span> o<span class="sc">$</span>predicted.oob)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">1</span>] <span class="fl">7.938057</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="prediction-error">Prediction Error<a class="anchor" aria-label="anchor" href="#prediction-error"></a>
@@ -548,39 +581,41 @@ If <span class="math inline">\(\{\varphi, \varphi_1,\ldots,\varphi_B\}\)</span> 
 </tbody>
 </table>
 <p>Take survival models for example. Harrell’s C-index is in the bottom of the printout and can be obtained by the <code>get.cindex</code> function:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"randomForestSRC"</span>)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(veteran)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>v.obj <span class="ot">&lt;-</span> <span class="fu">rfsrc</span>(<span class="fu">Surv</span>(time, status) <span class="sc">~</span> ., <span class="at">data =</span> veteran, </span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">ntree =</span> <span class="dv">100</span>, <span class="at">block.size =</span> <span class="dv">1</span>)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>v.obj</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                          Sample size<span class="sc">:</span> <span class="dv">137</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                     Number of deaths<span class="sc">:</span> <span class="dv">128</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                      Number of trees<span class="sc">:</span> <span class="dv">100</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>            Forest terminal node size<span class="sc">:</span> <span class="dv">15</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>        Average no. of terminal nodes<span class="sc">:</span> <span class="fl">6.33</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> No. of variables tried at each split<span class="sc">:</span> <span class="dv">3</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>               Total no. of variables<span class="sc">:</span> <span class="dv">6</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>        Resampling used to grow trees<span class="sc">:</span> swor</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>     Resample size used to grow trees<span class="sc">:</span> <span class="dv">87</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                             Analysis<span class="sc">:</span> RSF</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                               Family<span class="sc">:</span> surv</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                       Splitting rule<span class="sc">:</span> logrank <span class="sc">*</span>random<span class="sc">*</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="er">&gt;</span>        Number of random split points<span class="sc">:</span> <span class="dv">10</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                           (OOB) CRPS<span class="sc">:</span> <span class="fl">0.06311753</span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>    (OOB) Requested performance error<span class="sc">:</span> <span class="fl">0.29475291</span></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="fu">get.cindex</span>(<span class="at">time =</span> veteran<span class="sc">$</span>time, <span class="at">censoring =</span> veteran<span class="sc">$</span>status, <span class="at">predicted =</span> v.obj<span class="sc">$</span>predicted.oob)</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">1</span>] <span class="fl">0.2976931</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"randomForestSRC"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(veteran)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>v.obj <span class="ot">&lt;-</span> <span class="fu">rfsrc</span>(<span class="fu">Surv</span>(time, status) <span class="sc">~</span> ., <span class="at">data =</span> veteran, </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">ntree =</span> <span class="dv">100</span>, <span class="at">block.size =</span> <span class="dv">1</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>v.obj</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                          Sample size<span class="sc">:</span> <span class="dv">137</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                     Number of deaths<span class="sc">:</span> <span class="dv">128</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                      Number of trees<span class="sc">:</span> <span class="dv">100</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>            Forest terminal node size<span class="sc">:</span> <span class="dv">15</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>        Average no. of terminal nodes<span class="sc">:</span> <span class="fl">6.33</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> No. of variables tried at each split<span class="sc">:</span> <span class="dv">3</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>               Total no. of variables<span class="sc">:</span> <span class="dv">6</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>        Resampling used to grow trees<span class="sc">:</span> swor</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>     Resample size used to grow trees<span class="sc">:</span> <span class="dv">87</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                             Analysis<span class="sc">:</span> RSF</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                               Family<span class="sc">:</span> surv</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                       Splitting rule<span class="sc">:</span> logrank <span class="sc">*</span>random<span class="sc">*</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="er">&gt;</span>        Number of random split points<span class="sc">:</span> <span class="dv">10</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                           (OOB) CRPS<span class="sc">:</span> <span class="fl">0.06311753</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>    (OOB) Requested performance error<span class="sc">:</span> <span class="fl">0.29475291</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="fu">get.cindex</span>(<span class="at">time =</span> veteran<span class="sc">$</span>time, <span class="at">censoring =</span> veteran<span class="sc">$</span>status, <span class="at">predicted =</span> v.obj<span class="sc">$</span>predicted.oob)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">1</span>] <span class="fl">0.2976931</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="variable-importance-vimp-and-dimension-reduction">Variable Importance (VIMP) and Dimension Reduction<a class="anchor" aria-label="anchor" href="#variable-importance-vimp-and-dimension-reduction"></a>
 </h2>
 <p>In a nutshell, VIMP (variable importance) is a technique for estimating the importance of a variable by comparing performance of the estimated model with and without the variable in it. This is a very popular technique and has been used throughout machine learning. Here we outline some key ideas but for more details users should consult the following vignette (refer to VIMP vignette).</p>
-<p>1. VIMP can be obtained in the original training call via “rfsrc.” Or it can be obtained using “predict.” Or finally there is a dedicated function “vimp.” VIMP applies to all families, including regression, classification, survival and multivariate settings.</p>
-<p>The following is an example using classification. Note that for classification, VIMP is returned as a matrix with J+1 columns where J is the number of classes. The first column “all” is the unconditional VIMP, while the remaining columns are conditional VIMP calculated using only those cases with the specified class label.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<ul>
+<li>VIMP can be obtained in the original training call via <code>rfsrc</code>. Or it can be obtained using <code>predict</code>. Or finally there is a dedicated function <code>vimp</code>. VIMP applies to all families, including regression, classification, survival and multivariate settings.</li>
+</ul>
+<p>The following is an example using classification. Note that for classification, VIMP is returned as a matrix with <span class="math inline">\(J+1\)</span> columns where <span class="math inline">\(J\)</span> is the number of classes. The first column <code>all</code> is the unconditional VIMP, while the remaining columns are conditional VIMP calculated using only those cases with the specified class label.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## ------------------------------------------------------------</span>
 <span class="co">## examples of obtaining VIMP using classification</span>
 <span class="co">## ------------------------------------------------------------</span>
@@ -595,8 +630,10 @@ If <span class="math inline">\(\{\varphi, \varphi_1,\ldots,\varphi_B\}\)</span> 
 <span class="co">## ... using the vimp function</span>
 <span class="va">o</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">Species</span><span class="op">~</span><span class="va">.</span>,<span class="va">iris</span><span class="op">)</span>
 <span class="fu"><a href="../reference/vimp.rfsrc.html">vimp</a></span><span class="op">(</span><span class="va">o</span>, importance <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span><span class="va">importance</span></code></pre></div>
-<p>2. VIMP is calculated using OOB data. importance=“permute” yields permutation VIMP (Breiman-Cutler importance) by permuting OOB cases. importance=“random” uses random left/right assignments whenever a split is encountered for the target variable. The default importance=“anti” (equivalent to importance=TRUE) assigns cases to the anti (opposite) split.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<ul>
+<li>VIMP is calculated using OOB data. <code>importance="permute"</code> yields permutation VIMP (Breiman-Cutler importance) by permuting OOB cases. <code>importance="random"</code> uses random left/right assignments whenever a split is encountered for the target variable. The default <code>importance="anti"</code> (equivalent to importance=TRUE) assigns cases to the anti (opposite) split.</li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## ------------------------------------------------------------</span>
 <span class="co">## how to obtain permutation importance</span>
 <span class="co">## ------------------------------------------------------------</span>
@@ -611,10 +648,14 @@ If <span class="math inline">\(\{\varphi, \varphi_1,\ldots,\varphi_B\}\)</span> 
 <span class="co">## using the vimp function</span>
 <span class="va">o</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">Species</span><span class="op">~</span><span class="va">.</span>,<span class="va">iris</span><span class="op">)</span>
 <span class="fu"><a href="../reference/vimp.rfsrc.html">vimp</a></span><span class="op">(</span><span class="va">o</span>, importance <span class="op">=</span> <span class="st">"permute"</span><span class="op">)</span><span class="op">$</span><span class="va">importance</span></code></pre></div>
-<p>3. VIMP depends upon “block.size,” an integer value between 1 and ntree, specifying number of trees in a block used for VIMP. When block.size=1, VIMP is calculated for each tree. This is what was used in the traditional Breiman-Cutler VIMP and we will refer to this setting as tree VIMP. When block.size=“ntree,” VIMP is calculated for the entire forest by comparing the perturbed OOB forest ensemble (using all trees) to the unperturbed OOB forest ensemble (using all trees). This yields ensemble VIMP, which does not measure the tree average effect of a variable, but rather its overall forest effect.</p>
-<p>The default is “block.size=10” which provides a useful compromise between tree VIMP and ensemble VIMP. In general, smaller “block.size” values generally gives better accuracy, however computational times will be higher because VIMP is calculated over more blocks. In some cases like imbalanced classification data (reference RFQ vignette), a larger “block.size” can work better.</p>
-<p>4. See the function “subsample” for calculating confidence intervals for VIMP which can be used as a means for dimension reduction.</p>
-<p>5. Finally, also see “holdout.vimp” for holdout VIMP, which calculates importance by holding out variables. This is more conservative, but with good false discovery properties.</p>
+<ul>
+<li>VIMP depends upon <code>block.size</code>, an integer value between 1 and <code>ntree</code>, specifying number of trees in a block used for VIMP. When <code>block.size=1</code>, VIMP is calculated for each tree. This is what was used in the traditional Breiman-Cutler VIMP and we will refer to this setting as tree VIMP. When <code>block.size="ntree"</code>, VIMP is calculated for the entire forest by comparing the perturbed OOB forest ensemble (using all trees) to the unperturbed OOB forest ensemble (using all trees). This yields ensemble VIMP, which does not measure the tree average effect of a variable, but rather its overall forest effect.</li>
+</ul>
+<p>The default is <code>block.size=10</code> which provides a useful compromise between tree VIMP and ensemble VIMP. In general, smaller “block.size” values generally gives better accuracy, however computational times will be higher because VIMP is calculated over more blocks. In some cases like imbalanced classification data (reference RFQ vignette), a larger <code>block.size</code> can work better.</p>
+<ul>
+<li><p>See the function <code>subsample</code> for calculating confidence intervals for VIMP which can be used as a means for dimension reduction.</p></li>
+<li><p>Finally, also see <code>holdout.vimp</code> for holdout VIMP, which calculates importance by holding out variables. This is more conservative, but with good false discovery properties.</p></li>
+</ul>
 </div>
 <div class="section level2">
 <h2 id="specifying-the-type-of-predicted-value-variable-importance-and-error-rate">Specifying the Type of Predicted Value, Variable Importance and Error Rate<a class="anchor" aria-label="anchor" href="#specifying-the-type-of-predicted-value-variable-importance-and-error-rate"></a>
@@ -626,54 +667,54 @@ If <span class="math inline">\(\{\varphi, \varphi_1,\ldots,\varphi_B\}\)</span> 
 \text{BS}^* = \frac{C}{C-1}\sum_{c=1}^C \left(1\{Y=c\} - \hat{\varphi}_c\right)^2.
 \]</span> Observe how the normalizing constant <span class="math inline">\(C/(C-1)\)</span> used here is different than the value <span class="math inline">\(1/C\)</span> typically used for the Brier score. We multiply the traditional Brier score by <span class="math inline">\(C^2/(C-1)\)</span> because we have noticed that the value for the Brier score under random guessing depends on the number of classes, <span class="math inline">\(C\)</span>. If <span class="math inline">\(C\)</span> increases, the Brier score under random guessing converges to 1. The normalizing constant used here resolves this problem and yields a value of 1 for random guessing, regardless of <span class="math inline">\(C\)</span>. Thus, anything below 1 signifies a classifier that is better than pure guessing.</p>
 <p>The following example analyzes the <a href="https://rdrr.io/r/datasets/iris.html" class="external-link">iris data</a> which is a multiclassification data set where the outcome Species contains three classes: <code>setosa, versicolor</code>, and <code>virginica</code>. The output below shows the overall fit to the model and then VIMP under the default measure of performance, which is misclassification error.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ----------------------------------------------------------------</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="do">## classification analysis (default settings)</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="do">## ----------------------------------------------------------------</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(randomForestSRC)     </span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>iris.obj <span class="ot">&lt;-</span> <span class="fu">rfsrc</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> iris, <span class="at">block.size =</span> <span class="dv">1</span>)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>iris.obj</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                          Sample size<span class="sc">:</span> <span class="dv">150</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>            Frequency of class labels<span class="sc">:</span> <span class="dv">50</span>, <span class="dv">50</span>, <span class="dv">50</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                      Number of trees<span class="sc">:</span> <span class="dv">500</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>            Forest terminal node size<span class="sc">:</span> <span class="dv">1</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>        Average no. of terminal nodes<span class="sc">:</span> <span class="fl">9.56</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> No. of variables tried at each split<span class="sc">:</span> <span class="dv">2</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>               Total no. of variables<span class="sc">:</span> <span class="dv">4</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>        Resampling used to grow trees<span class="sc">:</span> swor</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>     Resample size used to grow trees<span class="sc">:</span> <span class="dv">95</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                             Analysis<span class="sc">:</span> RF<span class="sc">-</span>C</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                               Family<span class="sc">:</span> class</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                       Splitting rule<span class="sc">:</span> gini <span class="sc">*</span>random<span class="sc">*</span></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="er">&gt;</span>        Number of random split points<span class="sc">:</span> <span class="dv">10</span></span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                    (OOB) Brier score<span class="sc">:</span> <span class="fl">0.02518434</span></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>         (OOB) Normalized Brier score<span class="sc">:</span> <span class="fl">0.11332955</span> </span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                            (OOB) AUC<span class="sc">:</span> <span class="fl">0.99136667</span> </span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                     (OOB) Error rate<span class="sc">:</span> <span class="fl">0.04666667</span>, <span class="fl">0.02</span>, <span class="fl">0.06</span>, <span class="fl">0.06</span></span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> </span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="er">&gt;</span> Confusion matrix<span class="sc">:</span></span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="er">&gt;</span> </span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="er">&gt;</span>             predicted</span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>   observed   setosa versicolor virginica class.error</span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>   setosa         <span class="dv">49</span>          <span class="dv">1</span>         <span class="dv">0</span>        <span class="fl">0.02</span></span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>   versicolor      <span class="dv">0</span>         <span class="dv">47</span>         <span class="dv">3</span>        <span class="fl">0.06</span></span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>   virginica       <span class="dv">0</span>          <span class="dv">3</span>        <span class="dv">47</span>        <span class="fl">0.06</span></span>
-<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> </span>
-<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a><span class="er">&gt;</span>   <span class="fu">Overall</span> (OOB) error rate<span class="sc">:</span> <span class="fl">4.666667</span>%</span>
-<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a><span class="do">## plot the error rate</span></span>
-<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(iris.obj)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ----------------------------------------------------------------</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="do">## classification analysis (default settings)</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="do">## ----------------------------------------------------------------</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(randomForestSRC)     </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>iris.obj <span class="ot">&lt;-</span> <span class="fu">rfsrc</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> iris, <span class="at">block.size =</span> <span class="dv">1</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>iris.obj</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                          Sample size<span class="sc">:</span> <span class="dv">150</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>            Frequency of class labels<span class="sc">:</span> <span class="dv">50</span>, <span class="dv">50</span>, <span class="dv">50</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                      Number of trees<span class="sc">:</span> <span class="dv">500</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>            Forest terminal node size<span class="sc">:</span> <span class="dv">1</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>        Average no. of terminal nodes<span class="sc">:</span> <span class="fl">9.56</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> No. of variables tried at each split<span class="sc">:</span> <span class="dv">2</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>               Total no. of variables<span class="sc">:</span> <span class="dv">4</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>        Resampling used to grow trees<span class="sc">:</span> swor</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>     Resample size used to grow trees<span class="sc">:</span> <span class="dv">95</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                             Analysis<span class="sc">:</span> RF<span class="sc">-</span>C</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                               Family<span class="sc">:</span> class</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                       Splitting rule<span class="sc">:</span> gini <span class="sc">*</span>random<span class="sc">*</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="er">&gt;</span>        Number of random split points<span class="sc">:</span> <span class="dv">10</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                    (OOB) Brier score<span class="sc">:</span> <span class="fl">0.02518434</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>         (OOB) Normalized Brier score<span class="sc">:</span> <span class="fl">0.11332955</span> </span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                            (OOB) AUC<span class="sc">:</span> <span class="fl">0.99136667</span> </span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                     (OOB) Error rate<span class="sc">:</span> <span class="fl">0.04666667</span>, <span class="fl">0.02</span>, <span class="fl">0.06</span>, <span class="fl">0.06</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> </span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a><span class="er">&gt;</span> Confusion matrix<span class="sc">:</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a><span class="er">&gt;</span> </span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a><span class="er">&gt;</span>             predicted</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>   observed   setosa versicolor virginica class.error</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>   setosa         <span class="dv">49</span>          <span class="dv">1</span>         <span class="dv">0</span>        <span class="fl">0.02</span></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>   versicolor      <span class="dv">0</span>         <span class="dv">47</span>         <span class="dv">3</span>        <span class="fl">0.06</span></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>   virginica       <span class="dv">0</span>          <span class="dv">3</span>        <span class="dv">47</span>        <span class="fl">0.06</span></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> </span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a><span class="er">&gt;</span>   <span class="fu">Overall</span> (OOB) error rate<span class="sc">:</span> <span class="fl">4.666667</span>%</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a><span class="do">## plot the error rate</span></span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(iris.obj)</span></code></pre></div>
 <p><img src="pic/irismisc.png" style="width:50.0%"><br></p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># VIMP using misclassification error</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">vimp</span>(iris.obj)<span class="sc">$</span>importance    </span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                       all     setosa   versicolor    virginica</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> Sepal.Length <span class="fl">0.0173019084</span> <span class="fl">0.07502458</span>  <span class="fl">0.057627575</span>  <span class="fl">0.006523876</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> Sepal.Width  <span class="fl">0.0001450874</span> <span class="fl">0.01957163</span> <span class="sc">-</span><span class="fl">0.007611189</span> <span class="sc">-</span><span class="fl">0.010873127</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> Petal.Length <span class="fl">0.1972315261</span> <span class="fl">0.68718165</span>  <span class="fl">0.548005617</span>  <span class="fl">0.354463950</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> Petal.Width  <span class="fl">0.2460699898</span> <span class="fl">0.98401802</span>  <span class="fl">0.662173453</span>  <span class="fl">0.338154259</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># VIMP using misclassification error</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">vimp</span>(iris.obj)<span class="sc">$</span>importance    </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                       all     setosa   versicolor    virginica</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> Sepal.Length <span class="fl">0.0173019084</span> <span class="fl">0.07502458</span>  <span class="fl">0.057627575</span>  <span class="fl">0.006523876</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> Sepal.Width  <span class="fl">0.0001450874</span> <span class="fl">0.01957163</span> <span class="sc">-</span><span class="fl">0.007611189</span> <span class="sc">-</span><span class="fl">0.010873127</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> Petal.Length <span class="fl">0.1972315261</span> <span class="fl">0.68718165</span>  <span class="fl">0.548005617</span>  <span class="fl">0.354463950</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> Petal.Width  <span class="fl">0.2460699898</span> <span class="fl">0.98401802</span>  <span class="fl">0.662173453</span>  <span class="fl">0.338154259</span></span></code></pre></div>
 <p>In the above output, the <code>all</code> column displays the VIMP calculated from misclassification error for all OOB data. The <code>setosa</code> column displays the VIMP calculated from misclassification error for the OOB data with class labels <code>setosa</code>; columns <code>versicolor</code> and <code>versicolor</code> display the VIMP for the corresponding class labels in the same fashion.</p>
 <p><br> Here is the same analysis, but where performance is measure using the normalized brier score.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## ----------------------------------------------------------------</span>
 <span class="co">## classification analysis using Brier score for performance</span>
 <span class="co">## ----------------------------------------------------------------</span>
@@ -682,22 +723,22 @@ If <span class="math inline">\(\{\varphi, \varphi_1,\ldots,\varphi_B\}\)</span> 
 <span class="co">## plot the error rate</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">iris.obj</span><span class="op">)</span></code></pre></div>
 <p><img src="pic/irisbrier.png" style="width:50.0%"><br></p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># VIMP using brier prediction error</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">vimp</span>(iris.obj)<span class="sc">$</span>importance    </span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                      all      setosa versicolor    virginica</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> Sepal.Length <span class="fl">0.031711153</span> <span class="fl">0.012045941</span> <span class="fl">0.02779454</span>  <span class="fl">0.017626090</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> Sepal.Width  <span class="fl">0.008385799</span> <span class="fl">0.009732653</span> <span class="fl">0.00738077</span> <span class="sc">-</span><span class="fl">0.001916779</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> Petal.Length <span class="fl">0.443495042</span> <span class="fl">0.257702871</span> <span class="fl">0.30627377</span>  <span class="fl">0.239719704</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> Petal.Width  <span class="fl">0.499869566</span> <span class="fl">0.316016498</span> <span class="fl">0.35508893</span>  <span class="fl">0.234752147</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># VIMP using brier prediction error</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">vimp</span>(iris.obj)<span class="sc">$</span>importance    </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>                      all      setosa versicolor    virginica</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> Sepal.Length <span class="fl">0.031711153</span> <span class="fl">0.012045941</span> <span class="fl">0.02779454</span>  <span class="fl">0.017626090</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> Sepal.Width  <span class="fl">0.008385799</span> <span class="fl">0.009732653</span> <span class="fl">0.00738077</span> <span class="sc">-</span><span class="fl">0.001916779</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> Petal.Length <span class="fl">0.443495042</span> <span class="fl">0.257702871</span> <span class="fl">0.30627377</span>  <span class="fl">0.239719704</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> Petal.Width  <span class="fl">0.499869566</span> <span class="fl">0.316016498</span> <span class="fl">0.35508893</span>  <span class="fl">0.234752147</span></span></code></pre></div>
 <p>Note that there are also helper functions for directly calculating error performance. The functions <code>get.auc</code> and <code>get.brier.error</code> can be used to directly otbain OOB Brier score and OOB AUC values:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get.auc</span>(iris<span class="sc">$</span>Species, iris.obj<span class="sc">$</span>predicted.oob)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">1</span>] <span class="fl">0.9933333</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">get.brier.error</span>(iris<span class="sc">$</span>Species, iris.obj<span class="sc">$</span>predicted.oob)</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">1</span>] <span class="fl">0.1056888</span> </span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get.auc</span>(iris<span class="sc">$</span>Species, iris.obj<span class="sc">$</span>predicted.oob)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">1</span>] <span class="fl">0.9933333</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">get.brier.error</span>(iris<span class="sc">$</span>Species, iris.obj<span class="sc">$</span>predicted.oob)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">1</span>] <span class="fl">0.1056888</span> </span></code></pre></div>
 <p>For <a href="imbalance.html">two-class imbalanced analyses</a>, there are functions <code>get.imbalanced.performance</code> and <code>get.imbalanced.optimize</code>. Other useful functions for classification are <code>get.bayes.rule</code>, <code>get.confusion</code> and <code>get.misclass.error</code>.</p>
 </div>
 <div class="section level3">
@@ -708,61 +749,61 @@ If <span class="math inline">\(\{\varphi, \varphi_1,\ldots,\varphi_B\}\)</span> 
 <div class="section level5">
 <h5 id="r-code-for-the-nutrigenomic-example">R code for the nutrigenomic example<a class="anchor" aria-label="anchor" href="#r-code-for-the-nutrigenomic-example"></a>
 </h5>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"randomForestSRC"</span>)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(nutrigenomic)</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="do">## ------------------------------------------------------------</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="do">## multivariate forests</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="do">## lipids used as the multivariate y</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="do">## ------------------------------------------------------------</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>ydta <span class="ot">&lt;-</span> nutrigenomic<span class="sc">$</span>lipids</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>xdta <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(nutrigenomic<span class="sc">$</span>genes,</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>                   <span class="at">diet =</span> nutrigenomic<span class="sc">$</span>diet,</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>                   <span class="at">genotype =</span> nutrigenomic<span class="sc">$</span>genotype)</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="do">## multivariate forest call</span></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>mv.obj <span class="ot">&lt;-</span> <span class="fu">rfsrc</span>(<span class="fu">get.mv.formula</span>(<span class="fu">colnames</span>(ydta)),</span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>              <span class="fu">data.frame</span>(ydta, xdta),</span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>              <span class="at">importance=</span><span class="cn">TRUE</span>, <span class="at">nsplit =</span> <span class="dv">10</span>)</span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>yhat <span class="ot">&lt;-</span> <span class="fu">get.mv.predicted</span>(mv.obj, <span class="at">oob =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>yhat[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>,]</span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>      lipids.C14<span class="fl">.0</span> lipids.C16<span class="fl">.0</span> lipids.C18<span class="fl">.0</span> lipids.C16<span class="fl">.1</span>n<span class="fl">.9</span> lipids.C16<span class="fl">.1</span>n<span class="fl">.7</span></span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">1</span>,]    <span class="fl">0.4117574</span>     <span class="fl">25.75939</span>     <span class="fl">8.704683</span>       <span class="fl">0.4838491</span>        <span class="fl">3.218395</span></span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">2</span>,]    <span class="fl">0.6156045</span>     <span class="fl">25.06558</span>     <span class="fl">8.047235</span>       <span class="fl">0.5599980</span>        <span class="fl">4.007135</span></span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>      lipids.C18<span class="fl">.1</span>n<span class="fl">.9</span> lipids.C18<span class="fl">.1</span>n<span class="fl">.7</span> lipids.C20<span class="fl">.1</span>n<span class="fl">.9</span> lipids.C20<span class="fl">.3</span>n<span class="fl">.9</span></span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">1</span>,]        <span class="fl">20.55815</span>        <span class="fl">2.916397</span>       <span class="fl">0.1698694</span>      <span class="fl">0.09801574</span></span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">2</span>,]        <span class="fl">22.65504</span>        <span class="fl">4.011417</span>       <span class="fl">0.2108807</span>      <span class="fl">0.33877515</span></span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>      lipids.C18<span class="fl">.2</span>n<span class="fl">.6</span> lipids.C18<span class="fl">.3</span>n<span class="fl">.6</span> lipids.C20<span class="fl">.2</span>n<span class="fl">.6</span> lipids.C20<span class="fl">.3</span>n<span class="fl">.6</span></span>
-<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">1</span>,]        <span class="fl">12.87196</span>       <span class="fl">0.1105370</span>      <span class="fl">0.08496389</span>       <span class="fl">1.0066935</span></span>
-<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">2</span>,]        <span class="fl">12.06921</span>       <span class="fl">0.2717998</span>      <span class="fl">0.10492998</span>       <span class="fl">0.9292643</span></span>
-<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>      lipids.C20<span class="fl">.4</span>n<span class="fl">.6</span> lipids.C22<span class="fl">.4</span>n<span class="fl">.6</span> lipids.C22<span class="fl">.5</span>n<span class="fl">.6</span> lipids.C18<span class="fl">.3</span>n<span class="fl">.3</span></span>
-<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">1</span>,]        <span class="fl">5.533497</span>       <span class="fl">0.1101426</span>       <span class="fl">0.2883676</span>        <span class="fl">2.018417</span></span>
-<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">2</span>,]        <span class="fl">5.764708</span>       <span class="fl">0.1417367</span>       <span class="fl">0.3998402</span>        <span class="fl">2.681886</span></span>
-<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>      lipids.C20<span class="fl">.3</span>n<span class="fl">.3</span> lipids.C20<span class="fl">.5</span>n<span class="fl">.3</span> lipids.C22<span class="fl">.5</span>n<span class="fl">.3</span> lipids.C22<span class="fl">.6</span>n<span class="fl">.3</span>  </span>
-<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">1</span>,]      <span class="fl">0.09549352</span>        <span class="fl">3.328356</span>        <span class="fl">1.201290</span>       <span class="fl">11.032699</span> </span>
-<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">2</span>,]      <span class="fl">0.11159467</span>        <span class="fl">2.837123</span>        <span class="fl">1.036578</span>        <span class="fl">8.139825</span> </span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"randomForestSRC"</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(nutrigenomic)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="do">## ------------------------------------------------------------</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="do">## multivariate forests</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="do">## lipids used as the multivariate y</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="do">## ------------------------------------------------------------</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>ydta <span class="ot">&lt;-</span> nutrigenomic<span class="sc">$</span>lipids</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>xdta <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(nutrigenomic<span class="sc">$</span>genes,</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>                   <span class="at">diet =</span> nutrigenomic<span class="sc">$</span>diet,</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>                   <span class="at">genotype =</span> nutrigenomic<span class="sc">$</span>genotype)</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="do">## multivariate forest call</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>mv.obj <span class="ot">&lt;-</span> <span class="fu">rfsrc</span>(<span class="fu">get.mv.formula</span>(<span class="fu">colnames</span>(ydta)),</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>              <span class="fu">data.frame</span>(ydta, xdta),</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>              <span class="at">importance=</span><span class="cn">TRUE</span>, <span class="at">nsplit =</span> <span class="dv">10</span>)</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>yhat <span class="ot">&lt;-</span> <span class="fu">get.mv.predicted</span>(mv.obj, <span class="at">oob =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>yhat[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>,]</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>      lipids.C14<span class="fl">.0</span> lipids.C16<span class="fl">.0</span> lipids.C18<span class="fl">.0</span> lipids.C16<span class="fl">.1</span>n<span class="fl">.9</span> lipids.C16<span class="fl">.1</span>n<span class="fl">.7</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">1</span>,]    <span class="fl">0.4117574</span>     <span class="fl">25.75939</span>     <span class="fl">8.704683</span>       <span class="fl">0.4838491</span>        <span class="fl">3.218395</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">2</span>,]    <span class="fl">0.6156045</span>     <span class="fl">25.06558</span>     <span class="fl">8.047235</span>       <span class="fl">0.5599980</span>        <span class="fl">4.007135</span></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>      lipids.C18<span class="fl">.1</span>n<span class="fl">.9</span> lipids.C18<span class="fl">.1</span>n<span class="fl">.7</span> lipids.C20<span class="fl">.1</span>n<span class="fl">.9</span> lipids.C20<span class="fl">.3</span>n<span class="fl">.9</span></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">1</span>,]        <span class="fl">20.55815</span>        <span class="fl">2.916397</span>       <span class="fl">0.1698694</span>      <span class="fl">0.09801574</span></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">2</span>,]        <span class="fl">22.65504</span>        <span class="fl">4.011417</span>       <span class="fl">0.2108807</span>      <span class="fl">0.33877515</span></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>      lipids.C18<span class="fl">.2</span>n<span class="fl">.6</span> lipids.C18<span class="fl">.3</span>n<span class="fl">.6</span> lipids.C20<span class="fl">.2</span>n<span class="fl">.6</span> lipids.C20<span class="fl">.3</span>n<span class="fl">.6</span></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">1</span>,]        <span class="fl">12.87196</span>       <span class="fl">0.1105370</span>      <span class="fl">0.08496389</span>       <span class="fl">1.0066935</span></span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">2</span>,]        <span class="fl">12.06921</span>       <span class="fl">0.2717998</span>      <span class="fl">0.10492998</span>       <span class="fl">0.9292643</span></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>      lipids.C20<span class="fl">.4</span>n<span class="fl">.6</span> lipids.C22<span class="fl">.4</span>n<span class="fl">.6</span> lipids.C22<span class="fl">.5</span>n<span class="fl">.6</span> lipids.C18<span class="fl">.3</span>n<span class="fl">.3</span></span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">1</span>,]        <span class="fl">5.533497</span>       <span class="fl">0.1101426</span>       <span class="fl">0.2883676</span>        <span class="fl">2.018417</span></span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">2</span>,]        <span class="fl">5.764708</span>       <span class="fl">0.1417367</span>       <span class="fl">0.3998402</span>        <span class="fl">2.681886</span></span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>      lipids.C20<span class="fl">.3</span>n<span class="fl">.3</span> lipids.C20<span class="fl">.5</span>n<span class="fl">.3</span> lipids.C22<span class="fl">.5</span>n<span class="fl">.3</span> lipids.C22<span class="fl">.6</span>n<span class="fl">.3</span>  </span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">1</span>,]      <span class="fl">0.09549352</span>        <span class="fl">3.328356</span>        <span class="fl">1.201290</span>       <span class="fl">11.032699</span> </span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">2</span>,]      <span class="fl">0.11159467</span>        <span class="fl">2.837123</span>        <span class="fl">1.036578</span>        <span class="fl">8.139825</span> </span></code></pre></div>
 <p>Using the same nutrigenomic example, the following illustrates how to obtain standardized misclassification error rates for each of the 21 outcomes (standardization is specified using the option <code>standarize='TRUE'</code>)</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get.mv.error</span>(mv.obj, <span class="at">standardize =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>    lipids.C14<span class="fl">.0</span>    lipids.C16<span class="fl">.0</span>    lipids.C18<span class="fl">.0</span> lipids.C16<span class="fl">.1</span>n<span class="fl">.9</span> lipids.C16<span class="fl">.1</span>n<span class="fl">.7</span> </span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>       <span class="fl">0.8628953</span>       <span class="fl">0.4826695</span>       <span class="fl">0.5367135</span>       <span class="fl">0.6201707</span>       <span class="fl">0.8779276</span> </span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> lipids.C18<span class="fl">.1</span>n<span class="fl">.9</span> lipids.C18<span class="fl">.1</span>n<span class="fl">.7</span> lipids.C20<span class="fl">.1</span>n<span class="fl">.9</span> lipids.C20<span class="fl">.3</span>n<span class="fl">.9</span> lipids.C18<span class="fl">.2</span>n<span class="fl">.6</span> </span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>       <span class="fl">0.7135935</span>       <span class="fl">0.7563288</span>       <span class="fl">0.7262327</span>       <span class="fl">0.5886654</span>       <span class="fl">0.6567574</span> </span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> lipids.C18<span class="fl">.3</span>n<span class="fl">.6</span> lipids.C20<span class="fl">.2</span>n<span class="fl">.6</span> lipids.C20<span class="fl">.3</span>n<span class="fl">.6</span> lipids.C20<span class="fl">.4</span>n<span class="fl">.6</span> lipids.C22<span class="fl">.4</span>n<span class="fl">.6</span> </span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>       <span class="fl">0.9659643</span>       <span class="fl">0.7111632</span>       <span class="fl">0.6029276</span>       <span class="fl">0.7717160</span>       <span class="fl">0.8422877</span> </span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> lipids.C22<span class="fl">.5</span>n<span class="fl">.6</span> lipids.C18<span class="fl">.3</span>n<span class="fl">.3</span> lipids.C20<span class="fl">.3</span>n<span class="fl">.3</span> lipids.C20<span class="fl">.5</span>n<span class="fl">.3</span> lipids.C22<span class="fl">.5</span>n<span class="fl">.3</span> </span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>       <span class="fl">0.8747505</span>       <span class="fl">0.8858940</span>       <span class="fl">0.9429292</span>       <span class="fl">0.7410207</span>       <span class="fl">0.9886991</span> </span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> lipids.C22<span class="fl">.6</span>n<span class="fl">.3</span>   </span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>       <span class="fl">0.6436441</span>     </span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get.mv.error</span>(mv.obj, <span class="at">standardize =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>    lipids.C14<span class="fl">.0</span>    lipids.C16<span class="fl">.0</span>    lipids.C18<span class="fl">.0</span> lipids.C16<span class="fl">.1</span>n<span class="fl">.9</span> lipids.C16<span class="fl">.1</span>n<span class="fl">.7</span> </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>       <span class="fl">0.8628953</span>       <span class="fl">0.4826695</span>       <span class="fl">0.5367135</span>       <span class="fl">0.6201707</span>       <span class="fl">0.8779276</span> </span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> lipids.C18<span class="fl">.1</span>n<span class="fl">.9</span> lipids.C18<span class="fl">.1</span>n<span class="fl">.7</span> lipids.C20<span class="fl">.1</span>n<span class="fl">.9</span> lipids.C20<span class="fl">.3</span>n<span class="fl">.9</span> lipids.C18<span class="fl">.2</span>n<span class="fl">.6</span> </span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>       <span class="fl">0.7135935</span>       <span class="fl">0.7563288</span>       <span class="fl">0.7262327</span>       <span class="fl">0.5886654</span>       <span class="fl">0.6567574</span> </span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> lipids.C18<span class="fl">.3</span>n<span class="fl">.6</span> lipids.C20<span class="fl">.2</span>n<span class="fl">.6</span> lipids.C20<span class="fl">.3</span>n<span class="fl">.6</span> lipids.C20<span class="fl">.4</span>n<span class="fl">.6</span> lipids.C22<span class="fl">.4</span>n<span class="fl">.6</span> </span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>       <span class="fl">0.9659643</span>       <span class="fl">0.7111632</span>       <span class="fl">0.6029276</span>       <span class="fl">0.7717160</span>       <span class="fl">0.8422877</span> </span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> lipids.C22<span class="fl">.5</span>n<span class="fl">.6</span> lipids.C18<span class="fl">.3</span>n<span class="fl">.3</span> lipids.C20<span class="fl">.3</span>n<span class="fl">.3</span> lipids.C20<span class="fl">.5</span>n<span class="fl">.3</span> lipids.C22<span class="fl">.5</span>n<span class="fl">.3</span> </span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>       <span class="fl">0.8747505</span>       <span class="fl">0.8858940</span>       <span class="fl">0.9429292</span>       <span class="fl">0.7410207</span>       <span class="fl">0.9886991</span> </span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> lipids.C22<span class="fl">.6</span>n<span class="fl">.3</span>   </span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>       <span class="fl">0.6436441</span>     </span></code></pre></div>
 <br><br><p class="comment2">
 <strong> Cite this vignette as </strong> <br> H. Ishwaran, M. Lu, and U. B. Kogalur. 2021. “randomForestSRC: getting started with randomForestSRC vignette.” <a href="http://randomforestsrc.org/articles/getstarted.html" class="external-link uri">http://randomforestsrc.org/articles/getstarted.html</a>.
 </p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="sc">@</span>misc{HemantGettingStarted,</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    author <span class="ot">=</span> <span class="st">"Hemant Ishwaran and Min Lu and Udaya B. Kogalur"</span>,</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    title <span class="ot">=</span> {{randomForestSRC}<span class="sc">:</span> getting started with {randomForestSRC} vignette},</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    year <span class="ot">=</span> {<span class="dv">2021</span>},</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    url <span class="ot">=</span> {http<span class="sc">:</span><span class="er">//</span>randomforestsrc.org<span class="sc">/</span>articles<span class="sc">/</span>getstarted.html}</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="sc">@</span>misc{HemantGettingStarted,</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    author <span class="ot">=</span> <span class="st">"Hemant Ishwaran and Min Lu and Udaya B. Kogalur"</span>,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    title <span class="ot">=</span> {{randomForestSRC}<span class="sc">:</span> getting started with {randomForestSRC} vignette},</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    year <span class="ot">=</span> {<span class="dv">2021</span>},</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    url <span class="ot">=</span> {http<span class="sc">:</span><span class="er">//</span>randomforestsrc.org<span class="sc">/</span>articles<span class="sc">/</span>getstarted.html}</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 </div>
 </div>
