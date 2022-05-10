@@ -611,9 +611,9 @@ If <span class="math inline">\(\{\varphi, \varphi_1,\ldots,\varphi_B\}\)</span> 
 <h2 id="variable-importance-vimp-and-dimension-reduction">Variable Importance (VIMP) and Dimension Reduction<a class="anchor" aria-label="anchor" href="#variable-importance-vimp-and-dimension-reduction"></a>
 </h2>
 <p>In a nutshell, VIMP (variable importance) is a technique for estimating the importance of a variable by comparing performance of the estimated model with and without the variable in it. This is a very popular technique and has been used throughout machine learning. Here we outline some key ideas but for more details users should consult the following vignette (refer to VIMP vignette).</p>
-<ul>
+<ol style="list-style-type: decimal">
 <li>VIMP can be obtained in the original training call via <code>rfsrc</code>. Or it can be obtained using <code>predict</code>. Or finally there is a dedicated function <code>vimp</code>. VIMP applies to all families, including regression, classification, survival and multivariate settings.</li>
-</ul>
+</ol>
 <p>The following is an example using classification. Note that for classification, VIMP is returned as a matrix with <span class="math inline">\(J+1\)</span> columns where <span class="math inline">\(J\)</span> is the number of classes. The first column <code>all</code> is the unconditional VIMP, while the remaining columns are conditional VIMP calculated using only those cases with the specified class label.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## ------------------------------------------------------------</span>
@@ -630,9 +630,9 @@ If <span class="math inline">\(\{\varphi, \varphi_1,\ldots,\varphi_B\}\)</span> 
 <span class="co">## ... using the vimp function</span>
 <span class="va">o</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">Species</span><span class="op">~</span><span class="va">.</span>,<span class="va">iris</span><span class="op">)</span>
 <span class="fu"><a href="../reference/vimp.rfsrc.html">vimp</a></span><span class="op">(</span><span class="va">o</span>, importance <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span><span class="va">importance</span></code></pre></div>
-<ul>
+<ol start="2" style="list-style-type: decimal">
 <li>VIMP is calculated using OOB data. <code>importance="permute"</code> yields permutation VIMP (Breiman-Cutler importance) by permuting OOB cases. <code>importance="random"</code> uses random left/right assignments whenever a split is encountered for the target variable. The default <code>importance="anti"</code> (equivalent to importance=TRUE) assigns cases to the anti (opposite) split.</li>
-</ul>
+</ol>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## ------------------------------------------------------------</span>
 <span class="co">## how to obtain permutation importance</span>
@@ -648,14 +648,14 @@ If <span class="math inline">\(\{\varphi, \varphi_1,\ldots,\varphi_B\}\)</span> 
 <span class="co">## using the vimp function</span>
 <span class="va">o</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">Species</span><span class="op">~</span><span class="va">.</span>,<span class="va">iris</span><span class="op">)</span>
 <span class="fu"><a href="../reference/vimp.rfsrc.html">vimp</a></span><span class="op">(</span><span class="va">o</span>, importance <span class="op">=</span> <span class="st">"permute"</span><span class="op">)</span><span class="op">$</span><span class="va">importance</span></code></pre></div>
-<ul>
+<ol start="3" style="list-style-type: decimal">
 <li>VIMP depends upon <code>block.size</code>, an integer value between 1 and <code>ntree</code>, specifying number of trees in a block used for VIMP. When <code>block.size=1</code>, VIMP is calculated for each tree. This is what was used in the traditional Breiman-Cutler VIMP and we will refer to this setting as tree VIMP. When <code>block.size="ntree"</code>, VIMP is calculated for the entire forest by comparing the perturbed OOB forest ensemble (using all trees) to the unperturbed OOB forest ensemble (using all trees). This yields ensemble VIMP, which does not measure the tree average effect of a variable, but rather its overall forest effect.</li>
-</ul>
+</ol>
 <p>The default is <code>block.size=10</code> which provides a useful compromise between tree VIMP and ensemble VIMP. In general, smaller “block.size” values generally gives better accuracy, however computational times will be higher because VIMP is calculated over more blocks. In some cases like imbalanced classification data (reference RFQ vignette), a larger <code>block.size</code> can work better.</p>
-<ul>
+<ol start="4" style="list-style-type: decimal">
 <li><p>See the function <code>subsample</code> for calculating confidence intervals for VIMP which can be used as a means for dimension reduction.</p></li>
 <li><p>Finally, also see <code>holdout.vimp</code> for holdout VIMP, which calculates importance by holding out variables. This is more conservative, but with good false discovery properties.</p></li>
-</ul>
+</ol>
 </div>
 <div class="section level2">
 <h2 id="specifying-the-type-of-predicted-value-variable-importance-and-error-rate">Specifying the Type of Predicted Value, Variable Importance and Error Rate<a class="anchor" aria-label="anchor" href="#specifying-the-type-of-predicted-value-variable-importance-and-error-rate"></a>
