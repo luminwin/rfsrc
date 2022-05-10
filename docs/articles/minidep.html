@@ -151,7 +151,7 @@
                         <h4 class="author">
 <a href="https://ishwaran.org/ishwaran.html">Hemant Ishwaran</a> <br><br> Xi Chen <br><br> Andy J. Minn <br><br> Min Lu <br><br> Michael S. Lauer <br><br> Udaya B. Kogalur</h4>
             
-            <h4 class="date">2022-04-16</h4>
+            <h4 class="date">2022-05-09</h4>
       
       
       <div class="hidden name"><code>minidep.Rmd</code></div>
@@ -257,17 +257,17 @@ noisy}\right].
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">vdv</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span>
 
 <span class="co">## calculate minimal depth as usual (without supervision)</span>
-<span class="va">o</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">Time</span>, <span class="va">Censoring</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">vdv</span><span class="op">)</span>
+<span class="va">o</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu">Surv</span><span class="op">(</span><span class="va">Time</span>, <span class="va">Censoring</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">vdv</span><span class="op">)</span>
 <span class="va">md</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/max.subtree.rfsrc.html">max.subtree</a></span><span class="op">(</span><span class="va">o</span><span class="op">)</span><span class="op">$</span><span class="va">order</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span></code></pre></div>
 <p><br> In our second improved approach, we run a pilot forest and keep track of total number of times a variable is used to split a node. Random feature selection is turned off. Then we run RSF with feature selection probabilities guided by the splitting strength of a variable obtained from the pilot run. Notice in <a href="#figure-3">Figure 3</a> how minimal depth values are now significantly improved compared with the values without supervision. The latter are nearly constant, just as expected by our <span class="math inline">\(p\)</span>-asymptotics.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## run survival trees and calculate number of times each variable splits a node</span>
-<span class="va">xvar.used</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">Time</span>, <span class="va">Censoring</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">vdv</span>, nodedepth <span class="op">=</span> <span class="fl">6</span>,
+<span class="va">xvar.used</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu">Surv</span><span class="op">(</span><span class="va">Time</span>, <span class="va">Censoring</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">vdv</span>, nodedepth <span class="op">=</span> <span class="fl">6</span>,
                    var.used<span class="op">=</span><span class="st">"all.trees"</span>, mtry <span class="op">=</span> <span class="cn">Inf</span>, nsplit <span class="op">=</span> <span class="fl">100</span><span class="op">)</span><span class="op">$</span><span class="va">var.used</span>
 
 <span class="co">## calculate minimal depth with supervision</span>
 <span class="co">## use number of times variable splits to guide random feature selection</span>
-<span class="va">os</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">Time</span>, <span class="va">Censoring</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">vdv</span>, xvar.wt <span class="op">=</span> <span class="va">xvar.used</span><span class="op">)</span>
+<span class="va">os</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu">Surv</span><span class="op">(</span><span class="va">Time</span>, <span class="va">Censoring</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">vdv</span>, xvar.wt <span class="op">=</span> <span class="va">xvar.used</span><span class="op">)</span>
 <span class="va">mds</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/max.subtree.rfsrc.html">max.subtree</a></span><span class="op">(</span><span class="va">os</span><span class="op">)</span><span class="op">$</span><span class="va">order</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>
 
 
@@ -340,7 +340,7 @@ Ishwaran, H., Kogalur, U. B., Chen, X., &amp; Minn, A. J. (2011). Random surviva
 Ishwaran, H., Kogalur, U. B., Gorodeski, E. Z., Minn, A. J., &amp; Lauer, M. S. (2010). High-dimensional variable selection for survival data. <em>Journal of the American Statistical Association</em>, <em>105</em>(489), 205–217. Taylor &amp; Francis.
 </div>
 <div id="ref-HemantVIMP" class="csl-entry">
-Ishwaran, H., Lu, M., &amp; Kogalur, U. B. (2021). <span class="nocase">randomForestSRC</span>: Variable importance <span>(VIMP)</span> with subsampling inference vignette. Retrieved from <a href="https://luminwin.github.io/randomForestSRC/articles/rfsrc-subsample.html">https://luminwin.github.io/randomForestSRC/articles/rfsrc-subsample.html</a>
+Ishwaran, H., Lu, M., &amp; Kogalur, U. B. (2021). <span class="nocase">randomForestSRC</span>: Variable importance <span>(VIMP)</span> with subsampling inference vignette. Retrieved from <a href="http://randomforestsrc.org/articles/vimp.html">http://randomforestsrc.org/articles/vimp.html</a>
 </div>
 <div id="ref-fgene" class="csl-entry">
 Lu, M., Sha, Y., Silva, T., Colaprico, A., Sun, X., Ban, Y., Wang, L., et al. (2021). LR hunting: A random forest based cell-cell interaction discovery method for single-cell gene expression data. <em>Frontiers in Genetics</em>, <em>12</em>, 1431. Retrieved from <a href="https://www.frontiersin.org/article/10.3389/fgene.2021.708835">https://www.frontiersin.org/article/10.3389/fgene.2021.708835</a>

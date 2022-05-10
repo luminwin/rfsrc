@@ -151,7 +151,7 @@
                         <h4 class="author">
 <a href="https://ishwaran.org/ishwaran.html">Hemant Ishwaran</a> <br><br> Min Lu <br><br> Udaya B. Kogalur</h4>
             
-            <h4 class="date">2022-04-16</h4>
+            <h4 class="date">2022-05-09</h4>
       
       
       <div class="hidden name"><code>speedup.Rmd</code></div>
@@ -288,7 +288,7 @@ font-size: 16px;
 <a href="#c-index-calculation-for-big-survival-data-sets" class="anchor"></a>C-index calculation for big survival data sets</h2>
 <p>The C-index is computationally expensive and requires approximately <span class="math inline">\(O(n^2)\)</span> calculations where <span class="math inline">\(n\)</span> is the sample size. This makes it infeasible for large survival data sets. The solution is to turn of the C-calculation by turning off all performance requests when training the forest. This is accomplished using the option <code>perf.type='none'</code>. Thus a generic training call would look something like:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">o</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">my.time</span>,<span class="va">my.cens</span><span class="op">)</span><span class="op">~</span><span class="va">.</span>,<span class="va">my.data</span>,perf.type<span class="op">=</span><span class="st">"none"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">o</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu">Surv</span><span class="op">(</span><span class="va">my.time</span>,<span class="va">my.cens</span><span class="op">)</span><span class="op">~</span><span class="va">.</span>,<span class="va">my.data</span>,perf.type<span class="op">=</span><span class="st">"none"</span><span class="op">)</span></code></pre></div>
 <p>It is also recommended to set <code>nodesize</code> to a reasonably large value. Also, assuming the user is interested in measuring performance of their model, consider using the Brier score which is very fast. This can be obtained using the function <code>get.brier.survival</code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">bs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot.survival.rfsrc.html">get.brier.survival</a></span><span class="op">(</span><span class="va">o</span><span class="op">)</span></code></pre></div>

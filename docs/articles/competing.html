@@ -151,7 +151,7 @@
                         <h4 class="author">
 <a href="https://ishwaran.org/ishwaran.html">Hemant Ishwaran</a> <br><br> Thomas A. Gerds <br><br> Bryan M. Lau <br><br> Min Lu <br><br> Udaya B. Kogalur</h4>
             
-            <h4 class="date">2022-04-16</h4>
+            <h4 class="date">2022-05-09</h4>
       
       
       <div class="hidden name"><code>competing.Rmd</code></div>
@@ -318,7 +318,7 @@ S(t|{\bf X})\, d t.
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="http://web.ccs.miami.edu/~hishwaran/">"randomForestSRC"</a></span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">follic</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span>
-<span class="va">follic.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">follic</span><span class="op">)</span>
+<span class="va">follic.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu">Surv</span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">follic</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/grDevices/pdf.html">pdf</a></span><span class="op">(</span><span class="st">"follic.pdf"</span>, width <span class="op">=</span> <span class="fl">8</span>, height <span class="op">=</span> <span class="fl">8</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>cex.axis <span class="op">=</span> <span class="fl">2.0</span>, cex.lab <span class="op">=</span> <span class="fl">2.0</span>, cex.main <span class="op">=</span> <span class="fl">2.0</span>, mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">6.0</span>,<span class="fl">6</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span>, mgp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="../reference/plot.competing.risk.rfsrc.html">plot.competing.risk</a></span><span class="op">(</span><span class="va">follic.obj</span><span class="op">)</span>
@@ -412,7 +412,7 @@ Andersen, P. K. (2013). Decomposition of number of life years lost according to 
 Gray, R. J. (1988). A class of k-sample tests for comparing the cumulative incidence of a competing risk. <em>The Annals of Statistics</em>, 1141–1154. JSTOR.
 </div>
 <div id="ref-HemantMinimal" class="csl-entry">
-Ishwaran, H., Chen, X., Minn, A. J., Lu, M., Lauer, M. S., &amp; Kogalur, U. B. (2021). <span class="nocase">randomForestSRC</span>: Minimal depth vignette. Retrieved from <a href="https://luminwin.github.io/randomForestSRC/articles/minidep.html">https://luminwin.github.io/randomForestSRC/articles/minidep.html</a>
+Ishwaran, H., Chen, X., Minn, A. J., Lu, M., Lauer, M. S., &amp; Kogalur, U. B. (2021). <span class="nocase">randomForestSRC</span>: Minimal depth vignette. Retrieved from <a href="http://randomforestsrc.org/articles/minidep.html">http://randomforestsrc.org/articles/minidep.html</a>
 </div>
 <div id="ref-Ishwaran2014" class="csl-entry">
 Ishwaran, H., Gerds, T. A., Kogalur, U. B., Moore, R. D., Gange, S. J., &amp; Lau, B. M. (2014). Random survival forests for competing risks. <em>Biostatistics</em>, <em>15</em>(4), 757–773. Oxford University Press.
@@ -421,7 +421,7 @@ Ishwaran, H., Gerds, T. A., Kogalur, U. B., Moore, R. D., Gange, S. J., &amp; La
 Ishwaran, H., Kogalur, U. B., Blackstone, E. H., &amp; Lauer, M. S. (2008). Random survival forests. <em>The Annals of Applied Statistics</em>, <em>2</em>(3), 841–860. JSTOR.
 </div>
 <div id="ref-HemantRandomS" class="csl-entry">
-Ishwaran, H., Lauer, M. S., Blackstone, E. H., Lu, M., &amp; Kogalur, U. B. (2021). <span class="nocase">randomForestSRC</span>: Random survival forests vignette. Retrieved from <a href="https://luminwin.github.io/randomForestSRC/articles/survival.html">https://luminwin.github.io/randomForestSRC/articles/survival.html</a>
+Ishwaran, H., Lauer, M. S., Blackstone, E. H., Lu, M., &amp; Kogalur, U. B. (2021). <span class="nocase">randomForestSRC</span>: Random survival forests vignette. Retrieved from <a href="http://randomforestsrc.org/articles/survival.html">http://randomforestsrc.org/articles/survival.html</a>
 </div>
 <div id="ref-pepe1993" class="csl-entry">
 Pepe, M. S., &amp; Mori, M. (1993). <span class="nocase">Kaplan—Meier, marginal or conditional probability curves in summarizing competing risks failure time data?</span> <em>Statistics in Medicine</em>, <em>12</em>(8), 737–751. Wiley Online Library.
