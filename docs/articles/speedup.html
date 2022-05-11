@@ -151,7 +151,7 @@
                         <h4 class="author">
 <a href="https://ishwaran.org/ishwaran.html">Hemant Ishwaran</a> <br><br> Min Lu <br><br> Udaya B. Kogalur</h4>
             
-            <h4 class="date">2022-05-09</h4>
+            <h4 class="date">2022-05-11</h4>
       
       
       <div class="hidden name"><code>speedup.Rmd</code></div>
@@ -264,8 +264,8 @@ font-size: 16px;
 <h2 class="hasAnchor">
 <a href="#randomized-splitting-rules" class="anchor"></a>Randomized splitting rules</h2>
 <p>Computational speed can be significantly improved with randomized splitting invoked by the option <code>nsplit</code>. When <code>nsplit</code> is set to a non-zero positive integer, a maximum of <code>nsplit</code> split points are chosen randomly for each of the candidate splitting variables when splitting a tree node, thus significantly reducing the cost from having to consider all possible split-values. To revert to traditional deterministic splitting (all split values considered) use <code>nsplit</code>=0.</p>
-<p>Randomized splitting for trees has a long history. See <span class="citation">Ishwaran (2015)</span>. <span class="citation">Geurts, Ernst, &amp; Wehenkel (2006)</span> recently introduced extremely randomized trees using what they call the extra-trees algorithm. We can see that this algorithm essentially corresponds to randomized splitting with <code>nsplit</code>=1. In our experience however this is not always the optimal value for <code>nsplit</code> and may often be too low.</p>
-<p>Finally, for completely randomized (pure random) splitting use <code>splitrule</code>=“random.” In pure splitting, nodes are split by randomly selecting a variable and randomly selecting its split point <span class="citation">(Cutler &amp; Zhao, 2001)</span>.</p>
+<p>Randomized splitting for trees has a long history. See <span class="citation">[1]</span>. <span class="citation">[2]</span> recently introduced extremely randomized trees using what they call the extra-trees algorithm. We can see that this algorithm essentially corresponds to randomized splitting with <code>nsplit</code>=1. In our experience however this is not always the optimal value for <code>nsplit</code> and may often be too low.</p>
+<p>Finally, for completely randomized (pure random) splitting use <code>splitrule</code>=“random.” In pure splitting, nodes are split by randomly selecting a variable and randomly selecting its split point <span class="citation">[3]</span>.</p>
 </div>
 <div id="unique-time-points-for-survival-analysis" class="section level2">
 <h2 class="hasAnchor">
@@ -275,7 +275,7 @@ font-size: 16px;
 <div id="large-number-of-variables" class="section level2">
 <h2 class="hasAnchor">
 <a href="#large-number-of-variables" class="anchor"></a>Large number of variables</h2>
-<p>The default setting <code>importance="none"</code> turns off variable importance (VIMP) calculations and considerably reduces computational times. Variable importance can always be recovered later using functions <code>vimp</code> or <code>predict</code>. Also consider using <code>max.subtree</code> which calculates minimal depth, a measure of the depth that a variable splits, and yields fast variable selection <span class="citation">(Ishwaran, Kogalur, Gorodeski, Minn, &amp; Lauer, 2010)</span>.</p>
+<p>The default setting <code>importance="none"</code> turns off variable importance (VIMP) calculations and considerably reduces computational times. Variable importance can always be recovered later using functions <code>vimp</code> or <code>predict</code>. Also consider using <code>max.subtree</code> which calculates minimal depth, a measure of the depth that a variable splits, and yields fast variable selection <span class="citation">[4]</span>.</p>
 </div>
 <div id="increasing-nodesize" class="section level2">
 <h2 class="hasAnchor">
@@ -316,18 +316,18 @@ font-size: 16px;
 <div id="references" class="section level2 unnumbered">
 <h2 class="hasAnchor">
 <a href="#references" class="anchor"></a>References</h2>
-<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
-<div id="ref-cutler2001pert" class="csl-entry">
-Cutler, A., &amp; Zhao, G. (2001). Pert-perfect random tree ensembles. <em>Computing Science and Statistics</em>, <em>33</em>, 490–497.
+<div id="refs" class="references csl-bib-body">
+<div id="ref-ishwaran2015effect" class="csl-entry">
+1. Ishwaran H. The effect of splitting on random forests. Machine learning. 2015;99:75–118.
 </div>
 <div id="ref-geurts2006extremely" class="csl-entry">
-Geurts, P., Ernst, D., &amp; Wehenkel, L. (2006). Extremely randomized trees. <em>Machine learning</em>, <em>63</em>(1), 3–42. Springer.
+2. Geurts P, Ernst D, Wehenkel L. Extremely randomized trees. Machine learning. 2006;63:3–42.
 </div>
-<div id="ref-ishwaran2015effect" class="csl-entry">
-Ishwaran, H. (2015). The effect of splitting on random forests. <em>Machine learning</em>, <em>99</em>(1), 75–118. Springer.
+<div id="ref-cutler2001pert" class="csl-entry">
+3. Cutler A, Zhao G. Pert-perfect random tree ensembles. Computing Science and Statistics. 2001;33:490–7.
 </div>
 <div id="ref-ishwaran2010high" class="csl-entry">
-Ishwaran, H., Kogalur, U. B., Gorodeski, E. Z., Minn, A. J., &amp; Lauer, M. S. (2010). High-dimensional variable selection for survival data. <em>Journal of the American Statistical Association</em>, <em>105</em>(489), 205–217. Taylor &amp; Francis.
+4. Ishwaran H, Kogalur UB, Gorodeski EZ, Minn AJ, Lauer MS. High-dimensional variable selection for survival data. Journal of the American Statistical Association. 2010;105:205–17.
 </div>
 </div>
 </div>

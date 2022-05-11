@@ -151,7 +151,7 @@
                         <h4 class="author">
 <a href="https://ishwaran.org/ishwaran.html">Hemant Ishwaran</a> <br><br> Fei Tang <br><br> Min Lu <br><br> Udaya B. Kogalur</h4>
             
-            <h4 class="date">2022-05-09</h4>
+            <h4 class="date">2022-05-11</h4>
       
       
       <div class="hidden name"><code>mvsplit.Rmd</code></div>
@@ -188,7 +188,7 @@ font-size: 16px;
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
 <p>The package is capable of constructing multivariate trees for multivariate outcomes. These can either be continuous, categorical, or a mixture of the two — the nature of the outcomes informs the code as to the type of multivariate forest to be grown. When requested, performance measures can be returned, including variable importance for each <span class="math inline">\(Y\)</span>-outcome and for each <span class="math inline">\(X\)</span>-feature and out-of-sample error performance for each <span class="math inline">\(Y\)</span>-outcome. Throughout we use <span class="math inline">\({\bf Y}=(Y_1,\ldots,Y_p)^T\)</span> to denote the <span class="math inline">\(p\)</span>-dimensional multivariate outcome. For simplicity we take the first <span class="math inline">\(1\le j\le q\)</span> coordinates to be continuous and the remaining coordinates <span class="math inline">\(q+1\le j \le p\)</span> to be categorical (with suitable modifications if all coordinates are continuous or all coordinates are categorical).</p>
-<p>By default, multivariate trees are grown using a normalized composite splitting rule <span class="citation">(Tang &amp; Ishwaran, 2017)</span>. The advantage of this rule is computational speed. A disadvantage is that it’s an additive independence rule that works over the <span class="math inline">\(Y\)</span> coordinates separately, and as such it does not take into account correlation. To address this, the package now also includes a new multivariate splitting rule using Mahalanobis distance. We begin by first discussing the default composite rule. After this, we discuss the new Mahalanobis distance rule.</p>
+<p>By default, multivariate trees are grown using a normalized composite splitting rule <span class="citation">[1]</span>. The advantage of this rule is computational speed. A disadvantage is that it’s an additive independence rule that works over the <span class="math inline">\(Y\)</span> coordinates separately, and as such it does not take into account correlation. To address this, the package now also includes a new multivariate splitting rule using Mahalanobis distance. We begin by first discussing the default composite rule. After this, we discuss the new Mahalanobis distance rule.</p>
 </div>
 <div id="regression" class="section level2">
 <h2 class="hasAnchor">
@@ -250,7 +250,7 @@ G_r^*(s,t)  =
 <div id="multivariate-normalized-composite-splitting-rule" class="section level2">
 <h2 class="hasAnchor">
 <a href="#multivariate-normalized-composite-splitting-rule" class="anchor"></a>Multivariate normalized composite splitting rule</h2>
-<p>Observe that <a href="#section-1">(2)</a> and <a href="#section-2">(3)</a> are equivalent optimization problems, with optimization over <span class="math inline">\(Y_{i,j}^*\)</span> for regression and <span class="math inline">\(Z_{i(c),j}\)</span> for classification. This leads to similar theoretical splitting properties in regression and classification settings <span class="citation">(Ishwaran, 2015)</span>. Given this equivalence, we can combine the two splitting rules to form a composite splitting rule. The mixed outcome splitting rule <span class="math inline">\({\Theta}(s,t)\)</span> is a composite standardized split rule of mean-squared error <a href="#section-1">(2)</a> and Gini index splitting <a href="#section-2">(3)</a>; i.e., <span class="math display">\[
+<p>Observe that <a href="#section-1">(2)</a> and <a href="#section-2">(3)</a> are equivalent optimization problems, with optimization over <span class="math inline">\(Y_{i,j}^*\)</span> for regression and <span class="math inline">\(Z_{i(c),j}\)</span> for classification. This leads to similar theoretical splitting properties in regression and classification settings <span class="citation">[2]</span>. Given this equivalence, we can combine the two splitting rules to form a composite splitting rule. The mixed outcome splitting rule <span class="math inline">\({\Theta}(s,t)\)</span> is a composite standardized split rule of mean-squared error <a href="#section-1">(2)</a> and Gini index splitting <a href="#section-2">(3)</a>; i.e., <span class="math display">\[
 {\Theta}(s,t) = D_q^*(s,t)+G_r^*(s,t).
 \]</span> The best split for <span class="math inline">\(X\)</span> is the value of <span class="math inline">\(s\)</span> maximizing <span class="math inline">\({\Theta}(s,t)\)</span>.</p>
 </div>
@@ -343,7 +343,7 @@ d_{r+1}=\cdots=d_p=0.
 <div id="illustration" class="section level3">
 <h3 class="hasAnchor">
 <a href="#illustration" class="anchor"></a>Illustration</h3>
-<p>We use a mouse nutrigenomic study <span class="citation">(Martin et al., 2007)</span> to illustrate variable selection using Mahalanobis splitting and constrast the results to the default composite splitting rule. The <span class="math inline">\({\bf Y}\)</span>-outcome is a 22-dimensional vector of liver lipids (all real-valued) which is regressed against features <span class="math inline">\({\bf X}\)</span> comprising 120 gene expression value, mouse genotype (wild-type or PPAR-alpha) and type of diet (5 different treatments). Comparison of the standardized variable importance (VIMP) of the two splitting rules, shows that the independence rule tends to favor the variables genotype and diet, whereas Mahalanobis splitting is able to find not only these variables, but also some interesting genes, such as CYP3A11, with large importance.</p>
+<p>We use a mouse nutrigenomic study <span class="citation">[3]</span> to illustrate variable selection using Mahalanobis splitting and constrast the results to the default composite splitting rule. The <span class="math inline">\({\bf Y}\)</span>-outcome is a 22-dimensional vector of liver lipids (all real-valued) which is regressed against features <span class="math inline">\({\bf X}\)</span> comprising 120 gene expression value, mouse genotype (wild-type or PPAR-alpha) and type of diet (5 different treatments). Comparison of the standardized variable importance (VIMP) of the two splitting rules, shows that the independence rule tends to favor the variables genotype and diet, whereas Mahalanobis splitting is able to find not only these variables, but also some interesting genes, such as CYP3A11, with large importance.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ------------------------------------------------------------</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="do">## multivariate regression forests</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="do">## - comparison of Mahalanobis splitting to standard splitting rule</span></span>
@@ -415,15 +415,15 @@ d_{r+1}=\cdots=d_p=0.
 <div id="references" class="section level2 unnumbered">
 <h2 class="hasAnchor">
 <a href="#references" class="anchor"></a>References</h2>
-<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="refs" class="references csl-bib-body">
+<div id="ref-tang2017random" class="csl-entry">
+1. Tang F, Ishwaran H. Random forest missing data algorithms. Statistical Analysis and Data Mining. 2017;10:363–77.
+</div>
 <div id="ref-Ishwaran2015" class="csl-entry">
-Ishwaran, H. (2015). The effect of splitting on random forests. <em>Machine Learning</em>, <em>99</em>(1), 75–118. Springer.
+2. Ishwaran H. The effect of splitting on random forests. Machine Learning. 2015;99:75–118.
 </div>
 <div id="ref-martin2007novel" class="csl-entry">
-Martin, P. G., Guillou, H., Lasserre, F., Déjean, S., Lan, A., Pascussi, J.-M., SanCristobal, M., et al. (2007). Novel aspects of PPAR<span class="math inline">\(\alpha\)</span>-mediated regulation of lipid and xenobiotic metabolism revealed through a nutrigenomic study. <em>Hepatology</em>, <em>45</em>(3), 767–777. Wiley Online Library.
-</div>
-<div id="ref-tang2017random" class="csl-entry">
-Tang, F., &amp; Ishwaran, H. (2017). Random forest missing data algorithms. <em>Statistical Analysis and Data Mining</em>, <em>10</em>(6), 363–377. Wiley Online Library.
+3. Martin PG, Guillou H, Lasserre F, Déjean S, Lan A, Pascussi J-M, et al. Novel aspects of PPAR<span class="math inline">\(\alpha\)</span>-mediated regulation of lipid and xenobiotic metabolism revealed through a nutrigenomic study. Hepatology. 2007;45:767–77.
 </div>
 </div>
 </div>

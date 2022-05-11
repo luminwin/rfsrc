@@ -151,7 +151,7 @@
                         <h4 class="author">
 <a href="https://ishwaran.org/ishwaran.html">Hemant Ishwaran</a> <br><br> Min Lu <br><br> Udaya B. Kogalur</h4>
             
-            <h4 class="date">2022-05-09</h4>
+            <h4 class="date">2022-05-11</h4>
       
       
       <div class="hidden name"><code>algorithm.Rmd</code></div>
@@ -190,7 +190,7 @@ font-size: 16px;
 <h2 class="hasAnchor">
 <a href="#recursive-algorithm" class="anchor"></a>Recursive Algorithm</h2>
 <p>The basic algorithm for growing a forest is provided in the recursive algorithm provided below:</p>
-<p>The process iterates over <code>ntree</code>, the number of trees that are to be grown. In practice, the iteration is actually parallelized and trees are grown concurrently, not iteratively. This is explained in more detail in the vignette on <a href="hybrid.html">Hybrid Parallel Processing</a> <span class="citation">(Ishwaran, Lu, &amp; Kogalur, 2021)</span>. The recursive nature of the algorithm is reflected in the repeated calls to split a node until conditions determine that a node is terminal. Another key aspect of the algorithm is the injection of randomization during model creation. Randomization reduces variation. Bootstrapping <span class="citation">(Breiman, 1996)</span> at the root node reduces variation. Feature selection is also randomized with the use of the parameter <code>mtry</code>. In the <a href="#recursive-algorithm-1">Recursive Algorithm</a> N is defined as the number of records in the data set, and P as the number of <span class="math inline">\(X\)</span>-variables in the data set. The parameter <code>mtry</code> is such that <span class="math inline">\(1\le\)</span> <code>mtry</code> <span class="math inline">\(\le P\)</span>. At each node, the algorithm selects <code>mtry</code> random <span class="math inline">\(X\)</span>-variables according to a probability vector <code>xvar.wt</code>. The resulting subset of <span class="math inline">\(X\)</span>-variables are examined for best splits according to a <code>splitrule</code>. The parameter <code>nsplit</code> also allows one to specify the number of random split points at which an <span class="math inline">\(X\)</span>-variable is tested. The depth of trees can be controlled using the parameters <code>nodesize</code> and <code>nodedepth</code>. The parameter <code>nodesize</code> ensures that the average <code>nodesize</code> across the forest will be at least <code>nodesize</code>. The parameter <code>nodedepth</code> forces the termination of splitting when the depth of a node reaches the value specified. Node depth is zero-based from the root node onward. Reasonable models can be formed with the judicious selection of <code>mtry, nsplit, nodesize</code>, and <code>nodedepth</code> without exhaustive and deterministic splitting.</p>
+<p>The process iterates over <code>ntree</code>, the number of trees that are to be grown. In practice, the iteration is actually parallelized and trees are grown concurrently, not iteratively. This is explained in more detail in the vignette on <a href="hybrid.html">Hybrid Parallel Processing</a> <span class="citation">[1]</span>. The recursive nature of the algorithm is reflected in the repeated calls to split a node until conditions determine that a node is terminal. Another key aspect of the algorithm is the injection of randomization during model creation. Randomization reduces variation. Bootstrapping <span class="citation">[2]</span> at the root node reduces variation. Feature selection is also randomized with the use of the parameter <code>mtry</code>. In the <a href="#recursive-algorithm-1">Recursive Algorithm</a> N is defined as the number of records in the data set, and P as the number of <span class="math inline">\(X\)</span>-variables in the data set. The parameter <code>mtry</code> is such that <span class="math inline">\(1\le\)</span> <code>mtry</code> <span class="math inline">\(\le P\)</span>. At each node, the algorithm selects <code>mtry</code> random <span class="math inline">\(X\)</span>-variables according to a probability vector <code>xvar.wt</code>. The resulting subset of <span class="math inline">\(X\)</span>-variables are examined for best splits according to a <code>splitrule</code>. The parameter <code>nsplit</code> also allows one to specify the number of random split points at which an <span class="math inline">\(X\)</span>-variable is tested. The depth of trees can be controlled using the parameters <code>nodesize</code> and <code>nodedepth</code>. The parameter <code>nodesize</code> ensures that the average <code>nodesize</code> across the forest will be at least <code>nodesize</code>. The parameter <code>nodedepth</code> forces the termination of splitting when the depth of a node reaches the value specified. Node depth is zero-based from the root node onward. Reasonable models can be formed with the judicious selection of <code>mtry, nsplit, nodesize</code>, and <code>nodedepth</code> without exhaustive and deterministic splitting.</p>
 <div id="recursive-algorithm-1" class="section level6">
 <h6>Recursive Algorithm</h6>
 <p><img src="pic/algorithm.png" style="width:80.0%"></p>
@@ -208,12 +208,12 @@ font-size: 16px;
 <div id="references" class="section level2 unnumbered">
 <h2 class="hasAnchor">
 <a href="#references" class="anchor"></a>References</h2>
-<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
-<div id="ref-breiman1996bagging" class="csl-entry">
-Breiman, L. (1996). Bagging predictors. <em>Machine learning</em>, <em>24</em>(2), 123–140. Springer.
-</div>
+<div id="refs" class="references csl-bib-body">
 <div id="ref-HemantHybrid" class="csl-entry">
-Ishwaran, H., Lu, M., &amp; Kogalur, U. B. (2021). <span class="nocase">randomForestSRC</span>: Hybrid parallel processing vignette. Retrieved from <a href="http://randomforestsrc.org/articles/hybrid.html">http://randomforestsrc.org/articles/hybrid.html</a>
+1. Ishwaran H, Lu M, Kogalur UB. <span class="nocase">randomForestSRC</span>: Hybrid parallel processing vignette. 2021. <a href="http://randomforestsrc.org/articles/hybrid.html">http://randomforestsrc.org/articles/hybrid.html</a>.
+</div>
+<div id="ref-breiman1996bagging" class="csl-entry">
+2. Breiman L. Bagging predictors. Machine learning. 1996;24:123–40.
 </div>
 </div>
 </div>

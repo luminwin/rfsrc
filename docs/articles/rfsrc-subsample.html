@@ -151,7 +151,7 @@
                         <h4 class="author">
 <a href="https://ishwaran.org/ishwaran.html">Hemant Ishwaran</a> <br><br> Min Lu <br><br> Udaya B. Kogalur</h4>
             
-            <h4 class="date">2022-05-09</h4>
+            <h4 class="date">2022-05-11</h4>
       
       
       <div class="hidden name"><code>rfsrc-subsample.Rmd</code></div>
@@ -188,7 +188,7 @@ font-size: 16px;
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
-<p>Random forests (RF) software developed by <span class="citation">Breiman (2002)</span> provides for various options for calculating variable importance (VIMP). One approach used for classification forests is Gini impurity importance <span class="citation">(Louppe, Wehenkel, Sutera, &amp; Geurts, 2013)</span>. However, by far, the more popular measure of importance is another measure provided by the software, called permutation importance (referred to as Breiman-Cutler importance). Unlike Gini importance which estimates importance using in-sample impurity, permutation importance adopts a prediction based approach by using prediction error attributable to the variable. A clever feature is that rather than using cross-validation, which is computationally expensive for forests, permutation importance estimates prediction error by making use of out-of-bootstrap cases. Recall each tree is calculated from a bootstrap sample of the original data. The approximately <span class="math inline">\(1-.632=.368\)</span> left from the bootstrap represents out-of-sample data which can be used for estimating prediction performance. This data is called out-of-bag (OOB) and prediction error obtained from it is called OOB error <span class="citation">(Breiman, 1996a, 1996b)</span>. Permutation importance permutes a variable’s OOB data and compares the resulting OOB prediction error to the original OOB prediction error — the motivation being that a large positive value indicates a variable with predictive importance.</p>
+<p>Random forests (RF) software developed by <span class="citation">[1]</span> provides for various options for calculating variable importance (VIMP). One approach used for classification forests is Gini impurity importance <span class="citation">[2]</span>. However, by far, the more popular measure of importance is another measure provided by the software, called permutation importance (referred to as Breiman-Cutler importance). Unlike Gini importance which estimates importance using in-sample impurity, permutation importance adopts a prediction based approach by using prediction error attributable to the variable. A clever feature is that rather than using cross-validation, which is computationally expensive for forests, permutation importance estimates prediction error by making use of out-of-bootstrap cases. Recall each tree is calculated from a bootstrap sample of the original data. The approximately <span class="math inline">\(1-.632=.368\)</span> left from the bootstrap represents out-of-sample data which can be used for estimating prediction performance. This data is called out-of-bag (OOB) and prediction error obtained from it is called OOB error <span class="citation">[3, 4]</span>. Permutation importance permutes a variable’s OOB data and compares the resulting OOB prediction error to the original OOB prediction error — the motivation being that a large positive value indicates a variable with predictive importance.</p>
 <br><p class="comment">
 <strong> Permutation (Breiman-Cutler) Importance </strong> <br><br> In the OOB cases for a tree, randomly permute all values of the <span class="math inline">\(j\)</span>th variable. Put these new covariate values down the tree and compute a new internal error rate. The amount by which this new error exceeds the original OOB error is defined as the importance of the <span class="math inline">\(j\)</span>th variable for the tree. Averaging over the forest yields VIMP. <br><br><span class="math inline">\(\qquad\qquad\qquad\qquad\quad\)</span>— Measure 1 (Manual On Setting Up, Using, And Understanding Random Forests V3.1
 </p>
@@ -196,7 +196,7 @@ font-size: 16px;
 <div id="mathematical-description-of-vimp" class="section level2">
 <h2 class="hasAnchor">
 <a href="#mathematical-description-of-vimp" class="anchor"></a>Mathematical description of VIMP</h2>
-<p>In a nutshell, we can see that permutation importance is essentially a technique for estimating the importance of a variable by comparing performance of the estimated model with and without the variable in it. This is a very popular technique and has been used throughout machine learning <span class="citation">(Breiman, 2001; Doksum, Tang, &amp; Tsui, 2008; Friedman, 2001; Genuer, Poggi, &amp; Tuleau-Malot, 2010; Grömping, 2009; Ishwaran, 2007; Ishwaran, Kogalur, Blackstone, &amp; Lauer, 2008; Louppe et al., 2013; Strobl, Boulesteix, Kneib, Augustin, &amp; Zeileis, 2008; Van der Laan, 2006; Williamson, Gilbert, Carone, &amp; Simon, 2021)</span>.</p>
+<p>In a nutshell, we can see that permutation importance is essentially a technique for estimating the importance of a variable by comparing performance of the estimated model with and without the variable in it. This is a very popular technique and has been used throughout machine learning <span class="citation">[2, 5–14]</span>.</p>
 <p>One technical point we should mention though, is that permutation importance does not actually remove the variable from the model, and this is one of the unique features of it that makes it computationally fast. What actually happens is that the permutation is designed to push a variable to a terminal node different than its original assignment. Essentially, the farther away this is from the original terminal node, the more likely it is that the variable is important. The following figure illustrates this.</p>
 <p><br></p>
 <div id="figure-1" class="section level6">
@@ -220,7 +220,7 @@ font-size: 16px;
 <div id="rf-predictor" class="section level3">
 <h3 class="hasAnchor">
 <a href="#rf-predictor" class="anchor"></a>RF predictor</h3>
-<p>Recall <a href="getstarted.html">our getting started vignette</a> <span class="citation">(Ishwaran, Lu, &amp; Kogalur, 2021)</span> that a RF is a collection of randomized tree predictors <span class="math inline">\(\{\varphi(\cdot,{\Theta}_m,\mathscr{L}_n), m=1,\ldots,M\}\)</span>. Here <span class="math inline">\(\varphi({\bf x},{\Theta}_m,\mathscr{L}_n)\)</span> denotes the <span class="math inline">\(m\)</span>th random tree predictor of <span class="math inline">\(\psi({\bf x})\)</span> and <span class="math inline">\({\Theta}_1,\ldots,{\Theta}_M\)</span> are independent identically distributed random quantities encoding the randomization needed for constructing a tree. Note that each <span class="math inline">\({\Theta}_m\)</span> is selected prior to growing the tree and is independent of the learning data, <span class="math inline">\(\mathscr{L}_n\)</span>.</p>
+<p>Recall <a href="getstarted.html">our getting started vignette</a> <span class="citation">[15]</span> that a RF is a collection of randomized tree predictors <span class="math inline">\(\{\varphi(\cdot,{\Theta}_m,\mathscr{L}_n), m=1,\ldots,M\}\)</span>. Here <span class="math inline">\(\varphi({\bf x},{\Theta}_m,\mathscr{L}_n)\)</span> denotes the <span class="math inline">\(m\)</span>th random tree predictor of <span class="math inline">\(\psi({\bf x})\)</span> and <span class="math inline">\({\Theta}_1,\ldots,{\Theta}_M\)</span> are independent identically distributed random quantities encoding the randomization needed for constructing a tree. Note that each <span class="math inline">\({\Theta}_m\)</span> is selected prior to growing the tree and is independent of the learning data, <span class="math inline">\(\mathscr{L}_n\)</span>.</p>
 <p>The tree predictors are combined to form the finite forest estimator of <span class="math inline">\(\psi({\bf x})\)</span>, <span class="math display">\[
 \varphi({\bf x},{\Theta}_1,\ldots,{\Theta}_M,\mathscr{L}_n) = \frac{1}{M}
 \sum_{m=1}^M \varphi({\bf x},{\Theta}_m,\mathscr{L}_n).
@@ -236,7 +236,7 @@ font-size: 16px;
 <ol style="list-style-type: decimal">
 <li>Squared error loss <span class="math inline">\(\ell(Y,\hat{\varphi})=(Y-\hat{\varphi})^2\)</span> in regression problems.</li>
 <li>For classification problems, measures of performance used are the misclassification error or the Brier score. For the latter, <span class="math inline">\(\ell(Y,\hat{\varphi})=(1/C)\sum_{c=1}^C\left(I\{Y=c\}-\hat{\varphi}_c\right)^2\)</span>, where <span class="math inline">\(\hat{\varphi}_c\)</span> is the estimator for the conditional probability <span class="math inline">\(\psi_c\)</span>.</li>
-<li>For survival, the weighted Brier score <span class="citation">(Gerds &amp; Schumacher, 2006; Graf, Schmoor, Sauerbrei, &amp; Schumacher, 1999)</span> can be used (<a href="survival.html#brier-score">see our RSF vignette</a>, <span class="citation">Ishwaran, Lauer, Blackstone, Lu, &amp; Kogalur (2021)</span>).</li>
+<li>For survival, the weighted Brier score <span class="citation">[16, 17]</span> can be used (<a href="survival.html#brier-score">see our RSF vignette</a>, <span class="citation">[18]</span>).</li>
 </ol>
 </div>
 <div id="tree-vimp" class="section level3">
@@ -325,7 +325,7 @@ I(X^{(j)},\mathscr{L}_n)
 <div id="inference-for-vimp" class="section level2">
 <h2 class="hasAnchor">
 <a href="#inference-for-vimp" class="anchor"></a>Inference for VIMP</h2>
-<p>Now we describe how to estimate the variance for VIMP and construct confidence regions <span class="citation">(Ishwaran &amp; Lu, 2018)</span>. So far we have the following constructs: <span class="math display">\[\begin{alignat*}{2}
+<p>Now we describe how to estimate the variance for VIMP and construct confidence regions <span class="citation">[19]</span>. So far we have the following constructs: <span class="math display">\[\begin{alignat*}{2}
 \hat{\theta}^{(j)}_{n,M} &amp;= \frac{1}{M} \sum_{m=1}^M I(X^{(j)},{\Theta}_m,\mathscr{L}_n)
   &amp;\qquad\text{Monte Carlo  VIMP}\\
 \hat{\theta}^{(j)}_{n} &amp;=\mathbb{E}_{\Theta}\left\{I(X^{(j)},{\Theta},\mathscr{L}_n)\right\}
@@ -373,7 +373,7 @@ n_i&amp;\sim&amp; \text{Binomial}(n, 1/n)\asymp\text{Poisson}(1).
 \asymp \text{e}^{-1}\sum_{l=1}^n \frac{\text{e}^{-l}}{l!} \asymp
 .1635 &lt; .368.
 \end{eqnarray*}\]</span> Therefore, double bootstrap data has an OOB size of <span class="math inline">\(.164n\)</span> which is smaller than the true OOB size of <span class="math inline">\(.368n\)</span>.</p>
-<p>The above discussion points to a simple solution to the problem which we call the .164 bootstrap estimator <span class="citation">(Ishwaran &amp; Lu, 2018)</span>. The .164 estimator is a bootstrap variance estimator but is careful to use only truly OOB data. The algorithm for this procedure is outlined by the following steps:</p>
+<p>The above discussion points to a simple solution to the problem which we call the .164 bootstrap estimator <span class="citation">[19]</span>. The .164 estimator is a bootstrap variance estimator but is careful to use only truly OOB data. The algorithm for this procedure is outlined by the following steps:</p>
 <ol style="list-style-type: decimal">
 <li>Draw a bootstrap sample <span class="math inline">\(\mathscr{L}_{n,k}^{\text{IB}}\)</span>.</li>
 <li>Calculate Monte Carlo VIMP using uniquified OOB data <span class="math display">\[
@@ -395,12 +395,12 @@ n_i&amp;\sim&amp; \text{Binomial}(n, 1/n)\asymp\text{Poisson}(1).
 <h3 class="hasAnchor">
 <a href="#subsampling-sampling-without-replacement" class="anchor"></a>Subsampling (sampling without replacement)</h3>
 <p>A problem with the .164 bootstrap estimator is that its OOB data set is smaller than a typical OOB estimator (16.4% versus 36.8%). Thus in a forest of 1000 trees, the .164 estimator uses about 164 trees on average to calculate VIMP for a case compared with 368 trees used in a standard calculation. This can reduce efficiency of the .164 estimator. Another problem is computational expense. The .164 estimator requires repeatedly fitting RF to bootstrap data which can be computationally intensive, especially for big data.</p>
-<p>To avoid these problems, we propose a more efficient procedure based on subsampling theory <span class="citation">(Politis &amp; Romano, 1994)</span>. The idea rests on calculating VIMP over small i.i.d. subsets of the data. Because sampling is without replacement, this avoid ties in the OOB data that creates problems for the bootstrap. Also, because each forest is grown for a very small data set, the procedure is computationally efficient.</p>
+<p>To avoid these problems, we propose a more efficient procedure based on subsampling theory <span class="citation">[20]</span>. The idea rests on calculating VIMP over small i.i.d. subsets of the data. Because sampling is without replacement, this avoid ties in the OOB data that creates problems for the bootstrap. Also, because each forest is grown for a very small data set, the procedure is computationally efficient.</p>
 <p>To explain this approach abstractly, as before let <span class="math inline">\(X_1,\ldots,X_n\)</span> be i.i.d. random values with common distribution <span class="math inline">\(\mathbb{P}\)</span> and let <span class="math inline">\(\hat{\theta}_n=\hat{\theta}(X_1,\ldots,X_n)\)</span> be some estimator for some unknown parameter <span class="math inline">\(\theta(\mathbb{P})\)</span>. Let <span class="math inline">\(S_{n,b}\)</span> be the entire collection of subsets of <span class="math inline">\(\{1,\ldots,n\}\)</span> of size <span class="math inline">\(b&lt;n\)</span>. For each <span class="math inline">\(s=\{i_1,\ldots,i_b\}\in S_b\)</span>, let <span class="math inline">\(\hat{\theta}_{n,b,s}=\hat{\theta}(X_{i_1},\ldots,X_{i_b})\)</span> be the subsampled estimator. The goal will be to use estimators <span class="math inline">\(\hat{\theta}_{n,b,s}\)</span> to approximate the sampling distribution of <span class="math inline">\(\widehat{J}_n\)</span>, the rescaled test statistic defined by <span class="math display">\[
 \widehat{J}_n = n^{1/2}(\hat{\theta}_n-\theta(\mathbb{P})).
 \]</span></p>
 <p>Let <span class="math inline">\(\mathbb{Q}_n\)</span> denote the distribution of <span class="math inline">\(\widehat{J}_n\)</span>.<br>
-If <span class="math inline">\(\mathbb{Q}_n\stackrel{\mathrm{d}}{\leadsto}\mathbb{Q}\)</span> and <span class="math inline">\(b/n\rightarrow 0\)</span> <span class="citation">(Politis &amp; Romano, 1994)</span> <span class="math display">\[
+If <span class="math inline">\(\mathbb{Q}_n\stackrel{\mathrm{d}}{\leadsto}\mathbb{Q}\)</span> and <span class="math inline">\(b/n\rightarrow 0\)</span> <span class="citation">[20]</span> <span class="math display">\[
 \widetilde{U}_{n,b}(x)
 =\frac{1}{\binom{n}{b}}\sum_{s\in S_{n,b}} I\{b^{1/2}\left(\hat{\theta}_{n,b,s} -
 \hat{\theta}_n\right)\le x\}
@@ -421,7 +421,7 @@ F(x)=\mathbb{Q}[-\infty, x].
 <div id="subsampling-estimator-for-the-variance-of-vimp" class="section level3">
 <h3 class="hasAnchor">
 <a href="#subsampling-estimator-for-the-variance-of-vimp" class="anchor"></a>Subsampling estimator for the variance of VIMP</h3>
-<p>Let <span class="math inline">\(s_1,\ldots,s_K\)</span> be <span class="math inline">\(K\)</span> different subsampled sets from <span class="math inline">\(S_{n,b}\)</span> and let <span class="math inline">\(\mathscr{L}_{n,b,s}\)</span> denote the learning data for a subsampled set <span class="math inline">\(s\)</span>. The subsampled estimator for the variance is <span class="citation">(Ishwaran &amp; Lu, 2018)</span> <span class="math display">\[
+<p>Let <span class="math inline">\(s_1,\ldots,s_K\)</span> be <span class="math inline">\(K\)</span> different subsampled sets from <span class="math inline">\(S_{n,b}\)</span> and let <span class="math inline">\(\mathscr{L}_{n,b,s}\)</span> denote the learning data for a subsampled set <span class="math inline">\(s\)</span>. The subsampled estimator for the variance is <span class="citation">[19]</span> <span class="math display">\[
 \hat{\upsilon}^{(j)}_{n,b}=
 \frac{b/n}{K}
 \sum_{k=1}^K \Bigl(\hat{\theta}^{(j)}_{n,b,s_k} -
@@ -436,7 +436,7 @@ F(x)=\mathbb{Q}[-\infty, x].
 <div id="delete-d-jackknife-estimator-for-the-variance-of-vimp" class="section level3">
 <h3 class="hasAnchor">
 <a href="#delete-d-jackknife-estimator-for-the-variance-of-vimp" class="anchor"></a>Delete-<em>d</em> jackknife estimator for the variance of VIMP</h3>
-<p>The subsampling variance estimator is closely related to the delete-<span class="math inline">\(d\)</span> jackknife <span class="citation">(Shao &amp; Wu, 1989)</span>. The delete-<span class="math inline">\(d\)</span> estimator works on subsets of size <span class="math inline">\(r=n-d\)</span> and for VIMP is defined as <span class="citation">(Ishwaran &amp; Lu, 2018)</span> <span class="math display">\[
+<p>The subsampling variance estimator is closely related to the delete-<span class="math inline">\(d\)</span> jackknife <span class="citation">[21]</span>. The delete-<span class="math inline">\(d\)</span> estimator works on subsets of size <span class="math inline">\(r=n-d\)</span> and for VIMP is defined as <span class="citation">[19]</span> <span class="math display">\[
 \hat{\upsilon}^{(j)}_{n,J(d)} =
 \frac{r/d}{K}\sum_{k=1}^K (\hat{\theta}^{(j)}_{n,r,s_k}  - \hat{\theta}^{(j)}_{n,M})^2,
 \hskip10pt  r=n-d.
@@ -455,14 +455,14 @@ F(x)=\mathbb{Q}[-\infty, x].
 <div id="confidence-regions" class="section level3">
 <h3 class="hasAnchor">
 <a href="#confidence-regions" class="anchor"></a>Confidence regions</h3>
-<p>Subsampling can also be used to calculate nonparametric confidence intervals <span class="citation">(Politis &amp; Romano, 1994)</span>. The general idea for constructing a confidence interval for a target parameter <span class="math inline">\(\theta(\mathbb{P})\)</span> is as follows. Define the <span class="math inline">\(1-\alpha\)</span> quantile for the subsampling distribution as <span class="math inline">\(c_{n,b}(1-\alpha) = \inf\{x: \widetilde{U}_{n,b}(x)\ge 1-\alpha\}\)</span>. Similarly, define the <span class="math inline">\(1-\alpha\)</span> quantile for the limiting distribution <span class="math inline">\(\mathbb{Q}\)</span> of <span class="math inline">\(\widehat{J}_n\)</span> as <span class="math inline">\(c(1-\alpha) = \inf\{t: F(x)=\mathbb{Q}[-\infty,x]\ge 1-\alpha\}\)</span>. Then, assuming <span class="math inline">\(\mathbb{Q}_n\stackrel{\mathrm{d}}{\leadsto}\mathbb{Q}\)</span> and <span class="math inline">\(b/n\rightarrow 0\)</span>, the interval <span class="math display">\[
+<p>Subsampling can also be used to calculate nonparametric confidence intervals <span class="citation">[20]</span>. The general idea for constructing a confidence interval for a target parameter <span class="math inline">\(\theta(\mathbb{P})\)</span> is as follows. Define the <span class="math inline">\(1-\alpha\)</span> quantile for the subsampling distribution as <span class="math inline">\(c_{n,b}(1-\alpha) = \inf\{x: \widetilde{U}_{n,b}(x)\ge 1-\alpha\}\)</span>. Similarly, define the <span class="math inline">\(1-\alpha\)</span> quantile for the limiting distribution <span class="math inline">\(\mathbb{Q}\)</span> of <span class="math inline">\(\widehat{J}_n\)</span> as <span class="math inline">\(c(1-\alpha) = \inf\{t: F(x)=\mathbb{Q}[-\infty,x]\ge 1-\alpha\}\)</span>. Then, assuming <span class="math inline">\(\mathbb{Q}_n\stackrel{\mathrm{d}}{\leadsto}\mathbb{Q}\)</span> and <span class="math inline">\(b/n\rightarrow 0\)</span>, the interval <span class="math display">\[
 \left[\hat{\theta}_n - n^{-1/2} c_{n,b}(1-\alpha), \infty\right)
 \]</span> contains <span class="math inline">\(\theta(\mathbb{P})\)</span> with asymptotic probability <span class="math inline">\(1-\alpha\)</span> if <span class="math inline">\(c(1-\alpha)\)</span> is a continuity point of <span class="math inline">\(F\)</span>.</p>
 <p>While the above is able to calculate a nonparametric confidence interval for VIMP, a more practicable and stable solution can be obtained by assuming asympotic normality. Let <span class="math inline">\(\theta^{(j)}\)</span> be population VIMP defined earlier. Let <span class="math inline">\(\hat{\upsilon}^{(j)}_n\)</span> be an estimator for <span class="math inline">\({\upsilon}^{(j)}_n=\text{Var}(\hat{\theta}^{(j)}_n)\)</span>. Assuming asymptotic normality, <span class="math display">\[
 \frac{\hat{\theta}^{(j)}_{n,M}-\theta^{(j)}}{\sqrt{\hat{\upsilon}^{(j)}_n}}\stackrel{\mathrm{d}}{\leadsto}\text{N}(0,1),
 \]</span> an asymptotic <span class="math inline">\(100(1-\alpha)\)</span> confidence region for <span class="math inline">\(\theta^{(j)}\)</span>, the true VIMP, can be defined as <span class="math display">\[
 \hat{\theta}^{(j)}_{n,M} \pm z_{\alpha/2}\sqrt{\hat{\upsilon}^{(j)}_n},
-\]</span> where <span class="math inline">\(z_{\alpha/2}\)</span> is the <span class="math inline">\(1-\alpha/2\)</span>-quantile from a standard normal, <span class="math inline">\(\Pr\{\text{N}(0,1)\le z_{\alpha/2}\}=1-\alpha/2\)</span>. We have found that the assumption of asymptotic normality is quite reasonable in most applications <span class="citation">(Ishwaran &amp; Lu, 2018)</span>.</p>
+\]</span> where <span class="math inline">\(z_{\alpha/2}\)</span> is the <span class="math inline">\(1-\alpha/2\)</span>-quantile from a standard normal, <span class="math inline">\(\Pr\{\text{N}(0,1)\le z_{\alpha/2}\}=1-\alpha/2\)</span>. We have found that the assumption of asymptotic normality is quite reasonable in most applications <span class="citation">[19]</span>.</p>
 </div>
 </div>
 <div id="illustration-1" class="section level2">
@@ -588,69 +588,69 @@ F(x)=\mathbb{Q}[-\infty, x].
 <div id="references" class="section level2 unnumbered">
 <h2 class="hasAnchor">
 <a href="#references" class="anchor"></a>References</h2>
-<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
-<div id="ref-Breiman1996out" class="csl-entry">
-Breiman, L. (1996b). Out-of-bag estimation.
-</div>
-<div id="ref-Breiman1996" class="csl-entry">
-Breiman, L. (1996a). Bagging predictors. <em>Machine Learning</em>, <em>24</em>(2), 123–140. Springer.
-</div>
-<div id="ref-Breiman2001" class="csl-entry">
-Breiman, L. (2001). Random forests. <em>Machine Learning</em>, <em>45</em>, 5–32.
-</div>
+<div id="refs" class="references csl-bib-body">
 <div id="ref-Breiman2002" class="csl-entry">
-Breiman, L. (2002). Manual on setting up, using, and understanding random forests v3. 1. <em>Statistics Department University of California Berkeley, CA, USA</em>, <em>1</em>.
-</div>
-<div id="ref-doksum2008nonparametric" class="csl-entry">
-Doksum, K., Tang, S., &amp; Tsui, K.-W. (2008). Nonparametric variable selection: The EARTH algorithm. <em>Journal of the American Statistical Association</em>, <em>103</em>(484), 1609–1620. Taylor &amp; Francis.
-</div>
-<div id="ref-Friedman2001" class="csl-entry">
-Friedman, J. H. (2001). Greedy function approximation: A gradient boosting machine. <em>Annals of Statistics</em>, 1189–1232. JSTOR.
-</div>
-<div id="ref-genuer2010variable" class="csl-entry">
-Genuer, R., Poggi, J.-M., &amp; Tuleau-Malot, C. (2010). Variable selection using random forests. <em>Pattern Recognition Letters</em>, <em>31</em>(14), 2225–2236. Elsevier.
-</div>
-<div id="ref-gerds2006consistent" class="csl-entry">
-Gerds, T. A., &amp; Schumacher, M. (2006). Consistent estimation of the expected brier score in general survival models with right-censored event times. <em>Biometrical Journal</em>, <em>48</em>(6), 1029–1040. Wiley Online Library.
-</div>
-<div id="ref-graf1999assessment" class="csl-entry">
-Graf, E., Schmoor, C., Sauerbrei, W., &amp; Schumacher, M. (1999). Assessment and comparison of prognostic classification schemes for survival data. <em>Statistics in Medicine</em>, <em>18</em>(17-18), 2529–2545. Wiley Online Library.
-</div>
-<div id="ref-gromping2009variable" class="csl-entry">
-Grömping, U. (2009). Variable importance assessment in regression: Linear regression versus random forest. <em>The American Statistician</em>, <em>63</em>(4), 308–319. Taylor &amp; Francis.
-</div>
-<div id="ref-Ishwaran2007" class="csl-entry">
-Ishwaran, H. (2007). Variable importance in binary regression trees and forests. <em>Electronic Journal of Statistics</em>, <em>1</em>, 519–537. The Institute of Mathematical Statistics; the Bernoulli Society.
-</div>
-<div id="ref-Ishwaran2008" class="csl-entry">
-Ishwaran, H., Kogalur, U. B., Blackstone, E. H., &amp; Lauer, M. S. (2008). Random survival forests. <em>The Annals of Applied Statistics</em>, <em>2</em>(3), 841–860. JSTOR.
-</div>
-<div id="ref-HemantRandomS" class="csl-entry">
-Ishwaran, H., Lauer, M. S., Blackstone, E. H., Lu, M., &amp; Kogalur, U. B. (2021). <span class="nocase">randomForestSRC</span>: Random survival forests vignette. Retrieved from <a href="http://randomforestsrc.org/articles/survival.html">http://randomforestsrc.org/articles/survival.html</a>
-</div>
-<div id="ref-Ishwaran2018" class="csl-entry">
-Ishwaran, H., &amp; Lu, M. (2018). Standard errors and confidence intervals for variable importance in random forest regression, classification, and survival. <em>Statistics in Medicine</em>. Wiley Online Library.
-</div>
-<div id="ref-HemantGettingStarted" class="csl-entry">
-Ishwaran, H., Lu, M., &amp; Kogalur, U. B. (2021). <span class="nocase">randomForestSRC</span>: Getting started with <span class="nocase">randomForestSRC</span> vignette. Retrieved from <a href="http://randomforestsrc.org/articles/getstarted.html">http://randomforestsrc.org/articles/getstarted.html</a>
+1. Breiman L. Manual on setting up, using, and understanding random forests v3. 1. Statistics Department University of California Berkeley, CA, USA. 2002;1.
 </div>
 <div id="ref-louppe2013understanding" class="csl-entry">
-Louppe, G., Wehenkel, L., Sutera, A., &amp; Geurts, P. (2013). Understanding variable importances in forests of randomized trees. <em>Advances in Neural Information Processing Systems</em>, <em>26</em>, 431–439.
+2. Louppe G, Wehenkel L, Sutera A, Geurts P. Understanding variable importances in forests of randomized trees. Advances in Neural Information Processing Systems. 2013;26:431–9.
 </div>
-<div id="ref-politis1994" class="csl-entry">
-Politis, D. N., &amp; Romano, J. P. (1994). Large sample confidence regions based on subsamples under minimal assumptions. <em>The Annals of Statistics</em>, <em>22</em>(4), 2031–2050. JSTOR.
+<div id="ref-Breiman1996" class="csl-entry">
+3. Breiman L. Bagging predictors. Machine Learning. 1996;24:123–40.
 </div>
-<div id="ref-shao1989general" class="csl-entry">
-Shao, J., &amp; Wu, C. J. (1989). A general theory for jackknife variance estimation. <em>The Annals of Statistics</em>, <em>17</em>(3), 1176–1197. JSTOR.
+<div id="ref-Breiman1996out" class="csl-entry">
+4. Breiman L. Out-of-bag estimation. 1996.
 </div>
-<div id="ref-strobl2008conditional" class="csl-entry">
-Strobl, C., Boulesteix, A.-L., Kneib, T., Augustin, T., &amp; Zeileis, A. (2008). Conditional variable importance for random forests. <em>BMC Bioinformatics</em>, <em>9</em>(1), 1–11. Springer.
+<div id="ref-Breiman2001" class="csl-entry">
+5. Breiman L. Random forests. Machine Learning. 2001;45:5–32.
+</div>
+<div id="ref-Friedman2001" class="csl-entry">
+6. Friedman JH. Greedy function approximation: A gradient boosting machine. Annals of Statistics. 2001;1189–232.
 </div>
 <div id="ref-van2006statistical" class="csl-entry">
-Van der Laan, M. J. (2006). Statistical inference for variable importance. <em>The International Journal of Biostatistics</em>, <em>2</em>(1). De Gruyter.
+7. Van der Laan MJ. Statistical inference for variable importance. The International Journal of Biostatistics. 2006;2.
+</div>
+<div id="ref-Ishwaran2007" class="csl-entry">
+8. Ishwaran H. Variable importance in binary regression trees and forests. Electronic Journal of Statistics. 2007;1:519–37.
+</div>
+<div id="ref-strobl2008conditional" class="csl-entry">
+9. Strobl C, Boulesteix A-L, Kneib T, Augustin T, Zeileis A. Conditional variable importance for random forests. BMC Bioinformatics. 2008;9:1–1.
+</div>
+<div id="ref-Ishwaran2008" class="csl-entry">
+10. Ishwaran H, Kogalur UB, Blackstone EH, Lauer MS. Random survival forests. The Annals of Applied Statistics. 2008;2:841–60.
+</div>
+<div id="ref-doksum2008nonparametric" class="csl-entry">
+11. Doksum K, Tang S, Tsui K-W. Nonparametric variable selection: The EARTH algorithm. Journal of the American Statistical Association. 2008;103:1609–20.
+</div>
+<div id="ref-gromping2009variable" class="csl-entry">
+12. Grömping U. Variable importance assessment in regression: Linear regression versus random forest. The American Statistician. 2009;63:308–19.
+</div>
+<div id="ref-genuer2010variable" class="csl-entry">
+13. Genuer R, Poggi J-M, Tuleau-Malot C. Variable selection using random forests. Pattern Recognition Letters. 2010;31:2225–36.
 </div>
 <div id="ref-williamson2021nonparametric" class="csl-entry">
-Williamson, B. D., Gilbert, P. B., Carone, M., &amp; Simon, N. (2021). Nonparametric variable importance assessment using machine learning techniques. <em>Biometrics</em>, <em>77</em>(1), 9–22. Wiley Online Library.
+14. Williamson BD, Gilbert PB, Carone M, Simon N. Nonparametric variable importance assessment using machine learning techniques. Biometrics. 2021;77:9–22.
+</div>
+<div id="ref-HemantGettingStarted" class="csl-entry">
+15. Ishwaran H, Lu M, Kogalur UB. <span class="nocase">randomForestSRC</span>: Getting started with <span class="nocase">randomForestSRC</span> vignette. 2021. <a href="http://randomforestsrc.org/articles/getstarted.html">http://randomforestsrc.org/articles/getstarted.html</a>.
+</div>
+<div id="ref-graf1999assessment" class="csl-entry">
+16. Graf E, Schmoor C, Sauerbrei W, Schumacher M. Assessment and comparison of prognostic classification schemes for survival data. Statistics in Medicine. 1999;18:2529–45.
+</div>
+<div id="ref-gerds2006consistent" class="csl-entry">
+17. Gerds TA, Schumacher M. Consistent estimation of the expected brier score in general survival models with right-censored event times. Biometrical Journal. 2006;48:1029–40.
+</div>
+<div id="ref-HemantRandomS" class="csl-entry">
+18. Ishwaran H, Lauer MS, Blackstone EH, Lu M, Kogalur UB. <span class="nocase">randomForestSRC</span>: Random survival forests vignette. 2021. <a href="http://randomforestsrc.org/articles/survival.html">http://randomforestsrc.org/articles/survival.html</a>.
+</div>
+<div id="ref-Ishwaran2018" class="csl-entry">
+19. Ishwaran H, Lu M. Standard errors and confidence intervals for variable importance in random forest regression, classification, and survival. Statistics in Medicine. 2018.
+</div>
+<div id="ref-politis1994" class="csl-entry">
+20. Politis DN, Romano JP. Large sample confidence regions based on subsamples under minimal assumptions. The Annals of Statistics. 1994;22:2031–50.
+</div>
+<div id="ref-shao1989general" class="csl-entry">
+21. Shao J, Wu CJ. A general theory for jackknife variance estimation. The Annals of Statistics. 1989;17:1176–97.
 </div>
 </div>
 </div>

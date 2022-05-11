@@ -151,7 +151,7 @@
                         <h4 class="author">
 <a href="https://ishwaran.org/ishwaran.html">Hemant Ishwaran</a> <br><br> Alejandro Mantero <br><br> Min Lu <br><br> Udaya B. Kogalur</h4>
             
-            <h4 class="date">2022-05-09</h4>
+            <h4 class="date">2022-05-11</h4>
       
       
       <div class="hidden name"><code>sidClustering.Rmd</code></div>
@@ -188,8 +188,8 @@ font-size: 16px;
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
 <p>Machine learning is generally divided into two branches: supervised and unsupervised learning. In supervised learning the response is known and the goal is to train a model to predict its value, while in unsupervised learning the response is unknown and the general goal is to find structure in the feature data. This makes the problem more difficult. Another challenge in unsupervised learning occurs when data have a mix of both numerical as well as categorical feature variables (referred to as mixed data). Such data is very common in modern big data settings such as in medical and health care problems. However many unsupervised methods are better suited for data with only continuous variables. Our goal is to construct an unsupervised procedure capable of handling the scenario of mixed data.</p>
-<p>One strategy of unsupervised algorithms involves reworking the problem into a supervised classification problem <span class="citation">(Friedman, Hastie, &amp; Tibshirani, 2001; Liu, Xia, &amp; Yu, 2000)</span>. Breiman’s unsupervised method <span class="citation">(Breiman, 2003)</span> is one widely known random forests (RF) method which uses this strategy. The idea is to generate an artificial dataset that goes into the model along side the original data. A RF classifier is trained on the data formed by combining the original data (class label 1) and artificial data (class label 2) and the proximity matrix is extracted from the resulting forest. Then standard clustering techniques can be utilized on the proximity matrix such as hierarchical clustering <span class="citation">(Hartigan, 1975)</span> or partitioning about medoids <span class="citation">(Reynolds, Richards, Iglesia, &amp; Rayward-Smith, 2006)</span> to determine clusters (for convenience we refer to these techniques as HC and PAM, respectively).</p>
-<p>Although Breiman’s clustering method has been demonstrated to work well, it is highly dependent on the distribution chosen for the artificial data class. Therefore, we have introduced a new RF method for unsupervised learning which we call sidClustering <span class="citation">(Mantero &amp; Ishwaran, 2021)</span>. This new method is based on two new concepts: (1) sidification of the data (we call this new enhanced feature space, SID for staggered interaction data); (2) <a href="mvsplit.html">multivariate random forests (MVRF)</a> <span class="citation">(Ishwaran, Tang, Lu, &amp; Kogalur, 2021)</span>. The latter is applied to the sidified data to develop distance between points via the multivariate relationship between features and their two-way interactions. The sidClustering algorithm is implmemented in the package by the self-titled function, <code><a href="../reference/sidClustering.rfsrc.html">sidClustering()</a></code>. For completeness, the function also provides an implementation of Breiman clustering using the two data mode generation schemes described in <span class="citation">Shi &amp; Horvath (2006)</span>. An illustration of <code><a href="../reference/sidClustering.rfsrc.html">sidClustering()</a></code> is given at the end.</p>
+<p>One strategy of unsupervised algorithms involves reworking the problem into a supervised classification problem <span class="citation">[1, 2]</span>. Breiman’s unsupervised method <span class="citation">[3]</span> is one widely known random forests (RF) method which uses this strategy. The idea is to generate an artificial dataset that goes into the model along side the original data. A RF classifier is trained on the data formed by combining the original data (class label 1) and artificial data (class label 2) and the proximity matrix is extracted from the resulting forest. Then standard clustering techniques can be utilized on the proximity matrix such as hierarchical clustering <span class="citation">[4]</span> or partitioning about medoids <span class="citation">[5]</span> to determine clusters (for convenience we refer to these techniques as HC and PAM, respectively).</p>
+<p>Although Breiman’s clustering method has been demonstrated to work well, it is highly dependent on the distribution chosen for the artificial data class. Therefore, we have introduced a new RF method for unsupervised learning which we call sidClustering <span class="citation">[6]</span>. This new method is based on two new concepts: (1) sidification of the data (we call this new enhanced feature space, SID for staggered interaction data); (2) <a href="mvsplit.html">multivariate random forests (MVRF)</a> <span class="citation">[7]</span>. The latter is applied to the sidified data to develop distance between points via the multivariate relationship between features and their two-way interactions. The sidClustering algorithm is implmemented in the package by the self-titled function, <code><a href="../reference/sidClustering.rfsrc.html">sidClustering()</a></code>. For completeness, the function also provides an implementation of Breiman clustering using the two data mode generation schemes described in <span class="citation">[8]</span>. An illustration of <code><a href="../reference/sidClustering.rfsrc.html">sidClustering()</a></code> is given at the end.</p>
 </div>
 <div id="sidclustering-algorithm" class="section level2">
 <h2 class="hasAnchor">
@@ -263,7 +263,7 @@ D({\bf Z}_i,{\bf Z}_j,T_b)
 <div id="performance-metrics" class="section level2">
 <h2 class="hasAnchor">
 <a href="#performance-metrics" class="anchor"></a>Performance metrics</h2>
-<p>Performance metrics are implemented by the utility <code>sid.perf.metric</code>. The utitility provides performance assessements based on Gini and entropy, which are related to mutual information proposed by <span class="citation">Romano, Bailey, Nguyen, &amp; Verspoor (2014)</span>. These measures function as weighted averages of impurity in the predicted clusters. Weights are determined by cluster size which then takes into count the possibility of gaming the measure by forming small clusters. Smaller clusters have a higher chance of being pure by random chance but their contribution to the score is reduced to compensate. The idea is that we want clusters that are both as large and pure as possible in order to obtain the best possible score.</p>
+<p>Performance metrics are implemented by the utility <code>sid.perf.metric</code>. The utitility provides performance assessements based on Gini and entropy, which are related to mutual information proposed by <span class="citation">[9]</span>. These measures function as weighted averages of impurity in the predicted clusters. Weights are determined by cluster size which then takes into count the possibility of gaming the measure by forming small clusters. Smaller clusters have a higher chance of being pure by random chance but their contribution to the score is reduced to compensate. The idea is that we want clusters that are both as large and pure as possible in order to obtain the best possible score.</p>
 <p>The entropy and Gini measures of performance are defined as follows: <span class="math display">\[
 \rho_{\textrm E}=\sum_{i=1}^k \frac{n_i}{n} \sum_{j=1}^{k_t}
 -\frac{L_{ij}}{n_i}\log_2\left(\frac{L_{ij}}{n_i}\right),
@@ -319,33 +319,33 @@ L_{ij} &amp;=&amp; \text{number of cases when predicted cluster label
 <div id="references" class="section level2 unnumbered">
 <h2 class="hasAnchor">
 <a href="#references" class="anchor"></a>References</h2>
-<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
-<div id="ref-breiman2003" class="csl-entry">
-Breiman, L. (2003). Manual on settings up, using and understanding random forest. V4.0, University of California Berkeley, Statistics Department, Berkeley.
+<div id="refs" class="references csl-bib-body">
+<div id="ref-liu2000clustering" class="csl-entry">
+1. Liu B, Xia Y, Yu PS. Clustering through decision tree construction. In: Proceedings of the ninth international conference on information and knowledge management. ACM; 2000. p. 20–9.
 </div>
 <div id="ref-friedman2001elements" class="csl-entry">
-Friedman, J., Hastie, T., &amp; Tibshirani, R. (2001). <em>The elements of statistical learning</em>. Springer Series in Statistics. Springer, Berlin.
+2. Friedman J, Hastie T, Tibshirani R. The elements of statistical learning. Springer Series in Statistics. Springer, Berlin; 2001.
+</div>
+<div id="ref-breiman2003" class="csl-entry">
+3. Breiman L. Manual on settings up, using and understanding random forest. 2003.
 </div>
 <div id="ref-hartigan1975clustering" class="csl-entry">
-Hartigan, J. A. (1975). <em>Clustering algorithms</em>. Wiley.
-</div>
-<div id="ref-HemantMultiv" class="csl-entry">
-Ishwaran, H., Tang, F., Lu, M., &amp; Kogalur, U. B. (2021). <span class="nocase">randomForestSRC</span>: Multivariate splitting rule vignette. Retrieved from <a href="http://randomforestsrc.org/articles/mvsplit.html">http://randomforestsrc.org/articles/mvsplit.html</a>
-</div>
-<div id="ref-liu2000clustering" class="csl-entry">
-Liu, B., Xia, Y., &amp; Yu, P. S. (2000). Clustering through decision tree construction. <em>Proceedings of the ninth international conference on information and knowledge management</em> (pp. 20–29). ACM.
-</div>
-<div id="ref-sidclustering" class="csl-entry">
-Mantero, A., &amp; Ishwaran, H. (2021). Unsupervised random forests. <em>Statistical Analysis and Data Mining</em>, <em>14</em>(2), 144–167. Wiley Online Library.
+4. Hartigan JA. Clustering algorithms. Wiley; 1975.
 </div>
 <div id="ref-reynolds2006clustering" class="csl-entry">
-Reynolds, A. P., Richards, G., Iglesia, B. de la, &amp; Rayward-Smith, V. J. (2006). Clustering rules: A comparison of partitioning and hierarchical clustering algorithms. <em>Journal of Mathematical Modelling and Algorithms</em>, <em>5</em>(4), 475–504. Springer.
+5. Reynolds AP, Richards G, Iglesia B de la, Rayward-Smith VJ. Clustering rules: A comparison of partitioning and hierarchical clustering algorithms. Journal of Mathematical Modelling and Algorithms. 2006;5:475–504.
 </div>
-<div id="ref-mutualinfo" class="csl-entry">
-Romano, S., Bailey, J., Nguyen, V., &amp; Verspoor, K. (2014). Standardized mutual information for clustering comparisons: One step further in adjustment for chance. <em>International conference on machine learning</em> (pp. 1143–1151).
+<div id="ref-sidclustering" class="csl-entry">
+6. Mantero A, Ishwaran H. Unsupervised random forests. Statistical Analysis and Data Mining. 2021;14:144–67.
+</div>
+<div id="ref-HemantMultiv" class="csl-entry">
+7. Ishwaran H, Tang F, Lu M, Kogalur UB. <span class="nocase">randomForestSRC</span>: Multivariate splitting rule vignette. 2021. <a href="http://randomforestsrc.org/articles/mvsplit.html">http://randomforestsrc.org/articles/mvsplit.html</a>.
 </div>
 <div id="ref-horvath" class="csl-entry">
-Shi, T., &amp; Horvath, S. (2006). Unsupervised learning with random forest predictors. <em>Journal of Computational and Graphical Statistics</em>, <em>15</em>(1), 118–138. Taylor &amp; Francis.
+8. Shi T, Horvath S. Unsupervised learning with random forest predictors. Journal of Computational and Graphical Statistics. 2006;15:118–38.
+</div>
+<div id="ref-mutualinfo" class="csl-entry">
+9. Romano S, Bailey J, Nguyen V, Verspoor K. Standardized mutual information for clustering comparisons: One step further in adjustment for chance. In: International conference on machine learning. 2014. p. 1143–51.
 </div>
 </div>
 </div>

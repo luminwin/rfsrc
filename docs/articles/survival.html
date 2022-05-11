@@ -151,7 +151,7 @@
                         <h4 class="author">
 <a href="https://ishwaran.org/ishwaran.html">Hemant Ishwaran</a> <br><br> Michael S. Lauer <br><br> Eugene H. Blackstone <br><br> Min Lu <br><br> Udaya B. Kogalur</h4>
             
-            <h4 class="date">2022-05-09</h4>
+            <h4 class="date">2022-05-11</h4>
       
       
       <div class="hidden name"><code>survival.Rmd</code></div>
@@ -176,7 +176,7 @@ font-size: 16px;
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
-<p>Early applications of random forests (RF) focused on regression and classification problems. Random survival forests <span class="citation">(Ishwaran, Kogalur, Blackstone, &amp; Lauer, 2008)</span> (RSF) was introduced to extend RF to the setting of right-censored survival data. Implementation of RSF follows the same general principles as RF: (a) Survival trees are grown using bootstrapped data; (b) Random feature selection is used when splitting tree nodes; (c) Trees are generally grown deeply, and (d) The survival forest ensemble is calculated by averaging terminal node statistics (TNS).</p>
+<p>Early applications of random forests (RF) focused on regression and classification problems. Random survival forests <span class="citation">[1]</span> (RSF) was introduced to extend RF to the setting of right-censored survival data. Implementation of RSF follows the same general principles as RF: (a) Survival trees are grown using bootstrapped data; (b) Random feature selection is used when splitting tree nodes; (c) Trees are generally grown deeply, and (d) The survival forest ensemble is calculated by averaging terminal node statistics (TNS).</p>
 <p>The presence of censoring is a unique feature of survival data that complicates certain aspects of implementing RSF compared to RF for regression and classification. In right-censored survival data, the observed data is <span class="math inline">\((T,{\delta})\)</span> where <span class="math inline">\(T\)</span> is time and <span class="math inline">\({\delta}\)</span> is the censoring indicator. The observed time <span class="math inline">\(T\)</span> is defined as the minimum of the true (potentially unobserved) survival event time <span class="math inline">\(T^o\)</span> and the true (potentially unobserved) censoring time <span class="math inline">\(C^o\)</span>; thus <span class="math inline">\(T=\min(T^o,C^o)\)</span> and the actual event time might not be observed. The censoring indicator is defined as <span class="math inline">\({\delta}=I\{T^o\le C^o\}\)</span>. When <span class="math inline">\({\delta}=1\)</span>, an event has occurred (i.e., death has occurred) and we observe the true event time, <span class="math inline">\(T=T^o\)</span>. Otherwise when <span class="math inline">\({\delta}=0\)</span>, the observation is censored and we only observe the censoring time <span class="math inline">\(T=C^o\)</span>: thus we know that the subject has survived to time <span class="math inline">\(C^o\)</span>, but not when the subject actually dies.</p>
 <p>Hereafter we denote the data by <span class="math inline">\((T_1,{\bf X}_1,{\delta}_1),\ldots,(T_n,{\bf X}_n,{\delta}_n)\)</span> where <span class="math inline">\({\bf X}_i\)</span> is the feature vector (covariate) for individual <span class="math inline">\(i\)</span> and <span class="math inline">\(T_i\)</span> and <span class="math inline">\({\delta}_i\)</span> are the observed time and censoring indicators for <span class="math inline">\(i\)</span>. RSF trees just like RF trees are grown using resampling (for example by using the bootstrap; the default is to use .632 sampling without replacement). However for notational simplicity, we will sometimes ignore this distinction.</p>
 </div>
@@ -187,7 +187,7 @@ font-size: 16px;
 <div id="log-rank-splitting" class="section level3">
 <h3 class="hasAnchor">
 <a href="#log-rank-splitting" class="anchor"></a>Log-rank splitting</h3>
-<p>The default splitting rule used by the package is the log-rank test statistic and is specified by <code>splitrule="logrank"</code>. The log-rank test has traditionally been used for two-sample testing with survival data, but it can be used for survival splitting as a means for maximizing between-node survival differences <span class="citation">(Ciampi, Hogg, McKinney, &amp; Thiffault, 1988; LeBlanc &amp; Crowley, 1992, 1993; Mark Robert Segal, 1988; Mark R. Segal, 1995)</span>.</p>
+<p>The default splitting rule used by the package is the log-rank test statistic and is specified by <code>splitrule="logrank"</code>. The log-rank test has traditionally been used for two-sample testing with survival data, but it can be used for survival splitting as a means for maximizing between-node survival differences <span class="citation">[2–6]</span>.</p>
 <p>To explain log-rank splitting, consider a specific tree node to be split. Without loss of generality let us assume this is the root node (top of the tree). For simplicity assume the data is not bootstrapped, thus the root node data is <span class="math inline">\((T_1,{\bf X}_1,{\delta}_1),\ldots,(T_n,{\bf X}_n,{\delta}_n)\)</span>. Let <span class="math inline">\(X\)</span> denote a specific variable (i.e., one of the coordinates of the feature vector). A proposed split using <span class="math inline">\(X\)</span> is of the form <span class="math inline">\(X\le c\)</span> and <span class="math inline">\(X&gt;c\)</span> (for simplicity we assume <span class="math inline">\(X\)</span> is nominal) and splits the node into left and right daughters, <span class="math inline">\(L=\{X_i\le c\}\)</span> and <span class="math inline">\(R=\{X_i&gt;c\}\)</span>, respectively. Let <span class="math display">\[
 t_1&lt;t_2&lt;\cdots&lt;t_m
 \]</span> be the distinct death times and let <span class="math inline">\(d_{j,L},d_{j,R}\)</span> and <span class="math inline">\(Y_{j,L},Y_{j,R}\)</span> equal the number of deaths and individuals at risk at time <span class="math inline">\(t_j\)</span> in daughter nodes <span class="math inline">\(L,R\)</span>. At risk means the number of individuals in a daughter who are alive at time <span class="math inline">\(t_j\)</span>, or who have an event (death) at time <span class="math inline">\(t_j\)</span>: <span class="math display">\[
@@ -205,7 +205,7 @@ L(X,c)=
 <div id="log-rank-score-splitting" class="section level3">
 <h3 class="hasAnchor">
 <a href="#log-rank-score-splitting" class="anchor"></a>Log-rank score splitting</h3>
-<p>The package also implements splitting using the log-rank score test <span class="citation">(Hothorn &amp; Lausen, 2003)</span>. This is specified by the option <code>splitrule="logrankscore"</code>. To describe this rule, assume the variable <span class="math inline">\(X\)</span> has been ordered so that <span class="math inline">\(X_1\le X_2\le\cdots\le X_n\)</span> where for simplicity we assume there are <span class="math inline">\(n\)</span> unique values for <span class="math inline">\(X\)</span> (no ties). Now compute the ``ranks’’ for each survival time <span class="math inline">\(T_j\)</span>, <span class="math display">\[
+<p>The package also implements splitting using the log-rank score test <span class="citation">[7]</span>. This is specified by the option <code>splitrule="logrankscore"</code>. To describe this rule, assume the variable <span class="math inline">\(X\)</span> has been ordered so that <span class="math inline">\(X_1\le X_2\le\cdots\le X_n\)</span> where for simplicity we assume there are <span class="math inline">\(n\)</span> unique values for <span class="math inline">\(X\)</span> (no ties). Now compute the ``ranks’’ for each survival time <span class="math inline">\(T_j\)</span>, <span class="math display">\[
 a_j={\delta}_j-\sum_{k=1}^{\Gamma_j}\frac{{\delta}_k}{n-\Gamma_k+1}
 \]</span> where <span class="math inline">\(\Gamma_k=\#\{t:T_t\le T_k\}\)</span>. The log-rank score test is defined as <span class="math display">\[
 S(x,c)=\frac{\sum_{X_j\le c}a_j-n_L\bar{a}}
@@ -215,9 +215,9 @@ S(x,c)=\frac{\sum_{X_j\le c}a_j-n_L\bar{a}}
 <div id="randomized-splitting" class="section level3">
 <h3 class="hasAnchor">
 <a href="#randomized-splitting" class="anchor"></a>Randomized splitting</h3>
-<p>All models in the package including RSF allow the use of randomized splitting specified by the option <code>nsplit</code>. Rather than splitting the node by considering all possible split-values for a variable, instead a fixed number of randomly selected split-points <span class="math inline">\(c_1,\ldots,c_{\texttt{nsplit}}\)</span> are chosen <span class="citation">(Ishwaran, 2015; Ishwaran et al., 2008; Ishwaran, Kogalur, Gorodeski, Minn, &amp; Lauer, 2010)</span>. For example, the best randomized split using log-rank splitting is the maximal value of <span class="math display">\[
+<p>All models in the package including RSF allow the use of randomized splitting specified by the option <code>nsplit</code>. Rather than splitting the node by considering all possible split-values for a variable, instead a fixed number of randomly selected split-points <span class="math inline">\(c_1,\ldots,c_{\texttt{nsplit}}\)</span> are chosen <span class="citation">[1, 8, 9]</span>. For example, the best randomized split using log-rank splitting is the maximal value of <span class="math display">\[
 |L(X,c_1)|,\ldots,|L(X,c_{\texttt{nsplit}})|.
-\]</span> For each variable <span class="math inline">\(X\)</span>, this reduces <span class="math inline">\(n\)</span> split-statistic evaluations (worst case scenario) to <span class="math inline">\(\texttt{nsplit}\)</span> evaluations. Not only does randomized splitting greatly reduce computations, it also mitigates the well known tree bias of favoring splits on variables with a large number of split-points, such as continuous variables or factors with a large number of categorical labels <span class="citation">(Loh &amp; Shih, 1997)</span>. Related work includes <span class="citation">Geurts, Ernst, &amp; Wehenkel (2006)</span> who investigated extremely randomized trees. Here a single random split-point is chosen for each variable (i.e., <span class="math inline">\(\texttt{nsplit}=1\)</span>). Traditional deterministic splitting (all split values considered) is specified by <code>nsplit = 0</code>.</p>
+\]</span> For each variable <span class="math inline">\(X\)</span>, this reduces <span class="math inline">\(n\)</span> split-statistic evaluations (worst case scenario) to <span class="math inline">\(\texttt{nsplit}\)</span> evaluations. Not only does randomized splitting greatly reduce computations, it also mitigates the well known tree bias of favoring splits on variables with a large number of split-points, such as continuous variables or factors with a large number of categorical labels <span class="citation">[10]</span>. Related work includes <span class="citation">[11]</span> who investigated extremely randomized trees. Here a single random split-point is chosen for each variable (i.e., <span class="math inline">\(\texttt{nsplit}=1\)</span>). Traditional deterministic splitting (all split values considered) is specified by <code>nsplit = 0</code>.</p>
 </div>
 </div>
 <div id="terminal-node-statistics-tns" class="section level2">
@@ -261,10 +261,7 @@ S^{\text{OOB}}(t|{\bf X}_i)=S_h(t),
 \bar{H}_i^{\text{OOB}}(t)=\frac{1}{|O_i|}\sum_{b\in O_i} H_b^{\text{IB}}(t|{\bf X}_i),\quad
 \bar{S}_i^{\text{OOB}}(t)=\frac{1}{|O_i|}\sum_{b\in O_i} S_b^{\text{IB}}(t|{\bf X}_i),
 \quad i=1,\ldots,n.
-\]</span></p>
-<br><p class="comment2">
-An important distinction between the two sets of estimators is that OOB estimators are used for inference on the training data and for estimating prediction error. In-bag estimators on the other hand are used for prediction and can be used for any feature <span class="math inline">\({\bf X}\)</span>.
-</p>
+\]</span> An important distinction between the two sets of estimators is that OOB estimators are used for inference on the training data and for estimating prediction error. In-bag estimators on the other hand are used for prediction and can be used for any feature <span class="math inline">\({\bf X}\)</span>.</p>
 <div id="why-are-two-estimates-provided" class="section level3">
 <h3 class="hasAnchor">
 <a href="#why-are-two-estimates-provided" class="anchor"></a>Why are two estimates provided?</h3>
@@ -279,7 +276,7 @@ H(t) = -\log(S(t)).
 <div id="prediction-error" class="section level2">
 <h2 class="hasAnchor">
 <a href="#prediction-error" class="anchor"></a>Prediction error</h2>
-<p>Prediction error for survival models is measured by <span class="math inline">\(1- \text{C}\)</span>, where C is Harrell’s concordance index <span class="citation">(Harrell Jr et al., 1982)</span>. Prediction error is between 0 and 1, and measures how well the predictor correctly ranks two random individuals in terms of survival. Unlike other measures of survival performance, Harrell’s C-index does not depend on choosing a fixed time for evaluation of the model and specifically takes into account censoring of individuals. The method is a popular means for assessing prediction performance in survival settings since it is easy to understand and interpret.</p>
+<p>Prediction error for survival models is measured by <span class="math inline">\(1- \text{C}\)</span>, where C is Harrell’s concordance index <span class="citation">[12]</span>. Prediction error is between 0 and 1, and measures how well the predictor correctly ranks two random individuals in terms of survival. Unlike other measures of survival performance, Harrell’s C-index does not depend on choosing a fixed time for evaluation of the model and specifically takes into account censoring of individuals. The method is a popular means for assessing prediction performance in survival settings since it is easy to understand and interpret.</p>
 <div id="mortality-the-predicted-value-used-by-rsf" class="section level3">
 <h3 class="hasAnchor">
 <a href="#mortality-the-predicted-value-used-by-rsf" class="anchor"></a>Mortality (the predicted value used by RSF)</h3>
@@ -291,7 +288,7 @@ H(t) = -\log(S(t)).
 \]</span> Individual <span class="math inline">\(i\)</span> is said to have a worse outcome than individual <span class="math inline">\(j\)</span> if <span class="math display">\[
 \bar{M}_i^{\text{OOB}} &gt; \bar{M}_{j}^{\text{OOB}}.
 \]</span></p>
-<p>The mortality value <span class="citation">(Ishwaran et al., 2008)</span> represents estimated risk for each individual calibrated to the scale of the number of events. Thus as a specific example, if <span class="math inline">\(i\)</span> has a mortality value of 100, then if all individuals had the same covariate as <span class="math inline">\(i\)</span>, which is <span class="math inline">\({\bf X}={\bf x}_i\)</span>, we would expect an average of 100 events.</p>
+<p>The mortality value <span class="citation">[1]</span> represents estimated risk for each individual calibrated to the scale of the number of events. Thus as a specific example, if <span class="math inline">\(i\)</span> has a mortality value of 100, then if all individuals had the same covariate as <span class="math inline">\(i\)</span>, which is <span class="math inline">\({\bf X}={\bf x}_i\)</span>, we would expect an average of 100 events.</p>
 </div>
 <div id="c-index-calculation" class="section level3">
 <h3 class="hasAnchor">
@@ -317,7 +314,7 @@ H(t) = -\log(S(t)).
 <div id="brier-score" class="section level3">
 <h3 class="hasAnchor">
 <a href="#brier-score" class="anchor"></a>Brier score</h3>
-<p>The Brier score, <span class="math inline">\(\text{BS}(t)\)</span>, is another popular measure used to assess prediction peformance. Let <span class="math inline">\(\hat{S}(t|{\bf X})\)</span> be some estimator of the survival function. To estimate the prediction performance of <span class="math inline">\(\hat{S}\)</span>, let <span class="math inline">\(\hat{G}(t|{\bf X})\)</span> be a prechosen estimator of the censoring survival function, <span class="math inline">\(G(t|{\bf X})=\mathbb{P}\{C^o\ge t|{\bf X}\}\)</span>. The Brier score for <span class="math inline">\(\hat{S}(t|{\bf X})\)</span> can be estimated by using inverse probability of censoring weights (IPCW) using the method of <span class="citation">Gerds &amp; Schumacher (2006)</span> <span class="math display">\[
+<p>The Brier score, <span class="math inline">\(\text{BS}(t)\)</span>, is another popular measure used to assess prediction peformance. Let <span class="math inline">\(\hat{S}(t|{\bf X})\)</span> be some estimator of the survival function. To estimate the prediction performance of <span class="math inline">\(\hat{S}\)</span>, let <span class="math inline">\(\hat{G}(t|{\bf X})\)</span> be a prechosen estimator of the censoring survival function, <span class="math inline">\(G(t|{\bf X})=\mathbb{P}\{C^o\ge t|{\bf X}\}\)</span>. The Brier score for <span class="math inline">\(\hat{S}(t|{\bf X})\)</span> can be estimated by using inverse probability of censoring weights (IPCW) using the method of <span class="citation">[13]</span> <span class="math display">\[
 \hat{\text{BS}}(t)=
 \frac{1}{n}\sum_{i=1}^{n}\left\{
 \frac{\hat{S}^2(t|{\bf X}_i)I\{T_i\leq t\}{\delta}_i}{\hat{G}(T_i-|{\bf X}_i)}
@@ -331,7 +328,7 @@ H(t) = -\log(S(t)).
 <div id="illustration" class="section level2">
 <h2 class="hasAnchor">
 <a href="#illustration" class="anchor"></a>Illustration</h2>
-<p>To illustrate, we use the survival data from <span class="citation">Hsich, Gorodeski, Blackstone, Ishwaran, &amp; Lauer (2011)</span> consisting of 2231 adult patients with systolic heart failure. All patients underwent cardiopulmonary stress testing. During a mean follow-up of 5 years (maximum for survivors, 11 years), 742 patients died. The outcome is all-cause mortality and a total of <span class="math inline">\(p=39\)</span> covariates were measured for each patient including demographic, cardiac and noncardiac comorbidity, and stress testing information.</p>
+<p>To illustrate, we use the survival data from <span class="citation">[14]</span> consisting of 2231 adult patients with systolic heart failure. All patients underwent cardiopulmonary stress testing. During a mean follow-up of 5 years (maximum for survivors, 11 years), 742 patients died. The outcome is all-cause mortality and a total of <span class="math inline">\(p=39\)</span> covariates were measured for each patient including demographic, cardiac and noncardiac comorbidity, and stress testing information.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(randomForestSRC)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(peakVO2, <span class="at">package =</span> <span class="st">"randomForestSRC"</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>dta <span class="ot">&lt;-</span> peakVO2</span>
@@ -354,7 +351,7 @@ H(t) = -\log(S(t)).
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="er">&gt;</span> <span class="dv">13</span>        Number of random split points<span class="sc">:</span> <span class="dv">50</span></span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="dv">14</span>                           (OOB) CRPS<span class="sc">:</span> <span class="fl">0.15476339</span></span>
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="dv">15</span>    (OOB) Requested performance error<span class="sc">:</span> <span class="fl">0.29830498</span></span></code></pre></div>
-<p>From the above code, <code>obj$survival</code> <code>obj$survival.oob</code> and <code>obj$chf</code> <code>obj$chf.oob</code> contain the IB and OOB survival functions and CHFs respectively. All these four objects have a dimension of <span class="math inline">\(n\times c\)</span>, where <span class="math inline">\(n\)</span> is number of patients and <span class="math inline">\(c\)</span> is number of unique time points from the inputted argument <code>ntime</code>, and all the unique death times are ordered and stored in <code>obj$time.interest</code>. The one-dimensional predicted values are stored in <code>obj$predicted</code> and <code>obj$predicted.oob</code>, which are IB and OOB mortality. The continuous rank probability score (CRPS) is shown in line 14 which is defined as the integrated Brier score divided by time. The Brier score is calculated using inverse probability of censoring weights (IPCW) using the method of Gerds et al. (2006) <span class="citation">Gerds &amp; Schumacher (2006)</span>. The error rate is stored in <code>obj$err.rate</code> which is calculated using the C-calculation as described <a href="survival.html#c-index-calculation-1">above</a> and is shown in line 15. For the printout, line 2 displays the number of deaths; line 3 and 4 displays the number of trees and the size of terminal node, which are specified by the input argument <code>ntree</code> and <code>nodesize</code>. Line 5 displays the number of terminal nodes per tree averaged across the forest and line 6 reflects the input argument <code>mtry</code>, which is the number of variables randomly selected as candidates for splitting a node; line 8 displays the type of bootstrap, where <code>swor</code> refers to sampling without replacement and <code>swr</code> refers to sampling with replacement; line 9 displays the sample size for line 8 where for <code>swor</code>, the number equals to about 63.2% observations, which matches the ratio of the original data in sampling with replacement; line 10 and 11 show the type of forest where <code>RSF</code> and <code>surv</code> refer to <a href="getstarted.html#growing-a-forest-1">family survival</a>; line 12 displays <a href="getstarted.html#split-rules-1">splitting rule</a> which matches the inputted argument <code>splitrule</code> and line 13 shows the number of random splits to consider for each candidate splitting variable which matches the inputted argument <code>nsplit</code>.</p>
+<p>From the above code, <code>obj$survival</code> <code>obj$survival.oob</code> and <code>obj$chf</code> <code>obj$chf.oob</code> contain the IB and OOB survival functions and CHFs respectively. All these four objects have a dimension of <span class="math inline">\(n\times c\)</span>, where <span class="math inline">\(n\)</span> is number of patients and <span class="math inline">\(c\)</span> is number of unique time points from the inputted argument <code>ntime</code>, and all the unique death times are ordered and stored in <code>obj$time.interest</code>. The one-dimensional predicted values are stored in <code>obj$predicted</code> and <code>obj$predicted.oob</code>, which are IB and OOB mortality. The continuous rank probability score (CRPS) is shown in line 14 which is defined as the integrated Brier score divided by time. The Brier score is calculated using inverse probability of censoring weights (IPCW) using the method of Gerds et al. (2006) <span class="citation">[13]</span>. The error rate is stored in <code>obj$err.rate</code> which is calculated using the C-calculation as described <a href="survival.html#c-index-calculation-1">above</a> and is shown in line 15. For the printout, line 2 displays the number of deaths; line 3 and 4 displays the number of trees and the size of terminal node, which are specified by the input argument <code>ntree</code> and <code>nodesize</code>. Line 5 displays the number of terminal nodes per tree averaged across the forest and line 6 reflects the input argument <code>mtry</code>, which is the number of variables randomly selected as candidates for splitting a node; line 8 displays the type of bootstrap, where <code>swor</code> refers to sampling without replacement and <code>swr</code> refers to sampling with replacement; line 9 displays the sample size for line 8 where for <code>swor</code>, the number equals to about 63.2% observations, which matches the ratio of the original data in sampling with replacement; line 10 and 11 show the type of forest where <code>RSF</code> and <code>surv</code> refer to <a href="getstarted.html#growing-a-forest-1">family survival</a>; line 12 displays <a href="getstarted.html#split-rules-1">splitting rule</a> which matches the inputted argument <code>splitrule</code> and line 13 shows the number of random splits to consider for each candidate splitting variable which matches the inputted argument <code>nsplit</code>.</p>
 <p>The following illustrates how to get the C-index directly from a RSF analysis using the built in function get.cindex.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get.cindex</span>(obj<span class="sc">$</span>yvar[,<span class="dv">1</span>], obj<span class="sc">$</span>yvar[,<span class="dv">2</span>], obj<span class="sc">$</span>predicted.oob)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>  [<span class="dv">1</span>] <span class="fl">0.299378</span></span></code></pre></div>
@@ -423,8 +420,8 @@ H(t) = -\log(S(t)).
 <div id="variable-importance" class="section level2">
 <h2 class="hasAnchor">
 <a href="#variable-importance" class="anchor"></a>Variable Importance</h2>
-<p>RSF provides a fully nonparametric measure of variable importance (VIMP). The most common measure is Breiman-Cutler VIMP <span class="citation">(Breiman, 2002)</span> and is called permutation importance. VIMP calculated using permutation importance adopts a prediction based approach by measuring prediction error attributable to the variable. A clever feature is that rather than using cross-validation, which can be computationally expensive, permutation importance makes use of OOB estimation. Specifically, to calculate the VIMP for a variable <span class="math inline">\(X\)</span>, we randomly permute the OOB values of <span class="math inline">\(X\)</span> in a tree (the remaining coordinates of <span class="math inline">\({\bf X}\)</span> are not altered). The perturbed OOB data is dropped down the tree and the OOB error for the resulting tree predictor determined. The amount by which this new error exceeds the original OOB error for the tree equals the tree importance for <span class="math inline">\(X\)</span>. Averaging over trees yields permutation importance for <span class="math inline">\(X\)</span>.</p>
-<p>Large positive VIMP indicates high predictive ability while zero or negative values identify noise variables. Subsampling <span class="citation">(Ishwaran &amp; Lu, 2019)</span> can be used to estimate the standard error and to approximate the confidence intervals for VIMP. <a href="#figure-3">Figure 3</a> displays delete-<span class="math inline">\(d\)</span> jackknife 99% asymptotic normal confidence intervals for the <span class="math inline">\(p=39\)</span> variables from the systolic heart failure RSF analysis. Prediction error was calculated using the C-index.</p>
+<p>RSF provides a fully nonparametric measure of variable importance (VIMP). The most common measure is Breiman-Cutler VIMP <span class="citation">[15]</span> and is called permutation importance. VIMP calculated using permutation importance adopts a prediction based approach by measuring prediction error attributable to the variable. A clever feature is that rather than using cross-validation, which can be computationally expensive, permutation importance makes use of OOB estimation. Specifically, to calculate the VIMP for a variable <span class="math inline">\(X\)</span>, we randomly permute the OOB values of <span class="math inline">\(X\)</span> in a tree (the remaining coordinates of <span class="math inline">\({\bf X}\)</span> are not altered). The perturbed OOB data is dropped down the tree and the OOB error for the resulting tree predictor determined. The amount by which this new error exceeds the original OOB error for the tree equals the tree importance for <span class="math inline">\(X\)</span>. Averaging over trees yields permutation importance for <span class="math inline">\(X\)</span>.</p>
+<p>Large positive VIMP indicates high predictive ability while zero or negative values identify noise variables. Subsampling <span class="citation">[16]</span> can be used to estimate the standard error and to approximate the confidence intervals for VIMP. <a href="#figure-3">Figure 3</a> displays delete-<span class="math inline">\(d\)</span> jackknife 99% asymptotic normal confidence intervals for the <span class="math inline">\(p=39\)</span> variables from the systolic heart failure RSF analysis. Prediction error was calculated using the C-index.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R">  <span class="va">jk.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/subsample.rfsrc.html">subsample</a></span><span class="op">(</span><span class="va">obj</span><span class="op">)</span>
   <span class="fu"><a href="https://rdrr.io/r/grDevices/pdf.html">pdf</a></span><span class="op">(</span><span class="st">"VIMPsur.pdf"</span>, width <span class="op">=</span> <span class="fl">15</span>, height <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>
@@ -451,54 +448,54 @@ H(t) = -\log(S(t)).
 <div id="references" class="section level2 unnumbered">
 <h2 class="hasAnchor">
 <a href="#references" class="anchor"></a>References</h2>
-<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
-<div id="ref-Breiman2002" class="csl-entry">
-Breiman, L. (2002). Manual on setting up, using, and understanding random forests v3. 1. <em>Statistics Department University of California Berkeley, CA, USA</em>, <em>1</em>.
+<div id="refs" class="references csl-bib-body">
+<div id="ref-Ishwaran2008" class="csl-entry">
+1. Ishwaran H, Kogalur UB, Blackstone EH, Lauer MS. Random survival forests. The Annals of Applied Statistics. 2008;2:841–60.
 </div>
 <div id="ref-Ciampi1988" class="csl-entry">
-Ciampi, A., Hogg, S. A., McKinney, S., &amp; Thiffault, J. (1988). <span class="nocase">RECPAM: a computer program for recursive partition and amalgamation for censored survival data</span>. <em>Comp. Methods Programs Biomed.</em>, <em>26</em>(3), 239–256. Elsevier.
-</div>
-<div id="ref-gerds2006consistent" class="csl-entry">
-Gerds, T. A., &amp; Schumacher, M. (2006). Consistent estimation of the expected brier score in general survival models with right-censored event times. <em>Biometrical Journal</em>, <em>48</em>(6), 1029–1040. Wiley Online Library.
-</div>
-<div id="ref-Geurts2006" class="csl-entry">
-Geurts, P., Ernst, D., &amp; Wehenkel, L. (2006). Extremely randomized trees. <em>Machine Learning</em>, <em>63</em>(1), 3–42. Springer.
-</div>
-<div id="ref-Harrell1982" class="csl-entry">
-Harrell Jr, F. E., Califf, R. M., Pryor, D. B., Lee, K. L., Rosati, R. A., et al. (1982). Evaluating the yield of medical tests. <em>JAMA</em>, <em>247</em>(18), 2543–2546.
-</div>
-<div id="ref-hothorn2003exact" class="csl-entry">
-Hothorn, T., &amp; Lausen, B. (2003). On the exact distribution of maximally selected rank statistics. <em>Computational Statistics &amp; Data Analysis</em>, <em>43</em>(2), 121–137. Elsevier.
-</div>
-<div id="ref-Hsich2011" class="csl-entry">
-Hsich, E., Gorodeski, E. Z., Blackstone, E. H., Ishwaran, H., &amp; Lauer, M. S. (2011). Identifying important risk factors for survival in patient with systolic heart failure using random survival forests. <em>Circulation: Cardiovascular Quality and Outcomes</em>, <em>4</em>(1), 39–45. Lippincott Williams; Wilkins.
-</div>
-<div id="ref-Ishwaran2015" class="csl-entry">
-Ishwaran, H. (2015). The effect of splitting on random forests. <em>Machine Learning</em>, <em>99</em>(1), 75–118. Springer.
-</div>
-<div id="ref-Ishwaran2008" class="csl-entry">
-Ishwaran, H., Kogalur, U. B., Blackstone, E. H., &amp; Lauer, M. S. (2008). Random survival forests. <em>The Annals of Applied Statistics</em>, <em>2</em>(3), 841–860. JSTOR.
-</div>
-<div id="ref-Ishwaran2010" class="csl-entry">
-Ishwaran, H., Kogalur, U. B., Gorodeski, E. Z., Minn, A. J., &amp; Lauer, M. S. (2010). High-dimensional variable selection for survival data. <em>Journal of the American Statistical Association</em>, <em>105</em>(489), 205–217. Taylor &amp; Francis.
-</div>
-<div id="ref-ishwaran2019standard033" class="csl-entry">
-Ishwaran, H., &amp; Lu, M. (2019). Standard errors and confidence intervals for variable importance in random forest regression, classification, and survival. <em>Statistics in medicine</em>, <em>38</em>(4), 558–582. Wiley Online Library. Retrieved from <a href="https://ishwaran.org/papers/IL.StatMed.2019.pdf">https://ishwaran.org/papers/IL.StatMed.2019.pdf</a>
-</div>
-<div id="ref-LeBlanc1992" class="csl-entry">
-LeBlanc, M., &amp; Crowley, J. (1992). Relative risk trees for censored survival data. <em>Biometrics</em>, 411–425. JSTOR.
-</div>
-<div id="ref-LeBlanc1993" class="csl-entry">
-LeBlanc, M., &amp; Crowley, J. (1993). Survival trees by goodness of split. <em>Journal of the American Statistical Association</em>, <em>88</em>(422), 457–467. Taylor &amp; Francis Group.
-</div>
-<div id="ref-Loh1997" class="csl-entry">
-Loh, W.-Y., &amp; Shih, Y.-S. (1997). Split selection methods for classification trees. <em>Statistica Sinica</em>, 815–840. JSTOR.
+2. Ciampi A, Hogg SA, McKinney S, Thiffault J. <span class="nocase">RECPAM: a computer program for recursive partition and amalgamation for censored survival data</span>. Comp Methods Programs Biomed. 1988;26:239–56.
 </div>
 <div id="ref-Segal1988" class="csl-entry">
-Segal, Mark Robert. (1988). Regression trees for censored data. <em>Biometrics</em>, 35–47. JSTOR.
+3. Segal MR. Regression trees for censored data. Biometrics. 1988;35–47.
 </div>
 <div id="ref-Segal1995" class="csl-entry">
-Segal, Mark R. (1995). Extending the elements of tree-structured regression. <em>Statistical Methods in Medical Research</em>, <em>4</em>(3), 219–236. Sage Publications Sage CA: Thousand Oaks, CA.
+4. Segal MR. Extending the elements of tree-structured regression. Statistical Methods in Medical Research. 1995;4:219–36.
+</div>
+<div id="ref-LeBlanc1992" class="csl-entry">
+5. LeBlanc M, Crowley J. Relative risk trees for censored survival data. Biometrics. 1992;411–25.
+</div>
+<div id="ref-LeBlanc1993" class="csl-entry">
+6. LeBlanc M, Crowley J. Survival trees by goodness of split. Journal of the American Statistical Association. 1993;88:457–67.
+</div>
+<div id="ref-hothorn2003exact" class="csl-entry">
+7. Hothorn T, Lausen B. On the exact distribution of maximally selected rank statistics. Computational Statistics &amp; Data Analysis. 2003;43:121–37.
+</div>
+<div id="ref-Ishwaran2010" class="csl-entry">
+8. Ishwaran H, Kogalur UB, Gorodeski EZ, Minn AJ, Lauer MS. High-dimensional variable selection for survival data. Journal of the American Statistical Association. 2010;105:205–17.
+</div>
+<div id="ref-Ishwaran2015" class="csl-entry">
+9. Ishwaran H. The effect of splitting on random forests. Machine Learning. 2015;99:75–118.
+</div>
+<div id="ref-Loh1997" class="csl-entry">
+10. Loh W-Y, Shih Y-S. Split selection methods for classification trees. Statistica Sinica. 1997;815–40.
+</div>
+<div id="ref-Geurts2006" class="csl-entry">
+11. Geurts P, Ernst D, Wehenkel L. Extremely randomized trees. Machine Learning. 2006;63:3–42.
+</div>
+<div id="ref-Harrell1982" class="csl-entry">
+12. Harrell Jr FE, Califf RM, Pryor DB, Lee KL, Rosati RA, et al. Evaluating the yield of medical tests. JAMA. 1982;247:2543–6.
+</div>
+<div id="ref-gerds2006consistent" class="csl-entry">
+13. Gerds TA, Schumacher M. Consistent estimation of the expected brier score in general survival models with right-censored event times. Biometrical Journal. 2006;48:1029–40.
+</div>
+<div id="ref-Hsich2011" class="csl-entry">
+14. Hsich E, Gorodeski EZ, Blackstone EH, Ishwaran H, Lauer MS. Identifying important risk factors for survival in patient with systolic heart failure using random survival forests. Circulation: Cardiovascular Quality and Outcomes. 2011;4:39–45.
+</div>
+<div id="ref-Breiman2002" class="csl-entry">
+15. Breiman L. Manual on setting up, using, and understanding random forests v3. 1. Statistics Department University of California Berkeley, CA, USA. 2002;1.
+</div>
+<div id="ref-ishwaran2019standard033" class="csl-entry">
+16. Ishwaran H, Lu M. Standard errors and confidence intervals for variable importance in random forest regression, classification, and survival. Statistics in medicine. 2019;38:558–82. <a href="https://ishwaran.org/papers/IL.StatMed.2019.pdf">https://ishwaran.org/papers/IL.StatMed.2019.pdf</a>.
 </div>
 </div>
 </div>

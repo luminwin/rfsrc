@@ -151,7 +151,7 @@
                         <h4 class="author">
 <a href="https://ishwaran.org/ishwaran.html">Hemant Ishwaran</a> <br><br> Robert O’Brien <br><br> Min Lu <br><br> Udaya B. Kogalur</h4>
             
-            <h4 class="date">2022-05-09</h4>
+            <h4 class="date">2022-05-11</h4>
       
       
       <div class="hidden name"><code>imbalance.Rmd</code></div>
@@ -259,7 +259,7 @@ p({\bf x}) \rightarrow 0.
 <div id="quantile-classifiers" class="section level2">
 <h2 class="hasAnchor">
 <a href="#quantile-classifiers" class="anchor"></a>Quantile classifiers</h2>
-<p>Following <span class="citation">Mease, Wyner, &amp; Buja (2007)</span>, we define a quantile classifier (<span class="math inline">\(q\)</span>-classifier) as <span class="math display">\[
+<p>Following <span class="citation">[1]</span>, we define a quantile classifier (<span class="math inline">\(q\)</span>-classifier) as <span class="math display">\[
 \delta_{\textrm q}({\bf x}) = I{\{p({\bf x}) \ge q\}},\quad\text{}
 0&lt;q&lt;1.
 \]</span> Observe that the median classifier <span class="math inline">\(q\)</span> = 1/2 yields the Bayes classifier <span class="math display">\[
@@ -347,14 +347,14 @@ r(\delta_{\textrm B},1,1)
 \delta_{\textrm D}({\bf x})=
 I{\left\{\cfrac{f_{{\bf X}|Y}({\bf x}|1)}{f_{{\bf X}|Y}({\bf x}|0)}\,\,\ge\,\, 1\right\}}.
 \]</span> Basing the classifier on the conditional density of the features, <span class="math inline">\(f_{{\bf X}|Y}\)</span>, rather than the conditional density of the response, <span class="math inline">\(p({\bf x})\)</span>, removes the effect of the prevalence of the minority class.</p>
-<p>It can be shown that <span class="math inline">\(\delta_{\textrm D}({\bf x})\)</span> has the TNR+TPR-property <span class="citation">(O’Brien &amp; Ishwaran, 2019)</span>. Therefore we have the optimal classifier we seek. However, while it is convenient theoretically to describe the density-based classifier in terms of the conditional density of the data, in practice it will be difficult to implement the classifier as stated. But using Bayes’ Theorem, we can rewrite <span class="math inline">\(\delta_{\textrm D}({\bf x})\)</span> more conveniently as <span class="math display">\[\begin{eqnarray}
+<p>It can be shown that <span class="math inline">\(\delta_{\textrm D}({\bf x})\)</span> has the TNR+TPR-property <span class="citation">[2]</span>. Therefore we have the optimal classifier we seek. However, while it is convenient theoretically to describe the density-based classifier in terms of the conditional density of the data, in practice it will be difficult to implement the classifier as stated. But using Bayes’ Theorem, we can rewrite <span class="math inline">\(\delta_{\textrm D}({\bf x})\)</span> more conveniently as <span class="math display">\[\begin{eqnarray}
 \delta_{\textrm D}({\bf x})
 &amp;=&amp; I{\left\{\cfrac{f_{{\bf X}|Y}({\bf x}|1)}{f_{{\bf X}|Y}({\bf x}|0)}\,\,\ge\,\, 1\right\}}\\
 &amp;=&amp; I{\{\Delta_{\textrm D}({\bf x}) \ge 1\}},
 \hskip20pt \Delta_{\textrm D}({\bf x})= \frac{p({\bf x})(1-\pi)}{(1-p({\bf x}))\pi}\\
 &amp;=&amp; I{\{p({\bf x})\ge\pi\}},
 \hskip27pt\pi=\mathbb{P}\{Y=1\}.
-\end{eqnarray}\]</span> This shows that the density-based estimator is actually a <span class="math inline">\(q\)</span>-classifier with the value <span class="math inline">\(q=\pi=\mathbb{P}\{Y=1\}\)</span>. Thus setting <span class="math inline">\(q\)</span> to the value <span class="math inline">\(\pi\)</span> which is the prevalence (minority class marginal probability) gives us the optimal value we were after. For example, if the data is balanced, <span class="math inline">\(\pi=1/2\)</span>, then this becomes the Bayes rule. We call this new classifier the <span style="font-style:italic">q*</span>-classifier <span class="citation">(O’Brien &amp; Ishwaran, 2019)</span>.</p>
+\end{eqnarray}\]</span> This shows that the density-based estimator is actually a <span class="math inline">\(q\)</span>-classifier with the value <span class="math inline">\(q=\pi=\mathbb{P}\{Y=1\}\)</span>. Thus setting <span class="math inline">\(q\)</span> to the value <span class="math inline">\(\pi\)</span> which is the prevalence (minority class marginal probability) gives us the optimal value we were after. For example, if the data is balanced, <span class="math inline">\(\pi=1/2\)</span>, then this becomes the Bayes rule. We call this new classifier the <span style="font-style:italic">q*</span>-classifier <span class="citation">[2]</span>.</p>
 
 <p class="comment">
 <strong> <span style="font-style:normal">Definition 6:</span> </strong> Call <span class="math inline">\(\delta_{\textrm q^*}({\bf x}) = I{\{p({\bf x})\ge\pi\}}=\delta_{\textrm D}({\bf x})\)</span> the <span style="font-style:italic">q*</span>-classifier.
@@ -374,13 +374,13 @@ r(\delta_{\textrm q^*}, \pi,1-\pi)
 <div id="rfq" class="section level2">
 <h2 class="hasAnchor">
 <a href="#rfq" class="anchor"></a>RFQ</h2>
-<p>The function <code><a href="../reference/imbalanced.rfsrc.html">imbalanced()</a></code> of the package provides a RF implementation of the <span style="font-style:italic">q*</span>-classifier for the two-class imbalance problem. We refer to this method as random forests quantile classifier and abbreviate this as RFQ <span class="citation">(O’Brien &amp; Ishwaran, 2019)</span>. Currently, only two-class data is supported. We recommend setting <code>ntree</code> to a relatively large value when dealing with imbalanced data to ensure convergence of the performance value. Consider using 5 times the usual number of trees. The default value used by <code><a href="../reference/imbalanced.rfsrc.html">imbalanced()</a></code> is <code>ntree=3000</code>.</p>
+<p>The function <code><a href="../reference/imbalanced.rfsrc.html">imbalanced()</a></code> of the package provides a RF implementation of the <span style="font-style:italic">q*</span>-classifier for the two-class imbalance problem. We refer to this method as random forests quantile classifier and abbreviate this as RFQ <span class="citation">[2]</span>. Currently, only two-class data is supported. We recommend setting <code>ntree</code> to a relatively large value when dealing with imbalanced data to ensure convergence of the performance value. Consider using 5 times the usual number of trees. The default value used by <code><a href="../reference/imbalanced.rfsrc.html">imbalanced()</a></code> is <code>ntree=3000</code>.</p>
 <p>The default performance metric used by <code><a href="../reference/imbalanced.rfsrc.html">imbalanced()</a></code> is <span class="math display">\[
 \text{$G$-mean} =
 \left(\textrm{TNR}\times \textrm{TPR}\right)^{1/2}.
-\]</span> The <span class="math inline">\(G\)</span>-mean is the geometric mean of TNR and TPR and it is meant to replace misclassification rate in imbalanced data settings. The problem with the latter is that an overall accuracy close to 1 can be achieved by classifying all data points as majority class labels for heavily imbalanced data as previously noted. By way of contrast, the <span class="math inline">\(G\)</span>-mean is close to 1 only when both the true negative and true positive rates are close to 1 and the difference between the two is small <span class="citation">(Kubat, Holte, &amp; Matwin, 1997)</span>.</p>
+\]</span> The <span class="math inline">\(G\)</span>-mean is the geometric mean of TNR and TPR and it is meant to replace misclassification rate in imbalanced data settings. The problem with the latter is that an overall accuracy close to 1 can be achieved by classifying all data points as majority class labels for heavily imbalanced data as previously noted. By way of contrast, the <span class="math inline">\(G\)</span>-mean is close to 1 only when both the true negative and true positive rates are close to 1 and the difference between the two is small <span class="citation">[3]</span>.</p>
 <p>It is possible to use other metrics using the option <code>perf.type</code>, however we caution users to be careful when using these or other performance measures. We have already pointed out the problem with misclassification error, but there are other well known metrics that perform poorly in imbalanced data. An example is Area under the Curve (AUC) for Receiver Operating Characteristic (ROC), which we abbreviate as ROC-AUC. This is a widely used metric for classification, but ROC-AUC is insensitive to <span class="math inline">\(\mathrm{IR}\)</span>. Such a property is unwanted for imbalanced data since rare cases are usually associated with higher costs; proper performance metrics should show a monotonic decrease with increasing <span class="math inline">\(\mathrm{IR}\)</span>.</p>
-<p>The following simulation illustrates this point. Classification data was simulated 100 times independently. Sample size and dimension was <span class="math inline">\(n=1000\)</span> and <span class="math inline">\(p=25\)</span>. The data was made imbalanced with <span class="math inline">\(\mathrm{IR}\)</span> values from 1 (balanced) to 100 (high imbalanced). A RF classifier was fit to the data and performance evaluated on an independent data set with sample size <span class="math inline">\(n'=20,000\)</span>. Test set performance was calculated for <span class="math inline">\(G\)</span>-mean and ROC-AUC. Also included for comparison was AUC for precision recall, PR-AUC, which a metric suitable for imbalanced data <span class="citation">(Saito &amp; Rehmsmeier, 2015)</span>. To properly calibrate PR-AUC we normalize it by calculating the difference between PR-AUC for the RF classifier to PR-AUC for a completely randomized rule. The figure below displays the results. Both <span class="math inline">\(G\)</span>-mean (figure a) and normalized PR-AUC (figure c) exhibit a monotonic pattern of decrease with increasing <span class="math inline">\(\mathrm{IR}\)</span>. This illustrates their suitability as performance metrics for imbalanced data. Note that PR-AUC does not measure performance of RFQ. This is because like all AUC methods it does not fix a threshold and instead hypothetically varies a threshold over all possible values in assessing performance. In contrast, <span class="math inline">\(G\)</span>-mean directly measures peformance of RFQ. The results are very impressive. RFQ is able to perform very well even in high <span class="math inline">\(\mathrm{IR}\)</span> settings of 100. Finally, notice that ROC-AUC (figure d) is insensitive to <span class="math inline">\(\mathrm{IR}\)</span> which is a sign of optimistic bias. This metric is unsuitable for imbalanced data.</p>
+<p>The following simulation illustrates this point. Classification data was simulated 100 times independently. Sample size and dimension was <span class="math inline">\(n=1000\)</span> and <span class="math inline">\(p=25\)</span>. The data was made imbalanced with <span class="math inline">\(\mathrm{IR}\)</span> values from 1 (balanced) to 100 (high imbalanced). A RF classifier was fit to the data and performance evaluated on an independent data set with sample size <span class="math inline">\(n'=20,000\)</span>. Test set performance was calculated for <span class="math inline">\(G\)</span>-mean and ROC-AUC. Also included for comparison was AUC for precision recall, PR-AUC, which a metric suitable for imbalanced data <span class="citation">[4]</span>. To properly calibrate PR-AUC we normalize it by calculating the difference between PR-AUC for the RF classifier to PR-AUC for a completely randomized rule. The figure below displays the results. Both <span class="math inline">\(G\)</span>-mean (figure a) and normalized PR-AUC (figure c) exhibit a monotonic pattern of decrease with increasing <span class="math inline">\(\mathrm{IR}\)</span>. This illustrates their suitability as performance metrics for imbalanced data. Note that PR-AUC does not measure performance of RFQ. This is because like all AUC methods it does not fix a threshold and instead hypothetically varies a threshold over all possible values in assessing performance. In contrast, <span class="math inline">\(G\)</span>-mean directly measures peformance of RFQ. The results are very impressive. RFQ is able to perform very well even in high <span class="math inline">\(\mathrm{IR}\)</span> settings of 100. Finally, notice that ROC-AUC (figure d) is insensitive to <span class="math inline">\(\mathrm{IR}\)</span> which is a sign of optimistic bias. This metric is unsuitable for imbalanced data.</p>
 <p><br></p>
 <div id="figure-1" class="section level6">
 <h6>Figure 1</h6>
@@ -393,8 +393,8 @@ r(\delta_{\textrm q^*}, \pi,1-\pi)
 <div id="variable-importance-vimp" class="section level2">
 <h2 class="hasAnchor">
 <a href="#variable-importance-vimp" class="anchor"></a>Variable importance (VIMP)</h2>
-<p>The standard variable importance (VIMP) measure in random forests introduced by Breiman and Cutler <span class="citation">(Breiman, 2001, 2002)</span>, called Breiman-Cutler importance <span class="citation">(Ishwaran &amp; Lu, 2018)</span>, permutes OOB data and runs it through the tree. The original OOB prediction error is then subtracted from the resulting OOB prediction error, resulting in tree importance. Averaging this value over the forest yields permutation importance. A positive VIMP signifies a variable that is predictive since permuting its value degrades tree prediction performance on average <a href="rfsrc-subsample.html">(VIMP vignette)</a>.</p>
-<p>As detailed in <span class="citation">O’Brien &amp; Ishwaran (2019)</span>, Breiman-Cutler importance is inappropriate for RFQ in the presence of significantly imbalanced data due to the fact that almost all nodes in an individual tree will contain zeroes. Instead, RFQ uses the <span class="math inline">\(G\)</span>-mean to measure variable importance (VIMP). This is combined with Ishwaran-Kogalur VIMP, which is an ensemble rather than tree-based measure, defined as the prediction error for a blocked ensemble subtracted from the prediction error for the blocked ensemble obtained by permuting a variable’s data.</p>
+<p>The standard variable importance (VIMP) measure in random forests introduced by Breiman and Cutler <span class="citation">[5, 6]</span>, called Breiman-Cutler importance <span class="citation">[7]</span>, permutes OOB data and runs it through the tree. The original OOB prediction error is then subtracted from the resulting OOB prediction error, resulting in tree importance. Averaging this value over the forest yields permutation importance. A positive VIMP signifies a variable that is predictive since permuting its value degrades tree prediction performance on average <a href="rfsrc-subsample.html">(VIMP vignette)</a>.</p>
+<p>As detailed in <span class="citation">[2]</span>, Breiman-Cutler importance is inappropriate for RFQ in the presence of significantly imbalanced data due to the fact that almost all nodes in an individual tree will contain zeroes. Instead, RFQ uses the <span class="math inline">\(G\)</span>-mean to measure variable importance (VIMP). This is combined with Ishwaran-Kogalur VIMP, which is an ensemble rather than tree-based measure, defined as the prediction error for a blocked ensemble subtracted from the prediction error for the blocked ensemble obtained by permuting a variable’s data.</p>
 </div>
 <div id="illustration" class="section level2">
 <h2 class="hasAnchor">
@@ -447,7 +447,7 @@ r(\delta_{\textrm q^*}, \pi,1-\pi)
 <p>The above code is equivalent to setting <code>rfq =  TRUE, ntree = 3000, perf.type = "g.mean"</code> in <code>rfsrc</code> when building the RF:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">status</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">breast</span>, rfq <span class="op">=</span>  <span class="cn">TRUE</span>, ntree <span class="op">=</span> <span class="fl">3000</span>, perf.type <span class="op">=</span> <span class="st">"g.mean"</span>, importance <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<p>To get the standard errors and confidence intervals for the VIMP, the function <code><a href="../reference/subsample.rfsrc.html">subsample()</a></code> can be used (see <a href="rfsrc-subsample.html">VIMP vignette</a>, <span class="citation">Ishwaran, Lu, &amp; Kogalur (2021)</span>).</p>
+<p>To get the standard errors and confidence intervals for the VIMP, the function <code><a href="../reference/subsample.rfsrc.html">subsample()</a></code> can be used (see <a href="rfsrc-subsample.html">VIMP vignette</a>, <span class="citation">[8]</span>).</p>
 <br><br><p class="comment2">
 <strong> Cite this vignette as </strong> <br> H. Ishwaran, R. O’Brien, M. Lu, and U. B. Kogalur. 2021. “randomForestSRC: random forests quantile classifier (RFQ) vignette.” <a href="http://randomforestsrc.org/articles/imbalance.html" class="uri">http://randomforestsrc.org/articles/imbalance.html</a>.
 </p>
@@ -461,30 +461,30 @@ r(\delta_{\textrm q^*}, \pi,1-\pi)
 <div id="references" class="section level2 unnumbered">
 <h2 class="hasAnchor">
 <a href="#references" class="anchor"></a>References</h2>
-<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
-<div id="ref-Breiman2001" class="csl-entry">
-Breiman, L. (2001). Random forests. <em>Machine Learning</em>, <em>45</em>, 5–32.
-</div>
-<div id="ref-Breiman2002" class="csl-entry">
-Breiman, L. (2002). Manual on setting up, using, and understanding random forests v3. 1. <em>Statistics Department University of California Berkeley, CA, USA</em>, <em>1</em>.
-</div>
-<div id="ref-Ishwaran2018" class="csl-entry">
-Ishwaran, H., &amp; Lu, M. (2018). Standard errors and confidence intervals for variable importance in random forest regression, classification, and survival. <em>Statistics in Medicine</em>. Wiley Online Library.
-</div>
-<div id="ref-HemantVIMP" class="csl-entry">
-Ishwaran, H., Lu, M., &amp; Kogalur, U. B. (2021). <span class="nocase">randomForestSRC</span>: Variable importance <span>(VIMP)</span> with subsampling inference vignette. Retrieved from <a href="http://randomforestsrc.org/articles/vimp.html">http://randomforestsrc.org/articles/vimp.html</a>
-</div>
-<div id="ref-kubat1997learning" class="csl-entry">
-Kubat, M., Holte, R., &amp; Matwin, S. (1997). Learning when negative examples abound. <em>European conference on machine learning</em> (pp. 146–153). Springer.
-</div>
+<div id="refs" class="references csl-bib-body">
 <div id="ref-mease2007boosted" class="csl-entry">
-Mease, D., Wyner, A. J., &amp; Buja, A. (2007). Boosted classification trees and class probability/quantile estimation. <em>Journal of Machine Learning Research</em>, <em>8</em>(Mar), 409–439.
+1. Mease D, Wyner AJ, Buja A. Boosted classification trees and class probability/quantile estimation. Journal of Machine Learning Research. 2007;8 Mar:409–39.
 </div>
 <div id="ref-rfq" class="csl-entry">
-O’Brien, R., &amp; Ishwaran, H. (2019). A random forests quantile classifier for class imbalanced data. <em>Pattern recognition</em>, <em>90</em>, 232–249. Elsevier.
+2. O’Brien R, Ishwaran H. A random forests quantile classifier for class imbalanced data. Pattern recognition. 2019;90:232–49.
+</div>
+<div id="ref-kubat1997learning" class="csl-entry">
+3. Kubat M, Holte R, Matwin S. Learning when negative examples abound. In: European conference on machine learning. Springer; 1997. p. 146–53.
 </div>
 <div id="ref-saito2015precision" class="csl-entry">
-Saito, T., &amp; Rehmsmeier, M. (2015). The precision-recall plot is more informative than the <span>ROC</span> plot when evaluating binary classifiers on imbalanced datasets. <em>PLOS one</em>, <em>10</em>(3), e0118432. Public Library of Science San Francisco, CA USA.
+4. Saito T, Rehmsmeier M. The precision-recall plot is more informative than the <span>ROC</span> plot when evaluating binary classifiers on imbalanced datasets. PLOS one. 2015;10:e0118432.
+</div>
+<div id="ref-Breiman2001" class="csl-entry">
+5. Breiman L. Random forests. Machine Learning. 2001;45:5–32.
+</div>
+<div id="ref-Breiman2002" class="csl-entry">
+6. Breiman L. Manual on setting up, using, and understanding random forests v3. 1. Statistics Department University of California Berkeley, CA, USA. 2002;1.
+</div>
+<div id="ref-Ishwaran2018" class="csl-entry">
+7. Ishwaran H, Lu M. Standard errors and confidence intervals for variable importance in random forest regression, classification, and survival. Statistics in Medicine. 2018.
+</div>
+<div id="ref-HemantVIMP" class="csl-entry">
+8. Ishwaran H, Lu M, Kogalur UB. <span class="nocase">randomForestSRC</span>: Variable importance <span>(VIMP)</span> with subsampling inference vignette. 2021. <a href="http://randomforestsrc.org/articles/vimp.html">http://randomforestsrc.org/articles/vimp.html</a>.
 </div>
 </div>
 </div>
