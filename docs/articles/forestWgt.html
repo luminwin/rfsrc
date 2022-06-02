@@ -64,7 +64,7 @@
   <a href="../cheatsheets.pdf">Cheatsheet</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
      
     <span class="caret"></span>
@@ -96,6 +96,9 @@
     </li>
     <li>
       <a href="../articles/mvsplit.html">Multivariate Splitting Rule</a>
+    </li>
+    <li>
+      <a href="../articles/aucsplit.html">AUC Splitting Rule for Multiclass Problems</a>
     </li>
     <li>
       <a href="../articles/sidClustering.html">sidClustering</a>
@@ -144,14 +147,14 @@
 
       
 
-      </header><script src="forestWgt_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
+      </header><script src="forestWgt_files/header-attrs-2.14/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Forest Weights, In-Bag (IB) and Out-of-Bag (OOB) Ensembles</h1>
                         <h4 class="author">
 <a href="https://ishwaran.org/ishwaran.html">Hemant Ishwaran</a> <br><br> Min Lu <br><br> Udaya B. Kogalur</h4>
             
-            <h4 class="date">2022-05-11</h4>
+            <h4 class="date">2022-06-01</h4>
       
       
       <div class="hidden name"><code>forestWgt.Rmd</code></div>
@@ -265,7 +268,7 @@ W_{i,j}^{\text{OOB}} = \frac{1}{\sum_{b=1}^B I_{i,b}}\sum_{b=1}^B\left[
 <p>The following shows how to directly use forest weights to obtain IB and OOB predicted values for classification. This is meant for illustration as these values are of course automatically provided by the package as shown below.</p>
 <p><br> We use the iris data for illustration.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://web.ccs.miami.edu/~hishwaran/">randomForestSRC</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.randomforestsrc.org/">randomForestSRC</a></span><span class="op">)</span>
 <span class="co">## run classification forest</span>
 <span class="va">o</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">Species</span><span class="op">~</span><span class="va">.</span>,<span class="va">iris</span><span class="op">)</span></code></pre></div>
 <p><br> The ensemble estimates for <span class="math inline">\(\psi^o_c({\bf x}) = \mathbb{P}\{Y=c|{\bf X}={\bf x}\}\)</span> are stored in <code>$predicted</code> and <code>$predicted.oob</code></p>

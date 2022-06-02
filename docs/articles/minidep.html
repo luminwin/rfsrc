@@ -64,7 +64,7 @@
   <a href="../cheatsheets.pdf">Cheatsheet</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
      
     <span class="caret"></span>
@@ -96,6 +96,9 @@
     </li>
     <li>
       <a href="../articles/mvsplit.html">Multivariate Splitting Rule</a>
+    </li>
+    <li>
+      <a href="../articles/aucsplit.html">AUC Splitting Rule for Multiclass Problems</a>
     </li>
     <li>
       <a href="../articles/sidClustering.html">sidClustering</a>
@@ -144,14 +147,14 @@
 
       
 
-      </header><script src="minidep_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
+      </header><script src="minidep_files/header-attrs-2.14/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Minimal Depth</h1>
                         <h4 class="author">
 <a href="https://ishwaran.org/ishwaran.html">Hemant Ishwaran</a> <br><br> Xi Chen <br><br> Andy J. Minn <br><br> Min Lu <br><br> Michael S. Lauer <br><br> Udaya B. Kogalur</h4>
             
-            <h4 class="date">2022-05-11</h4>
+            <h4 class="date">2022-06-01</h4>
       
       
       <div class="hidden name"><code>minidep.Rmd</code></div>
@@ -251,7 +254,7 @@ noisy}\right].
 <span class="co">## minimal depth with/without supervision</span>
 <span class="co">## van de Vijver Microarray Breast Cancer data </span>
 <span class="co">## ------------------------------------------------------------</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="http://web.ccs.miami.edu/~hishwaran/">"randomForestSRC"</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://www.randomforestsrc.org/">"randomForestSRC"</a></span><span class="op">)</span>
 
 <span class="co">## load the microarray data set</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">vdv</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span>

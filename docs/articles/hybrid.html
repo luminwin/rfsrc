@@ -64,7 +64,7 @@
   <a href="../cheatsheets.pdf">Cheatsheet</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
      
     <span class="caret"></span>
@@ -96,6 +96,9 @@
     </li>
     <li>
       <a href="../articles/mvsplit.html">Multivariate Splitting Rule</a>
+    </li>
+    <li>
+      <a href="../articles/aucsplit.html">AUC Splitting Rule for Multiclass Problems</a>
     </li>
     <li>
       <a href="../articles/sidClustering.html">sidClustering</a>
@@ -144,14 +147,14 @@
 
       
 
-      </header><script src="hybrid_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
+      </header><script src="hybrid_files/header-attrs-2.14/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Hybrid Parallel Processing</h1>
                         <h4 class="author">
 <a href="https://ishwaran.org/ishwaran.html">Hemant Ishwaran</a> <br><br> Min Lu <br><br> Udaya B. Kogalur</h4>
             
-            <h4 class="date">2022-05-11</h4>
+            <h4 class="date">2022-06-01</h4>
       
       
       <div class="hidden name"><code>hybrid.Rmd</code></div>
@@ -202,7 +205,7 @@ font-size: 16px;
 <p><img src="pic/shared_memory.png" style="width:60.0%"></p>
 </center>
 <p><br></p>
-<p>In order to give the user some flexibility, core usage can be controlled via R options. First, the user needs to determine the number of cores on the machine. This can be done within an R session by loading the <code>parallel</code> package and issuing the command <code>detectCores()</code>. It is possible to set the numbers of cores accessed during OpenMP parallel execution at the start of every R session by issuing the command <code><a href="https://rdrr.io/r/base/options.html">options(rf.cores = x)</a></code>, where <code>x</code> is the number of cores. If <code>x</code> is a negative number, the package will access the maximum number of cores on the machine. The <code>options</code> command can also be placed in the users <code>.Rprofile</code> file for convenience. Alternatively, one can initialize the environment variable <code>RF_CORES</code> in the user’s command shell environment.</p>
+<p>In order to give the user some flexibility, core usage can be controlled via R options. First, the user needs to determine the number of cores on the machine. This can be done within an R session by loading the <code>parallel</code> package and issuing the command <code>detectCores()</code>. It is possible to set the numbers of cores accessed during OpenMP parallel execution at the start of every R session by issuing the command <code>options(rf.cores = x)</code>, where <code>x</code> is the number of cores. If <code>x</code> is a negative number, the package will access the maximum number of cores on the machine. The <code>options</code> command can also be placed in the users <code>.Rprofile</code> file for convenience. Alternatively, one can initialize the environment variable <code>RF_CORES</code> in the user’s command shell environment.</p>
 <p>Gains in performance on a desktop (or a single SMP node) are limited by the number of cores available on the hardware. The OpenMP parallel model shown in <a href="#openmp-shared-memory-parallel-processing">OpenMP: Shared Memory Parallel Processing</a> that relies on an underlying iterative process was chosen for its suitability in accommodating shared memory systems and its ease of implementation. Model creation is computationally intense and the OpenMP parallel processing model allows us to take full advantage of the hardware available.</p>
 <p>Message Passing Interface (MPI), an alternative model to OpenMP is suitable for distributed memory systems, in which the number of cores available can be much greater than that of a desktop computer. It is possible to run <code>randomForestSRC</code> on appropriately designed and configured clusters, allowing for massive scalability. An ideal cluster for the package is made up of tightly connected SMP nodes. Each SMP node has its own memory, and does not share this memory with other nodes. Nodes, however, do communicate with each other using MPI.</p>
 <p><br></p>
@@ -259,7 +262,7 @@ font-size: 16px;
   <span class="va">choleski</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/chol.html">chol</a></span><span class="op">(</span><span class="va">varcov</span><span class="op">)</span>
   <span class="va">tcholeski</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">choleski</span><span class="op">)</span>
   <span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="va">p</span> <span class="op">*</span> <span class="va">n</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, <span class="va">p</span>, <span class="va">n</span><span class="op">)</span>
-  <span class="va">tranx</span> <span class="op">&lt;-</span> <span class="va">tcholeski</span> <span class="op">%*%</span> <span class="va">z</span>
+  <span class="va">tranx</span> <span class="op">&lt;-</span> <span class="va">tcholeski</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html">%*%</a></span> <span class="va">z</span>
   <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">tranx</span><span class="op">)</span>
   <span class="va">x</span>
 <span class="op">}</span>
@@ -269,7 +272,7 @@ font-size: 16px;
   <span class="va">beta.true</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">p</span><span class="op">)</span>
   <span class="va">x.center</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="op">(</span><span class="va">p</span><span class="op">-</span><span class="va">s</span><span class="op">)</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>
   <span class="va">beta.true</span><span class="op">[</span><span class="va">x.center</span><span class="op">+</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">s</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">signal</span>
-  <span class="va">linPred</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">%*%</span> <span class="va">beta.true</span>
+  <span class="va">linPred</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html">%*%</a></span> <span class="va">beta.true</span>
   <span class="va">Time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">linPred</span>, <span class="kw">function</span><span class="op">(</span><span class="va">lp</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/stats/Exponential.html">rexp</a></span><span class="op">(</span>n<span class="op">=</span><span class="fl">1</span>,<span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">lp</span><span class="op">)</span><span class="op">)</span><span class="op">}</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span>
   <span class="va">C</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Exponential.html">rexp</a></span><span class="op">(</span><span class="va">n</span>, <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">linPred</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span>
   <span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>time<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">pmax</a></span><span class="op">(</span><span class="fl">1e-3</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">pmin</a></span><span class="op">(</span><span class="va">Time</span>,<span class="va">C</span><span class="op">)</span><span class="op">)</span>, event<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">Time</span><span class="op">&lt;=</span><span class="va">C</span><span class="op">)</span>, <span class="va">x</span><span class="op">)</span>
@@ -284,7 +287,7 @@ font-size: 16px;
 <span class="va">simmOne</span> <span class="op">&lt;-</span> <span class="kw">function</span> <span class="op">(</span><span class="va">n</span>, <span class="va">p</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="va">n</span><span class="op">*</span><span class="va">p</span><span class="op">)</span>, nrow<span class="op">=</span><span class="va">n</span>, ncol<span class="op">=</span><span class="va">p</span><span class="op">)</span>
   <span class="va">coeff</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">p</span><span class="op">)</span>
-  <span class="va">resp</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">%*%</span> <span class="va">coeff</span>
+  <span class="va">resp</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html">%*%</a></span> <span class="va">coeff</span>
   <span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>outcome <span class="op">=</span> <span class="va">resp</span>, <span class="va">x</span><span class="op">)</span>
   <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span>
 <span class="op">}</span>
@@ -340,11 +343,11 @@ font-size: 16px;
 
 <span class="co">## Load the R package that implements MPI parallel processing.</span>
 <span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/dynload.html">is.loaded</a></span><span class="op">(</span><span class="st">"mpi_initialize"</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
-  <span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="st">"Rmpi"</span><span class="op">)</span>
+  <span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="st"><a href="http://fisher.stats.uwo.ca/faculty/yu/Rmpi/">"Rmpi"</a></span><span class="op">)</span>
 <span class="op">}</span>
 
 <span class="co">## Load our package on the master.</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://web.ccs.miami.edu/~hishwaran/">randomForestSRC</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.randomforestsrc.org/">randomForestSRC</a></span><span class="op">)</span>
 
 <span class="co">## Set the slave and core usage.</span>
 <span class="va">RF_SLAVES</span> <span class="op">=</span>    <span class="fl">4</span>  <span class="co">## Number of slaves.</span>
@@ -414,7 +417,7 @@ font-size: 16px;
 <span class="fu">mpi.bcast.Robj2slave</span><span class="op">(</span><span class="va">importance</span><span class="op">)</span>
 
 <span class="co">## Load our package on the slaves.</span>
-<span class="fu">mpi.bcast.cmd</span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://web.ccs.miami.edu/~hishwaran/">randomForestSRC</a></span><span class="op">)</span><span class="op">)</span>
+<span class="fu">mpi.bcast.cmd</span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.randomforestsrc.org/">randomForestSRC</a></span><span class="op">)</span><span class="op">)</span>
 
 <span class="co">## Call the function in all the slaves. The function will idle on a</span>
 <span class="co">## slave until the master sends it a task.</span>

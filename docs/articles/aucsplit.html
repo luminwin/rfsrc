@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Multivariate Splitting Rule • Fast Unified Random Forests with randomForestSRC</title>
+<title>Splitting Rule for Multiclass Problems via AUC • Fast Unified Random Forests with randomForestSRC</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Multivariate Splitting Rule">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Splitting Rule for Multiclass Problems via AUC">
 <meta property="og:description" content="this package">
 <meta property="og:image" content="https://www.randomforestsrc.org/logo.svg">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -147,17 +147,17 @@
 
       
 
-      </header><script src="mvsplit_files/header-attrs-2.14/header-attrs.js"></script><div class="row">
+      </header><script src="aucsplit_files/header-attrs-2.14/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Multivariate Splitting Rule</h1>
+      <h1 data-toc-skip>Splitting Rule for Multiclass Problems via AUC</h1>
                         <h4 class="author">
-<a href="https://ishwaran.org/ishwaran.html">Hemant Ishwaran</a> <br><br> Fei Tang <br><br> Min Lu <br><br> Udaya B. Kogalur</h4>
+<a href="https://ishwaran.org/ishwaran.html">Hemant Ishwaran</a> <br><br> Min Lu <br><br> Udaya B. Kogalur</h4>
             
             <h4 class="date">2022-06-01</h4>
       
       
-      <div class="hidden name"><code>mvsplit.Rmd</code></div>
+      <div class="hidden name"><code>aucsplit.Rmd</code></div>
 
     </div>
 
@@ -190,243 +190,238 @@ font-size: 16px;
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
-<p>The package is capable of constructing multivariate trees for multivariate outcomes. These can either be continuous, categorical, or a mixture of the two — the nature of the outcomes informs the code as to the type of multivariate forest to be grown. When requested, performance measures can be returned, including variable importance for each <span class="math inline">\(Y\)</span>-outcome and for each <span class="math inline">\(X\)</span>-feature and out-of-sample error performance for each <span class="math inline">\(Y\)</span>-outcome. Throughout we use <span class="math inline">\({\bf Y}=(Y_1,\ldots,Y_p)^T\)</span> to denote the <span class="math inline">\(p\)</span>-dimensional multivariate outcome. For simplicity we take the first <span class="math inline">\(1\le j\le q\)</span> coordinates to be continuous and the remaining coordinates <span class="math inline">\(q+1\le j \le p\)</span> to be categorical (with suitable modifications if all coordinates are continuous or all coordinates are categorical).</p>
-<p>By default, multivariate trees are grown using a normalized composite splitting rule <span class="citation">[1]</span>. The advantage of this rule is computational speed. A disadvantage is that it’s an additive independence rule that works over the <span class="math inline">\(Y\)</span> coordinates separately, and as such it does not take into account correlation. To address this, the package now also includes a new multivariate splitting rule using Mahalanobis distance. We begin by first discussing the default composite rule. After this, we discuss the new Mahalanobis distance rule.</p>
+<p>The receiver operating characteristic curve (ROC curve) is a popular method for performance evaluation of a classifier. Originally it was developed for assessing the accuracy of a test for predicting disease <span class="citation">[1]</span> and we will discuss it first in this context. The ROC curve for a test <span class="math inline">\(Z\)</span> is the plot of the true positive rate (sensitivity) versus the false positive rate ($1 - $ specificity) of the dichotomized variable <span class="math inline">\(Z_{\tau}=I\{Z&gt;\tau\}\)</span> as <span class="math inline">\(\tau\in\mathbb{R}\)</span> is varied over all possible values for <span class="math inline">\(Z\)</span>. The curve characterizes all possible trade-off’s between sensitivity and specificity for the test. The trace of the curve lies in the square <span class="math inline">\([0,1]\times[0,1]\)</span>: the higher the curve is above the <span class="math inline">\(y=x\)</span> line within this square, the more accurate the test <span class="math inline">\(Z\)</span> is in delineating between disease states. The overall accuracy of the test can be measured by the area under the curve (AUC), where area is computed using the trapezoidal rule. This summary value is an estimate of the probability that two randomly selected individuals, one diseased and the other non-diseased, are correctly ranked by the test <span class="citation">[1]</span> (see the Appendix for a proof). Thus the AUC for the ROC curve has the interesting interpretation that it measures ranking performance of a test. For this reason, AUC is often used as a metric for assessing performance of a classifier in machine learning.</p>
+<p>To see how this applies to classification, let <span class="math inline">\(Y_1,\ldots,Y_n\)</span> denote the binary response variables. For consistency with the ROC literature, we assume <span class="math inline">\(Y=0\)</span> is the non-diseased group and <span class="math inline">\(Y=1\)</span> is the diseased group. Denote by <span class="math inline">\(Z\)</span> the predicted value from the machine learning classifier. Let <span class="math inline">\(\mathbb{P}_n(\cdot)=n^{-1}\sum_{i=1}^n I\{(Z_i,Y_i)\in\cdot\}\)</span> be the empirical measure for <span class="math inline">\((Z_1,Y_1),\ldots,(Z_n,Y_n)\)</span>. The ROC curve is the plot of <span class="math display">\[\begin{eqnarray}
+\text{ROC}(\tau)
+&amp;=&amp; \left(\text{False Positive Rate}(\tau), \text{True Positive Rate}(\tau)\right)\\
+&amp;=&amp; \left(1 - \text{Specificity}(\tau), \text{Sensitivity}(\tau)\right)\\
+&amp;=&amp; \Bigl(\mathbb{P}_n\{Z&gt;\tau|Y=0\},\mathbb{P}_n\{Z&gt;\tau|Y=1\}\Bigr),
+\end{eqnarray}\]</span> as <span class="math inline">\(\tau\)</span> varies over all possible values for <span class="math inline">\(Z_1,\ldots,Z_n\)</span>.</p>
+<p>In fact, letting <span class="math inline">\(\tau_1&lt;\tau_2&lt;\cdots&lt;\tau_m\)</span> represent the set of all unique <span class="math inline">\(Z\)</span> values, and setting <span class="math inline">\(\tau_0=-\infty\)</span>, the ROC curve is the interpolated curve of the points <span class="math inline">\(\text{ROC}(\tau_k)\)</span>, <span class="math inline">\(k=0,\ldots,m\)</span>. The AUC is the area bounded between this interpolated curve and the horizontal line <span class="math inline">\(\{(x,0): 0\le x\le 1\}\)</span>. Thus,</p>
+<div id="section" class="section level5">
+<h5 class="hasAnchor">
+<a href="#section" class="anchor"></a>(1)</h5>
+<p><span class="math display">\[\begin{eqnarray}
+\text{AUC}
+&amp;=&amp;\int_{-\infty}^\infty\mathbb{P}_n\{Z&gt;\tau|Y=1\}\,\mathbb{P}_n\{Z&gt;d\tau|Y=0\}\nonumber\\
+&amp;=&amp;\frac{1}{2}\sum_{k=0}^{m-1}(\alpha_k-\alpha_{k+1})(\beta_k+\beta_{k+1}),
+\label{AUC.trapezoidal}
+\end{eqnarray}\]</span> where <span class="math inline">\(\alpha_k=\mathbb{P}_n\{Z&gt;\tau_k|Y=0\}\)</span> and <span class="math inline">\(\beta_k=\mathbb{P}_n\{Z&gt;\tau_k|Y=1\}\)</span>.</p>
 </div>
-<div id="regression" class="section level2">
+</div>
+<div id="auc-splitting-rule" class="section level2">
 <h2 class="hasAnchor">
-<a href="#regression" class="anchor"></a>Regression</h2>
-<p>To describe the multivariate composite splitting rule, we begin by considering univariate regression. Thus <span class="math inline">\(q=1\)</span> and <span class="math inline">\(Y\)</span> is a scalar continuous outcome value. For notational simplicity, let us suppose the node <span class="math inline">\(t\)</span> we are splitting is the root node based on the full sample size <span class="math inline">\(n\)</span>. Let <span class="math inline">\(X\)</span> be the feature used to split <span class="math inline">\(t\)</span>, where for simplicity we assume <span class="math inline">\(X\)</span> is ordered or numeric. Let <span class="math inline">\(s\)</span> be a proposed split for <span class="math inline">\(X\)</span> that splits <span class="math inline">\(t\)</span> into left and right daughter nodes <span class="math inline">\(t_L:=t_L(s)\)</span> and <span class="math inline">\(t_R:=t_R(s)\)</span>, where <span class="math inline">\(t_L=\{X_i\le s\}\)</span> and <span class="math inline">\(t_R=\{X_i&gt;s\}\)</span>. Letting <span class="math inline">\(Y_1,\ldots,Y_n\)</span> denote the scalar outcomes in <span class="math inline">\(t\)</span>, the mean-squared error (mse) split-statistic is <span class="math display">\[
-D(s,t)
-=\frac{1}{n}\sum_{i\in t_L}(Y_i-\overline{Y}_{t_L})^2 
- + \frac{1}{n}\sum_{i\in t_R}(Y_i-\overline{Y}_{t_R})^2 
-\]</span> where <span class="math inline">\(\overline{Y}_{t_L}\)</span> and <span class="math inline">\(\overline{Y}_{t_R}\)</span> are the sample means for <span class="math inline">\(t_L\)</span> and <span class="math inline">\(t_R\)</span> respectively. The best split for <span class="math inline">\(X\)</span> is the split-point <span class="math inline">\(s\)</span> minimizing <span class="math inline">\(D(s,t)\)</span>.</p>
-<p>To extend mse splitting to the multivariate case <span class="math inline">\(q&gt;1\)</span>, we apply the mse split-statistic to each coordinate separately. Let <span class="math inline">\({\bf Y}_i=(Y_{i,1},\ldots,Y_{i,q})^T\)</span> denote the <span class="math inline">\(q\)</span>-dimensional multivariate outcomes, <span class="math inline">\(i=1,\ldots,n\)</span>. Then the multivariate regression split rule is <span class="math display">\[
-D_q(s,t)
-=\sum_{j=1}^q \left\{\sum_{i\in t_L}(Y_{i,j}-\overline{Y}_{{t_{L_j}}})^2 
- + \sum_{i\in t_R}(Y_{i,j}-\overline{Y}_{{t_{R_j}}})^2\right\}
-\]</span> where <span class="math inline">\(\overline{Y}_{{t_{L_j}}}\)</span> and <span class="math inline">\(\overline{Y}_{{t_{R_j}}}\)</span> are the sample means of the <span class="math inline">\(j\)</span>-th response coordinate in the left and right daughter nodes. The goal is to minimize <span class="math inline">\(D_q(s,t)\)</span>.</p>
-<p>It is important to recognize that the multivariate splitting rule can only be effective if each outcome coordinate is measured on the same scale, otherwise we could have a coordinate <span class="math inline">\(j\)</span>, with say very large values, and its contribution would dominate <span class="math inline">\(D_q(s,t)\)</span>. We therefore calibrate <span class="math inline">\(D_q(s,t)\)</span> by assuming that each coordinate has been standardized according to</p>
-<div id="section" class="section level4">
-<h4 class="hasAnchor">
-<a href="#section" class="anchor"></a>(1)</h4>
-<p><span class="math display">\[
-\frac{1}{n}\sum_{i\in t} Y_{i,j} = 0,\hskip10pt
-\frac{1}{n}\sum_{i\in t} Y_{i,j}^2 = 1,\hskip10pt
-1\le j\le q.
-\label{y.stand.assumption}
-\]</span> The standardization is applied prior to splitting a node. To make this standardization clear, we denote the standardized responses by <span class="math inline">\(Y_{i,j}^*\)</span>. With some elementary manipulations, it can be verified that minimizing <span class="math inline">\(D_q(s,t)\)</span> is equivalent to maximizing</p>
-</div>
-<div id="section-1" class="section level4">
-<h4 class="hasAnchor">
-<a href="#section-1" class="anchor"></a>(2)</h4>
-<p><span class="math display">\[\begin{equation}
-D_q^*(s,t) = \sum_{j=1}^q \left\{ \frac{1}{n_L}\left(\sum_{i\in
-  t_L}Y_{i,j}^*\right)^2 + \frac{1}{n_R}\left(\sum_{i\in t_R}Y_{i,j}^*\right)^2
-\right\}
-\label{mvr.split}
-\end{equation}\]</span> where <span class="math inline">\(n_L\)</span> and <span class="math inline">\(n_R\)</span> denote the sample sizes for the daughter nodes, <span class="math inline">\(t_L\)</span> and <span class="math inline">\(t_R\)</span>.</p>
-</div>
-</div>
-<div id="classification" class="section level2">
-<h2 class="hasAnchor">
-<a href="#classification" class="anchor"></a>Classification</h2>
-<p>For multivariate classification, an averaged standardized Gini splitting rule is used. First consider the univariate case (i.e., the multiclass problem) where the outcome <span class="math inline">\(Y_i\)</span> is a class label from the set <span class="math inline">\(\{1,\ldots,C\}\)</span> where <span class="math inline">\(C\ge 2\)</span>. The best split <span class="math inline">\(s\)</span> for <span class="math inline">\(X\)</span> is obtained by maximizing <span class="math display">\[
-G(s,t) = 
-\sum_{c=1}^C \left[
-\frac{1}{n_L}\left(\sum_{i\in t_L} Z_{i(c)}\right)^2 
-+ \frac{1}{n_R}\left(\sum_{i\in t_R} Z_{i(c)}\right)^2 \right]
-\]</span> where <span class="math inline">\(Z_{i(c)}=1_{\{Y_i=c\}}\)</span>. Now consider the multivariate classification scenario, where each outcome coordinate <span class="math inline">\(Y_{i,j}\)</span> for <span class="math inline">\(q+1\le j\le p\)</span> is a class label from <span class="math inline">\(\{1,\ldots,C_j\}\)</span> for <span class="math inline">\(C_j\ge 2\)</span>. We apply the Gini split-statistic to each coordinate yielding the extended Gini splitting rule (<span class="math inline">\(r=p-q\)</span>)</p>
-<div id="section-2" class="section level4">
-<h4 class="hasAnchor">
-<a href="#section-2" class="anchor"></a>(3)</h4>
-<p><span class="math display">\[
-G_r^*(s,t)  = 
-\sum_{j=q+1}^p \left[ \frac{1}{C_j}\sum_{c=1}^{C_j} \left\{
-\frac{1}{n_L}\left(\sum_{i\in t_L} Z_{i(c),j}\right)^2 
-+ \frac{1}{n_R}\left(\sum_{i\in t_R} Z_{i(c),j}\right)^2 
-\right\}\right]
-\label{egini.split}
-\]</span> where <span class="math inline">\(Z_{i(c),j}=1_{\{Y_{i,j}=c\}}\)</span>. Note that the normalization <span class="math inline">\(1/C_j\)</span> employed for a coordinate <span class="math inline">\(j\)</span> is required to standardize the contribution of the Gini split from that coordinate.</p>
-</div>
-</div>
-<div id="multivariate-normalized-composite-splitting-rule" class="section level2">
-<h2 class="hasAnchor">
-<a href="#multivariate-normalized-composite-splitting-rule" class="anchor"></a>Multivariate normalized composite splitting rule</h2>
-<p>Observe that <a href="#section-1">(2)</a> and <a href="#section-2">(3)</a> are equivalent optimization problems, with optimization over <span class="math inline">\(Y_{i,j}^*\)</span> for regression and <span class="math inline">\(Z_{i(c),j}\)</span> for classification. This leads to similar theoretical splitting properties in regression and classification settings <span class="citation">[2]</span>. Given this equivalence, we can combine the two splitting rules to form a composite splitting rule. The mixed outcome splitting rule <span class="math inline">\({\Theta}(s,t)\)</span> is a composite standardized split rule of mean-squared error <a href="#section-1">(2)</a> and Gini index splitting <a href="#section-2">(3)</a>; i.e., <span class="math display">\[
-{\Theta}(s,t) = D_q^*(s,t)+G_r^*(s,t).
-\]</span> The best split for <span class="math inline">\(X\)</span> is the value of <span class="math inline">\(s\)</span> maximizing <span class="math inline">\({\Theta}(s,t)\)</span>.</p>
-</div>
-<div id="unsupervised-splitting" class="section level2">
-<h2 class="hasAnchor">
-<a href="#unsupervised-splitting" class="anchor"></a>Unsupervised splitting</h2>
-<p>In usupervised mode, there is no response outcome and only feature data. Therefore in order to split the tree, the features take turns acting as the <span class="math inline">\(Y\)</span>-outcome and <span class="math inline">\(X\)</span>-variables. Specifically, <code>mtry</code> <span class="math inline">\(X\)</span>-variables are randomly selected for splitting the node. Then for each of these randomly selected features, <code>ytry</code> variables are selected from the remaining features to act as the target pseduo-outcomes. Splitting uses the multivariate normalized composite splitting rule just described. As illustration, the following equivalent unsupervised calls set <code>mtry</code> to 10 and <code>ytry</code> to 5:</p>
+<a href="#auc-splitting-rule" class="anchor"></a>AUC splitting rule</h2>
+<p>Now we show how this can be used for tree splitting. To describe a fast AUC splitting rule we will require a closed form expression for the ROC curve and its area. Without loss of generality consider splitting the root node. Let <span class="math inline">\(L\)</span> and <span class="math inline">\(R\)</span> denote the left and right-daughter nodes resulting from this split. We can summarize the frequency of obsevations in the daughter nodes using the following <span class="math inline">\(2\times2\)</span> table (<a href="#table-1">Table 1</a>).</p>
+<div id="table-1" class="section level5">
+<h5 class="hasAnchor">
+<a href="#table-1" class="anchor"></a>Table 1</h5>
+Frequency of cases in left and right daughter nodes by disease status.
+<center>
+<img src="pic/aucsplit1.png" style="width:20.0%">
+</center>
 <p><br></p>
-<p><code>rfsrc(data = my.data, ytry = 5, mtry = 10)</code></p>
-<p><code>rfsrc(Unsupervised(5) ~ ., my.data, mtry = 10)</code></p>
+<p>Here <span class="math inline">\(Z\)</span> predicts <span class="math inline">\(Y=1\)</span>. There can be at most two distinct values of <span class="math inline">\(Z\)</span>, one for each daughter node: <span class="math display">\[
+\tau_1=\frac{n_{1L}}{n_L}\hskip5pt\text{($Z$ values of left node)},
+\hskip10pt
+\tau_2=\frac{n_{1R}}{n_R}\hskip5pt\text{($Z$ values of right node)},
+\]</span> where <span class="math inline">\(n_L,n_R\)</span> are the sample sizes for the left and right daughters (<span class="math inline">\(n_L+n_R=n\)</span>; <span class="math inline">\(n_{0L}+n_{1L}=n_L\)</span>; <span class="math inline">\(n_{0R}+n_{1R}=n_R\)</span>). The ROC curve is therefore <span class="math display">\[
+\text{ROC}(\tau)
+= \Bigl(\mathbb{P}_n\{Z&gt;\tau|Y=0\},\mathbb{P}_n\{Z&gt;\tau|Y=1\}\Bigr)
+\]</span> as <span class="math inline">\(\tau\)</span> varies over <span class="math inline">\(\tau=\tau_1,\tau_2\)</span>.</p>
+<p>To derive the AUC it will be helpful to break up the calculation into three cases: <span class="math inline">\(\tau_1&gt;\tau_2\)</span>, <span class="math inline">\(\tau_1&lt;\tau_2\)</span> and <span class="math inline">\(\tau_1=\tau_2\)</span>. Consider the first case <span class="math inline">\(\tau_2&gt;\tau_1\)</span>. Because the predicted value for the left daughter node is <span class="math inline">\(\tau_1\)</span>, it is not possible for <span class="math inline">\(Z&gt;\tau\)</span> for <span class="math inline">\(Z\in L\)</span> when <span class="math inline">\(\tau=\tau_1\)</span>. Therefore <span class="math display">\[
+\text{ROC}(\tau_1) = \Bigl(\mathbb{P}_n\{Z&gt;\tau_1,Z\in
+R\,|Y=0\},\mathbb{P}_n\{Z&gt;\tau_1, Z\in R\,|Y=1\}\Bigr).
+\]</span> Now because all <span class="math inline">\(Z\)</span> in <span class="math inline">\(R\)</span> are larger than <span class="math inline">\(\tau_1\)</span> by assumption, we have</p>
 </div>
-<div id="mahalanobis-distance" class="section level2">
+<div id="section-1" class="section level5">
+<h5 class="hasAnchor">
+<a href="#section-1" class="anchor"></a>(2)</h5>
+<p><span class="math display">\[
+\text{ROC}(\tau_1)=\Bigl(\frac{n_{0R}}{n_{0L}+n_{0R}}, \frac{n_{1R}}{n_{1L}+n_{1R}}\Bigr).
+\label{case.1}
+\]</span> Furthermore, because it is not possible for <span class="math inline">\(Z&gt;\tau_2\)</span> due to the assumption <span class="math inline">\(\tau_2\)</span> is the largest observed value, we have <span class="math inline">\(\text{ROC}(\tau_2)=(0,0)\)</span>. Therefore the ROC curve contains only three points, <span class="math inline">\((0,0)\)</span>, <span class="math inline">\(\text{ROC}(\tau_1)\)</span> and <span class="math inline">\((1,1)\)</span>.</p>
+<p>Now consider the second case when <span class="math inline">\(\tau_2&lt;\tau_1\)</span>. When <span class="math inline">\(\tau=\tau_1\)</span>, it is not possible for <span class="math inline">\(Z&gt;\tau\)</span> as <span class="math inline">\(\tau\)</span> is the largest observed value and therefore <span class="math inline">\(\text{ROC}(\tau_1)=(0,0)\)</span>. When <span class="math inline">\(\tau=\tau_2&lt;\tau_1\)</span> it is not possible for <span class="math inline">\(Z&gt;\tau\)</span> for <span class="math inline">\(Z\in R\)</span>; hence <span class="math display">\[
+\text{ROC}(\tau_2)
+= \Bigl(\mathbb{P}_n\{Z&gt;\tau_2,Z\in L\,|Y=0\},\mathbb{P}_n\{Z&gt;\tau_2, Z\in
+L\,|Y=1\}\Bigr).
+\]</span> Now because all <span class="math inline">\(Z\)</span> in <span class="math inline">\(L\)</span> are larger than <span class="math inline">\(\tau_2\)</span> because <span class="math inline">\(\tau_1&gt;\tau_2\)</span>, we have</p>
+</div>
+<div id="section-2" class="section level5">
+<h5 class="hasAnchor">
+<a href="#section-2" class="anchor"></a>(3)</h5>
+<p><span class="math display">\[
+\text{ROC}(\tau_2)=\Bigl(\frac{n_{0L}}{n_{0L}+n_{0R}}, \frac{n_{1L}}{n_{1L}+n_{1R}}\Bigr).
+\label{case.2}
+\]</span> Therefore the ROC curve contains only three points, <span class="math inline">\((0,0)\)</span>, <span class="math inline">\(\text{ROC}(\tau_2)\)</span> and <span class="math inline">\((1,1)\)</span>.</p>
+<p>Finally, consider the third case <span class="math inline">\(\tau_1=\tau_2\)</span>. Because it is not possible for <span class="math inline">\(Z&gt;\tau\)</span> when <span class="math inline">\(\tau=\tau_1=\tau_2\)</span>, it follows that <span class="math inline">\(R(\tau_1)=R(\tau_2)=(0,0)\)</span> and consequently the ROC curve contains only two points, <span class="math inline">\((0,0)\)</span> and <span class="math inline">\((1,1)\)</span>.</p>
+<p>To work out the AUC let us visit each of the three above cases. For <a href="#section-1">(2)</a>, let <span class="math display">\[
+(\alpha,\beta)=\Bigl(\frac{n_{0R}}{n_{0L}+n_{0R}}, \frac{n_{1R}}{n_{1L}+n_{1R}}\Bigr).
+\]</span> Then the area under the curve equals the area under the curve for the three points <span class="math inline">\((0,0)\)</span>, <span class="math inline">\((\alpha,\beta)\)</span>, <span class="math inline">\((1,1)\)</span>, which equals <span class="math display">\[\begin{eqnarray}
+&amp;&amp;\hskip-20pt
+\frac{1}{2}\alpha\beta+(1-\alpha)\beta+ \frac{1}{2}(1-\alpha)(1-\beta)\\
+&amp;&amp;=\frac{1}{2}\alpha\beta+\beta-\alpha\beta+ \frac{1}{2}(1-\alpha-\beta+\alpha\beta)\\
+&amp;&amp;=\frac{1}{2}(1-\alpha+\beta).
+\end{eqnarray}\]</span> Now for the second case <a href="#section-2">(3)</a>, notice that <span class="math display">\[
+(1-\alpha,1-\beta)=\Bigl(\frac{n_{0L}}{n_{0L}+n_{0R}},
+\frac{n_{1L}}{n_{1L}+n_{1R}}\Bigr).
+\]</span> Therefore, the ROC curve is comprised of the three points <span class="math inline">\((0,0)\)</span>, <span class="math inline">\((1-\alpha,1-\beta)\)</span>, <span class="math inline">\((1,1)\)</span>. The AUC is therefore <span class="math display">\[\begin{eqnarray}
+&amp;&amp;\hskip-20pt
+\frac{1}{2}(1-\alpha)(1-\beta)+\alpha(1-\beta) + \frac{1}{2}\alpha\beta\\
+&amp;&amp;=\frac{1}{2}(1-\alpha-\beta+\alpha\beta)+\alpha-\alpha\beta+ \frac{1}{2}\alpha\beta\\
+&amp;&amp;=\frac{1}{2}(1-\beta+\alpha).
+\end{eqnarray}\]</span> Observe that this is different than the first case. Finally, for the third case, since there are only two points <span class="math inline">\((0,0)\)</span> and <span class="math inline">\((1,1)\)</span> on the ROC curve, the AUC must equal <span class="math inline">\(1/2\)</span>.</p>
+<p>By symmetry, the AUC should not depend on the labeling of the terminal nodes and therefore the AUC for <span class="math inline">\(Z\)</span> is defined to be the maximum value of the three cases <span class="math display">\[
+\max\left(\frac{1}{2}(1-\alpha+\beta),\, \frac{1}{2}(1-\beta+\alpha), \frac{1}{2}\right)
+= \max\left(\frac{1}{2}(1-\alpha+\beta),\, \frac{1}{2}(1-\beta+\alpha)\right),
+\]</span> where the right-hand side follows since an AUC of <span class="math inline">\(1/2\)</span> implies <span class="math inline">\(\alpha=\beta\)</span> and because the maximum of <span class="math inline">\((1-\alpha+\beta)\)</span> and <span class="math inline">\((1-\beta+\alpha)\)</span> can never be less than <span class="math inline">\(1\)</span>.</p>
+</div>
+<div id="implementation-of-the-auc-splitting-rule" class="section level3">
+<h3 class="hasAnchor">
+<a href="#implementation-of-the-auc-splitting-rule" class="anchor"></a>Implementation of the AUC splitting rule</h3>
+<p>It is now a simple matter to implement the AUC splitting rule. For a proposed split into left and right daugther nodes <span class="math inline">\(L\)</span> and <span class="math inline">\(R\)</span>, calculate <span class="math display">\[
+(\alpha,\beta)=\Bigl(\frac{n_{0R}}{n_{0L}+n_{0R}}, \frac{n_{1R}}{n_{1L}+n_{1R}}\Bigr).
+\]</span> The split-statistic is <span class="math display">\[
+\theta(L,R) = \max\left(\frac{1}{2}(1-\alpha+\beta),\, \frac{1}{2}(1-\beta+\alpha)\right). 
+\]</span> Choose the split yielding the {} split-statistic value <span class="math inline">\(\theta(L,R)\)</span>.</p>
+</div>
+<div id="connection-to-random-forests-quantile-classification" class="section level3">
+<h3 class="hasAnchor">
+<a href="#connection-to-random-forests-quantile-classification" class="anchor"></a>Connection to random forests quantile classification</h3>
+<p>There is connection between maximizing the AUC splitting rule and the recently proposed RFQ (random forests quantile classification) method of <span class="citation">[2]</span>. The latter approach is motivated by maximizing the sum of the true negative rate (TNR) and the true positive rate (TPR).</p>
+<p>By symmetry, we can consider the first term <span class="math inline">\((1-\alpha+\beta)\)</span> appearing in the AUC splitting rule <span class="math inline">\(\theta(L,R)\)</span>, <span class="math display">\[\begin{eqnarray}
+(1-\alpha+\beta)
+&amp;:=&amp;
+1-\mathbb{P}_n\{Z&gt;\tau|Y=0\}+\mathbb{P}_n\{Z&gt;\tau|Y=1\}\\
+&amp;=&amp;
+\text{Specificity}(\tau)+\text{Sensitivity}(\tau)\\
+&amp;=&amp;
+1-\text{False Positive Rate}(\tau)+ \text{True Positive Rate}(\tau)\\
+&amp;=&amp;
+\text{True Negative Rate}(\tau)+ \text{True Positive Rate}(\tau).
+\end{eqnarray}\]</span> We can conclude that maximizing the AUC splitting rule is equivalent to RFQ’s goal of maximizing TNR<span class="math inline">\(+\)</span>TPR.</p>
+</div>
+</div>
+<div id="extension-to-the-multiclass-setting" class="section level2">
 <h2 class="hasAnchor">
-<a href="#mahalanobis-distance" class="anchor"></a>Mahalanobis distance</h2>
-<p>As can be seen, the multivariate regression splitting rule is a composite mean-squared error rule. As such, since it is additive in the components of the outcomes, it does not take into account correlation between the continuous coordinates <span class="math inline">\((Y_1,\ldots,Y_q)^T\)</span> of the outcome vector <span class="math inline">\({\bf Y}=(Y_1,\ldots,Y_p)^T\)</span>. But doing so could potentially improve performance of the forest and yield important insight into the relationship between the outcomes and the features.</p>
-<p>In order to incorporate this potentially useful correlation, we use the Mahalanobis distance. Let <span class="math inline">\({\bf Z}\)</span> be a random element with mean <span class="math inline">\({\bf \mu}_{\bf Z}\)</span> and variance-covariance <span class="math inline">\({\bf \Sigma}_{\bf Z}\)</span>. The Mahalanobis distance from <span class="math inline">\({\bf Z}\)</span> to its mean value <span class="math inline">\({\bf \mu}_{\bf Z}\)</span> is defined by <span class="math display">\[
-{\mathscr D}_M({\bf Z}) = ({\bf Z}-{\bf \mu}_{\bf Z})^T {\bf \Sigma}_{\bf Z}^{-1} ({\bf Z}-{\bf \mu}_{\bf Z}).
-\]</span> This is a sensible measure of distance but a a problem with using it in practice is that <span class="math inline">\({\bf \Sigma}_{\bf Z}\)</span> may be singular (in which case <span class="math inline">\({\bf \Sigma}_{\bf Z}^{-1}\)</span> does not exist). Such a scenario typically occurs when growing a tree as number of observations decreases exponentially fast. Small node sizes yield covariance matrices that are singular.</p>
-<p>We resolve this by using the generalized inverse. Recall the definition of the Moore-Penrose generalized inverse of a matrix. For any matrix <span class="math inline">\({\bf A}_{n\times p}\)</span> the generalized inverse of <span class="math inline">\({\bf A}\)</span> is the unique matrix <span class="math inline">\({\bf A}_{p\times n}^+\)</span> satisfying <span class="math display">\[
-{\bf A}{\bf A}^{+}{\bf A}={\bf A},\hskip5pt
-{\bf A}^{+}{\bf A}{\bf A}^{+}={\bf A}^{+},\hskip5pt
-({\bf A}{\bf A}^{+})^T={\bf A}{\bf A}^{+}.
-\]</span> If <span class="math inline">\({\bf A}\)</span> is non-singular, then <span class="math inline">\({\bf A}^{+}={\bf A}^{-1}\)</span>.</p>
-<p>The generalized inverse of a matrix can be obtained from its singular value decomposition (SVD). Let <span class="math inline">\({\bf A}\)</span> be an <span class="math inline">\(n\times p\)</span> matrix with rank <span class="math inline">\(r\le\min(n,p)\)</span> where <span class="math inline">\(n\ge p\)</span>. The SVD of <span class="math inline">\({\bf A}\)</span> is <span class="math inline">\({\bf A}={\bf U}{\bf D}{\bf V}^T\)</span> where <span class="math inline">\({\bf U}_{n\times p}\)</span> is an orthonormal matrix (<span class="math inline">\({\bf U}^T{\bf U}={\bf I}_p\)</span>), <span class="math inline">\({\bf V}_{p\times p}\)</span> is an orthogonal matrix (<span class="math inline">\({\bf V}^T{\bf V}={\bf V}{\bf V}^T={\bf I}_p\)</span>) and <span class="math inline">\({\bf D}_{p\times p}=\text{diag}\{d_j\}_{j=1}^p\)</span> is a diagonal matrix with non-negative entries. Without loss of generality, we can assume the singular values are ordered so that <span class="math display">\[
-d_1\ge d_2\ge \cdots \ge d_r &gt; 0\quad\text{and}\quad\text{}
-d_{r+1}=\cdots=d_p=0.
-\]</span> Notice that <span class="math inline">\(d_j&gt;0\)</span> for <span class="math inline">\(j=1,\ldots,p\)</span> if <span class="math inline">\({\bf A}\)</span> has full column rank <span class="math inline">\(r=p\)</span>.</p>
-
-<p class="comment">
-<strong> <strong> <span style="font-style:normal">Theorem 1:</span> </strong> </strong> The generalized inverse for <span class="math inline">\({\bf A}_{n\times p}\)</span> given that <span class="math inline">\(n\ge p\)</span> is <span class="math display">\[
-{\bf A}^+_{p\times n} = {\bf V}{\bf D}^+ {\bf U}^T
-\]</span> where <span class="math inline">\({\bf D}^+\)</span> is the generalized inverse of <span class="math inline">\({\bf D}\)</span> defined as the <span class="math inline">\(p\times p\)</span> diagonal matrix with entries <span class="math inline">\(1/d_k\)</span> for <span class="math inline">\(k=1,\ldots,r\)</span> and zero for coordinates <span class="math inline">\(k=r+1,\ldots,p\)</span>. If <span class="math inline">\(p&gt;n\)</span> then transpose <span class="math inline">\({\bf A}\)</span> so that the above result applies and transpose the resulting inverse. Thus, <span class="math inline">\({\bf A}^+=(({\bf A}^T)^+)^T\)</span> when <span class="math inline">\(p&gt;n\)</span>.
-</p>
-<p>We will be interested in symmetric square matrices of the form <span class="math inline">\({\bf Q}={\bf L}^T{\bf L}\)</span>. The generalized inverse for <span class="math inline">\({\bf Q}\)</span> is then easily obtained by Theorem 1 by setting <span class="math inline">\({\bf A}={\bf Q}\)</span>. Since the number of rows equals the number of columns in <span class="math inline">\({\bf Q}\)</span>, the first part of Theorem 1 applies in this case.</p>
-<div id="mahalanobis-splitting-rule" class="section level3">
-<h3 class="hasAnchor">
-<a href="#mahalanobis-splitting-rule" class="anchor"></a>Mahalanobis splitting rule</h3>
-<p>We use Theorem 1 to develop an efficient multivariate splitting rule based on Mahalanobis distance. Also we will no longer require the standardization used earlier <a href="#section">(1)</a>. Hereafter, we we assume all coordinates of <span class="math inline">\({\bf Y}\)</span> are continuous: thus <span class="math inline">\(q=p\)</span> and <span class="math inline">\({\bf Y}=(Y_1,\ldots,Y_p)^T\in\mathbb{R}^p\)</span>. Consider splitting a tree node <span class="math inline">\(t\)</span>. Let <span class="math inline">\({\bf L}_t^*\)</span> be the outcome matrix for <span class="math inline">\(t\)</span> formed by ``row-stacking’’ the centered <span class="math inline">\({\bf Y}\)</span> values in <span class="math inline">\(t\)</span> (we use a <span class="math inline">\(*\)</span> notation to emphasize that the matrix is centered) <span class="math display">\[
-{\bf L}_t^* = 
-\left(\begin{array}{c}
-    ({\bf Y}_1 -\overline{{\bf Y}}_t)^T \\ 
-    \vdots  \\
-    ({\bf Y}_n  -\overline{{\bf Y}}_t)^T    
-\end{array} \right)_{n\times p}.
-\]</span> Here <span class="math inline">\(\overline{{\bf Y}}_t\)</span> is the <span class="math inline">\(p\)</span>-dimensional vector of sample means for <span class="math inline">\({\bf Y}\)</span> in <span class="math inline">\(t\)</span>. If there are <span class="math inline">\(n\)</span> observations in <span class="math inline">\(t\)</span>, then <span class="math inline">\({\bf L}_t^*\)</span> is an <span class="math inline">\(n\times p\)</span> matrix. Because <span class="math inline">\({\bf L}_t^*\)</span> is centered, the sample covariance matrix for the data is <span class="math inline">\(n^{-1}{\bf Q}_t^*\)</span> where <span class="math inline">\({\bf Q}_t^*=({\bf L}_t^*)^T{\bf L}_t^*\)</span>. Apply Theorem 1 to <span class="math inline">\({\bf Q}_t^*\)</span> to obtain its generalized inverse <span class="math inline">\(({\bf Q}_t^*)^+\)</span>.</p>
-<p>Now we define the splitting rule. Suppose that <span class="math inline">\(t\)</span> is split into left and right daughter nodes <span class="math inline">\(t_L\)</span> and <span class="math inline">\(t_R\)</span> (remember splitting is based on the features, <span class="math inline">\({\bf X}\)</span>). Let <span class="math inline">\(\overline{{\bf Y}}_{t_L}\)</span> and <span class="math inline">\(\overline{{\bf Y}}_{t_R}\)</span> be the <span class="math inline">\(p\)</span>-dimensional sample mean vectors for <span class="math inline">\({\bf Y}\)</span> in <span class="math inline">\(t_L\)</span> and <span class="math inline">\(t_R\)</span>, respectively. The Mahalanobis multivariate split-statistic is <span class="math display">\[\begin{eqnarray}
-&amp;&amp; \hskip-15pt {\mathscr D}_{M,t}(t_L,t_R)\\
-&amp;&amp; \hskip-5pt
-= \frac{n_L}{n}\sum_{i\in t_L} ({\bf Y}_i-\overline{{\bf Y}}_{t_L})^T({\bf Q}_t^*)^+({\bf Y}_i-\overline{{\bf Y}}_{t_L})
-+ \frac{n_R}{n}\sum_{i\in t_R} ({\bf Y}_i-\overline{{\bf Y}}_{t_R})^T({\bf Q}_t^*)^+({\bf Y}_i-\overline{{\bf Y}}_{t_R}).
-\end{eqnarray}\]</span> The best split for <span class="math inline">\(t\)</span> is obtained by minimizing <span class="math inline">\({\mathscr D}_{M,t}(t_L,t_R)\)</span>, or equivalently by maximizing <span class="math display">\[
-{\mathscr D}_{M,t}^*(t_L,t_R)=
-1- \frac{1}{p} {\mathscr D}_{M,t}(t_L,t_R).
-\]</span> This split-statistic is always bounded between 0 and 1 as the following theorem shows.</p>
-
-<p class="comment">
-<strong> <strong> <span style="font-style:normal">Theorem 2:</span> </strong> </strong> <span class="math inline">\(0\le {\mathscr D}_{M,t}^*(t_L,t_R)\le 1\)</span>.
-</p>
-<p class="comment">
-</p>
-<p><strong> <strong> <span style="font-style:normal">Proof:</span> </strong> </strong> We have the following bound for <span class="math inline">\({\mathscr D}_{M,t}(t_L,t_R)\)</span>: <span class="math display">\[\begin{eqnarray}
-&amp;&amp;\hskip-25pt
-\frac{n_L}{n}\sum_{i\in t_L} ({\bf Y}_i-\overline{{\bf Y}}_{t_L})^T({\bf Q}_t^*)^+({\bf Y}_i-\overline{{\bf Y}}_{t_L})
-+ \frac{n_R}{n}\sum_{i\in t_R} ({\bf Y}_i-\overline{{\bf Y}}_{t_R})^T({\bf Q}_t^*)^+({\bf Y}_i-\overline{{\bf Y}}_{t_R})\\
-&amp;&amp;\le
-\sum_{i=1}^n ({\bf Y}_i-\overline{{\bf Y}})^T({\bf Q}_t^*)^+({\bf Y}_i-\overline{{\bf Y}})\\
-%&amp;&amp;=
-%\trace\left\{\sum_{i=1}^n (\Y_i-\Ybbar)^T(\Q_t^*)^+(\Y_i-\Ybbar)\right\}\\
-%&amp;&amp;=
-%\sum_{i=1}^n\trace\left\{(\Y_i-\Ybbar)^T(\Q_t^*)^+(\Y_i-\Ybbar)\right\}\\
-%&amp;&amp;=
-%\sum_{i=1}^n\trace\left\{(\Q_t^*)^+(\Y_i-\Ybbar)(\Y_i-\Ybbar)^T\right\}\\
-&amp;&amp;=
-\text{trace}\left\{({\bf Q}_t^*)^+\,\cdot\,\sum_{i=1}^n ({\bf Y}_i-\overline{{\bf Y}})({\bf Y}_i-\overline{{\bf Y}})^T\right\}\\
-&amp;&amp;=
-\text{trace}\left\{({\bf Q}_t^*)^+ {\bf Q}_t^*\right\}\\
-&amp;&amp;=
-\text{trace}\left\{{\bf V}{\bf D}^+{\bf U}^T{\bf U}{\bf D}{\bf V}^T\right\}\\
-&amp;&amp;
-=\text{trace}\left\{{\bf V}{\bf D}^+{\bf D}{\bf V}^T\right\}\\
-&amp;&amp;\le
-\text{trace}\left\{{\bf V}^T{\bf V}\right\}= p,
-\end{eqnarray}\]</span> where line 3 follows from <span class="math inline">\(\sum_{i=1}^n{\bf z}_i^T{\bf A}{\bf z}_i=\text{trace}({\bf A}{\bf B})\)</span> where <span class="math inline">\({\bf B}=\sum_{i=1}^n{\bf z}_i{\bf z}_i^T\)</span>. Therefore <span class="math display">\[
-1\ge 1- \frac{1}{p} {\mathscr D}_{M,t}(t_L,t_R)
-\ge 1- \frac{1}{p} \cdot p
-\ge 0.
-\]</span></p>
-
+<a href="#extension-to-the-multiclass-setting" class="anchor"></a>Extension to the multiclass setting</h2>
+<p>Now we describe the AUC splitting rule for the multiclass setting by building on the two-class AUC splitting rule. Now the response <span class="math inline">\(Y\)</span> can take one of <span class="math inline">\(K&gt;2\)</span> distinct values, <span class="math inline">\(Y\in\{1,\ldots,K\}\)</span>. The interpretation for the diagnostic test <span class="math inline">\(Z\)</span> is also different. Following a proposed split to a tree node, the diagnostic test <span class="math inline">\(Z\)</span> predicts <span class="math inline">\(Y=k_2\)</span> versus <span class="math inline">\(Y=k_1\)</span> for all possible <span class="math inline">\(k_1\ne k_2\)</span>. To take into account all these comparisons, the AUC is defined as the average over all <span class="math inline">\(k_1&lt;k_2\)</span> comparisons <span class="citation">[3]</span>.</p>
+<p>More formally, we summarize the frequencies resulting from the tree node split as a <span class="math inline">\(K\times 2\)</span> table. Given there are <span class="math inline">\(K\)</span> classes and two nodes, we have <span class="math inline">\(2K\)</span> predicted probabilities that <span class="math inline">\(Z\)</span> is evaluated over: <span class="math display">\[
+\text{left node:}\hskip5pt
+\tau_L^{(1)}=\frac{n_{1L}}{n_L},\,
+\tau_L^{(2)}=\frac{n_{2L}}{n_L},\,\cdots,
+\tau_L^{(K)}=\frac{n_{KL}}{n_L}.
+\]</span> <span class="math display">\[
+\text{right node:}\hskip5pt
+\tau_R^{(1)}=\frac{n_{1R}}{n_R},\,
+\tau_R^{(2)}=\frac{n_{2R}}{n_R},\,\cdots,
+\tau_R^{(K)}=\frac{n_{KR}}{n_R}.
+\]</span> See <a href="#table-2">Table 2</a> for illustration.</p>
+<div id="table-2" class="section level5">
+<h5 class="hasAnchor">
+<a href="#table-2" class="anchor"></a>Table 2</h5>
+Left: Frequency of cases. Right: Predicted probabilities for left and right daughter nodes for the <span class="math inline">\(K&gt;2\)</span> multiclass setting.
+<center>
+<img src="pic/aucsplit.png" style="width:50.0%">
+</center>
+<p><br></p>
+<p>For each <span class="math inline">\(k_1&lt;k_2\)</span> comparison, we can treat <span class="math inline">\(k_1\)</span> as the baseline <code>no-disease'' case and $k_2$ as the</code>disease’’ case. Define <span class="math display">\[
+(\alpha_{k_1,k_2},\beta_{k_1,k_2})=\Bigl(\frac{n_{k_1R}}{n_{k_1}}, \frac{n_{k_2R}}{n_{k_2}}\Bigr).
+\]</span> Define the following U-statistics <span class="math display">\[
+U_{k_1,k_2} = \frac{1}{2}\left(1 - \alpha_{k_1,k_2} + \beta_{k_1,k_2}\right),\hskip10pt
+U_{k_2,k_1} = \frac{1}{2}\left(1 - \beta_{k_1,k_2} + \alpha_{k_1,k_2}\right).
+\]</span> Using a similar argument as before, the AUC for the comparison between <span class="math inline">\(k_1\)</span> and <span class="math inline">\(k_2\)</span> is <span class="math display">\[
+\text{AUC}_{k_1,k_2}= \max\left(U_{k_1,k_2}, U_{k_2,k_1}\right).
+\]</span> The AUC for the proposed split is defined as the average over all <span class="math inline">\(k_1&lt;k_2\)</span> comparisons. Thus, <span class="math display">\[\begin{eqnarray}
+\text{AUC}
+&amp;=&amp; \frac{2}{K(K-1)}\sum_{k_1&lt;k_2} \text{AUC}_{k_1,k_2}\\
+&amp;=&amp; \frac{2}{K(K-1)}\sum_{k_1&lt;k_2} \max\left(U_{k_1,k_2}, U_{k_2,k_1}\right).
+\end{eqnarray}\]</span></p>
 </div>
-<div id="illustration" class="section level3">
+<div id="implementation-of-the-auc-multiclass-splitting-rule" class="section level3">
 <h3 class="hasAnchor">
-<a href="#illustration" class="anchor"></a>Illustration</h3>
-<p>We use a mouse nutrigenomic study <span class="citation">[3]</span> to illustrate variable selection using Mahalanobis splitting and constrast the results to the default composite splitting rule. The <span class="math inline">\({\bf Y}\)</span>-outcome is a 22-dimensional vector of liver lipids (all real-valued) which is regressed against features <span class="math inline">\({\bf X}\)</span> comprising 120 gene expression value, mouse genotype (wild-type or PPAR-alpha) and type of diet (5 different treatments). Comparison of the standardized variable importance (VIMP) of the two splitting rules, shows that the independence rule tends to favor the variables genotype and diet, whereas Mahalanobis splitting is able to find not only these variables, but also some interesting genes, such as CYP3A11, with large importance.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ------------------------------------------------------------</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="do">## multivariate regression forests</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="do">## - comparison of Mahalanobis splitting to standard splitting rule</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="do">## - lipids (all real values) used as the multivariate y</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="do">## - genes, genotype and diet used as the x features</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="do">## ------------------------------------------------------------</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(randomForestSRC)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="do">## load the data</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(nutrigenomic)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="do">## parse into y and x data</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>ydta <span class="ot">&lt;-</span> nutrigenomic<span class="sc">$</span>lipids</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>xdta <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(nutrigenomic<span class="sc">$</span>genes,</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>                   <span class="at">diet =</span> nutrigenomic<span class="sc">$</span>diet,</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>                   <span class="at">genotype =</span> nutrigenomic<span class="sc">$</span>genotype)</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="do">## mahalanobis splitting</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">rfsrc</span>(<span class="fu">get.mv.formula</span>(<span class="fu">colnames</span>(ydta)),</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>             <span class="fu">data.frame</span>(ydta, xdta),</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>             <span class="at">importance=</span><span class="cn">TRUE</span>, <span class="at">nsplit =</span> <span class="dv">10</span>, <span class="at">splitrule =</span> <span class="st">"mahalanobis"</span>)</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="do">## default composite (independence) splitting</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>obj2 <span class="ot">&lt;-</span> <span class="fu">rfsrc</span>(<span class="fu">get.mv.formula</span>(<span class="fu">colnames</span>(ydta)),</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>              <span class="fu">data.frame</span>(ydta, xdta),</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>              <span class="at">importance=</span><span class="cn">TRUE</span>, <span class="at">nsplit =</span> <span class="dv">10</span>)</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="do">## compare standardized VIMP for top 25 variables</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>imp <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">mahalanobis =</span> <span class="fu">rowMeans</span>(<span class="fu">get.mv.vimp</span>(obj,  <span class="at">standardize =</span> <span class="cn">TRUE</span>)),</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>                  <span class="at">default     =</span> <span class="fu">rowMeans</span>(<span class="fu">get.mv.vimp</span>(obj2, <span class="at">standardize =</span> <span class="cn">TRUE</span>)))</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="dv">100</span> <span class="sc">*</span> imp[<span class="fu">order</span>(imp[<span class="st">"mahalanobis"</span>], <span class="at">decreasing =</span> <span class="cn">TRUE</span>)[<span class="dv">1</span><span class="sc">:</span><span class="dv">25</span>], ])</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>          mahalanobis      default</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> diet       <span class="fl">4.6368819</span> <span class="fl">19.674080838</span></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> CYP3A11    <span class="fl">2.7681390</span>  <span class="fl">2.540102290</span></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> PMDCI      <span class="fl">1.8182919</span>  <span class="fl">2.815791465</span></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> genotype   <span class="fl">1.5269731</span>  <span class="fl">3.553100850</span></span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> CYP2c29    <span class="fl">1.4269237</span>  <span class="fl">0.531133113</span></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> Ntcp       <span class="fl">1.0038941</span>  <span class="fl">0.484867059</span></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> CAR1       <span class="fl">0.7721098</span>  <span class="fl">1.022618362</span></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> CYP4A10    <span class="fl">0.7699449</span>  <span class="fl">0.073722892</span></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> GSTpi2     <span class="fl">0.7569144</span>  <span class="fl">0.076668861</span></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> ACAT2      <span class="fl">0.5973348</span>  <span class="fl">0.466176034</span></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> SPI1<span class="fl">.1</span>     <span class="fl">0.5583821</span>  <span class="fl">0.520315157</span></span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> THIOL      <span class="fl">0.4217010</span>  <span class="fl">0.256322710</span></span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> G6Pase     <span class="fl">0.3452151</span>  <span class="fl">0.076882606</span></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> L.FABP     <span class="fl">0.3264878</span>  <span class="fl">0.202130329</span></span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> SR.BI      <span class="fl">0.2879030</span>  <span class="fl">0.595221688</span></span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> BIEN       <span class="fl">0.2873616</span>  <span class="fl">0.173956271</span></span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> FAS        <span class="fl">0.2752811</span> <span class="sc">-</span><span class="fl">0.068033669</span></span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> ACOTH      <span class="fl">0.2733822</span>  <span class="fl">0.393634169</span></span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> apoC3      <span class="fl">0.2591111</span>  <span class="fl">0.921950081</span></span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> CYP4A14    <span class="fl">0.2315877</span>  <span class="fl">0.105256113</span></span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> GSTmu      <span class="fl">0.2165187</span>  <span class="fl">0.062434129</span></span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> Lpin1      <span class="fl">0.1948898</span>  <span class="fl">0.327322317</span></span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> LDLr       <span class="fl">0.1921990</span>  <span class="fl">0.107747940</span></span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> ACBP       <span class="fl">0.1895075</span>  <span class="fl">0.696519223</span></span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> UCP2       <span class="fl">0.1850553</span> <span class="sc">-</span><span class="fl">0.005560895</span></span></code></pre></div>
+<a href="#implementation-of-the-auc-multiclass-splitting-rule" class="anchor"></a>Implementation of the AUC multiclass splitting rule</h3>
+<p>It is now a simple matter to implement the AUC multiclass splitting rule. For a proposed split into left and right daugther nodes <span class="math inline">\(L\)</span> and <span class="math inline">\(R\)</span>, calculate the <span class="math inline">\(K\times 2\)</span> frequencies as in Table~2. Using these, calculate <span class="math inline">\(U_{k_1,k_2}\)</span> and <span class="math inline">\(U_{k_2,k_1}\)</span> for all <span class="math inline">\(k_1&lt; k_2\)</span>. The split-statistic is <span class="math display">\[
+\theta(L,R) =
+\frac{2}{K(K-1)}\sum_{1\le k_1&lt;k_2\le K} \max\left(U_{k_1,k_2}, U_{k_2,k_1}\right).
+\]</span> Choose the split yielding the <strong>maximum</strong> split-statistic value <span class="math inline">\(\theta(L,R)\)</span>.</p>
+</div>
+</div>
+<div id="appendix-connection-to-the-mann-whitney-u-statistic" class="section level2">
+<h2 class="hasAnchor">
+<a href="#appendix-connection-to-the-mann-whitney-u-statistic" class="anchor"></a>Appendix: Connection to the Mann-Whitney U-statistic</h2>
+<p>We show that the AUC is directly related to the Mann-Whitney U-statistic. Although this is a well known result <span class="citation">[1]</span>, it is helpful to provide an independent proof of this fact.</p>
+<p>Let <span class="math inline">\((Z_{i,0})_{i=1}^{n_0}\)</span> denote the set of test values having class label <span class="math inline">\(Y=0\)</span>. Also let <span class="math inline">\((Z_{j,1})_{j=1}^{n_1}\)</span> be those test values with <span class="math inline">\(Y=1\)</span>. Note that <span class="math inline">\(n_0+n_1=1\)</span>. Define <span class="math display">\[
+S(Z_{i,0},Z_{j,1})=\left\{
+\begin{array}{ll}
+0    &amp;\mbox{if $Z_{i,0}&gt;Z_{j,1}$}\\
+1/2  &amp;\mbox{if $Z_{i,0}=Z_{j,1}$}\\
+1    &amp;\mbox{if $Z_{i,0}&lt;Z_{j,1}$}.
+\end{array}\right.
+\]</span> The Mann-Whitney U-statistic is ##### (4) <span class="math display">\[
+U=\frac{1}{n_0 n_1}\sum_{i=1}^{n_0}\sum_{j=1}^{n_1}
+S(Z_{i,0},Z_{j,1}).
+\label{MW.U}
+\]</span> By definition [(4)], we can see that <span class="math inline">\(U\)</span> estimates the probability of correctly ranking two individuals randomly selected from the two disease groups: <span class="math display">\[
+U=\mathbb{P}_n\{Z_{i,0}&lt;Z_{j,1}\}.
+\]</span> The AUC, however, has no such obvious interpretation. Theorem 1 given below makes this connection.</p>
+<p class="comment">
+<strong> <span style="font-style:normal">Theorem 1:</span> </strong> The AUC defined by <a href="#section">(1)</a> equals the Mann-Whitney U-statistic [(4)].
+</p>
+<p>By definition, <span class="math inline">\(\alpha_k-\alpha_{k+1}=\mathbb{P}_n\{Z=\tau_{k+1}|Y=0\}\)</span>. Consequently, by <a href="#section">(1)</a> <span class="math display">\[\begin{eqnarray}
+\text{AUC}
+&amp;=&amp;\frac{1}{2}\sum_{k=0}^{m-1} \beta_k\times\mathbb{P}_n\{Z=\tau_{k+1}|Y=0\}\\
+&amp;&amp;\qquad\qquad
++\frac{1}{2}\sum_{k=0}^{m-1} \beta_{k+1}\times\mathbb{P}_n\{Z=\tau_{k+1}|Y=0\}.
+\end{eqnarray}\]</span> The following is a key identity needed for the proof.<br>
+For each <span class="math inline">\(k=0,\ldots,m-1\)</span>, <span class="math display">\[\begin{eqnarray}
+&amp;&amp;\beta_k\times\mathbb{P}_n\{Z=\tau_{k+1}|Y=0\}\\
+&amp;&amp;\qquad =
+\frac{1}{n_0 n_1}\sum_{Z_{i,0}=\tau_{k+1}}\sum_{j=1}^{n_1}
+I\{Z_{j,1}&gt;\tau_k\}\\
+&amp;&amp;\qquad =
+\frac{1}{n_0 n_1}\sum_{Z_{i,0}=\tau_{k+1}}\sum_{j=1}^{n_1}
+\Bigl(I\{Z_{j,1}&gt;Z_{i,0}\}+I\{Z_{j,1}=Z_{i,0}\}\Bigr)\\
+&amp;&amp;\qquad =
+\frac{1}{n_0 n_1}\sum_{Z_{i,0}=\tau_{k+1}}
+\sum_{j=1}^{n_1}\left(S(Z_{i,0},Z_{j,1})+\frac{1}{2}I\{Z_{j,1}=Z_{i,0}\}\right).
+\end{eqnarray}\]</span> By similar reasoning we have another key identity, <span class="math display">\[\begin{eqnarray}
+&amp;&amp;\beta_{k+1}\times\mathbb{P}_n\{Z=\tau_{k+1}|Y=0\}\\
+&amp;&amp;\qquad =
+\frac{1}{n_0 n_1}\sum_{Z_{i,0}=\tau_{k+1}}\sum_{j=1}^{n_1}
+I\{Z_{j,1}&gt;Z_{i,0}\}\\
+&amp;&amp;\qquad =
+\frac{1}{n_0 n_1}\sum_{Z_{i,0}=\tau_{k+1}}
+\sum_{j=1}^{n_1}\left(S(Z_{i,0},Z_{j,1})-\frac{1}{2}I\{Z_{j,1}=Z_{i,0}\}\right).
+\end{eqnarray}\]</span> Deduce that <span class="math display">\[\begin{eqnarray}
+\text{AUC}
+&amp;=&amp;\frac{1}{n_0 n_1}\sum_{k=0}^{m-1}\sum_{Z_{i,0}=\tau_{k+1}}
+\sum_{j=1}^{n_1} S(Z_{i,0},Z_{j,1})\\
+&amp;=&amp;\frac{1}{n_0 n_1}\sum_{k=1}^m\sum_{Z_{i,0}=\tau_k}
+\sum_{j=1}^{n_1} S(Z_{i,0},Z_{j,1}).
+\end{eqnarray}\]</span> It is easily seen that the right-hand side is [(4)].</p>
 <br><br><p class="comment2">
-<strong> Cite this vignette as </strong> <br> H. Ishwaran, F. Tang, M. Lu, and U. B. Kogalur. 2021. “randomForestSRC: multivariate splitting rule vignette.” <a href="http://randomforestsrc.org/articles/mvsplit.html" class="uri">http://randomforestsrc.org/articles/mvsplit.html</a>.
+<strong> Cite this vignette as </strong> <br> H. Ishwaran, M. Lu, and U. B. Kogalur. 2021. “randomForestSRC: splitting rule for multiclass problems via AUC vignette.” <a href="http://randomforestsrc.org/articles/aucsplit.html" class="uri">http://randomforestsrc.org/articles/aucsplit.html</a>.
 </p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="sc">@</span>misc{HemantMultiv,</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    author <span class="ot">=</span> <span class="st">"Hemant Ishwaran and Fei Tang and Min Lu and Udaya B. Kogalur"</span>,</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    title <span class="ot">=</span> {{randomForestSRC}<span class="sc">:</span> multivariate splitting rule vignette},</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    year <span class="ot">=</span> {<span class="dv">2021</span>},</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    url <span class="ot">=</span> {http<span class="sc">:</span><span class="er">//</span>randomforestsrc.org<span class="sc">/</span>articles<span class="sc">/</span>mvsplit.html}</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-</div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="sc">@</span>misc{HemantAUCsplit,</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    author <span class="ot">=</span> <span class="st">"Hemant Ishwaran and Min Lu and Udaya B. Kogalur"</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    title <span class="ot">=</span> {{randomForestSRC}<span class="sc">:</span> splitting rule <span class="cf">for</span> multiclass problems via {AUC} vignette},</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    year <span class="ot">=</span> {<span class="dv">2022</span>},</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    url <span class="ot">=</span> {http<span class="sc">:</span><span class="er">//</span>randomforestsrc.org<span class="sc">/</span>articles<span class="sc">/</span>aucsplit.html}</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 <div id="references" class="section level2 unnumbered">
 <h2 class="hasAnchor">
 <a href="#references" class="anchor"></a>References</h2>
 <div id="refs" class="references csl-bib-body">
-<div id="ref-tang2017random" class="csl-entry">
-1. Tang F, Ishwaran H. Random forest missing data algorithms. Statistical Analysis and Data Mining. 2017;10:363–77.
+<div id="ref-HanleyMcneil" class="csl-entry">
+1. Hanley JA, McNeil BJ. <span class="nocase">The meaning and use of the area under a receiver operating characteristic (ROC) curve</span>. Radiology. 1982;143:29–36.
 </div>
-<div id="ref-Ishwaran2015" class="csl-entry">
-2. Ishwaran H. The effect of splitting on random forests. Machine Learning. 2015;99:75–118.
+<div id="ref-rfq" class="csl-entry">
+2. O’Brien R, Ishwaran H. A random forests quantile classifier for class imbalanced data. Pattern recognition. 2019;90:232–49.
 </div>
-<div id="ref-martin2007novel" class="csl-entry">
-3. Martin PG, Guillou H, Lasserre F, Déjean S, Lan A, Pascussi J-M, et al. Novel aspects of PPAR<span class="math inline">\(\alpha\)</span>-mediated regulation of lipid and xenobiotic metabolism revealed through a nutrigenomic study. Hepatology. 2007;45:767–77.
+<div id="ref-hand2001simple" class="csl-entry">
+3. Hand DJ, Till RJ. A simple generalisation of the area under the <span>ROC</span> curve for multiple class classification problems. Machine Learning. 2001;45:171–86.
 </div>
 </div>
 </div>

@@ -64,7 +64,7 @@
   <a href="../cheatsheets.pdf">Cheatsheet</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
      
     <span class="caret"></span>
@@ -96,6 +96,9 @@
     </li>
     <li>
       <a href="../articles/mvsplit.html">Multivariate Splitting Rule</a>
+    </li>
+    <li>
+      <a href="../articles/aucsplit.html">AUC Splitting Rule for Multiclass Problems</a>
     </li>
     <li>
       <a href="../articles/sidClustering.html">sidClustering</a>
@@ -144,14 +147,14 @@
 
       
 
-      </header><script src="parallel_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
+      </header><script src="parallel_files/header-attrs-2.14/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Parallel Processing</h1>
                         <h4 class="author">
 <a href="https://ishwaran.org/ishwaran.html">Hemant Ishwaran</a> <br><br> Min Lu <br><br> Udaya B. Kogalur</h4>
             
-            <h4 class="date">2022-05-11</h4>
+            <h4 class="date">2022-06-01</h4>
       
       
       <div class="hidden name"><code>parallel.Rmd</code></div>
@@ -190,21 +193,21 @@ font-size: 16px;
 <a href="#openmp-parallel-processing-setting-the-number-of-cpus" class="anchor"></a>OpenMP Parallel Processing – Setting the Number of CPUs</h2>
 <p>There are several ways to control the number of CPU cores that the package accesses during OpenMP parallel execution. First, you will need to determine the number of cores on your local machine. Do this by starting an R session and issuing the command <code>detectCores()</code>. You will require the parallel package for this.</p>
 <p>Then you can do the following:</p>
-<p>At the start of every R session, you can set the number of cores accessed during OpenMP parallel execution by issuing the command <code><a href="https://rdrr.io/r/base/options.html">options(rf.cores = x)</a></code>, where <code>x</code> is the number of cores. If <code>x</code> is a negative number, the package will access the maximum number of cores on your machine. The options command can also be placed in the users .Rprofile file for convenience. You can, alternatively, initialize the environment variable <code>RF_CORES</code> in your shell environment.</p>
+<p>At the start of every R session, you can set the number of cores accessed during OpenMP parallel execution by issuing the command <code>options(rf.cores = x)</code>, where <code>x</code> is the number of cores. If <code>x</code> is a negative number, the package will access the maximum number of cores on your machine. The options command can also be placed in the users .Rprofile file for convenience. You can, alternatively, initialize the environment variable <code>RF_CORES</code> in your shell environment.</p>
 <p>The default value for <code>rf.cores</code> is -1 (-1L), if left unspecified, which uses all available cores, with a minimum of two.</p>
 </div>
 <div id="r-side-parallel-processing-setting-the-number-of-cpus" class="section level2">
 <h2 class="hasAnchor">
 <a href="#r-side-parallel-processing-setting-the-number-of-cpus" class="anchor"></a>R-side Parallel Processing – Setting the Number of CPUs</h2>
 <p>The package also implements R-side parallel processing via the <code>parallel</code> package contained in the base <code>R</code> distribution. However, the <code>parallel</code> package must be explicitly loaded to take advantage of this functionality. When this is the case, the R function <code><a href="https://rdrr.io/r/base/lapply.html">lapply()</a></code> is replaced with the parallel version <code>mclapply()</code>. You can set the number of cores accessed by <code>mclapply()</code> by issuing the command</p>
-<p><code><a href="https://rdrr.io/r/base/options.html">options(mc.cores = x)</a></code></p>
+<p><code>options(mc.cores = x)</code></p>
 <p>where <code>x</code> is the number of cores. The options command can also be placed in the users .Rprofile file for convenience. You can, alternatively, initialize the environment variable <code>MC_CORES</code> in your shell environment. See the help files in parallel for more information.</p>
 <p>The default value for <code>mclapply()</code> on non-Windows systems is two (2L) cores. On Windows systems, the default value is one (1L) core.</p>
 <div id="example-setting-the-number-of-cpus" class="section level3">
 <h3 class="hasAnchor">
 <a href="#example-setting-the-number-of-cpus" class="anchor"></a>Example: Setting the Number of CPUs</h3>
 <p>As an example, issuing the following options command uses all available cores for both OpenMP and R-side processing:</p>
-<p><code><a href="https://rdrr.io/r/base/options.html">options(rf.cores=detectCores(), mc.cores=detectCores())</a></code></p>
+<p><code>options(rf.cores=detectCores(), mc.cores=detectCores())</code></p>
 <p>As stated above, this option command can be placed in the users .Rprofile file.</p>
 <br><p class="comment">
 <strong> Cautionary Note on Parallel Execution </strong> <br> 1. Once the package has been compiled with OpenMP enabled, trees will be grown in parallel using the <code>rf.cores</code> option. Independently of this, we also utilize <code>mclapply()</code> to parallelize loops in R-side pre-processing and post-processing of the forest. This is always available and independent of whether the user chooses to compile the package with the OpenMP option enabled. <br> 2. It is important to NOT write programs that fork R processes containing OpenMP threads. That is, one should not use <code>mclapply()</code> around the functions <code><a href="../reference/rfsrc.html">rfsrc()</a></code>, <code><a href="../reference/predict.rfsrc.html">predict.rfsrc()</a></code>, <code>vimp.rfsc()</code>, <code><a href="../reference/var.select.rfsrc.html">var.select.rfsrc()</a></code>, <code><a href="../reference/find.interaction.rfsrc.html">find.interaction.rfsrc()</a></code> and <code><a href="../reference/partial.rfsrc.html">partial.rfsrc()</a></code>. In such a scenario, program execution is not guaranteed.

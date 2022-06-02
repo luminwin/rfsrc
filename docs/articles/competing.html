@@ -64,7 +64,7 @@
   <a href="../cheatsheets.pdf">Cheatsheet</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
      
     <span class="caret"></span>
@@ -96,6 +96,9 @@
     </li>
     <li>
       <a href="../articles/mvsplit.html">Multivariate Splitting Rule</a>
+    </li>
+    <li>
+      <a href="../articles/aucsplit.html">AUC Splitting Rule for Multiclass Problems</a>
     </li>
     <li>
       <a href="../articles/sidClustering.html">sidClustering</a>
@@ -144,14 +147,14 @@
 
       
 
-      </header><script src="competing_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
+      </header><script src="competing_files/header-attrs-2.14/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Competing Risks</h1>
                         <h4 class="author">
 <a href="https://ishwaran.org/ishwaran.html">Hemant Ishwaran</a> <br><br> Thomas A. Gerds <br><br> Bryan M. Lau <br><br> Min Lu <br><br> Udaya B. Kogalur</h4>
             
-            <h4 class="date">2022-05-11</h4>
+            <h4 class="date">2022-06-01</h4>
       
       
       <div class="hidden name"><code>competing.Rmd</code></div>
@@ -176,7 +179,7 @@ font-size: 16px;
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
-<p>Here we outline the extension of random survival forests <span class="citation">(Ishwaran, Kogalur, Blackstone, &amp; Lauer, 2008)</span> to competing risks given in <span class="citation">Ishwaran et al. (2014)</span>. Users should first read the <a href="survival.html">random survival forests vignette</a> <span class="citation">(Ishwaran, Lauer, Blackstone, Lu, &amp; Kogalur, 2021)</span> if they are unfamiliar with this topic.</p>
+<p>Here we outline the extension of random survival forests <span class="citation">[1]</span> to competing risks given in <span class="citation">[2]</span>. Users should first read the <a href="survival.html">random survival forests vignette</a> <span class="citation">[3]</span> if they are unfamiliar with this topic.</p>
 <p>In competing risks, unlike survival where there is only one event type, the individual is subject to <span class="math inline">\(J&gt;1\)</span> competing risks. As in survival data, a complication is that the individual can be right-censored. Formally, let <span class="math inline">\(T^o\)</span> be the true event time and let <span class="math inline">\({\delta}^o\in\{1,\ldots,J\}\)</span> record the event type. Let <span class="math inline">\(C^o\)</span> denote the true censoring time. Under the presence of right-censoring we only observe <span class="math inline">\(T=\min(T^o,C^o)\)</span> and the censoring indicator <span class="math inline">\({\delta}={\delta}^o \cdot I\{T^o\le C^o\}\)</span>. Thus for each individual one either observes the time an event occurs <span class="math inline">\(T=T^o\)</span> and the type of event which occured <span class="math inline">\({\delta}={\delta}^o\in\{1,\ldots,J\}\)</span>. Otherwise if the individual is right-censored, we observe the censoring time <span class="math inline">\(T=C^o\)</span> and the censoring indicator is <span class="math inline">\({\delta}=0\)</span>.</p>
 </div>
 <div id="competing-risk-splitting-rules" class="section level2">
@@ -185,7 +188,7 @@ font-size: 16px;
 <p>There are three splitting rules used by the package to grow a competing risk tree:</p>
 <ol style="list-style-type: decimal">
 <li><p>Generalized log-rank test, specified by <code>splitrule = "logrank"</code>. This tests for equality of the event-specific hazard and is most appropriate when the analysis focuses on determining factors for event-specific risk. The generalized log-rank test is based on the weighted difference of the Nelson-Aalen event-specific cumulative hazard estimates in the daughter nodes.</p></li>
-<li><p>Gray’s test, specified by <code>splitrule = "logrankCR"</code> which is the default used by the package. This is a modification of Gray’s test <span class="citation">(Gray, 1988)</span> and tests for the equality of the cause-specific cumulative incidence. This is most appropriate when the goal is long term probability prediction.</p></li>
+<li><p>Gray’s test, specified by <code>splitrule = "logrankCR"</code> which is the default used by the package. This is a modification of Gray’s test <span class="citation">[4]</span> and tests for the equality of the cause-specific cumulative incidence. This is most appropriate when the goal is long term probability prediction.</p></li>
 <li><p>Composite (weighted) splitting. This is specified using <code>cause</code> and is an integer value between 1 and <span class="math inline">\(J\)</span> indicating the event of interest for splitting a node, where splitting is either based on the generalized log-rank test or Gray’s test specified by <code>splitrule</code> as described above. If not specified, the default is to use a composite splitting rule that averages equally over all events. Can also be a vector of non-negative weights of length <span class="math inline">\(J\)</span> specifying weights for each event (for example, passing a vector of ones reverts to the default composite split-statistic).</p></li>
 </ol>
 </div>
@@ -199,7 +202,7 @@ font-size: 16px;
   | T^o\ge t,{\bf X}\}}{\Delta t}
 := \frac{f_j(t|{\bf X})}{S(t|{\bf X})}.
 \]</span> Here <span class="math inline">\(S(t|{\bf X})=\mathbb{P}\{T^o\ge t|{\bf X}\}\)</span> is the event-free survival probability function given <span class="math inline">\({\bf X}\)</span>. The cause-specific hazard function describes the instantaneous risk of event <span class="math inline">\(j\)</span> for subjects that currently are event-free. Factors found to change the instantaneous event risk are associated with the biological mechanism behind event <span class="math inline">\(j\)</span>. The <code>logrank</code> split-rule is the appropriate splitting rule to use if the goal focuses on the cause-specific hazard function.</p>
-<p>On the other hand, the probability that an event occurs in a specific time period, say <span class="math inline">\([0,t]\)</span>, depends on the cause-specific hazards of the other events <span class="citation">(Gray, 1988)</span>. The probability of an event is determined using the cumulative incidence (CIF), defined as the probability of experiencing an event of type <span class="math inline">\(j\)</span> by time <span class="math inline">\(t\)</span>; i.e. <span class="math inline">\(F_j(t|{\bf X}) = \mathbb{P}\{T^o \le t, {\delta}^o=j|{\bf X}\}\)</span>. The CIF and cause-specific hazard function are related according to <span class="math display">\[
+<p>On the other hand, the probability that an event occurs in a specific time period, say <span class="math inline">\([0,t]\)</span>, depends on the cause-specific hazards of the other events <span class="citation">[4]</span>. The probability of an event is determined using the cumulative incidence (CIF), defined as the probability of experiencing an event of type <span class="math inline">\(j\)</span> by time <span class="math inline">\(t\)</span>; i.e. <span class="math inline">\(F_j(t|{\bf X}) = \mathbb{P}\{T^o \le t, {\delta}^o=j|{\bf X}\}\)</span>. The CIF and cause-specific hazard function are related according to <span class="math display">\[
   F_j(t|{\bf X}) 
 =\int_0^t S(s-|{\bf X})\alpha_j(s|{\bf X})\,  d s
 = \int_0^t \exp\left(-\int_0^s \sum_{l=1}^J \alpha_l(u|{\bf X})
@@ -231,7 +234,7 @@ L^{\mathrm{LR}}_j(X,c)
 (\hat\sigma^{\mathrm{LR}}_{j}(X,c))^{2}= \sum_{k=1}^m d_j(t_k)
 \frac{Y_L(t_k)}{Y(t_k)} \left(1-\frac{Y_L(t_k)}{Y(t_k)}\right)
 \left(\frac{Y(t_k)-d_j(t_k)}{Y(t_k)-1}\right).
-\]</span> Note that time-dependent weights <span class="math inline">\(w_j(t_k)&gt;0\)</span> can be used to make the test more sensitive to early or late differences between the cause-specific hazards <span class="citation">(Ishwaran et al., 2014)</span>. The choice <span class="math inline">\(w_j(t_k)=1\)</span> used implicitly here (and which is adopted in the package) corresponds to the standard log-rank test which has optimal power for detecting alternatives where the cause-specific hazards are proportional. The best split is found by maximizing <span class="math inline">\(|L_{j}^{\mathrm{LR}}(X,c)|\)</span> over <span class="math inline">\(X\)</span> and <span class="math inline">\(c\)</span>.</p>
+\]</span> Note that time-dependent weights <span class="math inline">\(w_j(t_k)&gt;0\)</span> can be used to make the test more sensitive to early or late differences between the cause-specific hazards <span class="citation">[2]</span>. The choice <span class="math inline">\(w_j(t_k)=1\)</span> used implicitly here (and which is adopted in the package) corresponds to the standard log-rank test which has optimal power for detecting alternatives where the cause-specific hazards are proportional. The best split is found by maximizing <span class="math inline">\(|L_{j}^{\mathrm{LR}}(X,c)|\)</span> over <span class="math inline">\(X\)</span> and <span class="math inline">\(c\)</span>.</p>
 <p>If the aim is to identify variables that are important for any cause, it can be useful to combine the cause-specific splitting rules across the event types, i.e. <span class="math inline">\(H_{0,j}\)</span> for <span class="math inline">\(j=1,\ldots,J\)</span>, which is accomodated by using the composite split-statistic <span class="math display">\[
 L^{\mathrm{LR}}(X,c)
 = \frac{\sum_{j=1}^J W_j  \hat\sigma^{\mathrm{LR}}_j(X,c)
@@ -241,8 +244,8 @@ L^{\mathrm{LR}}(X,c)
 <div id="grays-test" class="section level4">
 <h4 class="hasAnchor">
 <a href="#grays-test" class="anchor"></a>Gray’s Test</h4>
-<p>If the goal is prediction of cumulative event probabilities, then it is more appropriate to construct a test statistic to test for differences in the CIF. The split-rule <code>logrankCR</code> does this and is modeled after Gray’s test <span class="citation">(Gray, 1988)</span>, which tests the null hypothesis <span class="math inline">\(H_{0,j}:F_{j,L}(t)=F_{j,R}(t)\)</span> for all <span class="math inline">\(t\le \tau\)</span> where <span class="math inline">\(F_{j,L}, F_{j,R}\)</span> are the CIF’s for the left and right daughters.</p>
-<p>Technical details of the modified Gray’s split-statistic are given in <span class="citation">Ishwaran et al. (2014)</span>. The package implements a special version of this test statistic which modifies the risk set in the log-rank test statistic. For example, the risk set <span class="math inline">\(Y(t)\)</span> in equation <a href="#section">(1)</a> is replaced by the modified risk set <span class="math display">\[
+<p>If the goal is prediction of cumulative event probabilities, then it is more appropriate to construct a test statistic to test for differences in the CIF. The split-rule <code>logrankCR</code> does this and is modeled after Gray’s test <span class="citation">[4]</span>, which tests the null hypothesis <span class="math inline">\(H_{0,j}:F_{j,L}(t)=F_{j,R}(t)\)</span> for all <span class="math inline">\(t\le \tau\)</span> where <span class="math inline">\(F_{j,L}, F_{j,R}\)</span> are the CIF’s for the left and right daughters.</p>
+<p>Technical details of the modified Gray’s split-statistic are given in <span class="citation">[2]</span>. The package implements a special version of this test statistic which modifies the risk set in the log-rank test statistic. For example, the risk set <span class="math inline">\(Y(t)\)</span> in equation <a href="#section">(1)</a> is replaced by the modified risk set <span class="math display">\[
 Y^*_j(t)
 = \sum_{i=1}^n I\Bigl(T_i\ge t \cup \left(T_i&lt; t \cap {\delta}_i\ne j \cap
 {\delta}_i\ne 0\right)\Bigr).
@@ -265,7 +268,7 @@ N_{j,b}^{\text{IB}}(t|{\bf X})=\sum_{i\in
 \]</span> and IB number at risk by <span class="math display">\[
 Y_b^{\text{IB}}(t|{\bf X})=\sum_{i\in h_b({\bf X})}n_{i,b}I\{T_i\geq t\}.
 \]</span></p>
-<p><em>Cumulative Incidence Function:</em> The tree estimator for <span class="math inline">\(F_j(t|{\bf X})\)</span> is the Aalen-Johansen <span class="citation">(Aalen &amp; Johansen, 1978)</span> tree estimator <span class="math display">\[
+<p><em>Cumulative Incidence Function:</em> The tree estimator for <span class="math inline">\(F_j(t|{\bf X})\)</span> is the Aalen-Johansen <span class="citation">[5]</span> tree estimator <span class="math display">\[
 F_{j,b}^{\text{IB}}(t|{\bf X})
 =\int_{(0,t]}S_b^{\text{IB}}(u-|{\bf X})  Y_b^{\text{IB}}(u|{\bf X})^{-1}N_{j,b}^{\text{IB}}(du|{\bf X}),
 \quad{}j=1,\ldots,J,
@@ -299,10 +302,10 @@ H_{j,b}^{\text{IB}}(t|{\bf X}_i).
 <div id="expected-number-of-life-years-lost-cause-j-mortality" class="section level2">
 <h2 class="hasAnchor">
 <a href="#expected-number-of-life-years-lost-cause-j-mortality" class="anchor"></a>Expected Number of Life Years Lost (Cause-<span class="math inline">\(j\)</span> Mortality)</h2>
-<p>The predicted value used by the package for competing risks is the one-dimensional summary of the cumulative incidence refered to as the expected number of life years lost due to cause <span class="math inline">\(j\)</span> <span class="citation">(Andersen, 2013)</span>. In right-censored data it is not feasible to get a reliable estimate of the expected lifetime. Therefore for a fixed time point <span class="math inline">\(\tau\)</span> we consider the restricted mean lifetime conditional on <span class="math inline">\({\bf X}\)</span> <span class="math display">\[
+<p>The predicted value used by the package for competing risks is the one-dimensional summary of the cumulative incidence refered to as the expected number of life years lost due to cause <span class="math inline">\(j\)</span> <span class="citation">[6]</span>. In right-censored data it is not feasible to get a reliable estimate of the expected lifetime. Therefore for a fixed time point <span class="math inline">\(\tau\)</span> we consider the restricted mean lifetime conditional on <span class="math inline">\({\bf X}\)</span> <span class="math display">\[
 R_{\text{MLT}}({\bf X})=\int_0^\tau
 S(t|{\bf X})\, d t.
-\]</span> In practice, the package sets <span class="math inline">\(\tau\)</span> to the maximum observed event time, <span class="math inline">\(t_m\)</span>. We extend the notation of <span class="citation">Andersen (2013)</span> to the case with covariates and note the relation <span class="math inline">\(S(t|{\bf X})+\sum_{j=1}^J F_j(t|{\bf X})=1\)</span>. The expected number of years lost before time <span class="math inline">\(\tau\)</span> for <span class="math inline">\({\bf X}\)</span> is <span class="math display">\[
+\]</span> In practice, the package sets <span class="math inline">\(\tau\)</span> to the maximum observed event time, <span class="math inline">\(t_m\)</span>. We extend the notation of <span class="citation">[6]</span> to the case with covariates and note the relation <span class="math inline">\(S(t|{\bf X})+\sum_{j=1}^J F_j(t|{\bf X})=1\)</span>. The expected number of years lost before time <span class="math inline">\(\tau\)</span> for <span class="math inline">\({\bf X}\)</span> is <span class="math display">\[
 \tau - R_{\text{MLT}}({\bf X})
 =\tau-\int_0^\tau S(t|{\bf X})\,d t
 = \int_0^\tau \sum_{j=1}^J F_j(t|{\bf X})\, d t.
@@ -314,9 +317,9 @@ S(t|{\bf X})\, d t.
 <div id="illustration" class="section level2">
 <h2 class="hasAnchor">
 <a href="#illustration" class="anchor"></a>Illustration</h2>
-<p>As a first illustration, we use the follicular cell lymphoma data from <span class="citation">Pintilie (2006)</span>. The subset of 541 patients includes all patients identified as having follicular type lymphoma. Patients were treated with radiation alone or with radiation and chemotherapy. The two types of events are relapse (<span class="math inline">\(j=1\)</span>) and death (<span class="math inline">\(j=2\)</span>) and the data is subect to right censoring. <a href="#figure-1">Figure 1</a> displays the averaged OOB ensemble CSCHF (cause-specific CHF), CIF and continuous probability curves (CPC) for each event <span class="citation">(Pepe &amp; Mori, 1993)</span> from a forest grown using the default composite Gray splitting rule.</p>
+<p>As a first illustration, we use the follicular cell lymphoma data from <span class="citation">[7]</span>. The subset of 541 patients includes all patients identified as having follicular type lymphoma. Patients were treated with radiation alone or with radiation and chemotherapy. The two types of events are relapse (<span class="math inline">\(j=1\)</span>) and death (<span class="math inline">\(j=2\)</span>) and the data is subect to right censoring. <a href="#figure-1">Figure 1</a> displays the averaged OOB ensemble CSCHF (cause-specific CHF), CIF and continuous probability curves (CPC) for each event <span class="citation">[8]</span> from a forest grown using the default composite Gray splitting rule.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="http://web.ccs.miami.edu/~hishwaran/">"randomForestSRC"</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://www.randomforestsrc.org/">"randomForestSRC"</a></span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">follic</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span>
 <span class="va">follic.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu">Surv</span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">follic</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/grDevices/pdf.html">pdf</a></span><span class="op">(</span><span class="st">"follic.pdf"</span>, width <span class="op">=</span> <span class="fl">8</span>, height <span class="op">=</span> <span class="fl">8</span><span class="op">)</span>
@@ -332,9 +335,9 @@ S(t|{\bf X})\, d t.
 <div id="variable-importance-illustration" class="section level2">
 <h2 class="hasAnchor">
 <a href="#variable-importance-illustration" class="anchor"></a>Variable Importance Illustration</h2>
-<p>In our second illustration, we show how applying different splitting rules can be used for variable importance analysis in competing risks. To illustrate, we use the Mayo Clinic Primary Biliary Cirrhosis (PBC) data from <span class="citation">Therneau &amp; Grambsch (2000)</span>. The data consists of a subset of 312 cases having mostly complete data from the original 424 patient cohort, as well as an additional 106 cases collected later. There are <span class="math inline">\(J=2\)</span> events: death (<span class="math inline">\(j=1\)</span>) and transplant (<span class="math inline">\(j=2\)</span>) and the data is subject to right censoring. There are a total of <span class="math inline">\(p=17\)</span> features.</p>
+<p>In our second illustration, we show how applying different splitting rules can be used for variable importance analysis in competing risks. To illustrate, we use the Mayo Clinic Primary Biliary Cirrhosis (PBC) data from <span class="citation">[9]</span>. The data consists of a subset of 312 cases having mostly complete data from the original 424 patient cohort, as well as an additional 106 cases collected later. There are <span class="math inline">\(J=2\)</span> events: death (<span class="math inline">\(j=1\)</span>) and transplant (<span class="math inline">\(j=2\)</span>) and the data is subject to right censoring. There are a total of <span class="math inline">\(p=17\)</span> features.</p>
 <p>We run three different analyses. Missing data was eliminated for simplicity. Analysis 1 uses the default <code>logrankCR</code> split-statistic and tests whether the CIF is equal for the two events of death and transplant. Analysis 2 uses the <code>logrank</code> split-statistic and is used for assessing variable importance for the case-specific event of death. The option <code>cause=c(1,0)</code> is used to accomplish this. Analysis 3 is similar to Analysis 2, but assesses variable importance for transplant events. The option <code>cause=c(0,1)</code> is used to accomplish this.</p>
-<p>For assessing variable importance in Analysis 1, we extract the <a href="minidep.html">minimal depth</a> <span class="citation">(Ishwaran et al., 2021)</span> from its forests. In this context, small minimal depth values indicate variables that affect <span class="math inline">\(t\)</span>-years prediction for all events. Minimal depth and variable importance values are given in the output. Overall, “bili” is the most important variable and affects both types of events. The variable “age” is highly event-specific and primarily affects death.</p>
+<p>For assessing variable importance in Analysis 1, we extract the <a href="minidep.html">minimal depth</a> <span class="citation">[10]</span> from its forests. In this context, small minimal depth values indicate variables that affect <span class="math inline">\(t\)</span>-years prediction for all events. Minimal depth and variable importance values are given in the output. Overall, “bili” is the most important variable and affects both types of events. The variable “age” is highly event-specific and primarily affects death.</p>
 <p>Note importantly that when extracting VIMP from Analyses 2 and 3, we were careful to only extract VIMP for the targeted specific event. Thus for Analysis 2, this is column one of VIMP, which corresponds to death, whereas for Analysis 3, it is column two, which corresponds to transplant.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"randomForestSRC"</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="do">## illustrates the various CR splitting rules</span></span>
@@ -401,36 +404,36 @@ S(t|{\bf X})\, d t.
 <div id="references" class="section level2 unnumbered">
 <h2 class="hasAnchor">
 <a href="#references" class="anchor"></a>References</h2>
-<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
-<div id="ref-Aalen1978" class="csl-entry">
-Aalen, O. O., &amp; Johansen, S. (1978). <span class="nocase">An empirical transition matrix for non-homogeneous Markov chains based on censored observations</span>. <em>Scandinavian Journal of Statistics</em>, 141–150. JSTOR.
-</div>
-<div id="ref-andersen2013decomposition" class="csl-entry">
-Andersen, P. K. (2013). Decomposition of number of life years lost according to causes of death. <em>Statistics in Medicine</em>, <em>32</em>(30), 5278–5285. Wiley Online Library.
-</div>
-<div id="ref-Gray1988" class="csl-entry">
-Gray, R. J. (1988). A class of k-sample tests for comparing the cumulative incidence of a competing risk. <em>The Annals of Statistics</em>, 1141–1154. JSTOR.
-</div>
-<div id="ref-HemantMinimal" class="csl-entry">
-Ishwaran, H., Chen, X., Minn, A. J., Lu, M., Lauer, M. S., &amp; Kogalur, U. B. (2021). <span class="nocase">randomForestSRC</span>: Minimal depth vignette. Retrieved from <a href="http://randomforestsrc.org/articles/minidep.html">http://randomforestsrc.org/articles/minidep.html</a>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-Ishwaran2008" class="csl-entry">
+1. Ishwaran H, Kogalur UB, Blackstone EH, Lauer MS. Random survival forests. The Annals of Applied Statistics. 2008;2:841–60.
 </div>
 <div id="ref-Ishwaran2014" class="csl-entry">
-Ishwaran, H., Gerds, T. A., Kogalur, U. B., Moore, R. D., Gange, S. J., &amp; Lau, B. M. (2014). Random survival forests for competing risks. <em>Biostatistics</em>, <em>15</em>(4), 757–773. Oxford University Press.
-</div>
-<div id="ref-Ishwaran2008" class="csl-entry">
-Ishwaran, H., Kogalur, U. B., Blackstone, E. H., &amp; Lauer, M. S. (2008). Random survival forests. <em>The Annals of Applied Statistics</em>, <em>2</em>(3), 841–860. JSTOR.
+2. Ishwaran H, Gerds TA, Kogalur UB, Moore RD, Gange SJ, Lau BM. Random survival forests for competing risks. Biostatistics. 2014;15:757–73.
 </div>
 <div id="ref-HemantRandomS" class="csl-entry">
-Ishwaran, H., Lauer, M. S., Blackstone, E. H., Lu, M., &amp; Kogalur, U. B. (2021). <span class="nocase">randomForestSRC</span>: Random survival forests vignette. Retrieved from <a href="http://randomforestsrc.org/articles/survival.html">http://randomforestsrc.org/articles/survival.html</a>
+3. Ishwaran H, Lauer MS, Blackstone EH, Lu M, Kogalur UB. <span class="nocase">randomForestSRC</span>: Random survival forests vignette. 2021. <a href="http://randomforestsrc.org/articles/survival.html">http://randomforestsrc.org/articles/survival.html</a>.
 </div>
-<div id="ref-pepe1993" class="csl-entry">
-Pepe, M. S., &amp; Mori, M. (1993). <span class="nocase">Kaplan—Meier, marginal or conditional probability curves in summarizing competing risks failure time data?</span> <em>Statistics in Medicine</em>, <em>12</em>(8), 737–751. Wiley Online Library.
+<div id="ref-Gray1988" class="csl-entry">
+4. Gray RJ. A class of k-sample tests for comparing the cumulative incidence of a competing risk. The Annals of Statistics. 1988;1141–54.
+</div>
+<div id="ref-Aalen1978" class="csl-entry">
+5. Aalen OO, Johansen S. <span class="nocase">An empirical transition matrix for non-homogeneous Markov chains based on censored observations</span>. Scandinavian Journal of Statistics. 1978;141–50.
+</div>
+<div id="ref-andersen2013decomposition" class="csl-entry">
+6. Andersen PK. Decomposition of number of life years lost according to causes of death. Statistics in Medicine. 2013;32:5278–85.
 </div>
 <div id="ref-Pintilie2006" class="csl-entry">
-Pintilie, M. (2006). <em>Competing risks: A practical perspective</em> (Vol. 58). John Wiley &amp; Sons.
+7. Pintilie M. Competing risks: A practical perspective. John Wiley &amp; Sons; 2006.
+</div>
+<div id="ref-pepe1993" class="csl-entry">
+8. Pepe MS, Mori M. <span class="nocase">Kaplan—Meier, marginal or conditional probability curves in summarizing competing risks failure time data?</span> Statistics in Medicine. 1993;12:737–51.
 </div>
 <div id="ref-therneau2000cox" class="csl-entry">
-Therneau, T. M., &amp; Grambsch, P. M. (2000). <span class="nocase">The Cox model</span>. <em>Modeling survival data: Extending the cox model</em> (pp. 39–77). Springer.
+9. Therneau TM, Grambsch PM. <span class="nocase">The Cox model</span>. In: Modeling survival data: Extending the cox model. Springer; 2000. p. 39–77.
+</div>
+<div id="ref-HemantMinimal" class="csl-entry">
+10. Ishwaran H, Chen X, Minn AJ, Lu M, Lauer MS, Kogalur UB. <span class="nocase">randomForestSRC</span>: Minimal depth vignette. 2021. <a href="http://randomforestsrc.org/articles/minidep.html">http://randomforestsrc.org/articles/minidep.html</a>.
 </div>
 </div>
 </div>
