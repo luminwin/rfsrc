@@ -70,9 +70,10 @@ print.rfsrc <- function(x, outcome.target = NULL, ...) {
     else {
       event.freq <- NA
     }
-    if (!is.null(x$err.rate)) {
+    if (!is.null(x$err.rate) && !is.null(x$yvar)) {
       conf.matx <- get.confusion(x$yvar,
-             if(!is.null(x$class.oob) && !all(is.na(x$class.oob))) x$class.oob else x$class)
+                         if(!is.null(x$class.oob) && !all(is.na(x$class.oob))) x$class.oob else x$class)
+      miss.err.rate <- 1 - sum(diag(conf.matx[, -ncol(conf.matx), drop = FALSE])) / sum(conf.matx[, -ncol(conf.matx), drop = FALSE])
       names(dimnames(conf.matx)) <- c("  observed", "predicted")
       ## J > 2 class problems
       if (length(levels(x$yvar)) > 2) {
@@ -110,7 +111,7 @@ print.rfsrc <- function(x, outcome.target = NULL, ...) {
       }
     }
     else {
-      conf.matx <- iratio <- brier.err <- brier.norm.err <- auc.err <- pr.auc.err <- gmean.err <- NULL
+      conf.matx <- miss.err.rate <- iratio <- brier.err <- brier.norm.err <- auc.err <- pr.auc.err <- gmean.err <- NULL
     }
   }
   ## survival, CR: CRPS and event frequencies
@@ -135,13 +136,14 @@ print.rfsrc <- function(x, outcome.target = NULL, ...) {
   }
   ## error rates 
   if (!is.null(x$err.rate)) {
-    err.rate <- na.omit(cbind(x$err.rate))
+    err.rate <- cbind(x$err.rate)
+    allcol.na <- apply(err.rate, 2, function(x) {all(is.na(x))})
+    err.rate <- na.omit(err.rate[, !allcol.na, drop = FALSE])
     attributes(err.rate)$na.action <- NULL
     if (grepl("surv", x$family)) {
       err.rate <- digits.pretty(err.rate[nrow(err.rate), ], 8)
     }
     else if (x$family == "class") {
-      overall.err.rate <- paste(round(100 * err.rate[nrow(err.rate), 1], 6), "%", sep = "")
       ## rfq related adjustments
       if ((grow.mode && x$forest$perf.type == "gmean") || (!grow.mode && x$perf.type == "gmean")) {
         err.rate <- digits.pretty(err.rate[nrow(err.rate), 1], 8)
@@ -151,7 +153,12 @@ print.rfsrc <- function(x, outcome.target = NULL, ...) {
       }
     }
     else if (x$family == "regr") {
-      r.squared <- 1 - err.rate[nrow(err.rate), ] / var(x$yvar, na.rm = TRUE)
+      if (!is.null(x$yvar)) {
+        r.squared <- 1 - err.rate[nrow(err.rate), ] / var(x$yvar, na.rm = TRUE)
+      }
+      else {
+        r.squared <- NULL
+      }
       err.rate <- digits.pretty(err.rate[nrow(err.rate), ], 8)
     }
     else {
@@ -209,7 +216,7 @@ print.rfsrc <- function(x, outcome.target = NULL, ...) {
       cat("                      Splitting rule: ", x$splitrule,                        "\n", sep="")
     } 
     if (!is.null(err.rate)) {
-      if (x$family == "regr") {
+      if (x$family == "regr" && !is.null(r.squared)) {
         cat("                     (OOB) R squared: ", digits.pretty(r.squared, 8),      "\n", sep="")
       }
       if (x$family == "class" && !is.null(iratio)) {
@@ -243,7 +250,7 @@ print.rfsrc <- function(x, outcome.target = NULL, ...) {
         cat("Confusion matrix:\n\n")
       }
       print(conf.matx)
-        cat("\n      (OOB) Misclassification rate: ", overall.err.rate,   "\n", sep="")
+        cat("\n      (OOB) Misclassification rate: ", miss.err.rate,   "\n", sep="")
     }
      
   }
@@ -275,11 +282,11 @@ print.rfsrc <- function(x, outcome.target = NULL, ...) {
       cat("         User has requested response: ", outcome.target,                       "\n", sep="")
     }
     cat("       Resampling used to grow trees: ", sampUsed,                               "\n",sep="")
-    cat("    Resample size used to grow trees: ", round(x$forest$sampsize(x$n)),          "\n",sep="")
+    cat("    Resample size used to grow trees: ", round(x$forest$sampsize(x$forest$n)),   "\n",sep="")
     cat("                            Analysis: ", familyPretty,                           "\n", sep="")
     cat("                              Family: ", familyOrg,                              "\n", sep="")
     if (!is.null(err.rate)) {
-      if (x$family == "regr") {
+      if (x$family == "regr" && !is.null(r.squared)) {
         cat("                           R squared: ", digits.pretty(r.squared, 8),        "\n", sep="")
       }
       if (x$family == "class" && !is.null(iratio)) {
@@ -313,7 +320,7 @@ print.rfsrc <- function(x, outcome.target = NULL, ...) {
         cat("Confusion matrix:\n\n")
       }
       print(conf.matx)
-        cat("\n           Misclassification error: ", overall.err.rate,  "\n", sep="")
+        cat("\n           Misclassification error: ", miss.err.rate,  "\n", sep="")
     }
      
   }

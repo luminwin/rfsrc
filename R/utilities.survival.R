@@ -91,7 +91,7 @@ get.grow.event.info <- function(yvar, fmly, need.deaths = TRUE, ntime = NULL) {
       time.interest <- sort(unique(time[nonMissingOutcome[nonMissingDeathFlag]]))
       ## trim the time points if the user has requested it
       ## we also allow the user to pass requested time points
-      if (!(is.null(ntime) || ntime == 0)) {
+      if (!is.null(ntime) && !((length(ntime) == 1) && ntime == 0)) {
         if (length(ntime) == 1 && length(time.interest) > ntime) {
           time.interest <- time.interest[
             unique(round(seq.int(1, length(time.interest), length.out = ntime)))]
@@ -138,7 +138,7 @@ get.grow.event.info <- function(yvar, fmly, need.deaths = TRUE, ntime = NULL) {
       time.interest <- sort(unique(time[nonMissingOutcome[nonMissingDeathFlag]]))
       ## trim the time points if the user has requested it
       ## we also allow the user to pass requested time points
-      if (!missing(ntime)) {
+      if (!is.null(ntime) && !((length(ntime) == 1) && ntime == 0)) {
         if (length(ntime) == 1 && length(time.interest) > ntime) {
           ## select evenly spaced values over [0,1] and not event times 
           time.interest <- seq(0,  min(1, max(time[nonMissingOutcome])), length = ntime)
@@ -189,7 +189,7 @@ trapz <- function (x, y) {
 ## returns an index of positions for evaluating a step function at selected times
 sIndex <- function(x,y) {sapply(1:length(y), function(j) {sum(x <= y[j])})}
 ## main brier function
-get.brier.survival <- function(o, subset, cens.model = c("km", "rfsrc")) {
+get.brier.survival <- function(o, subset, cens.model = c("km", "rfsrc"), papply = lapply) {
   ## incoming parameter checks
   if (is.null(o)) {
     return(NULL)
@@ -248,7 +248,7 @@ get.brier.survival <- function(o, subset, cens.model = c("km", "rfsrc")) {
   ##
   ##-------------------------------------------------------------------------------
   if (!pred.no.y) {
-    km.obj <- do.call(rbind, lapply(1:length(subset.event.info$time.interest), function(j) {
+    km.obj <- do.call(rbind, papply(1:length(subset.event.info$time.interest), function(j) {
       c(sum(subset.event.info$time >= subset.event.info$time.interest[j], na.rm = TRUE),
         sum(subset.event.info$time[subset.event.info$cens != 0] == subset.event.info$time.interest[j], na.rm = TRUE))
     }))
@@ -274,7 +274,7 @@ get.brier.survival <- function(o, subset, cens.model = c("km", "rfsrc")) {
   if (length(censTime) > 0) {
     ## KM censoring distribution estimator
     if (cens.model == "km") {
-      censModel.obj <- do.call(rbind, lapply(1:length(censTime), function(j) {
+      censModel.obj <- do.call(rbind, papply(1:length(censTime), function(j) {
         c(sum(event.info$time >= censTime[j], na.rm = TRUE),
           sum(event.info$time[event.info$cens == 0] == censTime[j], na.rm = TRUE))
       }))
@@ -300,7 +300,7 @@ get.brier.survival <- function(o, subset, cens.model = c("km", "rfsrc")) {
     cens.dist <- rep(1, length(censTime.pt))
   }
   ## brier calculations
-  brier.matx <- do.call(rbind, lapply(1:ncol(surv.ensb), function(i) {
+  brier.matx <- do.call(rbind, papply(1:ncol(surv.ensb), function(i) {
     tau <-  event.info$time
     event <- event.info$cens
     t.unq <- event.info$time.interest

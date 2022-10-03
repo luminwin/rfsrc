@@ -7,7 +7,8 @@ get.tree.rfsrc <- function(object,
                            class.type = c("bayes", "rfq", "prob"),
                            ensemble = FALSE,
                            oob = TRUE,
-                           show.plots = TRUE)
+                           show.plots = TRUE,
+                           do.trace = FALSE)
 {
   ##----------------------------------------------------------------
   ##
@@ -79,7 +80,8 @@ get.tree.rfsrc <- function(object,
     stop("forest is missing.  Re-run rfsrc (grow call) with forest=TRUE")
   }
   if (inherits(object, "anonymous")) {
-    anonymous <- TRUE
+    ## anonymous <- TRUE
+    stop("get.tree does not currently work with anonymous forests\n")
   }
   else {
     anonymous <- FALSE
@@ -184,7 +186,7 @@ get.tree.rfsrc <- function(object,
   ## restrict the object to the target
   ## oob not allowed
   else {
-    object <- predict(object, get.tree = tree.id, membership = TRUE)
+    object <- predict(object, get.tree = tree.id, membership = TRUE, do.trace = do.trace)
     subset <- which(object$inbag[, tree.id] != 0)
     oob <- FALSE
   }
@@ -212,7 +214,7 @@ get.tree.rfsrc <- function(object,
   ##----------------------------------------------------------------
   if (predict.flag) {
     if (ensemble) {
-      object <- predict.rfsrc(object, m.target = m.target)
+      object <- predict.rfsrc(object, m.target = m.target, do.trace = do.trace)
     }
     yhat <- extract.pred(object, pred.type, subset, time, m.target, target, oob = oob)
   }
