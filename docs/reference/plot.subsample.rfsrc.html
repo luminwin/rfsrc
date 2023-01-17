@@ -24,7 +24,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.0</span>
       </span>
     </div>
 
@@ -142,7 +142,7 @@
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">plot.subsample</span><span class="op">(</span><span class="va">x</span>, alpha <span class="op">=</span> <span class="fl">.01</span>, <span class="va">xvar.names</span>,
  standardize <span class="op">=</span> <span class="cn">TRUE</span>, normal <span class="op">=</span> <span class="cn">TRUE</span>, jknife <span class="op">=</span> <span class="cn">TRUE</span>,
- <span class="va">target</span>, m.target <span class="op">=</span> <span class="cn">NULL</span>, pmax <span class="op">=</span> <span class="fl">75</span>, main <span class="op">=</span> <span class="st">""</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+ <span class="va">target</span>, m.target <span class="op">=</span> <span class="cn">NULL</span>, pmax <span class="op">=</span> <span class="fl">75</span>, main <span class="op">=</span> <span class="st">""</span>, sorted <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -178,6 +178,8 @@
 <dd><p>Trims the data to this number of variables (sorted by VIMP).</p></dd>
 <dt>main</dt>
 <dd><p>Title used for plot.</p></dd>
+<dt>sorted</dt>
+<dd><p>Should variables be sorted by importance values?</p></dd>
 <dt>...</dt>
 <dd><p>Further arguments that can be passed to <code class="command">bxp</code>.</p></dd>
 </dl></div>

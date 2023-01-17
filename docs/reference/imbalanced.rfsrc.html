@@ -27,7 +27,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.0</span>
       </span>
     </div>
 
@@ -147,8 +147,8 @@
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">imbalanced</span><span class="op">(</span><span class="va">formula</span>, <span class="va">data</span>, ntree <span class="op">=</span> <span class="fl">3000</span>, 
-  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"rfq"</span>, <span class="st">"brf"</span>, <span class="st">"standard"</span><span class="op">)</span>,
-  block.size <span class="op">=</span> <span class="cn">NULL</span>, perf.type <span class="op">=</span> <span class="cn">NULL</span>, fast <span class="op">=</span> <span class="cn">FALSE</span>,
+  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"rfq"</span>, <span class="st">"brf"</span>, <span class="st">"standard"</span><span class="op">)</span>, splitrule <span class="op">=</span> <span class="st">"auc"</span>,
+  perf.type <span class="op">=</span> <span class="cn">NULL</span>, block.size <span class="op">=</span> <span class="cn">NULL</span>, fast <span class="op">=</span> <span class="cn">FALSE</span>,
   ratio <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
     </div>
 
@@ -169,15 +169,19 @@
     al. (2004) which undersamples the majority class so that its
     cardinality matches that of the minority class.  The method
     <code>standard</code> implements a standard random forest analysis.</p></dd>
+<dt>splitrule</dt>
+<dd><p>Default is AUC splitting which maximizes gmean
+    performance.  Other choices are "gini" and "entropy".</p></dd>
 <dt>perf.type</dt>
 <dd><p>Measure used for assessing performance (and all
     downstream calculations based on it such as variable importance).
     The default for <code>rfq</code> and <code>brf</code> is to use the G-mean
     (Kubat et al., 1997).  For standard random forests, the default is
-    misclassification error.  Users can over-ride the default performance
-    measure by manually selecting either <code>gmean</code> for the G-mean,
-    <code>misclass</code> for misclassification error, or <code>brier</code> for the
-    normalized Brier score. See the examples below.</p></dd>
+    misclassification error.  Users can over-ride the default
+    performance measure by manually selecting either <code>gmean</code> for
+    the G-mean, <code>misclass</code> for misclassification error, or
+    <code>brier</code> for the normalized Brier score. See the examples
+    below.</p></dd>
 <dt>block.size</dt>
 <dd><p>Should the cumulative error rate be calculated on
     every tree?  When <code>NULL</code>, it will only be calculated on the
@@ -274,7 +278,8 @@
 <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">o.rfq</span><span class="op">)</span>
 
 <span class="co">## equivalent to:</span>
-<span class="co">## rfsrc(f, breast, rfq =  TRUE, ntree = 3000, perf.type = "gmean") </span>
+<span class="co">## rfsrc(f, breast, rfq =  TRUE, ntree = 3000,</span>
+<span class="co">##       perf.type = "gmean", splitrule = "auc") </span>
 
 <span class="co">##----------------------------------------------------------------</span>
 <span class="co">## detailed output using customized performance function</span>
@@ -282,27 +287,20 @@
 
 <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">get.imbalanced.performance</span><span class="op">(</span><span class="va">o.rfq</span><span class="op">)</span><span class="op">)</span>
 
-<span class="co">##----------------------------------------------------------------</span>
-<span class="co">## RFQ with AUC splitting</span>
-<span class="co">##----------------------------------------------------------------</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">o.rfq</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">breast</span>, splitrule <span class="op">=</span> <span class="st">"auc"</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">get.imbalanced.performance</span><span class="op">(</span><span class="va">o.rfq</span><span class="op">)</span><span class="op">)</span>
-
 <span class="co">##-----------------------------------------------------------------</span>
-<span class="co">## standard RF (uses misclassification)</span>
+<span class="co">## RF using misclassification error with gini splitting</span>
 <span class="co">## ------------------------------------------------------------</span>
 
-<span class="va">o.std</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">breast</span>, method <span class="op">=</span> <span class="st">"stand"</span><span class="op">)</span>
+<span class="va">o.std</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">breast</span>, method <span class="op">=</span> <span class="st">"stand"</span>, splitrule <span class="op">=</span> <span class="st">"gini"</span><span class="op">)</span>
 
 <span class="co">##-----------------------------------------------------------------</span>
-<span class="co">## standard RF using G-mean performance</span>
+<span class="co">## RF using G-mean performance with AUC splitting</span>
 <span class="co">## ------------------------------------------------------------</span>
 
 <span class="va">o.std</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">breast</span>, method <span class="op">=</span> <span class="st">"stand"</span>, perf.type <span class="op">=</span> <span class="st">"gmean"</span><span class="op">)</span>
 
 <span class="co">## equivalent to:</span>
-<span class="co">## rfsrc(f, breast, ntree = 3000, perf.type = "gmean")</span>
+<span class="co">## rfsrc(f, breast, ntree = 3000, perf.type = "gmean", splitrule = "auc")</span>
 
 <span class="co">##----------------------------------------------------------------</span>
 <span class="co">## default BRF call </span>
@@ -425,7 +423,7 @@
 
 <span class="co">##----------------------------------------------------------------</span>
 <span class="co">##</span>
-<span class="co">## illustrates effectiveness of blocked VIMP</span>
+<span class="co">## illustrates effectiveness of blocked VIMP </span>
 <span class="co">##</span>
 <span class="co">##----------------------------------------------------------------</span>
 
@@ -444,14 +442,14 @@
   <span class="va">idx.1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op">/</span> <span class="va">ir</span> , replace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
   <span class="va">d</span> <span class="op">&lt;-</span> <span class="va">d</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">idx.0</span>,<span class="va">idx.1</span><span class="op">)</span>,, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span>
 
-  <span class="co">## VIMP for BRF with and without blocking</span>
+  <span class="co">## permutation VIMP for BRF with and without blocking</span>
   <span class="co">## blocked VIMP is a hybrid of Breiman-Cutler/Ishwaran-Kogalur VIMP</span>
-  <span class="va">brf</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">d</span>, method <span class="op">=</span> <span class="st">"brf"</span>, importance <span class="op">=</span> <span class="cn">TRUE</span>, block.size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-  <span class="va">brfB</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">d</span>, method <span class="op">=</span> <span class="st">"brf"</span>, importance <span class="op">=</span> <span class="cn">TRUE</span>, block.size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
+  <span class="va">brf</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">d</span>, method <span class="op">=</span> <span class="st">"brf"</span>, importance <span class="op">=</span> <span class="st">"permute"</span>, block.size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
+  <span class="va">brfB</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">d</span>, method <span class="op">=</span> <span class="st">"brf"</span>, importance <span class="op">=</span> <span class="st">"permute"</span>, block.size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
 
-  <span class="co">## VIMP for RFQ with and without blocking</span>
-  <span class="va">rfq</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">d</span>, importance <span class="op">=</span> <span class="cn">TRUE</span>, block.size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-  <span class="va">rfqB</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">d</span>, importance <span class="op">=</span> <span class="cn">TRUE</span>, block.size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
+  <span class="co">## permutation VIMP for RFQ with and without blocking</span>
+  <span class="va">rfq</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">d</span>, importance <span class="op">=</span> <span class="st">"permute"</span>, block.size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
+  <span class="va">rfqB</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">d</span>, importance <span class="op">=</span> <span class="st">"permute"</span>, block.size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
 
   <span class="co">## compare VIMP values</span>
   <span class="va">imp</span> <span class="op">&lt;-</span> <span class="fl">100</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">brf</span><span class="op">$</span><span class="va">importance</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, <span class="va">brfB</span><span class="op">$</span><span class="va">importance</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>,
@@ -471,7 +469,7 @@
 
 <span class="co">##----------------------------------------------------------------</span>
 <span class="co">##</span>
-<span class="co">## confidence intervals for G-mean VIMP using subsampling</span>
+<span class="co">## confidence intervals for G-mean permutation VIMP using subsampling</span>
 <span class="co">##</span>
 <span class="co">##----------------------------------------------------------------</span>
 
@@ -490,13 +488,12 @@
   <span class="va">idx.1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op">/</span> <span class="va">ir</span> , replace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
   <span class="va">d</span> <span class="op">&lt;-</span> <span class="va">d</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">idx.0</span>,<span class="va">idx.1</span><span class="op">)</span>,, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span>
 
-  <span class="co">## q-classifier</span>
-  <span class="va">oq</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">Class</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">d</span>, splitrule <span class="op">=</span> <span class="st">"auc"</span>,
-              importance <span class="op">=</span> <span class="cn">TRUE</span>, block.size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
+  <span class="co">## RFQ</span>
+  <span class="va">o</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">Class</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">d</span>, importance <span class="op">=</span> <span class="st">"permute"</span>, block.size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
 
-  <span class="co">## subsample the q-classifier</span>
-  <span class="va">smp.oq</span> <span class="op">&lt;-</span> <span class="fu"><a href="subsample.rfsrc.html">subsample</a></span><span class="op">(</span><span class="va">oq</span>, B <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">smp.oq</span>, cex.axis <span class="op">=</span> <span class="fl">.7</span><span class="op">)</span>
+  <span class="co">## subsample RFQ</span>
+  <span class="va">smp.o</span> <span class="op">&lt;-</span> <span class="fu"><a href="subsample.rfsrc.html">subsample</a></span><span class="op">(</span><span class="va">o</span>, B <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">smp.o</span>, cex.axis <span class="op">=</span> <span class="fl">.7</span><span class="op">)</span>
 
 <span class="op">}</span>
 

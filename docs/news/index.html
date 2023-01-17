@@ -89,7 +89,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Development version">3.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Development version">3.2.0</span>
       </span>
     </div>
 
@@ -197,10 +197,20 @@
       <h1 data-toc-skip>Changelog <small></small></h1>
       
     </div>
+        <div id="release-320" class="section level2">
+<h2 class="hasAnchor">
+<a href="#release-320" class="anchor"></a>RELEASE 3.2.0</h2>
+<p>Added case-depth.  Improved plot.subsample. Improved get.brier.survival.</p>
+<hr>
+</div>
     <div id="release-311" class="section level2">
 <h2 class="hasAnchor">
 <a href="#release-311" class="anchor"></a>RELEASE 3.1.1</h2>
-<p>Swapped suggests for akima with interp per Prof. Ripley's request. New
+<p>Fixed long standing bug in mtry when xvar.wt is specified as a real
+vector (not uniform, or integers). In such situations, mtry was not
+correctly being implemented.  Generalized mtry to ytry which is now
+fully functional in the multivariate mixed case.
+Changed suggests from akima to interp. Updated homepage URL's. New
 home page with documentation and vignettes at
 https://www.randomforestsrc.org/.</p>
 <hr>

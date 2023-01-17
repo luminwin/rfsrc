@@ -24,7 +24,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.0</span>
       </span>
     </div>
 
@@ -143,6 +143,7 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">subsample</span><span class="op">(</span><span class="va">obj</span>,
   B <span class="op">=</span> <span class="fl">100</span>,
   block.size <span class="op">=</span> <span class="fl">1</span>,
+  <span class="va">importance</span>,
   subratio <span class="op">=</span> <span class="cn">NULL</span>,
   stratify <span class="op">=</span> <span class="cn">TRUE</span>,
   performance <span class="op">=</span> <span class="cn">FALSE</span>,
@@ -162,6 +163,13 @@
 <dd><p>Specifies number of trees in a block when calculating
     VIMP.  This is over-ridden if VIMP is present in the original grow
     call in which case the grow value is used.</p></dd>
+<dt>importance</dt>
+<dd><p>Optional: specifies the type of importance to be used,
+    selected from one of "anti", "permute", "random".  If not specified
+    reverts to default importance used by the package.  Also,
+    this is over-ridden if the original grow object contains importance,
+    in which case importance used in the original grow
+    call is used.</p></dd>
 <dt>subratio</dt>
 <dd><p>Ratio of subsample size to original sample size.  The
     default is the inverse square root of the sample size.</p></dd>
@@ -189,19 +197,25 @@
 <p>Using a previously trained forest, subsamples the data and constructs
   subsampled forests to estimate standard errors and confidence
   intervals for VIMP (Ishwaran and Lu, 2019).  If bootstrapping is
-  requested, a double bootstrap is applied in place of subsampling.
-  Additionally, <code>performance="TRUE"</code> constructs standard errors and
-  confidence regions for the error rate (OOB performance) of the
-  trained forest.</p>
-<p>If the trained forest does not have VIMP values, the algorithm will
-  first need to calculate VIMP.  Therefore, if the user plans to make
+  requested, a double bootstrap is applied in place of subsampling.  The
+  option <code>performance="TRUE"</code> constructs standard errors and
+  confidence regions for the error rate (OOB performance) of the trained
+  forest.  Options <code>joint</code> and <code>xvar.names</code> can be used to
+  obtain joint VIMP for all or some variables.</p>
+<p>If the trained forest does not have VIMP values, the algorithm first
+  needs to calculate VIMP.  Therefore, if the user plans to make
   repeated calls to <code>subsample</code>, it is advisable to include VIMP in
-  the original grow call.  Subsampled forests are calculated using the
-  same tuning parameters as the original forest.  While a sophisticated
-  algorithm is utilized to acquire as many of these parameters as
-  possible, keep in mind there are some conditions where this will fail:
-  for example there are certain settings where the user has specified
-  non-standard sampling in the grow forest.</p>  
+  the original grow call.  Also, by calling VIMP in the original call,
+  the type of importance used and other related parameters are set by
+  values used in the original call which can eliminate confusion about
+  what parameters are being used in the subsampled forests.  Thus, it is
+  generally advised to call VIMP in the original call.</p>
+<p>Subsampled forests are calculated using the same tuning parameters as
+  the original forest.  While a sophisticated algorithm is utilized to
+  acquire as many of these parameters as possible, keep in mind there
+  are some conditions where this will fail: for example there are
+  certain settings where the user has specified non-standard sampling in
+  the grow forest.</p>  
 <p>Delete-d jackknife estimators of the variance (Shao and Wu, 1989) are
   returned alongside subsampled variance estimators (Politis and Romano,
   1994).  While these methods are closely related, estimated standard
@@ -326,8 +340,7 @@
 <span class="op">}</span>
 
 <span class="co">## ------------------------------------------------------------</span>
-<span class="co">## class-imbalanced data</span>
-<span class="co">## uses RFQ classifier with G-mean VIMP</span>
+<span class="co">## class-imbalanced data using RFQ classifier with G-mean VIMP</span>
 <span class="co">## ------------------------------------------------------------</span>
 
 <span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/topepo/caret/" class="external-link">"caret"</a></span>, logical.return <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
@@ -345,11 +358,10 @@
   <span class="va">idx.1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op">/</span> <span class="va">ir</span> , replace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
   <span class="va">d</span> <span class="op">&lt;-</span> <span class="va">d</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">idx.0</span>,<span class="va">idx.1</span><span class="op">)</span>,, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span>
 
-  <span class="co">## q-classifier</span>
-  <span class="va">oq</span> <span class="op">&lt;-</span> <span class="fu"><a href="imbalanced.rfsrc.html">imbalanced</a></span><span class="op">(</span><span class="va">Class</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">d</span>, splitrule <span class="op">=</span> <span class="st">"auc"</span>,
-              importance <span class="op">=</span> <span class="cn">TRUE</span>, block.size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
+  <span class="co">## RFQ classifier</span>
+  <span class="va">oq</span> <span class="op">&lt;-</span> <span class="fu"><a href="imbalanced.rfsrc.html">imbalanced</a></span><span class="op">(</span><span class="va">Class</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">d</span>, importance <span class="op">=</span> <span class="cn">TRUE</span>, block.size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
 
-  <span class="co">## subsample the q-classifier</span>
+  <span class="co">## subsample the RFQ-classifier</span>
   <span class="va">smp.oq</span> <span class="op">&lt;-</span> <span class="fu">subsample</span><span class="op">(</span><span class="va">oq</span>, B <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>
   <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">smp.oq</span>, cex.axis <span class="op">=</span> <span class="fl">.7</span><span class="op">)</span>
 

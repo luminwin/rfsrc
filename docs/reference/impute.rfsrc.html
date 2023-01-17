@@ -24,7 +24,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.0</span>
       </span>
     </div>
 
@@ -287,7 +287,7 @@
 <span class="va">pbc1.d</span> <span class="op">&lt;-</span> <span class="fu">impute</span><span class="op">(</span>data <span class="op">=</span> <span class="va">pbc</span><span class="op">)</span>
 
 <span class="co">## imputation using outcome splitting</span>
-<span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">as.formula</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">days</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span><span class="op">)</span>
+<span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">as.formula</a></span><span class="op">(</span><span class="fu">Surv</span><span class="op">(</span><span class="va">days</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span><span class="op">)</span>
 <span class="va">pbc2.d</span> <span class="op">&lt;-</span> <span class="fu">impute</span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">pbc</span>, nsplit <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
 
 <span class="co">## random splitting can be reasonably good</span>

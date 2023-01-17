@@ -24,7 +24,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.0</span>
       </span>
     </div>
 
@@ -235,6 +235,18 @@
 <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">vimp</span><span class="op">(</span><span class="va">iris.obj</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Petal.Length"</span>, <span class="st">"Petal.Width"</span><span class="op">)</span>, joint <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span><span class="va">importance</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">vimp</span><span class="op">(</span><span class="va">iris.obj</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Sepal.Length"</span>, <span class="st">"Petal.Width"</span><span class="op">)</span>, joint <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span><span class="va">importance</span><span class="op">)</span>
 
+<span class="co">## ------------------------------------------------------------</span>
+<span class="co">## survival example</span>
+<span class="co">## anti versus permute VIMP with different block sizes</span>
+<span class="co">## ------------------------------------------------------------</span>
+
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">pbc</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span>
+<span class="va">pbc.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">days</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">pbc</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">vimp</span><span class="op">(</span><span class="va">pbc.obj</span><span class="op">)</span><span class="op">$</span><span class="va">importance</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">vimp</span><span class="op">(</span><span class="va">pbc.obj</span>, block.size<span class="op">=</span><span class="fl">1</span><span class="op">)</span><span class="op">$</span><span class="va">importance</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">vimp</span><span class="op">(</span><span class="va">pbc.obj</span>, importance<span class="op">=</span><span class="st">"permute"</span><span class="op">)</span><span class="op">$</span><span class="va">importance</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">vimp</span><span class="op">(</span><span class="va">pbc.obj</span>, importance<span class="op">=</span><span class="st">"permute"</span>, block.size<span class="op">=</span><span class="fl">1</span><span class="op">)</span><span class="op">$</span><span class="va">importance</span><span class="op">)</span>
 
 <span class="co">## ------------------------------------------------------------</span>
 <span class="co">## imbalanced classification example</span>

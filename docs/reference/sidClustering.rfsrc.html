@@ -25,7 +25,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.0</span>
       </span>
     </div>
 
@@ -146,6 +146,7 @@
   method <span class="op">=</span> <span class="st">"sid"</span>,
   k <span class="op">=</span> <span class="cn">NULL</span>,
   reduce <span class="op">=</span> <span class="cn">TRUE</span>,
+  ntree <span class="op">=</span> <span class="fl">500</span>,
   ntree.reduce <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">p</span>, <span class="va">vtry</span><span class="op">)</span><span class="op">{</span><span class="fl">100</span> <span class="op">*</span> <span class="va">p</span> <span class="op">/</span> <span class="va">vtry</span><span class="op">}</span>,
   fast <span class="op">=</span> <span class="cn">FALSE</span>,
   x.no.sid <span class="op">=</span> <span class="cn">NULL</span>,
@@ -180,6 +181,8 @@
 <dd><p>Apply dimension reduction? Uses holdout vimp which is
     computationally intensive and conservative but has good false
     discovery properties.  Only applies to <code>method="sid"</code>.</p></dd>
+<dt>ntree</dt>
+<dd><p>Number of trees used by sidClustering in the main analysis.</p></dd>
 <dt>ntree.reduce</dt>
 <dd><p>Number of trees used by holdout vimp in the
     reduction step.  See <code class="command">holdout.vimp</code> for details.</p></dd>

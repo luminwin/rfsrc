@@ -73,7 +73,7 @@ This is the main entry point to the randomForestSRC
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.0</span>
       </span>
     </div>
 
@@ -296,8 +296,7 @@ This is the main entry point to the randomForestSRC
 <dd><p>Non-negative integer specifying number of random splits
     for splitting a variable.  When zero, all split values are
     used (deterministic splitting), which can be slower.  By default 
-    10 is used except for regression and classification which uses zero
-    (for deterministic splitting).</p></dd>
+    10 is used.</p></dd>
 <dt>importance</dt>
 <dd><p>Method for computing variable importance (VIMP); see
     below.  Default action is <code>importance="none"</code> but VIMP can
@@ -908,10 +907,6 @@ This is the main entry point to the randomForestSRC
 <dd><p>In-bag cumulative incidence function (CIF) for each event.</p></dd>
 <dt>cif.oob</dt>
 <dd><p>OOB CIF.</p></dd>
-<dt>time.interest</dt>
-<dd><p>Ordered unique event times.</p></dd>
-<dt>ndead</dt>
-<dd><p>Number of events.</p></dd>
 </dl></div>
     <div id="note">
     <h2>Note</h2>
@@ -1090,6 +1085,30 @@ This is the main entry point to the randomForestSRC
 <span class="fu"><a href="plot.survival.rfsrc.html">plot.survival</a></span><span class="op">(</span><span class="va">v.obj</span>, subset <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span>
 
 <span class="co"># \donttest{</span>
+<span class="co">## obtain Brier score using KM and RSF censoring distribution estimators</span>
+<span class="va">bs.km</span> <span class="op">&lt;-</span> <span class="fu"><a href="plot.survival.rfsrc.html">get.brier.survival</a></span><span class="op">(</span><span class="va">v.obj</span>, cens.model <span class="op">=</span> <span class="st">"km"</span><span class="op">)</span><span class="op">$</span><span class="va">brier.score</span>
+<span class="va">bs.rsf</span> <span class="op">&lt;-</span> <span class="fu"><a href="plot.survival.rfsrc.html">get.brier.survival</a></span><span class="op">(</span><span class="va">v.obj</span>, cens.model <span class="op">=</span> <span class="st">"rfsrc"</span><span class="op">)</span><span class="op">$</span><span class="va">brier.score</span>
+
+<span class="co">## plot the brier score</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">bs.km</span>, type <span class="op">=</span> <span class="st">"s"</span>, col <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">bs.rsf</span>, type <span class="op">=</span><span class="st">"s"</span>, col <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cens.model = km"</span>, <span class="st">"cens.model = rfsrc"</span><span class="op">)</span>, fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">4</span><span class="op">)</span><span class="op">)</span>
+
+<span class="co">## plot CRPS (continuous rank probability score) as function of time</span>
+<span class="co">## here's how to calculate the CRPS for every time point</span>
+<span class="va">trapz</span> <span class="op">&lt;-</span> <span class="fu">randomForestSRC</span><span class="fu">:::</span><span class="va">trapz</span>
+<span class="va">time</span> <span class="op">&lt;-</span> <span class="va">v.obj</span><span class="op">$</span><span class="va">time.interest</span>
+<span class="va">crps.km</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">time</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">j</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu">trapz</span><span class="op">(</span><span class="va">time</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">j</span><span class="op">]</span>, <span class="va">bs.km</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">j</span>, <span class="fl">2</span><span class="op">]</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/diff.html" class="external-link">diff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">time</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">j</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="op">}</span><span class="op">)</span>
+<span class="va">crps.rsf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">time</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">j</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu">trapz</span><span class="op">(</span><span class="va">time</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">j</span><span class="op">]</span>, <span class="va">bs.rsf</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">j</span>, <span class="fl">2</span><span class="op">]</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/diff.html" class="external-link">diff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">time</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">j</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="op">}</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">crps.km</span>, ylab <span class="op">=</span> <span class="st">"CRPS"</span>, type <span class="op">=</span> <span class="st">"s"</span>, col <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">crps.rsf</span>, type <span class="op">=</span><span class="st">"s"</span>, col <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"bottomright"</span>, legend<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cens.model = km"</span>, <span class="st">"cens.model = rfsrc"</span><span class="op">)</span>, fill<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">4</span><span class="op">)</span><span class="op">)</span>
+
+
 <span class="co">## fast nodesize optimization for veteran data</span>
 <span class="co">## optimal nodesize in survival is larger than other families</span>
 <span class="co">## see the function "tune" for more examples</span>
@@ -1169,8 +1188,7 @@ This is the main entry point to the randomForestSRC
 <span class="co">##------------------------------------------------------------</span>
 
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">pbc</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span>
-<span class="va">pbc.obj2</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">days</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">pbc</span>,
-           nsplit <span class="op">=</span> <span class="fl">10</span>, na.action <span class="op">=</span> <span class="st">"na.impute"</span><span class="op">)</span>
+<span class="va">pbc.obj2</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">days</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">pbc</span>, na.action <span class="op">=</span> <span class="st">"na.impute"</span><span class="op">)</span>
 
 <span class="co">## same as above but iterate the missing data algorithm</span>
 <span class="va">pbc.obj3</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">days</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">pbc</span>,
