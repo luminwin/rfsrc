@@ -1,30 +1,7 @@
-<!DOCTYPE html>
-<html lang="en" >
-<head>
-  <meta charset="UTF-8">
-  <title>CodePen - Chen Ye task2</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
-<link rel="stylesheet" href="./style.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+document.write(`
 
-</head>
-<body>
-<!-- partial:index.partial.html -->
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Flexbox responsive grid</title>
-</head>
-<body>
-  <div class="wrapper">
-  <h1>Function mode guideline</h1>
-    <p></p>
   <div class="Grid Grid--gutters Grid--cols-3 u-textCenter">
 
-    
-    
-
-    
   </div>
   <div class="Grid Grid--gutters Grid--1of3 u-textCenter">
     
@@ -32,13 +9,15 @@
    
       <div class="Grid Grid--gutters Grid--1of1 Grid--nested">
 
-        <div class="Grid-cell"><div class="Demo">Want to impute missing values?<br/> <div class = "code">impute()</div>
+        <div class="Grid-cell"><div class="Demo">Want to impute missing values?<br/> <a href="https://www.randomforestsrc.org/reference/impute.rfsrc.html"><div class = "code">impute()</div> 
+</a>
       
         </div></div>
       </div>   
             <div class="Grid Grid--gutters Grid--1of1 Grid--nested">
 
-              <div class="Grid-cell"><div class="Demo">Want to tune parameters?  <br/><div class = "code">tune()</div>
+              <div class="Grid-cell"><div class="Demo">Want to tune parameters?  <br/><a href="https://www.randomforestsrc.org/reference/tune.rfsrc.html"><div class = "code">tune()</div> 
+</a>
       
         </div></div>
  
@@ -50,7 +29,8 @@
     <div class="Grid-cell "><div class="Grid-cell"><div class="Demo title-font">Fit the model</div></div><div class="Demo"> Choose one function to fit the model
       <div class="Grid Grid--gutters Grid--1of1 Grid--nested">
 
-        <div class="Grid-cell"><div class="Demo">Do you have an outcome?<br/> <div class = "code">sidclustering()</div>
+        <div class="Grid-cell"><div class="Demo">If you don't have an outcome<br/> <a href="https://www.randomforestsrc.org/reference/sidclustering.rfsrc.html"><div class = "code">sidclustering()</div> 
+</a>
       
         </div></div>
       </div>   
@@ -126,7 +106,7 @@
  
       </div>            <div class="Grid Grid--gutters Grid--1of1 Grid--nested">
 
-              <div class="Grid-cell"><div class="Demo">Want fast var selection for large data?  <br/><div class = "code">var.select()</div>
+   <div class="Grid-cell"><div class="Demo">Want fast var selection for large data?  <br/><div class = "code">var.select()</div>
       
         </div></div>
  
@@ -135,11 +115,5 @@
     </div>
   </div>
   
-  </div>
- </div>
-</body>
-</html>
-<!-- partial -->
-  
-</body>
-</html>
+
+`);
