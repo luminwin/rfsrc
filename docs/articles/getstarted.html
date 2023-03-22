@@ -139,7 +139,15 @@
   </a>
 </li>
       </ul>
-
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/kogalur/randomForestSRC/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
+     
+    GitHub
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -156,7 +164,7 @@
                         <h4 data-toc-skip class="author">
 <a href="https://ishwaran.org/ishwaran.html" class="external-link">Hemant Ishwaran</a> <br><br> Min Lu <br><br> Udaya B. Kogalur</h4>
             
-            <h4 data-toc-skip class="date">2022-06-14</h4>
+            <h4 data-toc-skip class="date">2023-03-22</h4>
       
       
       <div class="hidden name"><code>getstarted.Rmd</code></div>
@@ -165,6 +173,260 @@
 
     
     
+<style type="text/css">
+hr {
+  border: none;
+  height: 1px;
+  background-color: rgba(64, 185, 60, 0.2);
+}
+
+.img-placeholder {
+  background-image: url("http://placehold.it/200x100/CC99CC/ffffff&text=Feature");
+  background-size: cover;
+  min-height: 100px;
+  min-width: 100px;
+}
+
+/*Basic Grid Styles*/
+.Grid {
+  display: flex;
+  flex-flow: row;
+  flex-wrap: wrap;
+}
+
+.u-textCenter {
+  text-align: center;
+}
+
+.Grid-cell {
+  flex: 1;
+}
+
+.Demo {
+  padding: .8em 1em 0;
+  margin-bottom: 1em;
+  background: rgba(64, 185, 60, 0.2);
+  transition: background-color 0.3s ease;
+  border: 1px solid #c9f29b;
+  border-radius: 3px;
+}
+
+.Demo:hover {
+  background: rgba(64, 185, 70, 0.6);
+}
+
+.Demo.Holly {
+  background: rgba(74, 185, 60, 0.1);
+}
+.Demo.Holly:hover {
+  background: rgba(84, 185, 70, 0.25);
+}
+
+/* With gutters*/
+.Grid--gutters {
+  margin-left: -1em;
+}
+.Grid--gutters .Grid-cell {
+  padding-left: 1em;
+}
+.Grid--gutters .Grid--nested .Grid-cell:first-of-type .Demo {
+  margin-right: 1em;
+}
+
+/* Alignment per row */
+.Grid--top {
+  align-items: flex-start;
+}
+
+.Grid--bottom {
+  align-items: flex-end;
+}
+
+.Grid--center {
+  align-items: center;
+}
+
+/* Alignment per cell */
+.Grid-cell--top {
+  align-self: flex-start;
+}
+
+.Grid-cell--bottom {
+  align-self: flex-end;
+}
+
+.Grid-cell--center {
+  align-self: center;
+}
+
+/*===========================================*/
+/* Base classes for all media - Mobile first */
+.Grid--cols-2 > .Grid-cell {
+  flex: 0 0 100%;
+}
+
+.Grid--cols-3 > .Grid-cell {
+  flex: 0 0 100%;
+}
+
+.Grid--cols-4 > .Grid-cell {
+  flex: 0 0 100%;
+}
+
+.Grid--cols-6 > .Grid-cell {
+  flex: 0 0 calc(50% - 1em);
+}
+
+.Grid--cols-12 > .Grid-cell {
+  flex: 0 0 calc(33.3333% - 1em);
+}
+
+.Grid--holly-grail .aside, .Grid--holly-grail .main {
+  flex: 1 100%;
+}
+
+/* One of -- columns*/
+.Grid--1of2 > .Grid-cell,
+.Grid--1of4 > .Grid-cell:first-of-type,
+.Grid--1of3 > .Grid-cell:first-of-type {
+  flex: 0 0 100%;
+}
+
+.Grid--1of6 > .Grid-cell:first-of-type {
+  flex: 0 0 50%;
+}
+
+.Grid--fit > .Grid-cell {
+  flex: 1;
+}
+
+.Grid--full > .Grid-cell {
+  flex: 0 0 100%;
+}
+
+/* Tablet (medium) screens */
+@media (min-width: 30em) {
+  .Grid--cols-4 > .Grid-cell {
+    flex: 0 0 calc(50% - 1em);
+  }
+
+  .Grid--cols-6 > .Grid-cell {
+    flex: 0 0 calc(33.3333% - 1em);
+  }
+
+  .Grid--cols-12 > .Grid-cell {
+    flex: 0 0 calc(16.6666% - 1em);
+  }
+
+  .Grid--holly-grail .aside {
+    flex: 1 calc(25% - 1em);
+  }
+
+  .Grid--1of2 > .Grid-cell {
+    flex: 0 0 50%;
+  }
+
+  .Grid--1of6 > .Grid-cell:first-of-type {
+    flex: 0 0 30%;
+  }
+
+  .Grid--1of4 > .Grid-cell:first-of-type {
+    flex: 0 0 50%;
+  }
+
+  .Grid--1of3 > .Grid-cell:first-of-type {
+    flex: 0 0 100%;
+  }
+}
+/* Large screens */
+@media (min-width: 48em) {
+  .Grid--cols-2 > .Grid-cell,
+  .Grid--cols-3 > .Grid-cell,
+  .Grid--cols-4 > .Grid-cell,
+  .Grid--cols-6 > .Grid-cell,
+  .Grid--cols-12 > .Grid-cell {
+    flex: 1;
+  }
+
+  .Grid--holly-grail .main {
+    flex: 2;
+  }
+  .Grid--holly-grail .aside {
+    flex: 1;
+  }
+  .Grid--holly-grail .aside-1 {
+    order: 1;
+  }
+  .Grid--holly-grail .main {
+    order: 2;
+  }
+  .Grid--holly-grail .aside-2 {
+    order: 3;
+  }
+
+  .Grid--1of2 > .Grid-cell {
+    flex: 0 0 50%;
+  }
+
+  .Grid--1of6 > .Grid-cell:first-of-type {
+    flex: 0 0 16.6666%;
+  }
+
+  .Grid--1of4 > .Grid-cell:first-of-type {
+    flex: 0 0 25%;
+  }
+
+  .Grid--1of3 > .Grid-cell:first-of-type {
+    flex: 0 0 30%;
+  }
+
+  .Grid--gutters.Grid--nested .Grid-cell:first-of-type .Demo {
+    margin-right: 0;
+  }
+}
+
+
+.arrow-right-long {
+  position: relative;
+  margin: 15px auto;
+  width: 20px;
+  height: 5px;
+  background: #b2de27;
+}
+
+.arrow-right-long::after {
+  position: absolute;
+  content: '';
+  border: 10px solid #fff;
+  top: -6px;
+  right: -3px;
+  border-right-width: 0;
+  border-left-color: #b2de27;
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+}
+
+.title-font {
+  font-weight: bold;
+}
+
+.code {
+  background: #f4f4f4;
+  border: 0.5px solid #ddd;
+  border-left: 0.5px solid #f36d33;
+  color: #666;
+  page-break-inside: avoid;
+  font-family: monospace;
+  font-size: 10px;
+  line-height: 1.6;
+  margin-bottom: 1.6em;
+  max-width: 100%;
+  overflow: auto;
+  padding: 1em 1.5em;
+  display: block;
+  word-wrap: break-word;
+}
+</style>
 <style type="text/css">
 h1.title {
   font-size: 28px;
@@ -357,6 +619,14 @@ If <span class="math inline">\(\{\varphi, \varphi_1,\ldots,\varphi_B\}\)</span> 
 <p>Used to extract the partial effects of a variable or variables.</p>
 </div>
 <div class="section level2">
+<h2 id="workflow">Workflow<a class="anchor" aria-label="anchor" href="#workflow"></a>
+</h2>
+<p>See the following flowchart for guide to how to use the package:</p>
+<p>
+<script src="b.js"></script></p>
+<p>See <a href="https://bmcpublichealth.biomedcentral.com/articles/10.1186/s12889-023-15263-0" class="external-link">the following paper</a> <span class="citation">[12]</span> with <a href="https://github.com/luminwin/Telehealth/blob/main/Lu2023Telehealth.R" class="external-link">R code</a> for illustration.</p>
+</div>
+<div class="section level2">
 <h2 id="growing-a-forest">Growing a Forest<a class="anchor" aria-label="anchor" href="#growing-a-forest"></a>
 </h2>
 <p>A forest is specified by a model. Each model is dealt with in a different way, using model-specific split rules. This results in model-specific terminal node statistics, ensembles, and a model-specific prediction error algorithm. Below the formula table are basic examples of the different models available. For simplicity, we assume the data has already been loaded. More detailed examples are provided in other vignettes, this is just a broad over-view.</p>
@@ -408,7 +678,7 @@ If <span class="math inline">\(\{\varphi, \varphi_1,\ldots,\varphi_B\}\)</span> 
 <div class="section level2">
 <h2 id="split-rules">Split Rules<a class="anchor" aria-label="anchor" href="#split-rules"></a>
 </h2>
-<p>In the following table, the first rule denotes the default split rule for each model specified by the option <code>splitrule</code>. The default split rule is applied when the user does not specify a split rule. The package uses the data set and formula specification to determine the model. Note that the <a href="mvsplit.html">multivariate</a> <span class="citation">[12]</span> and <a href="sidClustering.html">unsupervised</a> <span class="citation">[13]</span> split rules are a composite rule based on the default split rules for regression and classification. Each component of the composite is normalized so that the magnitude of any one y-outcome does not influence the statistic. A new <a href="mvsplit.html#mahalanobis-distance-1">Mahalanobis splitting rule</a> has been added for multivariate regression with correlated real-valued outcomes. <a href="aucsplit.html">AUC splitting rule</a> <span class="citation">[14]</span> is available for multiclass problems.</p>
+<p>In the following table, the first rule denotes the default split rule for each model specified by the option <code>splitrule</code>. The default split rule is applied when the user does not specify a split rule. The package uses the data set and formula specification to determine the model. Note that the <a href="mvsplit.html">multivariate</a> <span class="citation">[13]</span> and <a href="sidClustering.html">unsupervised</a> <span class="citation">[14]</span> split rules are a composite rule based on the default split rules for regression and classification. Each component of the composite is normalized so that the magnitude of any one y-outcome does not influence the statistic. A new <a href="mvsplit.html#mahalanobis-distance-1">Mahalanobis splitting rule</a> has been added for multivariate regression with correlated real-valued outcomes. <a href="aucsplit.html">AUC splitting rule</a> <span class="citation">[15]</span> is available for multiclass problems.</p>
 <table class="table">
 <colgroup>
 <col width="53%">
@@ -453,14 +723,14 @@ If <span class="math inline">\(\{\varphi, \varphi_1,\ldots,\varphi_B\}\)</span> 
 </tr>
 </tbody>
 </table>
-<p>All models allow the use of randomized splitting specified by the option <code>nsplit</code>. When set to a non-zero positive integer, a maximum of these number of split points are chosen randomly for each of the candidate splitting variables when splitting a tree node. This significantly reduces the cost from having to consider all possible split-values. This can sometimes also improve performance, for example the choice <code>nsplit = 1</code> implements extremely randomized trees <span class="citation">[15, 16]</span>. Traditional deterministic splitting (all split values considered) is specified by <code>nsplit = 0</code>.</p>
+<p>All models allow the use of randomized splitting specified by the option <code>nsplit</code>. When set to a non-zero positive integer, a maximum of these number of split points are chosen randomly for each of the candidate splitting variables when splitting a tree node. This significantly reduces the cost from having to consider all possible split-values. This can sometimes also improve performance, for example the choice <code>nsplit = 1</code> implements extremely randomized trees <span class="citation">[16, 17]</span>. Traditional deterministic splitting (all split values considered) is specified by <code>nsplit = 0</code>.</p>
 <p>There is also a pure random splitting rule, <code>splitrule = 'random'</code>, where splitting is completely independent of the y-value. This obviously has poor prediction power but can be useful for other purposes (for example, fast tuning for big data or rough but fast imputation for large data).</p>
 <p>All models also allow the user to define a custom split rule statistic. Some basic C-programming skills are required. Examples for all the families reside in the C source code directory of the package in the file splitCustom.c. Note that recompiling and re-installing the package is necessary after modifying the source code.</p>
 </div>
 <div class="section level2">
 <h2 id="prediction-and-terminal-node-statistics">Prediction and Terminal Node Statistics<a class="anchor" aria-label="anchor" href="#prediction-and-terminal-node-statistics"></a>
 </h2>
-<p>In the following table, the terminal node statistics (TNS) produced by the five models are summarized. For <a href="survival.html">survival</a>, the TNS is the Kaplan-Meier estimator and the Nelson-Aalen cumulative hazard function (CHF) at the time points of interest specified by the user, or as determined by the package if not specified <span class="citation">[17]</span>. <a href="competing.html">Competing risk</a> <span class="citation">[18]</span> also has two TNS’s: the cause-specific cumulative hazard estimate (CSCHF), and the cause-specific cumulative incidence function (CSCIF). Regression and classification TNS’s are the mean and class proportions respectively. For quantile regression, quantiles for each of the requested probabilities. For a multivariate model (including quantile regression), there are TNS’s for each response, whether it is real valued, discrete or categorical. The <a href="sidClustering.html">unsupervised model</a> <span class="citation">[13]</span> has no TNS, as the analysis is responseless.</p>
+<p>In the following table, the terminal node statistics (TNS) produced by the five models are summarized. For <a href="survival.html">survival</a>, the TNS is the Kaplan-Meier estimator and the Nelson-Aalen cumulative hazard function (CHF) at the time points of interest specified by the user, or as determined by the package if not specified <span class="citation">[18]</span>. <a href="competing.html">Competing risk</a> <span class="citation">[19]</span> also has two TNS’s: the cause-specific cumulative hazard estimate (CSCHF), and the cause-specific cumulative incidence function (CSCIF). Regression and classification TNS’s are the mean and class proportions respectively. For quantile regression, quantiles for each of the requested probabilities. For a multivariate model (including quantile regression), there are TNS’s for each response, whether it is real valued, discrete or categorical. The <a href="sidClustering.html">unsupervised model</a> <span class="citation">[14]</span> has no TNS, as the analysis is responseless.</p>
 <table class="table">
 <colgroup>
 <col width="53%">
@@ -503,7 +773,7 @@ If <span class="math inline">\(\{\varphi, \varphi_1,\ldots,\varphi_B\}\)</span> 
 </tr>
 </tbody>
 </table>
-<p>Each model returns an ensemble predicted value for each data point which is calculated using the TNS for the data point. The predicted value is model specific and in the table is highlighted in italics. For survival, it is mortality defined as the sum of the CHF over the event (death) times <span class="citation">[2]</span>. This value represents estimated risk for each individual calibrated to the scale of the number of events. Thus as a specific example, if case <span class="math inline">\(i\)</span>has a mortality value of 100, then if all individuals had the same covariate as <span class="math inline">\(i\)</span>, which is <span class="math inline">\({\bf X}={\bf x}_i\)</span>, we would expect an average of 100 events. For competing risks, for each event, the expected number of life years lost due to the event specific cause <span class="citation">[19]</span>. For regression, the mean value of the y-outcome. For classification, the estimated class probability for each class. Also returned for convenience is the Bayes classifier which is the classifier with maximal probability calculated using the estimated class probability. For two-class imbalanced, the <a href="imbalance.html">q-classifer</a> is returned and not the Bayes classifier. For a multivariate model, there are TNS’s for each response, whether it is real valued, discrete or categorical. The unsupervised model has no TNS, as the analysis is responseless. For sidClustering, this is similar to a multivariate model.</p>
+<p>Each model returns an ensemble predicted value for each data point which is calculated using the TNS for the data point. The predicted value is model specific and in the table is highlighted in italics. For survival, it is mortality defined as the sum of the CHF over the event (death) times <span class="citation">[2]</span>. This value represents estimated risk for each individual calibrated to the scale of the number of events. Thus as a specific example, if case <span class="math inline">\(i\)</span>has a mortality value of 100, then if all individuals had the same covariate as <span class="math inline">\(i\)</span>, which is <span class="math inline">\({\bf X}={\bf x}_i\)</span>, we would expect an average of 100 events. For competing risks, for each event, the expected number of life years lost due to the event specific cause <span class="citation">[20]</span>. For regression, the mean value of the y-outcome. For classification, the estimated class probability for each class. Also returned for convenience is the Bayes classifier which is the classifier with maximal probability calculated using the estimated class probability. For two-class imbalanced, the <a href="imbalance.html">q-classifer</a> is returned and not the Bayes classifier. For a multivariate model, there are TNS’s for each response, whether it is real valued, discrete or categorical. The unsupervised model has no TNS, as the analysis is responseless. For sidClustering, this is similar to a multivariate model.</p>
 </div>
 <div class="section level2">
 <h2 id="allowable-data-types-and-factors">Allowable Data Types and Factors<a class="anchor" aria-label="anchor" href="#allowable-data-types-and-factors"></a>
@@ -551,7 +821,7 @@ If <span class="math inline">\(\{\varphi, \varphi_1,\ldots,\varphi_B\}\)</span> 
 <div class="section level2">
 <h2 id="in-sample-and-out-of-sample-in-bag-and-out-of-bag">In-Sample and Out-of-Sample (In-Bag and Out-of Bag)<a class="anchor" aria-label="anchor" href="#in-sample-and-out-of-sample-in-bag-and-out-of-bag"></a>
 </h2>
-<p>Remember that each tree is grown from a random subset of the data. Thus, the package will return both out-of-sample and in-sample predicted values from the forest, where the former are calculated using the hold out data for each tree, and the latter are from the data used to train the tree (see Breiman 2001 for more details). These values are stored in <code>$predicted.oob</code> and <code>$predicted</code> respectively. The out-of-sample values <code>$predicted.oob</code> should be used for inference on the training data. This is because they are cross-validated and will not over-fit the data. It is generally never recommended to use <code>$predicted</code> from the grow forest. In general, out-of-sample (out-of-bag, OOB) values should always be the preferred choice for analysis on the training data. See the <a href="forestWgt.html">Forest Weights, In-Bag (IB) and Out-of-Bag (OOB) Ensembles</a> vignette <span class="citation">[20]</span> for a more formal description of IB and OOB and how these values are used to define the ensemble.</p>
+<p>Remember that each tree is grown from a random subset of the data. Thus, the package will return both out-of-sample and in-sample predicted values from the forest, where the former are calculated using the hold out data for each tree, and the latter are from the data used to train the tree (see Breiman 2001 for more details). These values are stored in <code>$predicted.oob</code> and <code>$predicted</code> respectively. The out-of-sample values <code>$predicted.oob</code> should be used for inference on the training data. This is because they are cross-validated and will not over-fit the data. It is generally never recommended to use <code>$predicted</code> from the grow forest. In general, out-of-sample (out-of-bag, OOB) values should always be the preferred choice for analysis on the training data. See the <a href="forestWgt.html">Forest Weights, In-Bag (IB) and Out-of-Bag (OOB) Ensembles</a> vignette <span class="citation">[21]</span> for a more formal description of IB and OOB and how these values are used to define the ensemble.</p>
 <p>The following is a simple illustration for regression which shows how the error rate is obtained from the OOB predictor:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"randomForestSRC"</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="do">## run mtcars, and print out error rate and other information</span></span>
@@ -689,7 +959,7 @@ If <span class="math inline">\(\{\varphi, \varphi_1,\ldots,\varphi_B\}\)</span> 
 <ol start="3" style="list-style-type: decimal">
 <li>VIMP depends upon <code>block.size</code>, an integer value between 1 and <code>ntree</code>, specifying number of trees in a block used for VIMP. When <code>block.size=1</code>, VIMP is calculated for each tree. This is what was used in the traditional Breiman-Cutler VIMP and we will refer to this setting as tree VIMP. When <code>block.size="ntree"</code>, VIMP is calculated for the entire forest by comparing the perturbed OOB forest ensemble (using all trees) to the unperturbed OOB forest ensemble (using all trees). This yields ensemble VIMP, which does not measure the tree average effect of a variable, but rather its overall forest effect.</li>
 </ol>
-<p>The default is <code>block.size=10</code> which provides a useful compromise between tree VIMP and ensemble VIMP. In general, smaller “block.size” values generally gives better accuracy, however computational times will be higher because VIMP is calculated over more blocks. In some cases like imbalanced classification data (see the <a href="imbalance.html">RFQ vignette</a> <span class="citation">[21]</span>), a larger <code>block.size</code> can work better.</p>
+<p>The default is <code>block.size=10</code> which provides a useful compromise between tree VIMP and ensemble VIMP. In general, smaller “block.size” values generally gives better accuracy, however computational times will be higher because VIMP is calculated over more blocks. In some cases like imbalanced classification data (see the <a href="imbalance.html">RFQ vignette</a> <span class="citation">[22]</span>), a larger <code>block.size</code> can work better.</p>
 <ol start="4" style="list-style-type: decimal">
 <li><p>See the function <code>subsample</code> for calculating confidence intervals for VIMP which can be used as a means for dimension reduction.</p></li>
 <li><p>Finally, also see <code>holdout.vimp</code> for holdout VIMP, which calculates importance by holding out variables. This is more conservative, but with good false discovery properties.</p></li>
@@ -887,35 +1157,38 @@ If <span class="math inline">\(\{\varphi, \varphi_1,\ldots,\varphi_B\}\)</span> 
 <div id="ref-rfq" class="csl-entry">
 11. O’Brien R, Ishwaran H. A random forests quantile classifier for class imbalanced data. Pattern recognition. 2019;90:232–49.
 </div>
+<div id="ref-LuBMC2023" class="csl-entry">
+12. Lu M, Liao X. Telehealth utilization in u.s. Medicare beneficiaries aged 65 years and older during the COVID-19 pandemic. BMC Public Health. 2023;23:368–82. doi:<a href="https://doi.org/10.1186/s12889-023-15263-0" class="external-link">10.1186/s12889-023-15263-0</a>.
+</div>
 <div id="ref-HemantMultiv" class="csl-entry">
-12. Ishwaran H, Tang F, Lu M, Kogalur UB. <span class="nocase">randomForestSRC</span>: Multivariate splitting rule vignette. 2021. <a href="http://randomforestsrc.org/articles/mvsplit.html" class="external-link">http://randomforestsrc.org/articles/mvsplit.html</a>.
+13. Ishwaran H, Tang F, Lu M, Kogalur UB. <span class="nocase">randomForestSRC</span>: Multivariate splitting rule vignette. 2021. <a href="http://randomforestsrc.org/articles/mvsplit.html" class="external-link">http://randomforestsrc.org/articles/mvsplit.html</a>.
 </div>
 <div id="ref-HemantsidClustering" class="csl-entry">
-13. Ishwaran H, Mantero A, Lu M, Kogalur UB. <span class="nocase">randomForestSRC</span>: <span class="nocase">sidClustering</span> vignette. 2021. <a href="http://randomforestsrc.org/articles/sidClustering.html" class="external-link">http://randomforestsrc.org/articles/sidClustering.html</a>.
+14. Ishwaran H, Mantero A, Lu M, Kogalur UB. <span class="nocase">randomForestSRC</span>: <span class="nocase">sidClustering</span> vignette. 2021. <a href="http://randomforestsrc.org/articles/sidClustering.html" class="external-link">http://randomforestsrc.org/articles/sidClustering.html</a>.
 </div>
 <div id="ref-HemantAUCsplit" class="csl-entry">
-14. Ishwaran H, Lu M, Kogalur UB. <span class="nocase">randomForestSRC</span>: <span>AUC</span> splitting for multiclass problems vignette. 2022. <a href="http://randomforestsrc.org/articles/aucsplit.html" class="external-link">http://randomforestsrc.org/articles/aucsplit.html</a>.
+15. Ishwaran H, Lu M, Kogalur UB. <span class="nocase">randomForestSRC</span>: <span>AUC</span> splitting for multiclass problems vignette. 2022. <a href="http://randomforestsrc.org/articles/aucsplit.html" class="external-link">http://randomforestsrc.org/articles/aucsplit.html</a>.
 </div>
 <div id="ref-geurts2006extremely" class="csl-entry">
-15. Geurts P, Ernst D, Wehenkel L. Extremely randomized trees. Machine learning. 2006;63:3–42.
+16. Geurts P, Ernst D, Wehenkel L. Extremely randomized trees. Machine learning. 2006;63:3–42.
 </div>
 <div id="ref-ishwaran2015effect" class="csl-entry">
-16. Ishwaran H. The effect of splitting on random forests. Machine learning. 2015;99:75–118.
+17. Ishwaran H. The effect of splitting on random forests. Machine learning. 2015;99:75–118.
 </div>
 <div id="ref-HemantRandomS" class="csl-entry">
-17. Ishwaran H, Lauer MS, Blackstone EH, Lu M, Kogalur UB. <span class="nocase">randomForestSRC</span>: Random survival forests vignette. 2021. <a href="http://randomforestsrc.org/articles/survival.html" class="external-link">http://randomforestsrc.org/articles/survival.html</a>.
+18. Ishwaran H, Lauer MS, Blackstone EH, Lu M, Kogalur UB. <span class="nocase">randomForestSRC</span>: Random survival forests vignette. 2021. <a href="http://randomforestsrc.org/articles/survival.html" class="external-link">http://randomforestsrc.org/articles/survival.html</a>.
 </div>
 <div id="ref-HemantCompeting" class="csl-entry">
-18. Ishwaran H, Gerds TA, Lau BM, Lu M, Kogalur UB. <span class="nocase">randomForestSRC</span>: Competing risks vignette. 2021. <a href="http://randomforestsrc.org/articles/competing.html" class="external-link">http://randomforestsrc.org/articles/competing.html</a>.
+19. Ishwaran H, Gerds TA, Lau BM, Lu M, Kogalur UB. <span class="nocase">randomForestSRC</span>: Competing risks vignette. 2021. <a href="http://randomforestsrc.org/articles/competing.html" class="external-link">http://randomforestsrc.org/articles/competing.html</a>.
 </div>
 <div id="ref-Ishwaran2014" class="csl-entry">
-19. Ishwaran H, Gerds TA, Kogalur UB, Moore RD, Gange SJ, Lau BM. Random survival forests for competing risks. Biostatistics. 2014;15:757–73.
+20. Ishwaran H, Gerds TA, Kogalur UB, Moore RD, Gange SJ, Lau BM. Random survival forests for competing risks. Biostatistics. 2014;15:757–73.
 </div>
 <div id="ref-HemantWeight" class="csl-entry">
-20. Ishwaran H, Lu M, Kogalur UB. <span class="nocase">randomForestSRC</span>: Forest weights, in-bag (IB) and out-of-bag (OOB) ensembles vignette. 2021. <a href="http://randomforestsrc.org/articles/forestWgt.html" class="external-link">http://randomforestsrc.org/articles/forestWgt.html</a>.
+21. Ishwaran H, Lu M, Kogalur UB. <span class="nocase">randomForestSRC</span>: Forest weights, in-bag (IB) and out-of-bag (OOB) ensembles vignette. 2021. <a href="http://randomforestsrc.org/articles/forestWgt.html" class="external-link">http://randomforestsrc.org/articles/forestWgt.html</a>.
 </div>
 <div id="ref-HemantRFQv" class="csl-entry">
-21. Ishwaran H, O’Brien R, Lu M, Kogalur UB. <span class="nocase">randomForestSRC</span>: Random forests quantile classifier <span>(RFQ)</span> vignette. 2021. <a href="http://randomforestsrc.org/articles/imbalance.html" class="external-link">http://randomforestsrc.org/articles/imbalance.html</a>.
+22. Ishwaran H, O’Brien R, Lu M, Kogalur UB. <span class="nocase">randomForestSRC</span>: Random forests quantile classifier <span>(RFQ)</span> vignette. 2021. <a href="http://randomforestsrc.org/articles/imbalance.html" class="external-link">http://randomforestsrc.org/articles/imbalance.html</a>.
 </div>
 </div>
 </div>
