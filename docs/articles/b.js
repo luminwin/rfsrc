@@ -89,7 +89,7 @@ document.write(`
       </div> 
             <div class="Grid Grid--gutters Grid--1of1 Grid--nested">
 
-              <div class="Grid-cell"><div class="Demo">Want to obtain standard errors & confidence intervals for VIMP?  <br/><div class = "code"><a href="https://www.randomforestsrc.org/reference/subsample.rfsrc.html">subsample()
+              <div class="Grid-cell"><div class="Demo">Want standard errors or confidence intervals of VIMP?  <br/><div class = "code"><a href="https://www.randomforestsrc.org/reference/subsample.rfsrc.html">subsample()
 </a><a href="https://www.randomforestsrc.org/articles/vimp.html">-- Vignette</a></div> 
       
         </div></div>
@@ -118,7 +118,7 @@ document.write(`
  
       </div>            <div class="Grid Grid--gutters Grid--1of1 Grid--nested">
 
-   <div class="Grid-cell"><div class="Demo">Want fast var selection for large data?  <br/><div class = "code"><a href="https://www.randomforestsrc.org/reference/var.select.rfsrc.html">var.select()
+   <div class="Grid-cell"><div class="Demo">Want fast variable selection for large data?  <br/><div class = "code"><a href="https://www.randomforestsrc.org/reference/var.select.rfsrc.html">var.select()
 </a></div>
       
         </div></div>
