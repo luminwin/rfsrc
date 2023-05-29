@@ -46,7 +46,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.2</span>
       </span>
     </div>
 
@@ -139,7 +139,6 @@
   </a>
 </li>
       </ul>
-
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -154,9 +153,9 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Getting starting with the randomForestSRC R-package for random forest analysis of regression, classification, survival and more</h1>
                         <h4 data-toc-skip class="author">
-<a href="https://ishwaran.org/ishwaran.html" class="external-link">Hemant Ishwaran</a> <br><br> Min Lu <br><br> Udaya B. Kogalur</h4>
+<a href="https://ishwaran.org/ishwaran.html" class="external-link">Hemant Ishwaran</a> <br><br><a href="https://www.luminwin.net/" class="external-link">Min Lu</a> <br><br> Udaya B. Kogalur</h4>
             
-            <h4 data-toc-skip class="date">2023-03-22</h4>
+            <h4 data-toc-skip class="date">2023-05-29</h4>
       
       
       <div class="hidden name"><code>getstarted.Rmd</code></div>
@@ -783,7 +782,7 @@ If <span class="math inline">\(\{\varphi, \varphi_1,\ldots,\varphi_B\}\)</span> 
 <span class="va">veteran2</span><span class="op">$</span><span class="va">time</span> <span class="op">&lt;-</span> <span class="va">veteran</span><span class="op">$</span><span class="va">time</span>
 <span class="va">veteran2</span><span class="op">$</span><span class="va">status</span> <span class="op">&lt;-</span> <span class="va">veteran</span><span class="op">$</span><span class="va">status</span>
 <span class="co"># train the forest </span>
-<span class="va">o.grow</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu">Surv</span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">veteran2</span><span class="op">)</span> </code></pre></div>
+<span class="va">o.grow</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">veteran2</span><span class="op">)</span> </code></pre></div>
 <p>Now we create some new data where one of the factors has a new level not seen in the training data. Prediction on the test data proceeds without problem as the new level is treated like missing values and automatically dealt with</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">## make new test data with factor level not previously encountered in training</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>veteran3 <span class="ot">&lt;-</span> veteran2[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, ]</span>
@@ -1108,8 +1107,10 @@ If <span class="math inline">\(\{\varphi, \varphi_1,\ldots,\varphi_B\}\)</span> 
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    author <span class="ot">=</span> <span class="st">"Hemant Ishwaran and Min Lu and Udaya B. Kogalur"</span>,</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    title <span class="ot">=</span> {{randomForestSRC}<span class="sc">:</span> getting started with {randomForestSRC} vignette},</span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    year <span class="ot">=</span> {<span class="dv">2021</span>},</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    url <span class="ot">=</span> {http<span class="sc">:</span><span class="er">//</span>randomforestsrc.org<span class="sc">/</span>articles<span class="sc">/</span>getstarted.html}</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    url <span class="ot">=</span> {http<span class="sc">:</span><span class="er">//</span>randomforestsrc.org<span class="sc">/</span>articles<span class="sc">/</span>getstarted.html},</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    howpublished <span class="ot">=</span> <span class="st">"\url{http://randomforestsrc.org/articles/getstarted.html}"</span>,</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    note <span class="ot">=</span> <span class="st">"[accessed date]"</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 </div>
 <div class="section level2 unnumbered">

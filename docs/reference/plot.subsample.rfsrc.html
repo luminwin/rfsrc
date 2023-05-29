@@ -24,7 +24,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.2</span>
       </span>
     </div>
 
@@ -141,7 +141,7 @@
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">plot.subsample</span><span class="op">(</span><span class="va">x</span>, alpha <span class="op">=</span> <span class="fl">.01</span>, <span class="va">xvar.names</span>,
- standardize <span class="op">=</span> <span class="cn">TRUE</span>, normal <span class="op">=</span> <span class="cn">TRUE</span>, jknife <span class="op">=</span> <span class="cn">TRUE</span>,
+ standardize <span class="op">=</span> <span class="cn">TRUE</span>, normal <span class="op">=</span> <span class="cn">TRUE</span>, jknife <span class="op">=</span> <span class="cn">FALSE</span>,
  <span class="va">target</span>, m.target <span class="op">=</span> <span class="cn">NULL</span>, pmax <span class="op">=</span> <span class="fl">75</span>, main <span class="op">=</span> <span class="st">""</span>, sorted <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
     </div>
 
@@ -164,12 +164,12 @@
 <dt>jknife</dt>
 <dd><p>Use the delete-d jackknife variance estimator?</p></dd>
 <dt>target</dt>
-<dd><p>For classification families, an integer or
-    character value specifying the class VIMP will be conditioned on
-    (default is to use unconditional VIMP).
-    For competing risk families, an integer value between
-    1 and <code>J</code> indicating the event VIMP is requested, where <code>J</code> is
-    the number of event types.  The default is to use the first event.</p></dd>
+<dd><p>For classification families, an integer or character
+    value specifying the class VIMP will be conditioned on (default is
+    to use unconditional VIMP).  For competing risk families, an integer
+    value between 1 and <code>J</code> indicating the event VIMP is requested,
+    where <code>J</code> is the number of event types.  The default is to use
+    the first event.</p></dd>
 <dt>m.target</dt>
 <dd><p>Character value for multivariate families
     specifying the target outcome to be used.  If left unspecified, the
