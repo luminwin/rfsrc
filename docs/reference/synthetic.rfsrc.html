@@ -24,7 +24,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.3</span>
       </span>
     </div>
 
@@ -140,67 +140,100 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">synthetic</span><span class="op">(</span><span class="va">formula</span>, <span class="va">data</span>, <span class="va">object</span>, <span class="va">newdata</span>,
-  ntree <span class="op">=</span> <span class="fl">1000</span>, mtry <span class="op">=</span> <span class="cn">NULL</span>, nodesize <span class="op">=</span> <span class="fl">5</span>, nsplit <span class="op">=</span> <span class="fl">10</span>,
-  mtrySeq <span class="op">=</span> <span class="cn">NULL</span>, nodesizeSeq <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>,<span class="fl">20</span>,<span class="fl">30</span>,<span class="fl">50</span>,<span class="fl">100</span><span class="op">)</span>,
-  min.node <span class="op">=</span> <span class="fl">3</span>,
-  fast <span class="op">=</span> <span class="cn">TRUE</span>,
-  use.org.features <span class="op">=</span> <span class="cn">TRUE</span>,
-  na.action <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"na.omit"</span>, <span class="st">"na.impute"</span><span class="op">)</span>,
-  oob <span class="op">=</span> <span class="cn">TRUE</span>,
-  verbose <span class="op">=</span> <span class="cn">TRUE</span>,
-  <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">synthetic</span><span class="op">(</span><span class="va">formula</span>, <span class="va">data</span>, <span class="va">object</span>, <span class="va">newdata</span>,</span>
+<span>  ntree <span class="op">=</span> <span class="fl">1000</span>, mtry <span class="op">=</span> <span class="cn">NULL</span>, nodesize <span class="op">=</span> <span class="fl">5</span>, nsplit <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  mtrySeq <span class="op">=</span> <span class="cn">NULL</span>, nodesizeSeq <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>,<span class="fl">20</span>,<span class="fl">30</span>,<span class="fl">50</span>,<span class="fl">100</span><span class="op">)</span>,</span>
+<span>  min.node <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  fast <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  use.org.features <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  na.action <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"na.omit"</span>, <span class="st">"na.impute"</span><span class="op">)</span>,</span>
+<span>  oob <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>formula</dt>
 <dd><p>Model to be fit. Must be specified unless <code>object</code> is given.</p></dd>
-<dt>data</dt>
+
+
+  <dt>data</dt>
 <dd><p>Data frame containing the y-outcome and x-variables in
     the model. Must be specified unless <code>object</code> is given.</p></dd>
-<dt>object</dt>
+
+
+  <dt>object</dt>
 <dd><p>An object of class <code>(rfsrc, synthetic)</code>.
     Not required when <code>formula</code> and <code>data</code> are supplied.</p></dd>
-<dt>newdata</dt>
+
+
+  <dt>newdata</dt>
 <dd><p>Test data used for prediction (optional).</p></dd>
-<dt>ntree</dt>
+
+
+  <dt>ntree</dt>
 <dd><p>Number of trees.</p></dd>
-<dt>mtry</dt>
+
+
+  <dt>mtry</dt>
 <dd><p>mtry value for over-arching synthetic forest.</p></dd>
-<dt>nodesize</dt>
+
+
+  <dt>nodesize</dt>
 <dd><p>Nodesize value for over-arching synthetic forest.</p></dd>
-<dt>nsplit</dt>
+
+
+  <dt>nsplit</dt>
 <dd><p>nsplit-randomized splitting for significantly increased speed.</p></dd>
-<dt>mtrySeq</dt>
+
+
+  <dt>mtrySeq</dt>
 <dd><p>Sequence of mtry values used for fitting the
     collection of RF machines.  If <code>NULL</code>, default is number of
     variables divided by 3, rounded up.</p></dd>
-<dt>nodesizeSeq</dt>
+
+
+  <dt>nodesizeSeq</dt>
 <dd><p>Sequence of nodesize values used for the fitting the
     collection of RF machines.</p></dd>
-<dt>min.node</dt>
+
+
+  <dt>min.node</dt>
 <dd><p>Minimum forest averaged number of nodes a RF machine
     must exceed in order to be used as a synthetic feature.</p></dd>
-<dt>fast</dt>
+
+
+  <dt>fast</dt>
 <dd><p>Use fast random forests, <code>rfsrc.fast</code>, in place of
     <code>rfsrc</code>?  Improves speed but may be less accurate.</p></dd>
-<dt>use.org.features</dt>
+
+
+  <dt>use.org.features</dt>
 <dd><p>In addition to synthetic features, should
     the original features be used when fitting synthetic forests?</p></dd>
-<dt>na.action</dt>
+
+
+  <dt>na.action</dt>
 <dd><p>Missing value action. The default <code>na.omit</code>
     removes the entire record if even one of its entries is <code>NA</code>.
     The action <code>na.impute</code> pre-imputes the data using fast
     imputation via <code class="command">impute.rfsrc</code>.</p></dd>
-<dt>oob</dt>
+
+
+  <dt>oob</dt>
 <dd><p>Preserve "out-of-bagness" so that error rates and
     VIMP are honest?  Default is yes (<span class="option">oob=TRUE</span>).</p></dd>
-<dt>verbose</dt>
+
+
+  <dt>verbose</dt>
 <dd><p>Set to <code>TRUE</code> for verbose output.</p></dd>
-<dt>...</dt>
+
+
+  <dt>...</dt>
 <dd><p>Further arguments to be passed to the <code>rfsrc</code>
     function used for fitting the synthetic forest.</p></dd>
+
 </dl></div>
     <div id="details">
     <h2>Details</h2>
@@ -222,19 +255,26 @@
     </div>
     <div id="value">
     <h2>Value</h2>
-    <p>A list with the following components:</p>
+    
+
+<p>A list with the following components:</p>
 <dl><dt>rfMachines</dt>
 <dd><p>RF machines used to construct the synthetic
     features.</p></dd>
-<dt>rfSyn</dt>
+
+  <dt>rfSyn</dt>
 <dd><p>The (grow) synthetic RF built over training data.</p></dd>
-<dt>rfSynPred</dt>
+
+  <dt>rfSynPred</dt>
 <dd><p>The predict synthetic RF built over test data (if available).</p></dd>
-<dt>synthetic</dt>
+
+  <dt>synthetic</dt>
 <dd><p>List containing the synthetic features.</p></dd>
-<dt>opt.machine</dt>
+
+  <dt>opt.machine</dt>
 <dd><p>Optimal machine: RF machine with smallest
     OOB error rate.</p></dd>
+
 </dl></div>
     <div id="author">
     <h2>Author</h2>
@@ -253,82 +293,81 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># \donttest{</span>
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## compare synthetic forests to regular forest (classification)</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="co">## rfsrc and synthetic calls</span>
-<span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"mlbench"</span>, logical.return <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-
-  <span class="co">## simulate the data </span>
-  <span class="va">ring</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/mlbench/man/mlbench.ringnorm.html" class="external-link">mlbench.ringnorm</a></span><span class="op">(</span><span class="fl">250</span>, <span class="fl">20</span><span class="op">)</span><span class="op">)</span>
-
-  <span class="co">## classification forests</span>
-  <span class="va">ringRF</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">classes</span> <span class="op">~</span><span class="va">.</span>, <span class="va">ring</span><span class="op">)</span>
-
-  <span class="co">## synthetic forests</span>
-  <span class="co">## 1 = nodesize varied</span>
-  <span class="co">## 2 = nodesize/mtry varied</span>
-  <span class="va">ringSyn1</span> <span class="op">&lt;-</span> <span class="fu">synthetic</span><span class="op">(</span><span class="va">classes</span> <span class="op">~</span><span class="va">.</span>, <span class="va">ring</span><span class="op">)</span>
-  <span class="va">ringSyn2</span> <span class="op">&lt;-</span> <span class="fu">synthetic</span><span class="op">(</span><span class="va">classes</span> <span class="op">~</span><span class="va">.</span>, <span class="va">ring</span>, mtrySeq <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">10</span>, <span class="fl">20</span><span class="op">)</span><span class="op">)</span>
-
-  <span class="co">## test-set performance</span>
-  <span class="va">ring.test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/mlbench/man/mlbench.ringnorm.html" class="external-link">mlbench.ringnorm</a></span><span class="op">(</span><span class="fl">500</span>, <span class="fl">20</span><span class="op">)</span><span class="op">)</span>
-  <span class="va">pred.ringRF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">ringRF</span>, newdata <span class="op">=</span> <span class="va">ring.test</span><span class="op">)</span>
-  <span class="va">pred.ringSyn1</span> <span class="op">&lt;-</span> <span class="fu">synthetic</span><span class="op">(</span>object <span class="op">=</span> <span class="va">ringSyn1</span>, newdata <span class="op">=</span> <span class="va">ring.test</span><span class="op">)</span><span class="op">$</span><span class="va">rfSynPred</span>
-  <span class="va">pred.ringSyn2</span> <span class="op">&lt;-</span> <span class="fu">synthetic</span><span class="op">(</span>object <span class="op">=</span> <span class="va">ringSyn2</span>, newdata <span class="op">=</span> <span class="va">ring.test</span><span class="op">)</span><span class="op">$</span><span class="va">rfSynPred</span>
-
-
-  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">pred.ringRF</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">pred.ringSyn1</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">pred.ringSyn2</span><span class="op">)</span>
-
-<span class="op">}</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## compare synthetic forest to regular forest (regression)</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="co">## simulate the data</span>
-<span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">250</span>
-<span class="va">ntest</span> <span class="op">&lt;-</span> <span class="fl">1000</span>
-<span class="va">N</span> <span class="op">&lt;-</span> <span class="va">n</span> <span class="op">+</span> <span class="va">ntest</span>
-<span class="va">d</span> <span class="op">&lt;-</span> <span class="fl">50</span>
-<span class="va">std</span> <span class="op">&lt;-</span> <span class="fl">0.1</span>
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="va">N</span> <span class="op">*</span> <span class="va">d</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="va">d</span><span class="op">)</span>
-<span class="va">y</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span>,<span class="fl">4</span><span class="op">]</span><span class="op">^</span><span class="fl">3</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span>,<span class="fl">9</span><span class="op">]</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span>,<span class="fl">12</span><span class="op">]</span><span class="op">*</span><span class="va">x</span><span class="op">[</span>,<span class="fl">18</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span>, sd <span class="op">=</span> <span class="va">std</span><span class="op">)</span><span class="op">&gt;</span><span class="fl">.38</span><span class="op">)</span>
-<span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span>
-<span class="va">test</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">n</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span><span class="op">:</span><span class="va">N</span>
-
-<span class="co">## regression forests</span>
-<span class="va">regF</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">dat</span><span class="op">[</span><span class="op">-</span><span class="va">test</span>, <span class="op">]</span>, <span class="op">)</span>
-<span class="va">pred.regF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">regF</span>, <span class="va">dat</span><span class="op">[</span><span class="va">test</span>, <span class="op">]</span><span class="op">)</span>
-
-<span class="co">## synthetic forests using fast rfsrc</span>
-<span class="va">synF1</span> <span class="op">&lt;-</span> <span class="fu">synthetic</span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">dat</span><span class="op">[</span><span class="op">-</span><span class="va">test</span>, <span class="op">]</span>, newdata <span class="op">=</span> <span class="va">dat</span><span class="op">[</span><span class="va">test</span>, <span class="op">]</span><span class="op">)</span>
-<span class="va">synF2</span> <span class="op">&lt;-</span> <span class="fu">synthetic</span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">dat</span><span class="op">[</span><span class="op">-</span><span class="va">test</span>, <span class="op">]</span>,
-  newdata <span class="op">=</span> <span class="va">dat</span><span class="op">[</span><span class="va">test</span>, <span class="op">]</span>, mtrySeq <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span>, <span class="fl">40</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co">## standardized MSE performance</span>
-<span class="va">mse</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">pred.regF</span><span class="op">$</span><span class="va">err.rate</span>, <span class="fl">1</span><span class="op">)</span>,
-         <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">synF1</span><span class="op">$</span><span class="va">rfSynPred</span><span class="op">$</span><span class="va">err.rate</span>, <span class="fl">1</span><span class="op">)</span>,
-         <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">synF2</span><span class="op">$</span><span class="va">rfSynPred</span><span class="op">$</span><span class="va">err.rate</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">var</a></span><span class="op">(</span><span class="va">y</span><span class="op">[</span><span class="op">-</span><span class="va">test</span><span class="op">]</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">mse</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"forest"</span>, <span class="st">"synthetic1"</span>, <span class="st">"synthetic2"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">mse</span><span class="op">)</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## multivariate synthetic forests</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="va">mtcars.new</span> <span class="op">&lt;-</span> <span class="va">mtcars</span>
-<span class="va">mtcars.new</span><span class="op">$</span><span class="va">cyl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">mtcars.new</span><span class="op">$</span><span class="va">cyl</span><span class="op">)</span>
-<span class="va">mtcars.new</span><span class="op">$</span><span class="va">carb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">mtcars.new</span><span class="op">$</span><span class="va">carb</span>, ordered <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="va">trn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">mtcars.new</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">mtcars.new</span><span class="op">)</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>
-<span class="va">mvSyn</span> <span class="op">&lt;-</span> <span class="fu">synthetic</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">carb</span>, <span class="va">mpg</span>, <span class="va">cyl</span><span class="op">)</span> <span class="op">~</span><span class="va">.</span>, <span class="va">mtcars.new</span><span class="op">[</span><span class="va">trn</span>,<span class="op">]</span><span class="op">)</span>
-<span class="va">mvSyn.pred</span> <span class="op">&lt;-</span> <span class="fu">synthetic</span><span class="op">(</span>object <span class="op">=</span> <span class="va">mvSyn</span>, newdata <span class="op">=</span> <span class="va">mtcars.new</span><span class="op">[</span><span class="op">-</span><span class="va">trn</span>,<span class="op">]</span><span class="op">)</span>
-<span class="co"># }</span>
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># \donttest{</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## compare synthetic forests to regular forest (classification)</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="co">## rfsrc and synthetic calls</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"mlbench"</span>, logical.return <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span></span>
+<span>  <span class="co">## simulate the data </span></span>
+<span>  <span class="va">ring</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/mlbench/man/mlbench.ringnorm.html" class="external-link">mlbench.ringnorm</a></span><span class="op">(</span><span class="fl">250</span>, <span class="fl">20</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co">## classification forests</span></span>
+<span>  <span class="va">ringRF</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">classes</span> <span class="op">~</span><span class="va">.</span>, <span class="va">ring</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co">## synthetic forests</span></span>
+<span>  <span class="co">## 1 = nodesize varied</span></span>
+<span>  <span class="co">## 2 = nodesize/mtry varied</span></span>
+<span>  <span class="va">ringSyn1</span> <span class="op">&lt;-</span> <span class="fu">synthetic</span><span class="op">(</span><span class="va">classes</span> <span class="op">~</span><span class="va">.</span>, <span class="va">ring</span><span class="op">)</span></span>
+<span>  <span class="va">ringSyn2</span> <span class="op">&lt;-</span> <span class="fu">synthetic</span><span class="op">(</span><span class="va">classes</span> <span class="op">~</span><span class="va">.</span>, <span class="va">ring</span>, mtrySeq <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">10</span>, <span class="fl">20</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co">## test-set performance</span></span>
+<span>  <span class="va">ring.test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/mlbench/man/mlbench.ringnorm.html" class="external-link">mlbench.ringnorm</a></span><span class="op">(</span><span class="fl">500</span>, <span class="fl">20</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="va">pred.ringRF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">ringRF</span>, newdata <span class="op">=</span> <span class="va">ring.test</span><span class="op">)</span></span>
+<span>  <span class="va">pred.ringSyn1</span> <span class="op">&lt;-</span> <span class="fu">synthetic</span><span class="op">(</span>object <span class="op">=</span> <span class="va">ringSyn1</span>, newdata <span class="op">=</span> <span class="va">ring.test</span><span class="op">)</span><span class="op">$</span><span class="va">rfSynPred</span></span>
+<span>  <span class="va">pred.ringSyn2</span> <span class="op">&lt;-</span> <span class="fu">synthetic</span><span class="op">(</span>object <span class="op">=</span> <span class="va">ringSyn2</span>, newdata <span class="op">=</span> <span class="va">ring.test</span><span class="op">)</span><span class="op">$</span><span class="va">rfSynPred</span></span>
+<span></span>
+<span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">pred.ringRF</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">pred.ringSyn1</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">pred.ringSyn2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## compare synthetic forest to regular forest (regression)</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="co">## simulate the data</span></span>
+<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">250</span></span>
+<span><span class="va">ntest</span> <span class="op">&lt;-</span> <span class="fl">1000</span></span>
+<span><span class="va">N</span> <span class="op">&lt;-</span> <span class="va">n</span> <span class="op">+</span> <span class="va">ntest</span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fl">50</span></span>
+<span><span class="va">std</span> <span class="op">&lt;-</span> <span class="fl">0.1</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="va">N</span> <span class="op">*</span> <span class="va">d</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="va">d</span><span class="op">)</span></span>
+<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span>,<span class="fl">4</span><span class="op">]</span><span class="op">^</span><span class="fl">3</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span>,<span class="fl">9</span><span class="op">]</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span>,<span class="fl">12</span><span class="op">]</span><span class="op">*</span><span class="va">x</span><span class="op">[</span>,<span class="fl">18</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span>, sd <span class="op">=</span> <span class="va">std</span><span class="op">)</span><span class="op">&gt;</span><span class="fl">.38</span><span class="op">)</span></span>
+<span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span></span>
+<span><span class="va">test</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">n</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span><span class="op">:</span><span class="va">N</span></span>
+<span></span>
+<span><span class="co">## regression forests</span></span>
+<span><span class="va">regF</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">dat</span><span class="op">[</span><span class="op">-</span><span class="va">test</span>, <span class="op">]</span>, <span class="op">)</span></span>
+<span><span class="va">pred.regF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">regF</span>, <span class="va">dat</span><span class="op">[</span><span class="va">test</span>, <span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## synthetic forests using fast rfsrc</span></span>
+<span><span class="va">synF1</span> <span class="op">&lt;-</span> <span class="fu">synthetic</span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">dat</span><span class="op">[</span><span class="op">-</span><span class="va">test</span>, <span class="op">]</span>, newdata <span class="op">=</span> <span class="va">dat</span><span class="op">[</span><span class="va">test</span>, <span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">synF2</span> <span class="op">&lt;-</span> <span class="fu">synthetic</span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">dat</span><span class="op">[</span><span class="op">-</span><span class="va">test</span>, <span class="op">]</span>,</span>
+<span>  newdata <span class="op">=</span> <span class="va">dat</span><span class="op">[</span><span class="va">test</span>, <span class="op">]</span>, mtrySeq <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span>, <span class="fl">40</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## standardized MSE performance</span></span>
+<span><span class="va">mse</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">pred.regF</span><span class="op">$</span><span class="va">err.rate</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>         <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">synF1</span><span class="op">$</span><span class="va">rfSynPred</span><span class="op">$</span><span class="va">err.rate</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>         <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">synF2</span><span class="op">$</span><span class="va">rfSynPred</span><span class="op">$</span><span class="va">err.rate</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">var</a></span><span class="op">(</span><span class="va">y</span><span class="op">[</span><span class="op">-</span><span class="va">test</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">mse</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"forest"</span>, <span class="st">"synthetic1"</span>, <span class="st">"synthetic2"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">mse</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## multivariate synthetic forests</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="va">mtcars.new</span> <span class="op">&lt;-</span> <span class="va">mtcars</span></span>
+<span><span class="va">mtcars.new</span><span class="op">$</span><span class="va">cyl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">mtcars.new</span><span class="op">$</span><span class="va">cyl</span><span class="op">)</span></span>
+<span><span class="va">mtcars.new</span><span class="op">$</span><span class="va">carb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">mtcars.new</span><span class="op">$</span><span class="va">carb</span>, ordered <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">trn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">mtcars.new</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">mtcars.new</span><span class="op">)</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">mvSyn</span> <span class="op">&lt;-</span> <span class="fu">synthetic</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">carb</span>, <span class="va">mpg</span>, <span class="va">cyl</span><span class="op">)</span> <span class="op">~</span><span class="va">.</span>, <span class="va">mtcars.new</span><span class="op">[</span><span class="va">trn</span>,<span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">mvSyn.pred</span> <span class="op">&lt;-</span> <span class="fu">synthetic</span><span class="op">(</span>object <span class="op">=</span> <span class="va">mvSyn</span>, newdata <span class="op">=</span> <span class="va">mtcars.new</span><span class="op">[</span><span class="op">-</span><span class="va">trn</span>,<span class="op">]</span><span class="op">)</span></span>
+<span><span class="co"># }</span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -342,7 +381,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

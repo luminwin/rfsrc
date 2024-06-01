@@ -27,7 +27,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.3</span>
       </span>
     </div>
 
@@ -155,82 +155,82 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># \donttest{</span>
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## multivariate regression forests using Mahalanobis splitting</span>
-<span class="co">## lipids (all real values) used as the multivariate y</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="co">## load the data</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">nutrigenomic</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span>
-
-<span class="co">## parse into y and x data</span>
-<span class="va">ydta</span> <span class="op">&lt;-</span> <span class="va">nutrigenomic</span><span class="op">$</span><span class="va">lipids</span>
-<span class="va">xdta</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">nutrigenomic</span><span class="op">$</span><span class="va">genes</span>,
-                   diet <span class="op">=</span> <span class="va">nutrigenomic</span><span class="op">$</span><span class="va">diet</span>,
-                   genotype <span class="op">=</span> <span class="va">nutrigenomic</span><span class="op">$</span><span class="va">genotype</span><span class="op">)</span>
-
-<span class="co">## multivariate mixed forest call</span>
-<span class="va">obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu"><a href="rfsrc.html">get.mv.formula</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">ydta</span><span class="op">)</span><span class="op">)</span>,
-             <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">ydta</span>, <span class="va">xdta</span><span class="op">)</span>,
-             importance<span class="op">=</span><span class="cn">TRUE</span>, nsplit <span class="op">=</span> <span class="fl">10</span>,
-             splitrule <span class="op">=</span> <span class="st">"mahalanobis"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">obj</span><span class="op">)</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## plot the standarized performance and VIMP values</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="co">## acquire the error rate for each of the 21-coordinates </span>
-<span class="co">## standardize to allow for comparison across coordinates</span>
-<span class="va">serr</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">get.mv.error</a></span><span class="op">(</span><span class="va">obj</span>, standardize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="co">## acquire standardized VIMP </span>
-<span class="va">svimp</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">get.mv.vimp</a></span><span class="op">(</span><span class="va">obj</span>, standardize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">serr</span>, xlab <span class="op">=</span> <span class="st">"Lipids"</span>, ylab <span class="op">=</span> <span class="st">"Standardized Performance"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/matplot.html" class="external-link">matplot</a></span><span class="op">(</span><span class="va">svimp</span>, xlab <span class="op">=</span> <span class="st">"Genes/Diet/Genotype"</span>, ylab <span class="op">=</span> <span class="st">"Standardized VIMP"</span><span class="op">)</span>
-
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## plot some trees</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="get.tree.rfsrc.html">get.tree</a></span><span class="op">(</span><span class="va">obj</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="get.tree.rfsrc.html">get.tree</a></span><span class="op">(</span><span class="va">obj</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="get.tree.rfsrc.html">get.tree</a></span><span class="op">(</span><span class="va">obj</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>
-
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">##</span>
-<span class="co">## Compare above to (1) user specified covariance matrix</span>
-<span class="co">##                  (2) default composite (independent) splitting</span>
-<span class="co">##</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="co">## user specified sigma matrix</span>
-<span class="va">obj2</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu"><a href="rfsrc.html">get.mv.formula</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">ydta</span><span class="op">)</span><span class="op">)</span>,
-              <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">ydta</span>, <span class="va">xdta</span><span class="op">)</span>,
-              importance <span class="op">=</span> <span class="cn">TRUE</span>, nsplit <span class="op">=</span> <span class="fl">10</span>,
-              splitrule <span class="op">=</span> <span class="st">"mahalanobis"</span>,
-              sigma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cov</a></span><span class="op">(</span><span class="va">ydta</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">obj2</span><span class="op">)</span>
-
-<span class="co">## default independence split rule</span>
-<span class="va">obj3</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu"><a href="rfsrc.html">get.mv.formula</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">ydta</span><span class="op">)</span><span class="op">)</span>,
-              <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">ydta</span>, <span class="va">xdta</span><span class="op">)</span>,
-              importance<span class="op">=</span><span class="cn">TRUE</span>, nsplit <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">obj3</span><span class="op">)</span>
-
-<span class="co">## compare vimp</span>
-<span class="va">imp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>mahalanobis  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowMeans</a></span><span class="op">(</span><span class="fu"><a href="rfsrc.html">get.mv.vimp</a></span><span class="op">(</span><span class="va">obj</span>,  standardize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>,
-                  mahalanobis2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowMeans</a></span><span class="op">(</span><span class="fu"><a href="rfsrc.html">get.mv.vimp</a></span><span class="op">(</span><span class="va">obj2</span>, standardize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>,
-                  default      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowMeans</a></span><span class="op">(</span><span class="fu"><a href="rfsrc.html">get.mv.vimp</a></span><span class="op">(</span><span class="va">obj3</span>, standardize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="va">imp</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">imp</span><span class="op">$</span><span class="va">mahalanobis</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, <span class="op">]</span>, <span class="fl">15</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># }</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># \donttest{</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## multivariate regression forests using Mahalanobis splitting</span></span>
+<span><span class="co">## lipids (all real values) used as the multivariate y</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="co">## load the data</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">nutrigenomic</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## parse into y and x data</span></span>
+<span><span class="va">ydta</span> <span class="op">&lt;-</span> <span class="va">nutrigenomic</span><span class="op">$</span><span class="va">lipids</span></span>
+<span><span class="va">xdta</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">nutrigenomic</span><span class="op">$</span><span class="va">genes</span>,</span>
+<span>                   diet <span class="op">=</span> <span class="va">nutrigenomic</span><span class="op">$</span><span class="va">diet</span>,</span>
+<span>                   genotype <span class="op">=</span> <span class="va">nutrigenomic</span><span class="op">$</span><span class="va">genotype</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## multivariate mixed forest call</span></span>
+<span><span class="va">obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu"><a href="rfsrc.html">get.mv.formula</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">ydta</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>             <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">ydta</span>, <span class="va">xdta</span><span class="op">)</span>,</span>
+<span>             importance<span class="op">=</span><span class="cn">TRUE</span>, nsplit <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>             splitrule <span class="op">=</span> <span class="st">"mahalanobis"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">obj</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## plot the standarized performance and VIMP values</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="co">## acquire the error rate for each of the 21-coordinates </span></span>
+<span><span class="co">## standardize to allow for comparison across coordinates</span></span>
+<span><span class="va">serr</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">get.mv.error</a></span><span class="op">(</span><span class="va">obj</span>, standardize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## acquire standardized VIMP </span></span>
+<span><span class="va">svimp</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">get.mv.vimp</a></span><span class="op">(</span><span class="va">obj</span>, standardize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">serr</span>, xlab <span class="op">=</span> <span class="st">"Lipids"</span>, ylab <span class="op">=</span> <span class="st">"Standardized Performance"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/matplot.html" class="external-link">matplot</a></span><span class="op">(</span><span class="va">svimp</span>, xlab <span class="op">=</span> <span class="st">"Genes/Diet/Genotype"</span>, ylab <span class="op">=</span> <span class="st">"Standardized VIMP"</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## plot some trees</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="get.tree.rfsrc.html">get.tree</a></span><span class="op">(</span><span class="va">obj</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="get.tree.rfsrc.html">get.tree</a></span><span class="op">(</span><span class="va">obj</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="get.tree.rfsrc.html">get.tree</a></span><span class="op">(</span><span class="va">obj</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">##</span></span>
+<span><span class="co">## Compare above to (1) user specified covariance matrix</span></span>
+<span><span class="co">##                  (2) default composite (independent) splitting</span></span>
+<span><span class="co">##</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="co">## user specified sigma matrix</span></span>
+<span><span class="va">obj2</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu"><a href="rfsrc.html">get.mv.formula</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">ydta</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>              <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">ydta</span>, <span class="va">xdta</span><span class="op">)</span>,</span>
+<span>              importance <span class="op">=</span> <span class="cn">TRUE</span>, nsplit <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>              splitrule <span class="op">=</span> <span class="st">"mahalanobis"</span>,</span>
+<span>              sigma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cov</a></span><span class="op">(</span><span class="va">ydta</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">obj2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## default independence split rule</span></span>
+<span><span class="va">obj3</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu"><a href="rfsrc.html">get.mv.formula</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">ydta</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>              <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">ydta</span>, <span class="va">xdta</span><span class="op">)</span>,</span>
+<span>              importance<span class="op">=</span><span class="cn">TRUE</span>, nsplit <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">obj3</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## compare vimp</span></span>
+<span><span class="va">imp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>mahalanobis  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowMeans</a></span><span class="op">(</span><span class="fu"><a href="rfsrc.html">get.mv.vimp</a></span><span class="op">(</span><span class="va">obj</span>,  standardize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>                  mahalanobis2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowMeans</a></span><span class="op">(</span><span class="fu"><a href="rfsrc.html">get.mv.vimp</a></span><span class="op">(</span><span class="va">obj2</span>, standardize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>                  default      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowMeans</a></span><span class="op">(</span><span class="fu"><a href="rfsrc.html">get.mv.vimp</a></span><span class="op">(</span><span class="va">obj3</span>, standardize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="va">imp</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">imp</span><span class="op">$</span><span class="va">mahalanobis</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, <span class="op">]</span>, <span class="fl">15</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># }</span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -244,7 +244,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

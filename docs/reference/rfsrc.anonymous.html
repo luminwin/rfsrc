@@ -28,7 +28,7 @@ Anonymous random forests applies random forests but is carefully
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.3</span>
       </span>
     </div>
 
@@ -148,7 +148,7 @@ Anonymous random forests applies random forests but is carefully
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">rfsrc.anonymous</span><span class="op">(</span><span class="va">formula</span>, <span class="va">data</span>, forest <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">rfsrc.anonymous</span><span class="op">(</span><span class="va">formula</span>, <span class="va">data</span>, forest <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -156,15 +156,19 @@ Anonymous random forests applies random forests but is carefully
     <dl><dt>formula</dt>
 <dd><p>A symbolic description of the model to be fit. If
     missing, unsupervised splitting is implemented.</p></dd>
-<dt>data</dt>
+
+  <dt>data</dt>
 <dd><p>Data frame containing the y-outcome and x-variables.</p></dd>
-<dt>forest</dt>
+ 
+  <dt>forest</dt>
 <dd><p>Should the forest object be returned?  Used for
     prediction on new data and required by many of the package
     functions.</p></dd>
-<dt>...</dt>
+
+  <dt>...</dt>
 <dd><p>Further arguments as in <code><a href="rfsrc.html">rfsrc</a></code>.  See the
    <code>rfsrc</code> help file for details.</p></dd>
+
 </dl></div>
     <div id="details">
     <h2>Details</h2>
@@ -205,7 +209,9 @@ Anonymous random forests applies random forests but is carefully
     </div>
     <div id="value">
     <h2>Value</h2>
-    <p>An object of class <code>(rfsrc, grow, anonymous)</code>.</p>
+    
+
+<p>An object of class <code>(rfsrc, grow, anonymous)</code>.</p>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -218,87 +224,87 @@ Anonymous random forests applies random forests but is carefully
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># \donttest{</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## regression</span>
-<span class="co">## ------------------------------------------------------------</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">rfsrc.anonymous</span><span class="op">(</span><span class="va">mpg</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">mtcars</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## plot anonymous regression tree (using get.tree)</span>
-<span class="co">## TBD CURRENTLY NOT IMPLEMENTED </span>
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## plot(get.tree(rfsrc.anonymous(mpg ~ ., mtcars), 10))</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## classification</span>
-<span class="co">## ------------------------------------------------------------</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">rfsrc.anonymous</span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">iris</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## survival</span>
-<span class="co">## ------------------------------------------------------------</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">veteran</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">rfsrc.anonymous</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">veteran</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## competing risks</span>
-<span class="co">## ------------------------------------------------------------</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">wihs</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">rfsrc.anonymous</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">wihs</span>, ntree <span class="op">=</span> <span class="fl">100</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## unsupervised forests</span>
-<span class="co">## ------------------------------------------------------------</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">rfsrc.anonymous</span><span class="op">(</span>data <span class="op">=</span> <span class="va">iris</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## multivariate regression</span>
-<span class="co">## ------------------------------------------------------------</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">rfsrc.anonymous</span><span class="op">(</span><span class="fu">Multivar</span><span class="op">(</span><span class="va">mpg</span>, <span class="va">cyl</span><span class="op">)</span> <span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## prediction on test data with missing values using pbc data</span>
-<span class="co">## cases 1 to 312 have no missing values</span>
-<span class="co">## cases 313 to 418 having missing values</span>
-<span class="co">## ------------------------------------------------------------</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">pbc</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span>
-<span class="va">pbc.obj</span> <span class="op">&lt;-</span> <span class="fu">rfsrc.anonymous</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">days</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">pbc</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">pbc.obj</span><span class="op">)</span>
-
-<span class="co">## mean value imputation</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">pbc.obj</span>, <span class="va">pbc</span><span class="op">[</span><span class="op">-</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">312</span><span class="op">)</span>,<span class="op">]</span>, na.action <span class="op">=</span> <span class="st">"na.impute"</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co">## random imputation</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">pbc.obj</span>, <span class="va">pbc</span><span class="op">[</span><span class="op">-</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">312</span><span class="op">)</span>,<span class="op">]</span>, na.action <span class="op">=</span> <span class="st">"na.random"</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## train/test setting but tricky because factor labels differ over</span>
-<span class="co">## training and test data</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="co"># first we convert all x-variables to factors</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">veteran</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span>
-<span class="va">veteran.factor</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">veteran</span>, <span class="va">factor</span><span class="op">)</span><span class="op">)</span>
-<span class="va">veteran.factor</span><span class="op">$</span><span class="va">time</span> <span class="op">&lt;-</span> <span class="va">veteran</span><span class="op">$</span><span class="va">time</span>
-<span class="va">veteran.factor</span><span class="op">$</span><span class="va">status</span> <span class="op">&lt;-</span> <span class="va">veteran</span><span class="op">$</span><span class="va">status</span>
-
-<span class="co"># split the data into train/test data (25/75)</span>
-<span class="co"># the train/test data have the same levels, but different labels</span>
-<span class="va">train</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">veteran</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">veteran</span><span class="op">)</span> <span class="op">*</span> <span class="fl">.5</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">veteran.factor</span><span class="op">[</span><span class="va">train</span>, <span class="op">]</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">veteran.factor</span><span class="op">[</span><span class="op">-</span><span class="va">train</span>, <span class="op">]</span><span class="op">)</span>
-
-<span class="co"># grow the forest on the training data and predict on the test data</span>
-<span class="va">v.grow</span> <span class="op">&lt;-</span> <span class="fu">rfsrc.anonymous</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">veteran.factor</span><span class="op">[</span><span class="va">train</span>, <span class="op">]</span><span class="op">)</span> 
-<span class="va">v.pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">v.grow</span>, <span class="va">veteran.factor</span><span class="op">[</span><span class="op">-</span><span class="va">train</span>, <span class="op">]</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">v.grow</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">v.pred</span><span class="op">)</span>
-
-
-
-<span class="co"># }</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># \donttest{</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## regression</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">rfsrc.anonymous</span><span class="op">(</span><span class="va">mpg</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">mtcars</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## plot anonymous regression tree (using get.tree)</span></span>
+<span><span class="co">## TBD CURRENTLY NOT IMPLEMENTED </span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## plot(get.tree(rfsrc.anonymous(mpg ~ ., mtcars), 10))</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## classification</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">rfsrc.anonymous</span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">iris</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## survival</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">veteran</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">rfsrc.anonymous</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">veteran</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## competing risks</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">wihs</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">rfsrc.anonymous</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">wihs</span>, ntree <span class="op">=</span> <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## unsupervised forests</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">rfsrc.anonymous</span><span class="op">(</span>data <span class="op">=</span> <span class="va">iris</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## multivariate regression</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">rfsrc.anonymous</span><span class="op">(</span><span class="fu">Multivar</span><span class="op">(</span><span class="va">mpg</span>, <span class="va">cyl</span><span class="op">)</span> <span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## prediction on test data with missing values using pbc data</span></span>
+<span><span class="co">## cases 1 to 312 have no missing values</span></span>
+<span><span class="co">## cases 313 to 418 having missing values</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">pbc</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span></span>
+<span><span class="va">pbc.obj</span> <span class="op">&lt;-</span> <span class="fu">rfsrc.anonymous</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">days</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">pbc</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">pbc.obj</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## mean value imputation</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">pbc.obj</span>, <span class="va">pbc</span><span class="op">[</span><span class="op">-</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">312</span><span class="op">)</span>,<span class="op">]</span>, na.action <span class="op">=</span> <span class="st">"na.impute"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## random imputation</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">pbc.obj</span>, <span class="va">pbc</span><span class="op">[</span><span class="op">-</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">312</span><span class="op">)</span>,<span class="op">]</span>, na.action <span class="op">=</span> <span class="st">"na.random"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## train/test setting but tricky because factor labels differ over</span></span>
+<span><span class="co">## training and test data</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="co"># first we convert all x-variables to factors</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">veteran</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span></span>
+<span><span class="va">veteran.factor</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">veteran</span>, <span class="va">factor</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">veteran.factor</span><span class="op">$</span><span class="va">time</span> <span class="op">&lt;-</span> <span class="va">veteran</span><span class="op">$</span><span class="va">time</span></span>
+<span><span class="va">veteran.factor</span><span class="op">$</span><span class="va">status</span> <span class="op">&lt;-</span> <span class="va">veteran</span><span class="op">$</span><span class="va">status</span></span>
+<span></span>
+<span><span class="co"># split the data into train/test data (25/75)</span></span>
+<span><span class="co"># the train/test data have the same levels, but different labels</span></span>
+<span><span class="va">train</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">veteran</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">veteran</span><span class="op">)</span> <span class="op">*</span> <span class="fl">.5</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">veteran.factor</span><span class="op">[</span><span class="va">train</span>, <span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">veteran.factor</span><span class="op">[</span><span class="op">-</span><span class="va">train</span>, <span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># grow the forest on the training data and predict on the test data</span></span>
+<span><span class="va">v.grow</span> <span class="op">&lt;-</span> <span class="fu">rfsrc.anonymous</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">veteran.factor</span><span class="op">[</span><span class="va">train</span>, <span class="op">]</span><span class="op">)</span> </span>
+<span><span class="va">v.pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">v.grow</span>, <span class="va">veteran.factor</span><span class="op">[</span><span class="op">-</span><span class="va">train</span>, <span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">v.grow</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">v.pred</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span></span>
+<span><span class="co"># }</span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -312,7 +318,7 @@ Anonymous random forests applies random forests but is carefully
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

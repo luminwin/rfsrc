@@ -24,7 +24,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.3</span>
       </span>
     </div>
 
@@ -140,8 +140,8 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">max.subtree</span><span class="op">(</span><span class="va">object</span>,
-  max.order <span class="op">=</span> <span class="fl">2</span>, sub.order <span class="op">=</span> <span class="cn">FALSE</span>, conservative <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">max.subtree</span><span class="op">(</span><span class="va">object</span>,</span>
+<span>  max.order <span class="op">=</span> <span class="fl">2</span>, sub.order <span class="op">=</span> <span class="cn">FALSE</span>, conservative <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -149,19 +149,22 @@
     <dl><dt>object</dt>
 <dd><p>An object of class <code>(rfsrc, grow)</code> or <code>(rfsrc,
 	    forest).</code></p></dd>
-<dt>max.order</dt>
+ 
+  <dt>max.order</dt>
 <dd><p>Non-negative integer specifying the target number
     of order depths.  Default is to return the first and second order
     depths.  Used to identify predictive variables.  Setting
     <span class="option">max.order=0</span> returns the first order depth for each
     variable by tree.  A side effect is that <span class="option">conservative</span> is
     automatically set to <code>FALSE</code>.</p></dd>
-<dt>sub.order</dt>
+
+  <dt>sub.order</dt>
 <dd><p>Set this value to <code>TRUE</code> to return the
     minimal depth of each variable relative to another variable.
     Used to identify interrelationship between variables.  See
     details below.</p></dd>
-<dt>conservative</dt>
+
+  <dt>conservative</dt>
 <dd><p>If <code>TRUE</code>, the threshold value for selecting
     variables is calculated using a conservative marginal
     approximation to the minimal depth distribution (the method used
@@ -169,8 +172,10 @@
     distribution is the tree-averaged distribution.  The latter method
     tends to give larger threshold values and discovers more
     variables, especially in high-dimensions.</p></dd>
-<dt>...</dt>
+
+  <dt>...</dt>
 <dd><p>Further arguments passed to or from other methods.</p></dd>
+
 </dl></div>
     <div id="details">
     <h2>Details</h2>
@@ -212,38 +217,51 @@
     </div>
     <div id="value">
     <h2>Value</h2>
-    <p>Invisibly, a list with the following components:</p>
+    
+
+<p>Invisibly, a list with the following components:</p>
 <dl><dt>order</dt>
 <dd><p>Order depths for a given variable up to <code>max.order</code>
     averaged over a tree and the forest.  Matrix of dimension
     <code>p</code>x<code>max.order</code>.  If <span class="option">max.order=0</span>, a matrix of
     <code>p</code>x<code>ntree</code> is returned containing the first order depth
     for each variable by tree.</p></dd>
-<dt>count</dt>
+
+  <dt>count</dt>
 <dd><p>Averaged number of  maximal subtrees, normalized by
     the size of a tree, for each variable.</p></dd>
-<dt>nodes.at.depth</dt>
+
+  <dt>nodes.at.depth</dt>
 <dd><p>Number of non-terminal nodes by depth for each tree.</p></dd>
-<dt>sub.order</dt>
+  
+  <dt>sub.order</dt>
 <dd><p>Average minimal depth of a variable relative to another
     variable.  Can be <code>NULL</code>.</p></dd>
-<dt>threshold</dt>
+
+  <dt>threshold</dt>
 <dd><p>Threshold value (the mean minimal depth) used to
     select variables.</p></dd>
-<dt>threshold.1se</dt>
+
+  <dt>threshold.1se</dt>
 <dd><p>Mean minimal depth plus one standard error.</p></dd>
-<dt>topvars</dt>
+
+  <dt>topvars</dt>
 <dd><p>Character vector of names of the final selected
     variables.</p></dd>
-<dt>topvars.1se</dt>
+  
+  <dt>topvars.1se</dt>
 <dd><p>Character vector of names of the final selected
     variables using the 1se threshold rule.</p></dd>
-<dt>percentile</dt>
+  
+  <dt>percentile</dt>
 <dd><p>Minimal depth percentile for each variable.</p></dd>
-<dt>density</dt>
+
+  <dt>density</dt>
 <dd><p>Estimated minimal depth density.</p></dd>
-<dt>second.order.threshold</dt>
+
+  <dt>second.order.threshold</dt>
 <dd><p>Threshold for second order depth.</p></dd>
+
 </dl></div>
     <div id="author">
     <h2>Author</h2>
@@ -267,39 +285,38 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># \donttest{</span>
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## survival analysis</span>
-<span class="co">## first and second order depths for all variables</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">veteran</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span>
-<span class="va">v.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu">Surv</span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span> , data <span class="op">=</span> <span class="va">veteran</span><span class="op">)</span>
-<span class="va">v.max</span> <span class="op">&lt;-</span> <span class="fu">max.subtree</span><span class="op">(</span><span class="va">v.obj</span><span class="op">)</span>
-
-<span class="co"># first and second order depths</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">v.max</span><span class="op">$</span><span class="va">order</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># the minimal depth is the first order depth</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">v.max</span><span class="op">$</span><span class="va">order</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># strong variables have minimal depth less than or equal</span>
-<span class="co"># to the following threshold</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">v.max</span><span class="op">$</span><span class="va">threshold</span><span class="op">)</span>
-
-<span class="co"># this corresponds to the set of variables</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">v.max</span><span class="op">$</span><span class="va">topvars</span><span class="op">)</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## regression analysis</span>
-<span class="co">## try different levels of conservativeness</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="va">mtcars.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">mpg</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span>
-<span class="fu">max.subtree</span><span class="op">(</span><span class="va">mtcars.obj</span><span class="op">)</span><span class="op">$</span><span class="va">topvars</span>
-<span class="fu">max.subtree</span><span class="op">(</span><span class="va">mtcars.obj</span>, conservative <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span><span class="va">topvars</span>
-<span class="co"># }</span>
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># \donttest{</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## survival analysis</span></span>
+<span><span class="co">## first and second order depths for all variables</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">veteran</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span></span>
+<span><span class="va">v.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu">Surv</span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span> , data <span class="op">=</span> <span class="va">veteran</span><span class="op">)</span></span>
+<span><span class="va">v.max</span> <span class="op">&lt;-</span> <span class="fu">max.subtree</span><span class="op">(</span><span class="va">v.obj</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># first and second order depths</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">v.max</span><span class="op">$</span><span class="va">order</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># the minimal depth is the first order depth</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">v.max</span><span class="op">$</span><span class="va">order</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># strong variables have minimal depth less than or equal</span></span>
+<span><span class="co"># to the following threshold</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">v.max</span><span class="op">$</span><span class="va">threshold</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># this corresponds to the set of variables</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">v.max</span><span class="op">$</span><span class="va">topvars</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## regression analysis</span></span>
+<span><span class="co">## try different levels of conservativeness</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="va">mtcars.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">mpg</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span>
+<span><span class="fu">max.subtree</span><span class="op">(</span><span class="va">mtcars.obj</span><span class="op">)</span><span class="op">$</span><span class="va">topvars</span></span>
+<span><span class="fu">max.subtree</span><span class="op">(</span><span class="va">mtcars.obj</span>, conservative <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span><span class="va">topvars</span></span>
+<span><span class="co"># }</span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -313,7 +330,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

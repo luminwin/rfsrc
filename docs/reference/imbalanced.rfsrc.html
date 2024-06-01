@@ -27,7 +27,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.3</span>
       </span>
     </div>
 
@@ -146,22 +146,28 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">imbalanced</span><span class="op">(</span><span class="va">formula</span>, <span class="va">data</span>, ntree <span class="op">=</span> <span class="fl">3000</span>, 
-  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"rfq"</span>, <span class="st">"brf"</span>, <span class="st">"standard"</span><span class="op">)</span>, splitrule <span class="op">=</span> <span class="st">"auc"</span>,
-  perf.type <span class="op">=</span> <span class="cn">NULL</span>, block.size <span class="op">=</span> <span class="cn">NULL</span>, fast <span class="op">=</span> <span class="cn">FALSE</span>,
-  ratio <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">imbalanced</span><span class="op">(</span><span class="va">formula</span>, <span class="va">data</span>, ntree <span class="op">=</span> <span class="fl">3000</span>, </span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"rfq"</span>, <span class="st">"brf"</span>, <span class="st">"standard"</span><span class="op">)</span>, splitrule <span class="op">=</span> <span class="st">"auc"</span>,</span>
+<span>  perf.type <span class="op">=</span> <span class="cn">NULL</span>, block.size <span class="op">=</span> <span class="cn">NULL</span>, fast <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  ratio <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>formula</dt>
 <dd><p>A symbolic description of the model to be fit.</p></dd>
-<dt>data</dt>
+
+  
+  <dt>data</dt>
 <dd><p>Data frame containing the two-class y-outcome and
     x-variables.</p></dd>
-<dt>ntree</dt>
+
+
+  <dt>ntree</dt>
 <dd><p>Number of trees.</p></dd>
-<dt>method</dt>
+
+
+  <dt>method</dt>
 <dd><p>Method used for fitting the classifier.  The default is
     <code>rfq</code> which is the random forests quantile-classifer (RFQ)
     approach of O'Brien and Ishwaran (2017).  The method <code>brf</code>
@@ -169,10 +175,14 @@
     al. (2004) which undersamples the majority class so that its
     cardinality matches that of the minority class.  The method
     <code>standard</code> implements a standard random forest analysis.</p></dd>
-<dt>splitrule</dt>
+
+
+  <dt>splitrule</dt>
 <dd><p>Default is AUC splitting which maximizes gmean
     performance.  Other choices are "gini" and "entropy".</p></dd>
-<dt>perf.type</dt>
+
+
+  <dt>perf.type</dt>
 <dd><p>Measure used for assessing performance (and all
     downstream calculations based on it such as variable importance).
     The default for <code>rfq</code> and <code>brf</code> is to use the G-mean
@@ -182,24 +192,34 @@
     the G-mean, <code>misclass</code> for misclassification error, or
     <code>brier</code> for the normalized Brier score. See the examples
     below.</p></dd>
-<dt>block.size</dt>
+
+
+  <dt>block.size</dt>
 <dd><p>Should the cumulative error rate be calculated on
     every tree?  When <code>NULL</code>, it will only be calculated on the
     last tree. If importance is requested, VIMP is calculated in
     "blocks" of size equal to <code>block.size</code>.  If not specified, uses
     the default value specified in <code>rfsrc</code>.</p></dd>
-<dt>fast</dt>
+
+
+  <dt>fast</dt>
 <dd><p>Use fast random forests, <code>rfsrc.fast</code>, in place of
     <code>rfsrc</code>?  Improves speed but is less accurate.  Only applies to
     RFQ.</p></dd>
-<dt>ratio</dt>
+
+
+  <dt>ratio</dt>
 <dd><p>This is an optional parameter for expert users 
     and included only for experimental purposes.  Used to specify the
     ratio (between 0 and 1) for undersampling the majority class.
     Sampling is without replacement.  Option is ignored for BRF.</p></dd>
-<dt>...</dt>
+ 
+
+  <dt>...</dt>
 <dd><p>Further arguments to be passed to the <code class="command">rfsrc</code>
     function to specify random forest parameters.</p></dd>
+
+
 </dl></div>
     <div id="details">
     <h2>Details</h2>
@@ -233,7 +253,9 @@
     </div>
     <div id="value">
     <h2>Value</h2>
-    <p>A two-class random forest fit under the requested method and
+    
+
+<p>A two-class random forest fit under the requested method and
   performance value.</p>
     </div>
     <div id="author">
@@ -261,244 +283,244 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># \donttest{</span>
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## use the breast data for illustration</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">breast</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span>
-<span class="va">breast</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html" class="external-link">na.omit</a></span><span class="op">(</span><span class="va">breast</span><span class="op">)</span>
-<span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">as.formula</a></span><span class="op">(</span><span class="va">status</span> <span class="op">~</span> <span class="va">.</span><span class="op">)</span>
-
-<span class="co">##----------------------------------------------------------------</span>
-<span class="co">## default RFQ call</span>
-<span class="co">##----------------------------------------------------------------</span>
-
-<span class="va">o.rfq</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">breast</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">o.rfq</span><span class="op">)</span>
-
-<span class="co">## equivalent to:</span>
-<span class="co">## rfsrc(f, breast, rfq =  TRUE, ntree = 3000,</span>
-<span class="co">##       perf.type = "gmean", splitrule = "auc") </span>
-
-<span class="co">##----------------------------------------------------------------</span>
-<span class="co">## detailed output using customized performance function</span>
-<span class="co">##----------------------------------------------------------------</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">get.imbalanced.performance</span><span class="op">(</span><span class="va">o.rfq</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co">##-----------------------------------------------------------------</span>
-<span class="co">## RF using misclassification error with gini splitting</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="va">o.std</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">breast</span>, method <span class="op">=</span> <span class="st">"stand"</span>, splitrule <span class="op">=</span> <span class="st">"gini"</span><span class="op">)</span>
-
-<span class="co">##-----------------------------------------------------------------</span>
-<span class="co">## RF using G-mean performance with AUC splitting</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="va">o.std</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">breast</span>, method <span class="op">=</span> <span class="st">"stand"</span>, perf.type <span class="op">=</span> <span class="st">"gmean"</span><span class="op">)</span>
-
-<span class="co">## equivalent to:</span>
-<span class="co">## rfsrc(f, breast, ntree = 3000, perf.type = "gmean", splitrule = "auc")</span>
-
-<span class="co">##----------------------------------------------------------------</span>
-<span class="co">## default BRF call </span>
-<span class="co">##----------------------------------------------------------------</span>
-
-<span class="va">o.brf</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">breast</span>, method <span class="op">=</span> <span class="st">"brf"</span><span class="op">)</span>
-
-<span class="co">## equivalent to:</span>
-<span class="co">## imbalanced(f, breast, method = "brf", perf.type = "gmean")</span>
-
-<span class="co">##----------------------------------------------------------------</span>
-<span class="co">## BRF call with misclassification performance </span>
-<span class="co">##----------------------------------------------------------------</span>
-
-<span class="va">o.brf</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">breast</span>, method <span class="op">=</span> <span class="st">"brf"</span>, perf.type <span class="op">=</span> <span class="st">"misclass"</span><span class="op">)</span>
-
-<span class="co">##----------------------------------------------------------------</span>
-<span class="co">## train/test example</span>
-<span class="co">##----------------------------------------------------------------</span>
-
-<span class="va">trn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">breast</span><span class="op">)</span>, size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">breast</span><span class="op">)</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span>
-<span class="va">o.trn</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">breast</span><span class="op">[</span><span class="va">trn</span>,<span class="op">]</span>, importance <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="va">o.tst</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">o.trn</span>, <span class="va">breast</span><span class="op">[</span><span class="op">-</span><span class="va">trn</span>,<span class="op">]</span>, importance <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">o.trn</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">o.tst</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">o.trn</span><span class="op">$</span><span class="va">impo</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, <span class="va">o.tst</span><span class="op">$</span><span class="va">impo</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
-
-
-<span class="co">##----------------------------------------------------------------</span>
-<span class="co">##</span>
-<span class="co">##  illustrates how to optimize threshold on training data</span>
-<span class="co">##  improves Gmean for RFQ in many situations</span>
-<span class="co">##</span>
-<span class="co">##----------------------------------------------------------------</span>
-
-<span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/topepo/caret/" class="external-link">"caret"</a></span>, logical.return <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-
-  <span class="co">## experimental settings</span>
-  <span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">2</span> <span class="op">*</span> <span class="fl">5000</span> 
-  <span class="va">q</span> <span class="op">&lt;-</span> <span class="fl">20</span>
-  <span class="va">ir</span> <span class="op">&lt;-</span> <span class="fl">6</span>
-  <span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">as.formula</a></span><span class="op">(</span><span class="va">Class</span> <span class="op">~</span> <span class="va">.</span><span class="op">)</span>
- 
-  <span class="co">## simulate the data, create minority class data</span>
-  <span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/twoClassSim.html" class="external-link">twoClassSim</a></span><span class="op">(</span><span class="va">n</span>, linearVars <span class="op">=</span> <span class="fl">15</span>, noiseVars <span class="op">=</span> <span class="va">q</span><span class="op">)</span>
-  <span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span>
-  <span class="va">idx.0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span>
-  <span class="va">idx.1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op">/</span> <span class="va">ir</span> , replace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-  <span class="va">d</span> <span class="op">&lt;-</span> <span class="va">d</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">idx.0</span>,<span class="va">idx.1</span><span class="op">)</span>,, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span>
-
-  <span class="co">## split data into train and test</span>
-  <span class="va">trn.pt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span>, size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span>
-  <span class="va">trn</span> <span class="op">&lt;-</span> <span class="va">d</span><span class="op">[</span><span class="va">trn.pt</span>, <span class="op">]</span>
-  <span class="va">tst</span> <span class="op">&lt;-</span> <span class="va">d</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span>, <span class="va">trn.pt</span><span class="op">)</span>, <span class="op">]</span>
-
-  <span class="co">## run rfq on training data</span>
-  <span class="va">o</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">trn</span><span class="op">)</span>
-
-  <span class="co">## (1) default threshold (2) directly optimized gmean threshold</span>
-  <span class="va">th.1</span> <span class="op">&lt;-</span> <span class="fu">get.imbalanced.performance</span><span class="op">(</span><span class="va">o</span><span class="op">)</span><span class="op">[</span><span class="st">"threshold"</span><span class="op">]</span>
-  <span class="va">th.2</span> <span class="op">&lt;-</span> <span class="fu">get.imbalanced.optimize</span><span class="op">(</span><span class="va">o</span><span class="op">)</span><span class="op">[</span><span class="st">"threshold"</span><span class="op">]</span>
-
-  <span class="co">## training performance</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"-------- train performance ---------\n"</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">get.imbalanced.performance</span><span class="op">(</span><span class="va">o</span>, thresh<span class="op">=</span><span class="va">th.1</span><span class="op">)</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">get.imbalanced.performance</span><span class="op">(</span><span class="va">o</span>, thresh<span class="op">=</span><span class="va">th.2</span><span class="op">)</span><span class="op">)</span>
-
-  <span class="co">## test performance</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"-------- test performance ---------\n"</span><span class="op">)</span>
-  <span class="va">pred.o</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">o</span>, <span class="va">tst</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">get.imbalanced.performance</span><span class="op">(</span><span class="va">pred.o</span>, thresh<span class="op">=</span><span class="va">th.1</span><span class="op">)</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">get.imbalanced.performance</span><span class="op">(</span><span class="va">pred.o</span>, thresh<span class="op">=</span><span class="va">th.2</span><span class="op">)</span><span class="op">)</span>
- 
-<span class="op">}</span> 
-
-<span class="co">##----------------------------------------------------------------</span>
-<span class="co">##  illustrates RFQ with and without SMOTE</span>
-<span class="co">## </span>
-<span class="co">## - simulation example using the caret R-package</span>
-<span class="co">## - creates imbalanced data by randomly sampling the class 1 data</span>
-<span class="co">## - use SMOTE from "imbalance" package to oversample the minority</span>
-<span class="co">## </span>
-<span class="co">##----------------------------------------------------------------</span>
-
-<span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/topepo/caret/" class="external-link">"caret"</a></span>, logical.return <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">&amp;</span>
-    <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="http://github.com/ncordon/imbalance" class="external-link">"imbalance"</a></span>, logical.return <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-
-  <span class="co">## experimental settings</span>
-  <span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">5000</span>
-  <span class="va">q</span> <span class="op">&lt;-</span> <span class="fl">20</span>
-  <span class="va">ir</span> <span class="op">&lt;-</span> <span class="fl">6</span>
-  <span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">as.formula</a></span><span class="op">(</span><span class="va">Class</span> <span class="op">~</span> <span class="va">.</span><span class="op">)</span>
- 
-  <span class="co">## simulate the data, create minority class data</span>
-  <span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/twoClassSim.html" class="external-link">twoClassSim</a></span><span class="op">(</span><span class="va">n</span>, linearVars <span class="op">=</span> <span class="fl">15</span>, noiseVars <span class="op">=</span> <span class="va">q</span><span class="op">)</span>
-  <span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span>
-  <span class="va">idx.0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span>
-  <span class="va">idx.1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op">/</span> <span class="va">ir</span> , replace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-  <span class="va">d</span> <span class="op">&lt;-</span> <span class="va">d</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">idx.0</span>,<span class="va">idx.1</span><span class="op">)</span>,, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span>
-  <span class="va">d</span> <span class="op">&lt;-</span> <span class="va">d</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span><span class="op">)</span>, <span class="op">]</span>
-
-  <span class="co">## define train/test split</span>
-  <span class="va">trn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span>, size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span> <span class="op">/</span> <span class="fl">2</span>, replace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-  <span class="co">## now make SMOTE training data</span>
-  <span class="va">newd.50</span> <span class="op">&lt;-</span> <span class="fu">mwmote</span><span class="op">(</span><span class="va">d</span><span class="op">[</span><span class="va">trn</span>, <span class="op">]</span>, numInstances <span class="op">=</span> <span class="fl">50</span>, classAttr <span class="op">=</span> <span class="st">"Class"</span><span class="op">)</span>
-  <span class="va">newd.500</span> <span class="op">&lt;-</span> <span class="fu">mwmote</span><span class="op">(</span><span class="va">d</span><span class="op">[</span><span class="va">trn</span>, <span class="op">]</span>, numInstances <span class="op">=</span> <span class="fl">500</span>, classAttr <span class="op">=</span> <span class="st">"Class"</span><span class="op">)</span>
-
-  <span class="co">## fit RFQ with and without SMOTE</span>
-  <span class="va">o.with.50</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">d</span><span class="op">[</span><span class="va">trn</span>, <span class="op">]</span>, <span class="va">newd.50</span><span class="op">)</span><span class="op">)</span> 
-  <span class="va">o.with.500</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">d</span><span class="op">[</span><span class="va">trn</span>, <span class="op">]</span>, <span class="va">newd.500</span><span class="op">)</span><span class="op">)</span>
-  <span class="va">o.without</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">d</span><span class="op">[</span><span class="va">trn</span>, <span class="op">]</span><span class="op">)</span>
-  
-  <span class="co">## compare performance on test data</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">o.with.50</span>, <span class="va">d</span><span class="op">[</span><span class="op">-</span><span class="va">trn</span>, <span class="op">]</span><span class="op">)</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">o.with.500</span>, <span class="va">d</span><span class="op">[</span><span class="op">-</span><span class="va">trn</span>, <span class="op">]</span><span class="op">)</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">o.without</span>, <span class="va">d</span><span class="op">[</span><span class="op">-</span><span class="va">trn</span>, <span class="op">]</span><span class="op">)</span><span class="op">)</span>
-  
-<span class="op">}</span>
-
-<span class="co">##----------------------------------------------------------------</span>
-<span class="co">##</span>
-<span class="co">## illustrates effectiveness of blocked VIMP </span>
-<span class="co">##</span>
-<span class="co">##----------------------------------------------------------------</span>
-
-<span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/topepo/caret/" class="external-link">"caret"</a></span>, logical.return <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-
-  <span class="co">## experimental settings</span>
-  <span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">1000</span>
-  <span class="va">q</span> <span class="op">&lt;-</span> <span class="fl">20</span>
-  <span class="va">ir</span> <span class="op">&lt;-</span> <span class="fl">6</span>
-  <span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">as.formula</a></span><span class="op">(</span><span class="va">Class</span> <span class="op">~</span> <span class="va">.</span><span class="op">)</span>
- 
-  <span class="co">## simulate the data, create minority class data</span>
-  <span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/twoClassSim.html" class="external-link">twoClassSim</a></span><span class="op">(</span><span class="va">n</span>, linearVars <span class="op">=</span> <span class="fl">15</span>, noiseVars <span class="op">=</span> <span class="va">q</span><span class="op">)</span>
-  <span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span>
-  <span class="va">idx.0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span>
-  <span class="va">idx.1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op">/</span> <span class="va">ir</span> , replace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-  <span class="va">d</span> <span class="op">&lt;-</span> <span class="va">d</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">idx.0</span>,<span class="va">idx.1</span><span class="op">)</span>,, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span>
-
-  <span class="co">## permutation VIMP for BRF with and without blocking</span>
-  <span class="co">## blocked VIMP is a hybrid of Breiman-Cutler/Ishwaran-Kogalur VIMP</span>
-  <span class="va">brf</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">d</span>, method <span class="op">=</span> <span class="st">"brf"</span>, importance <span class="op">=</span> <span class="st">"permute"</span>, block.size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-  <span class="va">brfB</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">d</span>, method <span class="op">=</span> <span class="st">"brf"</span>, importance <span class="op">=</span> <span class="st">"permute"</span>, block.size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
-
-  <span class="co">## permutation VIMP for RFQ with and without blocking</span>
-  <span class="va">rfq</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">d</span>, importance <span class="op">=</span> <span class="st">"permute"</span>, block.size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-  <span class="va">rfqB</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">d</span>, importance <span class="op">=</span> <span class="st">"permute"</span>, block.size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
-
-  <span class="co">## compare VIMP values</span>
-  <span class="va">imp</span> <span class="op">&lt;-</span> <span class="fl">100</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">brf</span><span class="op">$</span><span class="va">importance</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, <span class="va">brfB</span><span class="op">$</span><span class="va">importance</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>,
-                     <span class="va">rfq</span><span class="op">$</span><span class="va">importance</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, <span class="va">rfqB</span><span class="op">$</span><span class="va">importance</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span><span class="op">)</span>
-  <span class="va">legn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BRF"</span>, <span class="st">"BRF-block"</span>, <span class="st">"RFQ"</span>, <span class="st">"RFQ-block"</span><span class="op">)</span>
-  <span class="va">colr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">20</span><span class="op">+</span><span class="va">q</span><span class="op">)</span>
-  <span class="va">colr</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">2</span>
-  <span class="va">ylim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">imp</span><span class="op">)</span><span class="op">)</span>
-  <span class="va">nms</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="op">(</span><span class="fl">20</span><span class="op">+</span><span class="va">q</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html" class="external-link">barplot</a></span><span class="op">(</span><span class="va">imp</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span>,col<span class="op">=</span><span class="va">colr</span>,las<span class="op">=</span><span class="fl">2</span>,main<span class="op">=</span><span class="va">legn</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,ylim<span class="op">=</span><span class="va">ylim</span>,names.arg<span class="op">=</span><span class="va">nms</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html" class="external-link">barplot</a></span><span class="op">(</span><span class="va">imp</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span>,col<span class="op">=</span><span class="va">colr</span>,las<span class="op">=</span><span class="fl">2</span>,main<span class="op">=</span><span class="va">legn</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>,ylim<span class="op">=</span><span class="va">ylim</span>,names.arg<span class="op">=</span><span class="va">nms</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html" class="external-link">barplot</a></span><span class="op">(</span><span class="va">imp</span><span class="op">[</span>,<span class="fl">3</span><span class="op">]</span>,col<span class="op">=</span><span class="va">colr</span>,las<span class="op">=</span><span class="fl">2</span>,main<span class="op">=</span><span class="va">legn</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>,ylim<span class="op">=</span><span class="va">ylim</span>,names.arg<span class="op">=</span><span class="va">nms</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html" class="external-link">barplot</a></span><span class="op">(</span><span class="va">imp</span><span class="op">[</span>,<span class="fl">4</span><span class="op">]</span>,col<span class="op">=</span><span class="va">colr</span>,las<span class="op">=</span><span class="fl">2</span>,main<span class="op">=</span><span class="va">legn</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span>,ylim<span class="op">=</span><span class="va">ylim</span>,names.arg<span class="op">=</span><span class="va">nms</span><span class="op">)</span>
-
-<span class="op">}</span>
-
-<span class="co">##----------------------------------------------------------------</span>
-<span class="co">##</span>
-<span class="co">## confidence intervals for G-mean permutation VIMP using subsampling</span>
-<span class="co">##</span>
-<span class="co">##----------------------------------------------------------------</span>
-
-<span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/topepo/caret/" class="external-link">"caret"</a></span>, logical.return <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-
-  <span class="co">## experimental settings</span>
-  <span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">1000</span>
-  <span class="va">q</span> <span class="op">&lt;-</span> <span class="fl">20</span>
-  <span class="va">ir</span> <span class="op">&lt;-</span> <span class="fl">6</span>
-  <span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">as.formula</a></span><span class="op">(</span><span class="va">Class</span> <span class="op">~</span> <span class="va">.</span><span class="op">)</span>
- 
-  <span class="co">## simulate the data, create minority class data</span>
-  <span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/twoClassSim.html" class="external-link">twoClassSim</a></span><span class="op">(</span><span class="va">n</span>, linearVars <span class="op">=</span> <span class="fl">15</span>, noiseVars <span class="op">=</span> <span class="va">q</span><span class="op">)</span>
-  <span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span>
-  <span class="va">idx.0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span>
-  <span class="va">idx.1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op">/</span> <span class="va">ir</span> , replace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-  <span class="va">d</span> <span class="op">&lt;-</span> <span class="va">d</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">idx.0</span>,<span class="va">idx.1</span><span class="op">)</span>,, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span>
-
-  <span class="co">## RFQ</span>
-  <span class="va">o</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">Class</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">d</span>, importance <span class="op">=</span> <span class="st">"permute"</span>, block.size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
-
-  <span class="co">## subsample RFQ</span>
-  <span class="va">smp.o</span> <span class="op">&lt;-</span> <span class="fu"><a href="subsample.rfsrc.html">subsample</a></span><span class="op">(</span><span class="va">o</span>, B <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">smp.o</span>, cex.axis <span class="op">=</span> <span class="fl">.7</span><span class="op">)</span>
-
-<span class="op">}</span>
-
-
-<span class="co"># }</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># \donttest{</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## use the breast data for illustration</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">breast</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span></span>
+<span><span class="va">breast</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html" class="external-link">na.omit</a></span><span class="op">(</span><span class="va">breast</span><span class="op">)</span></span>
+<span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">as.formula</a></span><span class="op">(</span><span class="va">status</span> <span class="op">~</span> <span class="va">.</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">##----------------------------------------------------------------</span></span>
+<span><span class="co">## default RFQ call</span></span>
+<span><span class="co">##----------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="va">o.rfq</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">breast</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">o.rfq</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## equivalent to:</span></span>
+<span><span class="co">## rfsrc(f, breast, rfq =  TRUE, ntree = 3000,</span></span>
+<span><span class="co">##       perf.type = "gmean", splitrule = "auc") </span></span>
+<span></span>
+<span><span class="co">##----------------------------------------------------------------</span></span>
+<span><span class="co">## detailed output using customized performance function</span></span>
+<span><span class="co">##----------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">get.imbalanced.performance</span><span class="op">(</span><span class="va">o.rfq</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">##-----------------------------------------------------------------</span></span>
+<span><span class="co">## RF using misclassification error with gini splitting</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="va">o.std</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">breast</span>, method <span class="op">=</span> <span class="st">"stand"</span>, splitrule <span class="op">=</span> <span class="st">"gini"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">##-----------------------------------------------------------------</span></span>
+<span><span class="co">## RF using G-mean performance with AUC splitting</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="va">o.std</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">breast</span>, method <span class="op">=</span> <span class="st">"stand"</span>, perf.type <span class="op">=</span> <span class="st">"gmean"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## equivalent to:</span></span>
+<span><span class="co">## rfsrc(f, breast, ntree = 3000, perf.type = "gmean", splitrule = "auc")</span></span>
+<span></span>
+<span><span class="co">##----------------------------------------------------------------</span></span>
+<span><span class="co">## default BRF call </span></span>
+<span><span class="co">##----------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="va">o.brf</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">breast</span>, method <span class="op">=</span> <span class="st">"brf"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## equivalent to:</span></span>
+<span><span class="co">## imbalanced(f, breast, method = "brf", perf.type = "gmean")</span></span>
+<span></span>
+<span><span class="co">##----------------------------------------------------------------</span></span>
+<span><span class="co">## BRF call with misclassification performance </span></span>
+<span><span class="co">##----------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="va">o.brf</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">breast</span>, method <span class="op">=</span> <span class="st">"brf"</span>, perf.type <span class="op">=</span> <span class="st">"misclass"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">##----------------------------------------------------------------</span></span>
+<span><span class="co">## train/test example</span></span>
+<span><span class="co">##----------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="va">trn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">breast</span><span class="op">)</span>, size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">breast</span><span class="op">)</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">o.trn</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">breast</span><span class="op">[</span><span class="va">trn</span>,<span class="op">]</span>, importance <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">o.tst</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">o.trn</span>, <span class="va">breast</span><span class="op">[</span><span class="op">-</span><span class="va">trn</span>,<span class="op">]</span>, importance <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">o.trn</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">o.tst</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">o.trn</span><span class="op">$</span><span class="va">impo</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, <span class="va">o.tst</span><span class="op">$</span><span class="va">impo</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co">##----------------------------------------------------------------</span></span>
+<span><span class="co">##</span></span>
+<span><span class="co">##  illustrates how to optimize threshold on training data</span></span>
+<span><span class="co">##  improves Gmean for RFQ in many situations</span></span>
+<span><span class="co">##</span></span>
+<span><span class="co">##----------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/topepo/caret/" class="external-link">"caret"</a></span>, logical.return <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span></span>
+<span>  <span class="co">## experimental settings</span></span>
+<span>  <span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">2</span> <span class="op">*</span> <span class="fl">5000</span> </span>
+<span>  <span class="va">q</span> <span class="op">&lt;-</span> <span class="fl">20</span></span>
+<span>  <span class="va">ir</span> <span class="op">&lt;-</span> <span class="fl">6</span></span>
+<span>  <span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">as.formula</a></span><span class="op">(</span><span class="va">Class</span> <span class="op">~</span> <span class="va">.</span><span class="op">)</span></span>
+<span> </span>
+<span>  <span class="co">## simulate the data, create minority class data</span></span>
+<span>  <span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/twoClassSim.html" class="external-link">twoClassSim</a></span><span class="op">(</span><span class="va">n</span>, linearVars <span class="op">=</span> <span class="fl">15</span>, noiseVars <span class="op">=</span> <span class="va">q</span><span class="op">)</span></span>
+<span>  <span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span></span>
+<span>  <span class="va">idx.0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span></span>
+<span>  <span class="va">idx.1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op">/</span> <span class="va">ir</span> , replace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  <span class="va">d</span> <span class="op">&lt;-</span> <span class="va">d</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">idx.0</span>,<span class="va">idx.1</span><span class="op">)</span>,, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span></span>
+<span></span>
+<span>  <span class="co">## split data into train and test</span></span>
+<span>  <span class="va">trn.pt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span>, size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span></span>
+<span>  <span class="va">trn</span> <span class="op">&lt;-</span> <span class="va">d</span><span class="op">[</span><span class="va">trn.pt</span>, <span class="op">]</span></span>
+<span>  <span class="va">tst</span> <span class="op">&lt;-</span> <span class="va">d</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span>, <span class="va">trn.pt</span><span class="op">)</span>, <span class="op">]</span></span>
+<span></span>
+<span>  <span class="co">## run rfq on training data</span></span>
+<span>  <span class="va">o</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">trn</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co">## (1) default threshold (2) directly optimized gmean threshold</span></span>
+<span>  <span class="va">th.1</span> <span class="op">&lt;-</span> <span class="fu">get.imbalanced.performance</span><span class="op">(</span><span class="va">o</span><span class="op">)</span><span class="op">[</span><span class="st">"threshold"</span><span class="op">]</span></span>
+<span>  <span class="va">th.2</span> <span class="op">&lt;-</span> <span class="fu">get.imbalanced.optimize</span><span class="op">(</span><span class="va">o</span><span class="op">)</span><span class="op">[</span><span class="st">"threshold"</span><span class="op">]</span></span>
+<span></span>
+<span>  <span class="co">## training performance</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"-------- train performance ---------\n"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">get.imbalanced.performance</span><span class="op">(</span><span class="va">o</span>, thresh<span class="op">=</span><span class="va">th.1</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">get.imbalanced.performance</span><span class="op">(</span><span class="va">o</span>, thresh<span class="op">=</span><span class="va">th.2</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co">## test performance</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"-------- test performance ---------\n"</span><span class="op">)</span></span>
+<span>  <span class="va">pred.o</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">o</span>, <span class="va">tst</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">get.imbalanced.performance</span><span class="op">(</span><span class="va">pred.o</span>, thresh<span class="op">=</span><span class="va">th.1</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">get.imbalanced.performance</span><span class="op">(</span><span class="va">pred.o</span>, thresh<span class="op">=</span><span class="va">th.2</span><span class="op">)</span><span class="op">)</span></span>
+<span> </span>
+<span><span class="op">}</span> </span>
+<span></span>
+<span><span class="co">##----------------------------------------------------------------</span></span>
+<span><span class="co">##  illustrates RFQ with and without SMOTE</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## - simulation example using the caret R-package</span></span>
+<span><span class="co">## - creates imbalanced data by randomly sampling the class 1 data</span></span>
+<span><span class="co">## - use SMOTE from "imbalance" package to oversample the minority</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##----------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/topepo/caret/" class="external-link">"caret"</a></span>, logical.return <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">&amp;</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="http://github.com/ncordon/imbalance" class="external-link">"imbalance"</a></span>, logical.return <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span></span>
+<span>  <span class="co">## experimental settings</span></span>
+<span>  <span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">5000</span></span>
+<span>  <span class="va">q</span> <span class="op">&lt;-</span> <span class="fl">20</span></span>
+<span>  <span class="va">ir</span> <span class="op">&lt;-</span> <span class="fl">6</span></span>
+<span>  <span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">as.formula</a></span><span class="op">(</span><span class="va">Class</span> <span class="op">~</span> <span class="va">.</span><span class="op">)</span></span>
+<span> </span>
+<span>  <span class="co">## simulate the data, create minority class data</span></span>
+<span>  <span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/twoClassSim.html" class="external-link">twoClassSim</a></span><span class="op">(</span><span class="va">n</span>, linearVars <span class="op">=</span> <span class="fl">15</span>, noiseVars <span class="op">=</span> <span class="va">q</span><span class="op">)</span></span>
+<span>  <span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span></span>
+<span>  <span class="va">idx.0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span></span>
+<span>  <span class="va">idx.1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op">/</span> <span class="va">ir</span> , replace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  <span class="va">d</span> <span class="op">&lt;-</span> <span class="va">d</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">idx.0</span>,<span class="va">idx.1</span><span class="op">)</span>,, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span></span>
+<span>  <span class="va">d</span> <span class="op">&lt;-</span> <span class="va">d</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span><span class="op">)</span>, <span class="op">]</span></span>
+<span></span>
+<span>  <span class="co">## define train/test split</span></span>
+<span>  <span class="va">trn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span>, size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span> <span class="op">/</span> <span class="fl">2</span>, replace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co">## now make SMOTE training data</span></span>
+<span>  <span class="va">newd.50</span> <span class="op">&lt;-</span> <span class="fu">mwmote</span><span class="op">(</span><span class="va">d</span><span class="op">[</span><span class="va">trn</span>, <span class="op">]</span>, numInstances <span class="op">=</span> <span class="fl">50</span>, classAttr <span class="op">=</span> <span class="st">"Class"</span><span class="op">)</span></span>
+<span>  <span class="va">newd.500</span> <span class="op">&lt;-</span> <span class="fu">mwmote</span><span class="op">(</span><span class="va">d</span><span class="op">[</span><span class="va">trn</span>, <span class="op">]</span>, numInstances <span class="op">=</span> <span class="fl">500</span>, classAttr <span class="op">=</span> <span class="st">"Class"</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co">## fit RFQ with and without SMOTE</span></span>
+<span>  <span class="va">o.with.50</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">d</span><span class="op">[</span><span class="va">trn</span>, <span class="op">]</span>, <span class="va">newd.50</span><span class="op">)</span><span class="op">)</span> </span>
+<span>  <span class="va">o.with.500</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">d</span><span class="op">[</span><span class="va">trn</span>, <span class="op">]</span>, <span class="va">newd.500</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="va">o.without</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">d</span><span class="op">[</span><span class="va">trn</span>, <span class="op">]</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="co">## compare performance on test data</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">o.with.50</span>, <span class="va">d</span><span class="op">[</span><span class="op">-</span><span class="va">trn</span>, <span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">o.with.500</span>, <span class="va">d</span><span class="op">[</span><span class="op">-</span><span class="va">trn</span>, <span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">o.without</span>, <span class="va">d</span><span class="op">[</span><span class="op">-</span><span class="va">trn</span>, <span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span>  </span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co">##----------------------------------------------------------------</span></span>
+<span><span class="co">##</span></span>
+<span><span class="co">## illustrates effectiveness of blocked VIMP </span></span>
+<span><span class="co">##</span></span>
+<span><span class="co">##----------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/topepo/caret/" class="external-link">"caret"</a></span>, logical.return <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span></span>
+<span>  <span class="co">## experimental settings</span></span>
+<span>  <span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">1000</span></span>
+<span>  <span class="va">q</span> <span class="op">&lt;-</span> <span class="fl">20</span></span>
+<span>  <span class="va">ir</span> <span class="op">&lt;-</span> <span class="fl">6</span></span>
+<span>  <span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">as.formula</a></span><span class="op">(</span><span class="va">Class</span> <span class="op">~</span> <span class="va">.</span><span class="op">)</span></span>
+<span> </span>
+<span>  <span class="co">## simulate the data, create minority class data</span></span>
+<span>  <span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/twoClassSim.html" class="external-link">twoClassSim</a></span><span class="op">(</span><span class="va">n</span>, linearVars <span class="op">=</span> <span class="fl">15</span>, noiseVars <span class="op">=</span> <span class="va">q</span><span class="op">)</span></span>
+<span>  <span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span></span>
+<span>  <span class="va">idx.0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span></span>
+<span>  <span class="va">idx.1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op">/</span> <span class="va">ir</span> , replace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  <span class="va">d</span> <span class="op">&lt;-</span> <span class="va">d</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">idx.0</span>,<span class="va">idx.1</span><span class="op">)</span>,, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span></span>
+<span></span>
+<span>  <span class="co">## permutation VIMP for BRF with and without blocking</span></span>
+<span>  <span class="co">## blocked VIMP is a hybrid of Breiman-Cutler/Ishwaran-Kogalur VIMP</span></span>
+<span>  <span class="va">brf</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">d</span>, method <span class="op">=</span> <span class="st">"brf"</span>, importance <span class="op">=</span> <span class="st">"permute"</span>, block.size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span>  <span class="va">brfB</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">d</span>, method <span class="op">=</span> <span class="st">"brf"</span>, importance <span class="op">=</span> <span class="st">"permute"</span>, block.size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co">## permutation VIMP for RFQ with and without blocking</span></span>
+<span>  <span class="va">rfq</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">d</span>, importance <span class="op">=</span> <span class="st">"permute"</span>, block.size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span>  <span class="va">rfqB</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">d</span>, importance <span class="op">=</span> <span class="st">"permute"</span>, block.size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co">## compare VIMP values</span></span>
+<span>  <span class="va">imp</span> <span class="op">&lt;-</span> <span class="fl">100</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">brf</span><span class="op">$</span><span class="va">importance</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, <span class="va">brfB</span><span class="op">$</span><span class="va">importance</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>,</span>
+<span>                     <span class="va">rfq</span><span class="op">$</span><span class="va">importance</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, <span class="va">rfqB</span><span class="op">$</span><span class="va">importance</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<span>  <span class="va">legn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BRF"</span>, <span class="st">"BRF-block"</span>, <span class="st">"RFQ"</span>, <span class="st">"RFQ-block"</span><span class="op">)</span></span>
+<span>  <span class="va">colr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">20</span><span class="op">+</span><span class="va">q</span><span class="op">)</span></span>
+<span>  <span class="va">colr</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">2</span></span>
+<span>  <span class="va">ylim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">imp</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="va">nms</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="op">(</span><span class="fl">20</span><span class="op">+</span><span class="va">q</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html" class="external-link">barplot</a></span><span class="op">(</span><span class="va">imp</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span>,col<span class="op">=</span><span class="va">colr</span>,las<span class="op">=</span><span class="fl">2</span>,main<span class="op">=</span><span class="va">legn</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,ylim<span class="op">=</span><span class="va">ylim</span>,names.arg<span class="op">=</span><span class="va">nms</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html" class="external-link">barplot</a></span><span class="op">(</span><span class="va">imp</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span>,col<span class="op">=</span><span class="va">colr</span>,las<span class="op">=</span><span class="fl">2</span>,main<span class="op">=</span><span class="va">legn</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>,ylim<span class="op">=</span><span class="va">ylim</span>,names.arg<span class="op">=</span><span class="va">nms</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html" class="external-link">barplot</a></span><span class="op">(</span><span class="va">imp</span><span class="op">[</span>,<span class="fl">3</span><span class="op">]</span>,col<span class="op">=</span><span class="va">colr</span>,las<span class="op">=</span><span class="fl">2</span>,main<span class="op">=</span><span class="va">legn</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>,ylim<span class="op">=</span><span class="va">ylim</span>,names.arg<span class="op">=</span><span class="va">nms</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html" class="external-link">barplot</a></span><span class="op">(</span><span class="va">imp</span><span class="op">[</span>,<span class="fl">4</span><span class="op">]</span>,col<span class="op">=</span><span class="va">colr</span>,las<span class="op">=</span><span class="fl">2</span>,main<span class="op">=</span><span class="va">legn</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span>,ylim<span class="op">=</span><span class="va">ylim</span>,names.arg<span class="op">=</span><span class="va">nms</span><span class="op">)</span></span>
+<span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co">##----------------------------------------------------------------</span></span>
+<span><span class="co">##</span></span>
+<span><span class="co">## confidence intervals for G-mean permutation VIMP using subsampling</span></span>
+<span><span class="co">##</span></span>
+<span><span class="co">##----------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/topepo/caret/" class="external-link">"caret"</a></span>, logical.return <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span></span>
+<span>  <span class="co">## experimental settings</span></span>
+<span>  <span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">1000</span></span>
+<span>  <span class="va">q</span> <span class="op">&lt;-</span> <span class="fl">20</span></span>
+<span>  <span class="va">ir</span> <span class="op">&lt;-</span> <span class="fl">6</span></span>
+<span>  <span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">as.formula</a></span><span class="op">(</span><span class="va">Class</span> <span class="op">~</span> <span class="va">.</span><span class="op">)</span></span>
+<span> </span>
+<span>  <span class="co">## simulate the data, create minority class data</span></span>
+<span>  <span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/twoClassSim.html" class="external-link">twoClassSim</a></span><span class="op">(</span><span class="va">n</span>, linearVars <span class="op">=</span> <span class="fl">15</span>, noiseVars <span class="op">=</span> <span class="va">q</span><span class="op">)</span></span>
+<span>  <span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span></span>
+<span>  <span class="va">idx.0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span></span>
+<span>  <span class="va">idx.1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op">/</span> <span class="va">ir</span> , replace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  <span class="va">d</span> <span class="op">&lt;-</span> <span class="va">d</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">idx.0</span>,<span class="va">idx.1</span><span class="op">)</span>,, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span></span>
+<span></span>
+<span>  <span class="co">## RFQ</span></span>
+<span>  <span class="va">o</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">Class</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">d</span>, importance <span class="op">=</span> <span class="st">"permute"</span>, block.size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co">## subsample RFQ</span></span>
+<span>  <span class="va">smp.o</span> <span class="op">&lt;-</span> <span class="fu"><a href="subsample.rfsrc.html">subsample</a></span><span class="op">(</span><span class="va">o</span>, B <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">smp.o</span>, cex.axis <span class="op">=</span> <span class="fl">.7</span><span class="op">)</span></span>
+<span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># }</span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -512,7 +534,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

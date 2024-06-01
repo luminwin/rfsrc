@@ -24,7 +24,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.3</span>
       </span>
     </div>
 
@@ -140,60 +140,84 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">subsample</span><span class="op">(</span><span class="va">obj</span>,
-  B <span class="op">=</span> <span class="fl">100</span>,
-  block.size <span class="op">=</span> <span class="fl">1</span>,
-  <span class="va">importance</span>,
-  subratio <span class="op">=</span> <span class="cn">NULL</span>,
-  stratify <span class="op">=</span> <span class="cn">TRUE</span>,
-  performance <span class="op">=</span> <span class="cn">FALSE</span>,
-  performance.only <span class="op">=</span> <span class="cn">FALSE</span>,
-  joint <span class="op">=</span> <span class="cn">FALSE</span>,
-  xvar.names <span class="op">=</span> <span class="cn">NULL</span>,
-  bootstrap <span class="op">=</span> <span class="cn">FALSE</span>,
-  verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">subsample</span><span class="op">(</span><span class="va">obj</span>,</span>
+<span>  B <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  block.size <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  <span class="va">importance</span>,</span>
+<span>  subratio <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  stratify <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  performance <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  performance.only <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  joint <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  xvar.names <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  bootstrap <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>obj</dt>
 <dd><p>A forest grow object.</p></dd>
-<dt>B</dt>
+
+
+  <dt>B</dt>
 <dd><p>Number of subsamples (or number of bootstraps).</p></dd>
-<dt>block.size</dt>
+
+
+  <dt>block.size</dt>
 <dd><p>Specifies number of trees in a block when calculating
     VIMP.  This is over-ridden if VIMP is present in the original grow
     call in which case the grow value is used.</p></dd>
-<dt>importance</dt>
+
+
+  <dt>importance</dt>
 <dd><p>Optional: specifies the type of importance to be used,
     selected from one of "anti", "permute", "random".  If not specified
     reverts to default importance used by the package.  Also,
     this is over-ridden if the original grow object contains importance,
     in which case importance used in the original grow
     call is used.</p></dd>
-<dt>subratio</dt>
+
+
+  <dt>subratio</dt>
 <dd><p>Ratio of subsample size to original sample size.  The
     default is approximately equal to the inverse square root of the
     sample size.</p></dd>
-<dt>stratify</dt>
+
+
+  <dt>stratify</dt>
 <dd><p>Use stratified subsampling?  See details below.</p></dd>
-<dt>performance</dt>
+
+
+  <dt>performance</dt>
 <dd><p>Generalization error?  User can also request
     standard error and confidence regions for generalization error.</p></dd>
-<dt>performance.only</dt>
+
+
+  <dt>performance.only</dt>
 <dd><p>Only calculate standard error and confidence
     region for the generalization error (no VIMP).</p></dd>
-<dt>joint</dt>
+
+
+  <dt>joint</dt>
 <dd><p>Joint VIMP for all variables? Users can also request joint
     VIMP for specific variables using <code>xvar.names</code>.</p></dd>
-<dt>xvar.names</dt>
+
+
+  <dt>xvar.names</dt>
 <dd><p>Specifies variables for calculating joint VIMP.  By
     default all variables are used.</p></dd>
-<dt>bootstrap</dt>
+
+
+  <dt>bootstrap</dt>
 <dd><p>Use double bootstrap approach in place of
     subsampling?  Much slower, but potentially more accurate.</p></dd>
-<dt>verbose</dt>
+
+
+  <dt>verbose</dt>
 <dd><p>Provide verbose output?</p></dd>
+
+
 </dl></div>
     <div id="details">
     <h2>Details</h2>
@@ -257,15 +281,21 @@
     </div>
     <div id="value">
     <h2>Value</h2>
-    <p>A list with the following key components:</p>
+    
+
+<p>A list with the following key components:</p>
 <dl><dt>rf</dt>
 <dd><p>Original forest grow object.</p></dd>
-<dt>vmp</dt>
+
+  <dt>vmp</dt>
 <dd><p>Variable importance values for grow forest.</p></dd>
-<dt>vmpS</dt>
+
+  <dt>vmpS</dt>
 <dd><p>Variable importance subsampled values.</p></dd>
-<dt>subratio</dt>
+
+  <dt>subratio</dt>
 <dd><p>Subratio used.</p></dd>
+  
 </dl></div>
     <div id="author">
     <h2>Author</h2>
@@ -295,144 +325,143 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># \donttest{</span>
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## regression</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="co">## training the forest</span>
-<span class="va">reg.o</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">Ozone</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">airquality</span><span class="op">)</span>
-
-<span class="co">## default subsample call</span>
-<span class="va">reg.smp.o</span> <span class="op">&lt;-</span> <span class="fu">subsample</span><span class="op">(</span><span class="va">reg.o</span><span class="op">)</span>
-
-<span class="co">## plot confidence regions</span>
-<span class="fu"><a href="plot.subsample.rfsrc.html">plot.subsample</a></span><span class="op">(</span><span class="va">reg.smp.o</span><span class="op">)</span>
-
-<span class="co">## summary of results</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">reg.smp.o</span><span class="op">)</span>
-
-<span class="co">## joint vimp and confidence region for generalization error</span>
-<span class="va">reg.smp.o2</span> <span class="op">&lt;-</span> <span class="fu">subsample</span><span class="op">(</span><span class="va">reg.o</span>, performance <span class="op">=</span> <span class="cn">TRUE</span>,
-           joint <span class="op">=</span> <span class="cn">TRUE</span>, xvar.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Day"</span>, <span class="st">"Month"</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="plot.subsample.rfsrc.html">plot.subsample</a></span><span class="op">(</span><span class="va">reg.smp.o2</span><span class="op">)</span>
-
-<span class="co">## now try the double bootstrap (slower)</span>
-<span class="va">reg.dbs.o</span> <span class="op">&lt;-</span> <span class="fu">subsample</span><span class="op">(</span><span class="va">reg.o</span>, B <span class="op">=</span> <span class="fl">25</span>, bootstrap <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">reg.dbs.o</span><span class="op">)</span>
-<span class="fu"><a href="plot.subsample.rfsrc.html">plot.subsample</a></span><span class="op">(</span><span class="va">reg.dbs.o</span><span class="op">)</span>
-
-<span class="co">## standard error and confidence region for generalization error only</span>
-<span class="va">gerror</span> <span class="op">&lt;-</span> <span class="fu">subsample</span><span class="op">(</span><span class="va">reg.o</span>, performance.only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="plot.subsample.rfsrc.html">plot.subsample</a></span><span class="op">(</span><span class="va">gerror</span><span class="op">)</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## classification</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="co">## 3 non-linear, 15 linear, and 5 noise variables </span>
-<span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/topepo/caret/" class="external-link">"caret"</a></span>, logical.return <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/twoClassSim.html" class="external-link">twoClassSim</a></span><span class="op">(</span><span class="fl">1000</span>, linearVars <span class="op">=</span> <span class="fl">15</span>, noiseVars <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>
-
-  <span class="co">## VIMP based on (default) misclassification error</span>
-  <span class="va">cls.o</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">Class</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">d</span><span class="op">)</span>
-  <span class="va">cls.smp.o</span> <span class="op">&lt;-</span> <span class="fu">subsample</span><span class="op">(</span><span class="va">cls.o</span>, B <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>
-  <span class="fu"><a href="plot.subsample.rfsrc.html">plot.subsample</a></span><span class="op">(</span><span class="va">cls.smp.o</span>, cex.axis <span class="op">=</span> <span class="fl">.7</span><span class="op">)</span>
-
-  <span class="co">## same as above, but with VIMP defined using normalized Brier score</span>
-  <span class="va">cls.o2</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">Class</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">d</span>, perf.type <span class="op">=</span> <span class="st">"brier"</span><span class="op">)</span>
-  <span class="va">cls.smp.o2</span> <span class="op">&lt;-</span> <span class="fu">subsample</span><span class="op">(</span><span class="va">cls.o2</span>, B <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>
-  <span class="fu"><a href="plot.subsample.rfsrc.html">plot.subsample</a></span><span class="op">(</span><span class="va">cls.smp.o2</span>, cex.axis <span class="op">=</span> <span class="fl">.7</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## class-imbalanced data using RFQ classifier with G-mean VIMP</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/topepo/caret/" class="external-link">"caret"</a></span>, logical.return <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-
-  <span class="co">## experimental settings</span>
-  <span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">1000</span>
-  <span class="va">q</span> <span class="op">&lt;-</span> <span class="fl">20</span>
-  <span class="va">ir</span> <span class="op">&lt;-</span> <span class="fl">6</span>
-  <span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">as.formula</a></span><span class="op">(</span><span class="va">Class</span> <span class="op">~</span> <span class="va">.</span><span class="op">)</span>
- 
-  <span class="co">## simulate the data, create minority class data</span>
-  <span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/twoClassSim.html" class="external-link">twoClassSim</a></span><span class="op">(</span><span class="va">n</span>, linearVars <span class="op">=</span> <span class="fl">15</span>, noiseVars <span class="op">=</span> <span class="va">q</span><span class="op">)</span>
-  <span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span>
-  <span class="va">idx.0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span>
-  <span class="va">idx.1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op">/</span> <span class="va">ir</span> , replace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-  <span class="va">d</span> <span class="op">&lt;-</span> <span class="va">d</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">idx.0</span>,<span class="va">idx.1</span><span class="op">)</span>,, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span>
-
-  <span class="co">## RFQ classifier</span>
-  <span class="va">oq</span> <span class="op">&lt;-</span> <span class="fu"><a href="imbalanced.rfsrc.html">imbalanced</a></span><span class="op">(</span><span class="va">Class</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">d</span>, importance <span class="op">=</span> <span class="cn">TRUE</span>, block.size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
-
-  <span class="co">## subsample the RFQ-classifier</span>
-  <span class="va">smp.oq</span> <span class="op">&lt;-</span> <span class="fu">subsample</span><span class="op">(</span><span class="va">oq</span>, B <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>
-  <span class="fu"><a href="plot.subsample.rfsrc.html">plot.subsample</a></span><span class="op">(</span><span class="va">smp.oq</span>, cex.axis <span class="op">=</span> <span class="fl">.7</span><span class="op">)</span>
-
-<span class="op">}</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## survival </span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">pbc</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span>
-<span class="va">srv.o</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">days</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">pbc</span><span class="op">)</span>
-<span class="va">srv.smp.o</span> <span class="op">&lt;-</span> <span class="fu">subsample</span><span class="op">(</span><span class="va">srv.o</span>, B <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">srv.smp.o</span><span class="op">)</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## competing risks</span>
-<span class="co">## target event is death (event = 2)</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/therneau/survival" class="external-link">"survival"</a></span>, logical.return <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">pbc</span>, package <span class="op">=</span> <span class="st">"survival"</span><span class="op">)</span>
-  <span class="va">pbc</span><span class="op">$</span><span class="va">id</span> <span class="op">&lt;-</span> <span class="cn">NULL</span>
-  <span class="va">cr.o</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">pbc</span>, splitrule <span class="op">=</span> <span class="st">"logrankCR"</span>, cause <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
-  <span class="va">cr.smp.o</span> <span class="op">&lt;-</span> <span class="fu">subsample</span><span class="op">(</span><span class="va">cr.o</span>, B <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>
-  <span class="fu"><a href="plot.subsample.rfsrc.html">plot.subsample</a></span><span class="op">(</span><span class="va">cr.smp.o</span>, target <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## multivariate </span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"mlbench"</span>, logical.return <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-  <span class="co">## simulate the data </span>
-  <span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">BostonHousing</span><span class="op">)</span>
-  <span class="va">bh</span> <span class="op">&lt;-</span> <span class="va">BostonHousing</span>
-  <span class="va">bh</span><span class="op">$</span><span class="va">rm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">bh</span><span class="op">$</span><span class="va">rm</span><span class="op">)</span><span class="op">)</span>
-  <span class="va">o</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">medv</span>, <span class="va">rm</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">bh</span><span class="op">)</span>
-  <span class="va">so</span> <span class="op">&lt;-</span> <span class="fu">subsample</span><span class="op">(</span><span class="va">o</span><span class="op">)</span>
-  <span class="fu"><a href="plot.subsample.rfsrc.html">plot.subsample</a></span><span class="op">(</span><span class="va">so</span><span class="op">)</span>
-  <span class="fu"><a href="plot.subsample.rfsrc.html">plot.subsample</a></span><span class="op">(</span><span class="va">so</span>, m.target <span class="op">=</span> <span class="st">"rm"</span><span class="op">)</span>
-  <span class="co">##generalization error</span>
-  <span class="va">gerror</span> <span class="op">&lt;-</span> <span class="fu">subsample</span><span class="op">(</span><span class="va">o</span>, performance.only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-  <span class="fu"><a href="plot.subsample.rfsrc.html">plot.subsample</a></span><span class="op">(</span><span class="va">gerror</span>, m.target <span class="op">=</span> <span class="st">"medv"</span><span class="op">)</span>
-  <span class="fu"><a href="plot.subsample.rfsrc.html">plot.subsample</a></span><span class="op">(</span><span class="va">gerror</span>, m.target <span class="op">=</span> <span class="st">"rm"</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## largish data example - use rfsrc.fast for fast forests</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/topepo/caret/" class="external-link">"caret"</a></span>, logical.return <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-  <span class="co">## largish data set</span>
-  <span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/twoClassSim.html" class="external-link">twoClassSim</a></span><span class="op">(</span><span class="fl">1000</span>, linearVars <span class="op">=</span> <span class="fl">15</span>, noiseVars <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>
-
-  <span class="co">## use a subsampled forest with Brier score performance</span>
-  <span class="co">## remember to set forest=TRUE for rfsrc.fast</span>
-  <span class="va">o</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.fast.html">rfsrc.fast</a></span><span class="op">(</span><span class="va">Class</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">d</span>, ntree <span class="op">=</span> <span class="fl">100</span>,
-           forest <span class="op">=</span> <span class="cn">TRUE</span>, perf.type <span class="op">=</span> <span class="st">"brier"</span><span class="op">)</span>
-  <span class="va">so</span> <span class="op">&lt;-</span> <span class="fu">subsample</span><span class="op">(</span><span class="va">o</span>, B <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>
-  <span class="fu"><a href="plot.subsample.rfsrc.html">plot.subsample</a></span><span class="op">(</span><span class="va">so</span>, cex.axis <span class="op">=</span> <span class="fl">.7</span><span class="op">)</span>
-<span class="op">}</span>
-
-
-<span class="co"># }</span>
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># \donttest{</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## regression</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="co">## training the forest</span></span>
+<span><span class="va">reg.o</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">Ozone</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">airquality</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## default subsample call</span></span>
+<span><span class="va">reg.smp.o</span> <span class="op">&lt;-</span> <span class="fu">subsample</span><span class="op">(</span><span class="va">reg.o</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## plot confidence regions</span></span>
+<span><span class="fu"><a href="plot.subsample.rfsrc.html">plot.subsample</a></span><span class="op">(</span><span class="va">reg.smp.o</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## summary of results</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">reg.smp.o</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## joint vimp and confidence region for generalization error</span></span>
+<span><span class="va">reg.smp.o2</span> <span class="op">&lt;-</span> <span class="fu">subsample</span><span class="op">(</span><span class="va">reg.o</span>, performance <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>           joint <span class="op">=</span> <span class="cn">TRUE</span>, xvar.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Day"</span>, <span class="st">"Month"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="plot.subsample.rfsrc.html">plot.subsample</a></span><span class="op">(</span><span class="va">reg.smp.o2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## now try the double bootstrap (slower)</span></span>
+<span><span class="va">reg.dbs.o</span> <span class="op">&lt;-</span> <span class="fu">subsample</span><span class="op">(</span><span class="va">reg.o</span>, B <span class="op">=</span> <span class="fl">25</span>, bootstrap <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">reg.dbs.o</span><span class="op">)</span></span>
+<span><span class="fu"><a href="plot.subsample.rfsrc.html">plot.subsample</a></span><span class="op">(</span><span class="va">reg.dbs.o</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## standard error and confidence region for generalization error only</span></span>
+<span><span class="va">gerror</span> <span class="op">&lt;-</span> <span class="fu">subsample</span><span class="op">(</span><span class="va">reg.o</span>, performance.only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="plot.subsample.rfsrc.html">plot.subsample</a></span><span class="op">(</span><span class="va">gerror</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## classification</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="co">## 3 non-linear, 15 linear, and 5 noise variables </span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/topepo/caret/" class="external-link">"caret"</a></span>, logical.return <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/twoClassSim.html" class="external-link">twoClassSim</a></span><span class="op">(</span><span class="fl">1000</span>, linearVars <span class="op">=</span> <span class="fl">15</span>, noiseVars <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co">## VIMP based on (default) misclassification error</span></span>
+<span>  <span class="va">cls.o</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">Class</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">d</span><span class="op">)</span></span>
+<span>  <span class="va">cls.smp.o</span> <span class="op">&lt;-</span> <span class="fu">subsample</span><span class="op">(</span><span class="va">cls.o</span>, B <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="plot.subsample.rfsrc.html">plot.subsample</a></span><span class="op">(</span><span class="va">cls.smp.o</span>, cex.axis <span class="op">=</span> <span class="fl">.7</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co">## same as above, but with VIMP defined using normalized Brier score</span></span>
+<span>  <span class="va">cls.o2</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">Class</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">d</span>, perf.type <span class="op">=</span> <span class="st">"brier"</span><span class="op">)</span></span>
+<span>  <span class="va">cls.smp.o2</span> <span class="op">&lt;-</span> <span class="fu">subsample</span><span class="op">(</span><span class="va">cls.o2</span>, B <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="plot.subsample.rfsrc.html">plot.subsample</a></span><span class="op">(</span><span class="va">cls.smp.o2</span>, cex.axis <span class="op">=</span> <span class="fl">.7</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## class-imbalanced data using RFQ classifier with G-mean VIMP</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/topepo/caret/" class="external-link">"caret"</a></span>, logical.return <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span></span>
+<span>  <span class="co">## experimental settings</span></span>
+<span>  <span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">1000</span></span>
+<span>  <span class="va">q</span> <span class="op">&lt;-</span> <span class="fl">20</span></span>
+<span>  <span class="va">ir</span> <span class="op">&lt;-</span> <span class="fl">6</span></span>
+<span>  <span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">as.formula</a></span><span class="op">(</span><span class="va">Class</span> <span class="op">~</span> <span class="va">.</span><span class="op">)</span></span>
+<span> </span>
+<span>  <span class="co">## simulate the data, create minority class data</span></span>
+<span>  <span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/twoClassSim.html" class="external-link">twoClassSim</a></span><span class="op">(</span><span class="va">n</span>, linearVars <span class="op">=</span> <span class="fl">15</span>, noiseVars <span class="op">=</span> <span class="va">q</span><span class="op">)</span></span>
+<span>  <span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span></span>
+<span>  <span class="va">idx.0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span></span>
+<span>  <span class="va">idx.1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Class</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op">/</span> <span class="va">ir</span> , replace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  <span class="va">d</span> <span class="op">&lt;-</span> <span class="va">d</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">idx.0</span>,<span class="va">idx.1</span><span class="op">)</span>,, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span></span>
+<span></span>
+<span>  <span class="co">## RFQ classifier</span></span>
+<span>  <span class="va">oq</span> <span class="op">&lt;-</span> <span class="fu"><a href="imbalanced.rfsrc.html">imbalanced</a></span><span class="op">(</span><span class="va">Class</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">d</span>, importance <span class="op">=</span> <span class="cn">TRUE</span>, block.size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co">## subsample the RFQ-classifier</span></span>
+<span>  <span class="va">smp.oq</span> <span class="op">&lt;-</span> <span class="fu">subsample</span><span class="op">(</span><span class="va">oq</span>, B <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="plot.subsample.rfsrc.html">plot.subsample</a></span><span class="op">(</span><span class="va">smp.oq</span>, cex.axis <span class="op">=</span> <span class="fl">.7</span><span class="op">)</span></span>
+<span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## survival </span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">pbc</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span></span>
+<span><span class="va">srv.o</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">days</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">pbc</span><span class="op">)</span></span>
+<span><span class="va">srv.smp.o</span> <span class="op">&lt;-</span> <span class="fu">subsample</span><span class="op">(</span><span class="va">srv.o</span>, B <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">srv.smp.o</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## competing risks</span></span>
+<span><span class="co">## target event is death (event = 2)</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/therneau/survival" class="external-link">"survival"</a></span>, logical.return <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">pbc</span>, package <span class="op">=</span> <span class="st">"survival"</span><span class="op">)</span></span>
+<span>  <span class="va">pbc</span><span class="op">$</span><span class="va">id</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span>
+<span>  <span class="va">cr.o</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">pbc</span>, splitrule <span class="op">=</span> <span class="st">"logrankCR"</span>, cause <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span>  <span class="va">cr.smp.o</span> <span class="op">&lt;-</span> <span class="fu">subsample</span><span class="op">(</span><span class="va">cr.o</span>, B <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="plot.subsample.rfsrc.html">plot.subsample</a></span><span class="op">(</span><span class="va">cr.smp.o</span>, target <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## multivariate </span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"mlbench"</span>, logical.return <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co">## simulate the data </span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">BostonHousing</span><span class="op">)</span></span>
+<span>  <span class="va">bh</span> <span class="op">&lt;-</span> <span class="va">BostonHousing</span></span>
+<span>  <span class="va">bh</span><span class="op">$</span><span class="va">rm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">bh</span><span class="op">$</span><span class="va">rm</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="va">o</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">medv</span>, <span class="va">rm</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">bh</span><span class="op">)</span></span>
+<span>  <span class="va">so</span> <span class="op">&lt;-</span> <span class="fu">subsample</span><span class="op">(</span><span class="va">o</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="plot.subsample.rfsrc.html">plot.subsample</a></span><span class="op">(</span><span class="va">so</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="plot.subsample.rfsrc.html">plot.subsample</a></span><span class="op">(</span><span class="va">so</span>, m.target <span class="op">=</span> <span class="st">"rm"</span><span class="op">)</span></span>
+<span>  <span class="co">##generalization error</span></span>
+<span>  <span class="va">gerror</span> <span class="op">&lt;-</span> <span class="fu">subsample</span><span class="op">(</span><span class="va">o</span>, performance.only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="plot.subsample.rfsrc.html">plot.subsample</a></span><span class="op">(</span><span class="va">gerror</span>, m.target <span class="op">=</span> <span class="st">"medv"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="plot.subsample.rfsrc.html">plot.subsample</a></span><span class="op">(</span><span class="va">gerror</span>, m.target <span class="op">=</span> <span class="st">"rm"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## largish data example - use rfsrc.fast for fast forests</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/topepo/caret/" class="external-link">"caret"</a></span>, logical.return <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co">## largish data set</span></span>
+<span>  <span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/twoClassSim.html" class="external-link">twoClassSim</a></span><span class="op">(</span><span class="fl">1000</span>, linearVars <span class="op">=</span> <span class="fl">15</span>, noiseVars <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co">## use a subsampled forest with Brier score performance</span></span>
+<span>  <span class="co">## remember to set forest=TRUE for rfsrc.fast</span></span>
+<span>  <span class="va">o</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.fast.html">rfsrc.fast</a></span><span class="op">(</span><span class="va">Class</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">d</span>, ntree <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>           forest <span class="op">=</span> <span class="cn">TRUE</span>, perf.type <span class="op">=</span> <span class="st">"brier"</span><span class="op">)</span></span>
+<span>  <span class="va">so</span> <span class="op">&lt;-</span> <span class="fu">subsample</span><span class="op">(</span><span class="va">o</span>, B <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="plot.subsample.rfsrc.html">plot.subsample</a></span><span class="op">(</span><span class="va">so</span>, cex.axis <span class="op">=</span> <span class="fl">.7</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># }</span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -446,7 +475,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

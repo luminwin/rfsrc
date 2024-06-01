@@ -27,7 +27,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.3</span>
       </span>
     </div>
 
@@ -146,12 +146,12 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">plot.variable</span><span class="op">(</span><span class="va">x</span>, <span class="va">xvar.names</span>, <span class="va">target</span>,
-  m.target <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">time</span>, surv.type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mort"</span>, <span class="st">"rel.freq"</span>,
-  <span class="st">"surv"</span>, <span class="st">"years.lost"</span>, <span class="st">"cif"</span>, <span class="st">"chf"</span><span class="op">)</span>, class.type <span class="op">=</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"prob"</span>, <span class="st">"bayes"</span><span class="op">)</span>, partial <span class="op">=</span> <span class="cn">FALSE</span>, oob <span class="op">=</span> <span class="cn">TRUE</span>,
-  show.plots <span class="op">=</span> <span class="cn">TRUE</span>, plots.per.page <span class="op">=</span> <span class="fl">4</span>, granule <span class="op">=</span> <span class="fl">5</span>, sorted <span class="op">=</span> <span class="cn">TRUE</span>,
-  <span class="va">nvar</span>, npts <span class="op">=</span> <span class="fl">25</span>, smooth.lines <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">subset</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plot.variable</span><span class="op">(</span><span class="va">x</span>, <span class="va">xvar.names</span>, <span class="va">target</span>,</span>
+<span>  m.target <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">time</span>, surv.type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mort"</span>, <span class="st">"rel.freq"</span>,</span>
+<span>  <span class="st">"surv"</span>, <span class="st">"years.lost"</span>, <span class="st">"cif"</span>, <span class="st">"chf"</span><span class="op">)</span>, class.type <span class="op">=</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"prob"</span>, <span class="st">"bayes"</span><span class="op">)</span>, partial <span class="op">=</span> <span class="cn">FALSE</span>, oob <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  show.plots <span class="op">=</span> <span class="cn">TRUE</span>, plots.per.page <span class="op">=</span> <span class="fl">4</span>, granule <span class="op">=</span> <span class="fl">5</span>, sorted <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">nvar</span>, npts <span class="op">=</span> <span class="fl">25</span>, smooth.lines <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">subset</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -159,57 +159,93 @@
     <dl><dt>x</dt>
 <dd><p>An object of class <code>(rfsrc, grow)</code>, <code>(rfsrc,
     synthetic)</code>, or <code>(rfsrc, plot.variable)</code>.</p></dd>
-<dt>xvar.names</dt>
+
+
+ <dt>xvar.names</dt>
 <dd><p>Names of the x-variables to be used.</p></dd>
-<dt>target</dt>
+
+
+ <dt>target</dt>
 <dd><p>For classification, an integer or
     character value specifying the class to focus on (defaults to the
     first class).  For competing risks, an integer value between
     1 and <code>J</code> indicating the event of interest, where <code>J</code> is
     the number of event types.  The default is to use the first event
     type.</p></dd>
-<dt>m.target</dt>
+
+
+  <dt>m.target</dt>
 <dd><p>Character value for multivariate families
     specifying the target outcome to be used.  If left unspecified, the
     algorithm will choose a default target.</p></dd>
-<dt>time</dt>
+
+
+  <dt>time</dt>
 <dd><p>For survival, the time at which the predicted
     survival value is evaluated at (depends on <code>surv.type</code>).</p></dd>
-<dt>surv.type</dt>
+
+
+  <dt>surv.type</dt>
 <dd><p>For survival, specifies the predicted value.
     See details below.</p></dd>
-<dt>class.type</dt>
+
+
+  <dt>class.type</dt>
 <dd><p>For classification, specifies the predicted value.
     See details below.</p></dd>
-<dt>partial</dt>
+
+
+  <dt>partial</dt>
 <dd><p>Should partial plots be used?</p></dd>
-<dt>oob</dt>
+
+
+  <dt>oob</dt>
 <dd><p>OOB (TRUE)  or in-bag (FALSE) predicted values.</p></dd>
-<dt>show.plots</dt>
+
+
+  <dt>show.plots</dt>
 <dd><p>Should plots be displayed?</p></dd>
-<dt>plots.per.page</dt>
+
+
+  <dt>plots.per.page</dt>
 <dd><p>Integer value controlling page layout.</p></dd>
-<dt>granule</dt>
+
+
+  <dt>granule</dt>
 <dd><p>Integer value controlling whether a plot for a
     specific variable should be treated as a factor and therefore given
     as a boxplot. Larger values coerce boxplots.</p></dd>
-<dt>sorted</dt>
+
+
+  <dt>sorted</dt>
 <dd><p>Should variables be sorted by importance values.</p></dd>
-<dt>nvar</dt>
+
+
+  <dt>nvar</dt>
 <dd><p>Number of variables to be plotted. Default is all.</p></dd>
-<dt>npts</dt>
+
+
+  <dt>npts</dt>
 <dd><p>Maximum number of points used when generating partial
     plots for continuous variables.</p></dd>
-<dt>smooth.lines</dt>
+
+
+  <dt>smooth.lines</dt>
 <dd><p>Use lowess to smooth partial plots.</p></dd>
-<dt>subset</dt>
+
+
+  <dt>subset</dt>
 <dd><p>Vector indicating which rows of the x-variable matrix
     <code>x$xvar</code> to use. All rows are used if not specified.  Do not
     define subset based on the original data (which could have been processed
     due to missing values or for other reasons in the previous forest call) but
     define subset based on the rows of <code>x$xvar</code>.</p></dd>
-<dt>...</dt>
+
+
+  <dt>...</dt>
 <dd><p>Further arguments passed to or from other methods.</p></dd>
+
+  
 </dl></div>
     <div id="details">
     <h2>Details</h2>
@@ -295,81 +331,80 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># \donttest{</span>
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## survival/competing risk</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="co">## survival</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">veteran</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span>
-<span class="va">v.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>,<span class="va">status</span><span class="op">)</span><span class="op">~</span><span class="va">.</span>, <span class="va">veteran</span>, ntree <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>
-<span class="fu">plot.variable</span><span class="op">(</span><span class="va">v.obj</span>, plots.per.page <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
-<span class="fu">plot.variable</span><span class="op">(</span><span class="va">v.obj</span>, plots.per.page <span class="op">=</span> <span class="fl">2</span>, xvar.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"trt"</span>, <span class="st">"karno"</span>, <span class="st">"age"</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">plot.variable</span><span class="op">(</span><span class="va">v.obj</span>, surv.type <span class="op">=</span> <span class="st">"surv"</span>, nvar <span class="op">=</span> <span class="fl">1</span>, time <span class="op">=</span> <span class="fl">200</span><span class="op">)</span>
-<span class="fu">plot.variable</span><span class="op">(</span><span class="va">v.obj</span>, surv.type <span class="op">=</span> <span class="st">"surv"</span>, partial <span class="op">=</span> <span class="cn">TRUE</span>, smooth.lines <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu">plot.variable</span><span class="op">(</span><span class="va">v.obj</span>, surv.type <span class="op">=</span> <span class="st">"rel.freq"</span>, partial <span class="op">=</span> <span class="cn">TRUE</span>, nvar <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
-
-<span class="co">## example of plot.variable calling a pre-processed plot.variable object</span>
-<span class="va">p.v</span> <span class="op">&lt;-</span> <span class="fu">plot.variable</span><span class="op">(</span><span class="va">v.obj</span>, surv.type <span class="op">=</span> <span class="st">"surv"</span>, partial <span class="op">=</span> <span class="cn">TRUE</span>, smooth.lines <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu">plot.variable</span><span class="op">(</span><span class="va">p.v</span><span class="op">)</span>
-<span class="va">p.v</span><span class="op">$</span><span class="va">plots.per.page</span> <span class="op">&lt;-</span> <span class="fl">1</span>
-<span class="va">p.v</span><span class="op">$</span><span class="va">smooth.lines</span> <span class="op">&lt;-</span> <span class="cn">FALSE</span>
-<span class="fu">plot.variable</span><span class="op">(</span><span class="va">p.v</span><span class="op">)</span>
-
-<span class="co">## competing risks</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">follic</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span>
-<span class="va">follic.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">follic</span>, nsplit <span class="op">=</span> <span class="fl">3</span>, ntree <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>
-<span class="fu">plot.variable</span><span class="op">(</span><span class="va">follic.obj</span>, target <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## regression</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="co">## airquality </span>
-<span class="va">airq.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">Ozone</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">airquality</span><span class="op">)</span>
-<span class="fu">plot.variable</span><span class="op">(</span><span class="va">airq.obj</span>, partial <span class="op">=</span> <span class="cn">TRUE</span>, smooth.lines <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu">plot.variable</span><span class="op">(</span><span class="va">airq.obj</span>, partial <span class="op">=</span> <span class="cn">TRUE</span>, subset <span class="op">=</span> <span class="va">airq.obj</span><span class="op">$</span><span class="va">xvar</span><span class="op">$</span><span class="va">Solar.R</span> <span class="op">&lt;</span> <span class="fl">200</span><span class="op">)</span>
-
-<span class="co">## motor trend cars</span>
-<span class="va">mtcars.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">mpg</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span>
-<span class="fu">plot.variable</span><span class="op">(</span><span class="va">mtcars.obj</span>, partial <span class="op">=</span> <span class="cn">TRUE</span>, smooth.lines <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## classification</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="co">## iris</span>
-<span class="va">iris.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">iris</span><span class="op">)</span>
-<span class="fu">plot.variable</span><span class="op">(</span><span class="va">iris.obj</span>, partial <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="co">## motor trend cars: predict number of carburetors</span>
-<span class="va">mtcars2</span> <span class="op">&lt;-</span> <span class="va">mtcars</span>
-<span class="va">mtcars2</span><span class="op">$</span><span class="va">carb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">mtcars2</span><span class="op">$</span><span class="va">carb</span>,
-   labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"carb"</span>, <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">$</span><span class="va">carb</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="va">mtcars2.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">carb</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">mtcars2</span><span class="op">)</span>
-<span class="fu">plot.variable</span><span class="op">(</span><span class="va">mtcars2.obj</span>, partial <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## multivariate regression</span>
-<span class="co">## ------------------------------------------------------------</span>
-<span class="va">mtcars.mreg</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu">Multivar</span><span class="op">(</span><span class="va">mpg</span>, <span class="va">cyl</span><span class="op">)</span> <span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span>
-<span class="fu">plot.variable</span><span class="op">(</span><span class="va">mtcars.mreg</span>, m.target <span class="op">=</span> <span class="st">"mpg"</span>, partial <span class="op">=</span> <span class="cn">TRUE</span>, nvar <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-<span class="fu">plot.variable</span><span class="op">(</span><span class="va">mtcars.mreg</span>, m.target <span class="op">=</span> <span class="st">"cyl"</span>, partial <span class="op">=</span> <span class="cn">TRUE</span>, nvar <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## multivariate mixed outcomes</span>
-<span class="co">## ------------------------------------------------------------</span>
-<span class="va">mtcars2</span> <span class="op">&lt;-</span> <span class="va">mtcars</span>
-<span class="va">mtcars2</span><span class="op">$</span><span class="va">carb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">mtcars2</span><span class="op">$</span><span class="va">carb</span><span class="op">)</span>
-<span class="va">mtcars2</span><span class="op">$</span><span class="va">cyl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">mtcars2</span><span class="op">$</span><span class="va">cyl</span><span class="op">)</span>
-<span class="va">mtcars.mix</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu">Multivar</span><span class="op">(</span><span class="va">carb</span>, <span class="va">mpg</span>, <span class="va">cyl</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">mtcars2</span><span class="op">)</span>
-<span class="fu">plot.variable</span><span class="op">(</span><span class="va">mtcars.mix</span>, m.target <span class="op">=</span> <span class="st">"cyl"</span>, target <span class="op">=</span> <span class="st">"4"</span>, partial <span class="op">=</span> <span class="cn">TRUE</span>, nvar <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-<span class="fu">plot.variable</span><span class="op">(</span><span class="va">mtcars.mix</span>, m.target <span class="op">=</span> <span class="st">"cyl"</span>, target <span class="op">=</span> <span class="fl">2</span>, partial <span class="op">=</span> <span class="cn">TRUE</span>, nvar <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-
-
-<span class="co"># }</span>
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># \donttest{</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## survival/competing risk</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="co">## survival</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">veteran</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span></span>
+<span><span class="va">v.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>,<span class="va">status</span><span class="op">)</span><span class="op">~</span><span class="va">.</span>, <span class="va">veteran</span>, ntree <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span><span class="fu">plot.variable</span><span class="op">(</span><span class="va">v.obj</span>, plots.per.page <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="fu">plot.variable</span><span class="op">(</span><span class="va">v.obj</span>, plots.per.page <span class="op">=</span> <span class="fl">2</span>, xvar.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"trt"</span>, <span class="st">"karno"</span>, <span class="st">"age"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">plot.variable</span><span class="op">(</span><span class="va">v.obj</span>, surv.type <span class="op">=</span> <span class="st">"surv"</span>, nvar <span class="op">=</span> <span class="fl">1</span>, time <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span>
+<span><span class="fu">plot.variable</span><span class="op">(</span><span class="va">v.obj</span>, surv.type <span class="op">=</span> <span class="st">"surv"</span>, partial <span class="op">=</span> <span class="cn">TRUE</span>, smooth.lines <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu">plot.variable</span><span class="op">(</span><span class="va">v.obj</span>, surv.type <span class="op">=</span> <span class="st">"rel.freq"</span>, partial <span class="op">=</span> <span class="cn">TRUE</span>, nvar <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## example of plot.variable calling a pre-processed plot.variable object</span></span>
+<span><span class="va">p.v</span> <span class="op">&lt;-</span> <span class="fu">plot.variable</span><span class="op">(</span><span class="va">v.obj</span>, surv.type <span class="op">=</span> <span class="st">"surv"</span>, partial <span class="op">=</span> <span class="cn">TRUE</span>, smooth.lines <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu">plot.variable</span><span class="op">(</span><span class="va">p.v</span><span class="op">)</span></span>
+<span><span class="va">p.v</span><span class="op">$</span><span class="va">plots.per.page</span> <span class="op">&lt;-</span> <span class="fl">1</span></span>
+<span><span class="va">p.v</span><span class="op">$</span><span class="va">smooth.lines</span> <span class="op">&lt;-</span> <span class="cn">FALSE</span></span>
+<span><span class="fu">plot.variable</span><span class="op">(</span><span class="va">p.v</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## competing risks</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">follic</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span></span>
+<span><span class="va">follic.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">follic</span>, nsplit <span class="op">=</span> <span class="fl">3</span>, ntree <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span><span class="fu">plot.variable</span><span class="op">(</span><span class="va">follic.obj</span>, target <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## regression</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="co">## airquality </span></span>
+<span><span class="va">airq.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">Ozone</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">airquality</span><span class="op">)</span></span>
+<span><span class="fu">plot.variable</span><span class="op">(</span><span class="va">airq.obj</span>, partial <span class="op">=</span> <span class="cn">TRUE</span>, smooth.lines <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu">plot.variable</span><span class="op">(</span><span class="va">airq.obj</span>, partial <span class="op">=</span> <span class="cn">TRUE</span>, subset <span class="op">=</span> <span class="va">airq.obj</span><span class="op">$</span><span class="va">xvar</span><span class="op">$</span><span class="va">Solar.R</span> <span class="op">&lt;</span> <span class="fl">200</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## motor trend cars</span></span>
+<span><span class="va">mtcars.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">mpg</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span>
+<span><span class="fu">plot.variable</span><span class="op">(</span><span class="va">mtcars.obj</span>, partial <span class="op">=</span> <span class="cn">TRUE</span>, smooth.lines <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## classification</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="co">## iris</span></span>
+<span><span class="va">iris.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">iris</span><span class="op">)</span></span>
+<span><span class="fu">plot.variable</span><span class="op">(</span><span class="va">iris.obj</span>, partial <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## motor trend cars: predict number of carburetors</span></span>
+<span><span class="va">mtcars2</span> <span class="op">&lt;-</span> <span class="va">mtcars</span></span>
+<span><span class="va">mtcars2</span><span class="op">$</span><span class="va">carb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">mtcars2</span><span class="op">$</span><span class="va">carb</span>,</span>
+<span>   labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"carb"</span>, <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">$</span><span class="va">carb</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">mtcars2.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">carb</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">mtcars2</span><span class="op">)</span></span>
+<span><span class="fu">plot.variable</span><span class="op">(</span><span class="va">mtcars2.obj</span>, partial <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## multivariate regression</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="va">mtcars.mreg</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu">Multivar</span><span class="op">(</span><span class="va">mpg</span>, <span class="va">cyl</span><span class="op">)</span> <span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span>
+<span><span class="fu">plot.variable</span><span class="op">(</span><span class="va">mtcars.mreg</span>, m.target <span class="op">=</span> <span class="st">"mpg"</span>, partial <span class="op">=</span> <span class="cn">TRUE</span>, nvar <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu">plot.variable</span><span class="op">(</span><span class="va">mtcars.mreg</span>, m.target <span class="op">=</span> <span class="st">"cyl"</span>, partial <span class="op">=</span> <span class="cn">TRUE</span>, nvar <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## multivariate mixed outcomes</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="va">mtcars2</span> <span class="op">&lt;-</span> <span class="va">mtcars</span></span>
+<span><span class="va">mtcars2</span><span class="op">$</span><span class="va">carb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">mtcars2</span><span class="op">$</span><span class="va">carb</span><span class="op">)</span></span>
+<span><span class="va">mtcars2</span><span class="op">$</span><span class="va">cyl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">mtcars2</span><span class="op">$</span><span class="va">cyl</span><span class="op">)</span></span>
+<span><span class="va">mtcars.mix</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu">Multivar</span><span class="op">(</span><span class="va">carb</span>, <span class="va">mpg</span>, <span class="va">cyl</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">mtcars2</span><span class="op">)</span></span>
+<span><span class="fu">plot.variable</span><span class="op">(</span><span class="va">mtcars.mix</span>, m.target <span class="op">=</span> <span class="st">"cyl"</span>, target <span class="op">=</span> <span class="st">"4"</span>, partial <span class="op">=</span> <span class="cn">TRUE</span>, nvar <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu">plot.variable</span><span class="op">(</span><span class="va">mtcars.mix</span>, m.target <span class="op">=</span> <span class="st">"cyl"</span>, target <span class="op">=</span> <span class="fl">2</span>, partial <span class="op">=</span> <span class="cn">TRUE</span>, nvar <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># }</span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -383,7 +418,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

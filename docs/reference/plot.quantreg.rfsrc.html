@@ -25,7 +25,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.3</span>
       </span>
     </div>
 
@@ -142,29 +142,36 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">plot.quantreg</span><span class="op">(</span><span class="va">x</span>, prbL <span class="op">=</span> <span class="fl">.25</span>, prbU <span class="op">=</span> <span class="fl">.75</span>,
-   m.target <span class="op">=</span> <span class="cn">NULL</span>, crps <span class="op">=</span> <span class="cn">TRUE</span>, subset <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plot.quantreg</span><span class="op">(</span><span class="va">x</span>, prbL <span class="op">=</span> <span class="fl">.25</span>, prbU <span class="op">=</span> <span class="fl">.75</span>,</span>
+<span>   m.target <span class="op">=</span> <span class="cn">NULL</span>, crps <span class="op">=</span> <span class="cn">TRUE</span>, subset <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p>A quantile regression object obtained from calling <code class="command">quantreg</code>.</p></dd>
-<dt>prbL</dt>
+
+  <dt>prbL</dt>
 <dd><p>Lower quantile (preferably &lt; .5).</p></dd>
-<dt>prbU</dt>
+
+  <dt>prbU</dt>
 <dd><p>Upper quantile (preferably &gt; .5).</p></dd>
-<dt>m.target</dt>
+
+  <dt>m.target</dt>
 <dd><p>Character value for multivariate families
     specifying the target outcome to be used.  If left unspecified, the
     algorithm will choose a default target.</p></dd>
-<dt>crps</dt>
+
+  <dt>crps</dt>
 <dd><p>Calculate crps and inset it?</p></dd>
-<dt>subset</dt>
+
+  <dt>subset</dt>
 <dd><p>Restricts plotted values to a subset of the data.
     Default is to use the entire data.</p></dd>
-<dt>...</dt>
+
+  <dt>...</dt>
 <dd><p>Further arguments passed to or from other methods.</p></dd>
+
 </dl></div>
     <div id="author">
     <h2>Author</h2>
@@ -187,7 +194,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

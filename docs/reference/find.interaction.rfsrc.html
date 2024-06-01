@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.3</span>
       </span>
     </div>
 
@@ -138,12 +138,12 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">find.interaction</span><span class="op">(</span><span class="va">object</span>, <span class="va">xvar.names</span>, <span class="va">cause</span>, <span class="va">m.target</span>,
-  importance <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"permute"</span>, <span class="st">"random"</span>, <span class="st">"anti"</span>,
-                 <span class="st">"permute.ensemble"</span>, <span class="st">"random.ensemble"</span>, <span class="st">"anti.ensemble"</span><span class="op">)</span>,
-  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"maxsubtree"</span>, <span class="st">"vimp"</span><span class="op">)</span>, sorted <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">nvar</span>, nrep <span class="op">=</span> <span class="fl">1</span>, 
-  na.action <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"na.omit"</span>, <span class="st">"na.impute"</span>, <span class="st">"na.random"</span><span class="op">)</span>,
-  seed <span class="op">=</span> <span class="cn">NULL</span>, do.trace <span class="op">=</span> <span class="cn">FALSE</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">find.interaction</span><span class="op">(</span><span class="va">object</span>, <span class="va">xvar.names</span>, <span class="va">cause</span>, <span class="va">m.target</span>,</span>
+<span>  importance <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"permute"</span>, <span class="st">"random"</span>, <span class="st">"anti"</span>,</span>
+<span>                 <span class="st">"permute.ensemble"</span>, <span class="st">"random.ensemble"</span>, <span class="st">"anti.ensemble"</span><span class="op">)</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"maxsubtree"</span>, <span class="st">"vimp"</span><span class="op">)</span>, sorted <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">nvar</span>, nrep <span class="op">=</span> <span class="fl">1</span>, </span>
+<span>  na.action <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"na.omit"</span>, <span class="st">"na.impute"</span>, <span class="st">"na.random"</span><span class="op">)</span>,</span>
+<span>  seed <span class="op">=</span> <span class="cn">NULL</span>, do.trace <span class="op">=</span> <span class="cn">FALSE</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -151,44 +151,58 @@
     <dl><dt>object</dt>
 <dd><p>An object of class <code>(rfsrc, grow)</code> or
     <code>(rfsrc, forest)</code>.</p></dd>
-<dt>xvar.names</dt>
+  
+  <dt>xvar.names</dt>
 <dd><p>Character vector of names of target x-variables.
     Default is to use all variables.</p></dd>
-<dt>cause</dt>
+
+  <dt>cause</dt>
 <dd><p>For competing risk families, integer value between 1
     and <code>J</code> indicating the event of interest, where <code>J</code> is
     the number of event types. The default is to use the first event
     type.</p></dd>
-<dt>m.target</dt>
+
+  <dt>m.target</dt>
 <dd><p>Character value for multivariate families
     specifying the target outcome to be used.  If left unspecified, the
     algorithm will choose a default target.</p></dd>
-<dt>importance</dt>
+
+  <dt>importance</dt>
 <dd><p>Type of variable importance (VIMP). See
     <code class="command">rfsrc</code> for details.</p></dd>
-<dt>method</dt>
+
+  <dt>method</dt>
 <dd><p>Method of analysis: maximal subtree or VIMP.  See details
     below.</p></dd>
-<dt>sorted</dt>
+
+  <dt>sorted</dt>
 <dd><p>Should variables be sorted by VIMP?  Does not apply for
     competing risks.</p></dd>
-<dt>nvar</dt>
+
+  <dt>nvar</dt>
 <dd><p>Number of variables to be used.</p></dd>
-<dt>nrep</dt>
+
+  <dt>nrep</dt>
 <dd><p>Number of Monte Carlo replicates when <span class="option">method="vimp"</span>.</p></dd>
-<dt>na.action</dt>
+
+  <dt>na.action</dt>
 <dd><p>Action to be taken if the data contains <code>NA</code>
     values.  Applies only when <span class="option">method="vimp"</span>.</p></dd>
-<dt>seed</dt>
+
+  <dt>seed</dt>
 <dd><p>Seed for random number generator.  Must be a negative
     integer.</p></dd>
-<dt>do.trace</dt>
+
+  <dt>do.trace</dt>
 <dd><p>Number of seconds between updates to the user on
     approximate time to completion.</p></dd>
-<dt>verbose</dt>
+
+  <dt>verbose</dt>
 <dd><p>Set to <code>TRUE</code> for verbose output.</p></dd>
-<dt>...</dt>
+
+  <dt>...</dt>
 <dd><p>Further arguments passed to or from other methods.</p></dd>
+
 </dl></div>
     <div id="details">
     <h2>Details</h2>
@@ -226,7 +240,9 @@
     </div>
     <div id="value">
     <h2>Value</h2>
-    <p>Invisibly, the interaction table (a list for competing risk data)
+    
+
+<p>Invisibly, the interaction table (a list for competing risk data)
   or the maximal subtree matrix.</p>
     </div>
     <div id="author">
@@ -254,54 +270,53 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># \donttest{</span>
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## find interactions, survival setting</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">pbc</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span> 
-<span class="va">pbc.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu">Surv</span><span class="op">(</span><span class="va">days</span>,<span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">pbc</span>, importance <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu">find.interaction</span><span class="op">(</span><span class="va">pbc.obj</span>, method <span class="op">=</span> <span class="st">"vimp"</span>, nvar <span class="op">=</span> <span class="fl">8</span><span class="op">)</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## find interactions, competing risks</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">wihs</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span>
-<span class="va">wihs.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu">Surv</span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">wihs</span>, nsplit <span class="op">=</span> <span class="fl">3</span>, ntree <span class="op">=</span> <span class="fl">100</span>,
-                       importance <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu">find.interaction</span><span class="op">(</span><span class="va">wihs.obj</span><span class="op">)</span>
-<span class="fu">find.interaction</span><span class="op">(</span><span class="va">wihs.obj</span>, method <span class="op">=</span> <span class="st">"vimp"</span><span class="op">)</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## find interactions, regression setting</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="va">airq.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">Ozone</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">airquality</span>, importance <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu">find.interaction</span><span class="op">(</span><span class="va">airq.obj</span>, method <span class="op">=</span> <span class="st">"vimp"</span>, nrep <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
-<span class="fu">find.interaction</span><span class="op">(</span><span class="va">airq.obj</span><span class="op">)</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## find interactions, classification setting</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="va">iris.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">iris</span>, importance <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu">find.interaction</span><span class="op">(</span><span class="va">iris.obj</span>, method <span class="op">=</span> <span class="st">"vimp"</span>, nrep <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
-<span class="fu">find.interaction</span><span class="op">(</span><span class="va">iris.obj</span><span class="op">)</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## interactions for multivariate mixed forests</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="va">mtcars2</span> <span class="op">&lt;-</span> <span class="va">mtcars</span>
-<span class="va">mtcars2</span><span class="op">$</span><span class="va">cyl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">mtcars2</span><span class="op">$</span><span class="va">cyl</span><span class="op">)</span>
-<span class="va">mtcars2</span><span class="op">$</span><span class="va">carb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">mtcars2</span><span class="op">$</span><span class="va">carb</span>, ordered <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="va">mv.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">carb</span>, <span class="va">mpg</span>, <span class="va">cyl</span><span class="op">)</span> <span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">mtcars2</span>, importance <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu">find.interaction</span><span class="op">(</span><span class="va">mv.obj</span>, method <span class="op">=</span> <span class="st">"vimp"</span>, outcome.target <span class="op">=</span> <span class="st">"carb"</span><span class="op">)</span>
-<span class="fu">find.interaction</span><span class="op">(</span><span class="va">mv.obj</span>, method <span class="op">=</span> <span class="st">"vimp"</span>, outcome.target <span class="op">=</span> <span class="st">"mpg"</span><span class="op">)</span>
-<span class="fu">find.interaction</span><span class="op">(</span><span class="va">mv.obj</span>, method <span class="op">=</span> <span class="st">"vimp"</span>, outcome.target <span class="op">=</span> <span class="st">"cyl"</span><span class="op">)</span>
-<span class="co"># }</span>
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># \donttest{</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## find interactions, survival setting</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">pbc</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span> </span>
+<span><span class="va">pbc.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu">Surv</span><span class="op">(</span><span class="va">days</span>,<span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">pbc</span>, importance <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu">find.interaction</span><span class="op">(</span><span class="va">pbc.obj</span>, method <span class="op">=</span> <span class="st">"vimp"</span>, nvar <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## find interactions, competing risks</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">wihs</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span></span>
+<span><span class="va">wihs.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu">Surv</span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">wihs</span>, nsplit <span class="op">=</span> <span class="fl">3</span>, ntree <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>                       importance <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu">find.interaction</span><span class="op">(</span><span class="va">wihs.obj</span><span class="op">)</span></span>
+<span><span class="fu">find.interaction</span><span class="op">(</span><span class="va">wihs.obj</span>, method <span class="op">=</span> <span class="st">"vimp"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## find interactions, regression setting</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="va">airq.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">Ozone</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">airquality</span>, importance <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu">find.interaction</span><span class="op">(</span><span class="va">airq.obj</span>, method <span class="op">=</span> <span class="st">"vimp"</span>, nrep <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="fu">find.interaction</span><span class="op">(</span><span class="va">airq.obj</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## find interactions, classification setting</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="va">iris.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">iris</span>, importance <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu">find.interaction</span><span class="op">(</span><span class="va">iris.obj</span>, method <span class="op">=</span> <span class="st">"vimp"</span>, nrep <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="fu">find.interaction</span><span class="op">(</span><span class="va">iris.obj</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## interactions for multivariate mixed forests</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="va">mtcars2</span> <span class="op">&lt;-</span> <span class="va">mtcars</span></span>
+<span><span class="va">mtcars2</span><span class="op">$</span><span class="va">cyl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">mtcars2</span><span class="op">$</span><span class="va">cyl</span><span class="op">)</span></span>
+<span><span class="va">mtcars2</span><span class="op">$</span><span class="va">carb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">mtcars2</span><span class="op">$</span><span class="va">carb</span>, ordered <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">mv.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">carb</span>, <span class="va">mpg</span>, <span class="va">cyl</span><span class="op">)</span> <span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">mtcars2</span>, importance <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu">find.interaction</span><span class="op">(</span><span class="va">mv.obj</span>, method <span class="op">=</span> <span class="st">"vimp"</span>, outcome.target <span class="op">=</span> <span class="st">"carb"</span><span class="op">)</span></span>
+<span><span class="fu">find.interaction</span><span class="op">(</span><span class="va">mv.obj</span>, method <span class="op">=</span> <span class="st">"vimp"</span>, outcome.target <span class="op">=</span> <span class="st">"mpg"</span><span class="op">)</span></span>
+<span><span class="fu">find.interaction</span><span class="op">(</span><span class="va">mv.obj</span>, method <span class="op">=</span> <span class="st">"vimp"</span>, outcome.target <span class="op">=</span> <span class="st">"cyl"</span><span class="op">)</span></span>
+<span><span class="co"># }</span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -315,7 +330,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

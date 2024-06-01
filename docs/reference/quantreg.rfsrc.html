@@ -25,7 +25,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.3</span>
       </span>
     </div>
 
@@ -142,9 +142,9 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">quantreg</span><span class="op">(</span><span class="va">formula</span>, <span class="va">data</span>, <span class="va">object</span>, <span class="va">newdata</span>,
-  method <span class="op">=</span> <span class="st">"local"</span>, splitrule <span class="op">=</span> <span class="cn">NULL</span>, prob <span class="op">=</span> <span class="cn">NULL</span>, prob.epsilon <span class="op">=</span> <span class="cn">NULL</span>,
-  oob <span class="op">=</span> <span class="cn">TRUE</span>, fast <span class="op">=</span> <span class="cn">FALSE</span>, maxn <span class="op">=</span> <span class="fl">1e3</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">quantreg</span><span class="op">(</span><span class="va">formula</span>, <span class="va">data</span>, <span class="va">object</span>, <span class="va">newdata</span>,</span>
+<span>  method <span class="op">=</span> <span class="st">"local"</span>, splitrule <span class="op">=</span> <span class="cn">NULL</span>, prob <span class="op">=</span> <span class="cn">NULL</span>, prob.epsilon <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  oob <span class="op">=</span> <span class="cn">TRUE</span>, fast <span class="op">=</span> <span class="cn">FALSE</span>, maxn <span class="op">=</span> <span class="fl">1e3</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -152,18 +152,26 @@
     <dl><dt>formula</dt>
 <dd><p>A symbolic description of the model to be fit.
     Must be specified unless <code>object</code> is given.</p></dd>
-<dt>data</dt>
+
+
+  <dt>data</dt>
 <dd><p>Data frame containing the y-outcome and x-variables in
     the model. Must be specified unless <code>object</code> is given.</p></dd>
-<dt>object</dt>
+
+
+  <dt>object</dt>
 <dd><p>(Optional) A previously grown quantile regression
     forest.</p></dd>
-<dt>newdata</dt>
+
+
+  <dt>newdata</dt>
 <dd><p>(Optional) Test data frame used for prediction.  Note
     that prediction on test data must always be done with the
     <code>quantreg</code> function and not the <code>predict</code> function.  See
     example below.</p></dd>
-<dt>method</dt>
+
+
+  <dt>method</dt>
 <dd><p>Method used to calculate quantiles.  Three methods are
     provided: (1) A variation of the method used in Meinshausen (2006)
     based on forest weight (<code>method = "forest"</code>); (2) The
@@ -172,30 +180,45 @@
     method, <code>method = "local"</code>, which uses the local adjusted cdf
     approach of Zhang et al. (2019).  This does not rely on forest
     weights and is reasonably fast. See below for further discussion.</p></dd>
-<dt>splitrule</dt>
+
+
+  <dt>splitrule</dt>
 <dd><p>The default action is local adaptive quantile regression splitting,
     but this can be over-ridden by the user.  Not applicable to
     multivariate forests.  See details below.</p></dd>
-<dt>prob</dt>
+
+  
+  <dt>prob</dt>
 <dd><p>Target quantile probabilities when training.  If left unspecified,
     uses percentiles (1 through 99) for <code>method = "forest"</code>, and 
     for Greenwald-Khanna selects equally spaced percentiles optimized
     for accuracy (see below).</p></dd>
-<dt>prob.epsilon</dt>
+
+  
+  <dt>prob.epsilon</dt>
 <dd><p>Greenwald-Khanna allowable error for quantile
     probabilities when training.</p></dd>
-<dt>oob</dt>
+
+  
+  <dt>oob</dt>
 <dd><p>Return OOB (out-of-bag) quantiles?  If false, in-bag values
     are returned.</p></dd>
-<dt>fast</dt>
+
+
+  <dt>fast</dt>
 <dd><p>Use fast random forests, <code>rfsrc.fast</code>, in place of
     <code>rfsrc</code>?  Improves speed but may be less accurate.</p></dd>
-<dt>maxn</dt>
+
+
+  <dt>maxn</dt>
 <dd><p>Maximum number of unique y training values used when
     calculating the conditional density.</p></dd>
-<dt>...</dt>
+
+
+  <dt>...</dt>
 <dd><p>Further arguments to be passed to the <code>rfsrc</code>
     function used for fitting the quantile regression forest.</p></dd>
+  
 </dl></div>
     <div id="details">
     <h2>Details</h2>
@@ -255,16 +278,24 @@
     </div>
     <div id="value">
     <h2>Value</h2>
-    <p>Returns the object <code>quantreg</code> containing quantiles for each of
-  the requested probabilities (which can be conveniently extracted using
-<code>get.quantile</code>).  Also contains the conditional density (and
+    
+  
+
+<p>Returns the object <code>quantreg</code> containing quantiles for each of
+  the requested probabilities (which can be conveniently extracted using</p>
+<p></p>
+<p><code>get.quantile</code>).  Also contains the conditional density (and
   conditional cdf) for each case in the training data (or test data if
   provided) evaluated at each of the unique grow y-values.  The
   conditional density can be used to calculate conditional moments, such
   as the mean and standard deviation.  Use <code>get.quantile.stat</code> as a
-  way to conveniently obtain these quantities.
-  For multivariate forests, returned values will be a list of length
+  way to conveniently obtain these quantities.</p>
+
+
+<p>For multivariate forests, returned values will be a list of length
   equal to the number of target outcomes.</p>
+
+
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -286,151 +317,151 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># \donttest{</span>
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## regression example</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="co">## standard call</span>
-<span class="va">o</span> <span class="op">&lt;-</span> <span class="fu">quantreg</span><span class="op">(</span><span class="va">mpg</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">mtcars</span><span class="op">)</span>
-
-<span class="co">## extract conditional quantiles</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">get.quantile</span><span class="op">(</span><span class="va">o</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">get.quantile</span><span class="op">(</span><span class="va">o</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.25</span>, <span class="fl">.50</span>, <span class="fl">.75</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co">## extract conditional mean and standard deviation</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">get.quantile.stat</span><span class="op">(</span><span class="va">o</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co">## continuous rank probabiliy score (crps) performance</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu">get.quantile.crps</span><span class="op">(</span><span class="va">o</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">"l"</span><span class="op">)</span>
-
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## train/test regression example</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="co">## train (grow) call followed by test call</span>
-<span class="va">o</span> <span class="op">&lt;-</span> <span class="fu">quantreg</span><span class="op">(</span><span class="va">mpg</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">mtcars</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span>,<span class="op">]</span><span class="op">)</span>
-<span class="va">o.tst</span> <span class="op">&lt;-</span> <span class="fu">quantreg</span><span class="op">(</span>object <span class="op">=</span> <span class="va">o</span>, newdata <span class="op">=</span> <span class="va">mtcars</span><span class="op">[</span><span class="op">-</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">)</span>,<span class="op">]</span><span class="op">)</span>
-
-<span class="co">## extract test set quantiles and conditional statistics</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">get.quantile</span><span class="op">(</span><span class="va">o.tst</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">get.quantile.stat</span><span class="op">(</span><span class="va">o.tst</span><span class="op">)</span><span class="op">)</span>
-
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## quantile regression for Boston Housing using forest method</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"mlbench"</span>, logical.return <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-
-  <span class="co">## quantile regression with mse splitting</span>
-  <span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">BostonHousing</span><span class="op">)</span>
-  <span class="va">o</span> <span class="op">&lt;-</span> <span class="fu">quantreg</span><span class="op">(</span><span class="va">medv</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">BostonHousing</span>, method <span class="op">=</span> <span class="st">"forest"</span>, nodesize <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-
-  <span class="co">## continuous rank probabiliy score (crps) </span>
-  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu">get.quantile.crps</span><span class="op">(</span><span class="va">o</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">"l"</span><span class="op">)</span>
-
-  <span class="co">## quantile regression plot</span>
-  <span class="fu"><a href="plot.quantreg.rfsrc.html">plot.quantreg</a></span><span class="op">(</span><span class="va">o</span>, <span class="fl">.05</span>, <span class="fl">.95</span><span class="op">)</span>
-  <span class="fu"><a href="plot.quantreg.rfsrc.html">plot.quantreg</a></span><span class="op">(</span><span class="va">o</span>, <span class="fl">.25</span>, <span class="fl">.75</span><span class="op">)</span>
-
-  <span class="co">## (A) extract 25,50,75 quantiles</span>
-  <span class="va">quant.dat</span> <span class="op">&lt;-</span> <span class="fu">get.quantile</span><span class="op">(</span><span class="va">o</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.25</span>, <span class="fl">.50</span>, <span class="fl">.75</span><span class="op">)</span><span class="op">)</span>
-
-  <span class="co">## (B) values expected under normality</span>
-  <span class="va">quant.stat</span> <span class="op">&lt;-</span> <span class="fu">get.quantile.stat</span><span class="op">(</span><span class="va">o</span><span class="op">)</span>
-  <span class="va">c.mean</span> <span class="op">&lt;-</span> <span class="va">quant.stat</span><span class="op">$</span><span class="va">mean</span>
-  <span class="va">c.std</span> <span class="op">&lt;-</span> <span class="va">quant.stat</span><span class="op">$</span><span class="va">std</span>
-  <span class="va">q.25.est</span> <span class="op">&lt;-</span> <span class="va">c.mean</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">qnorm</a></span><span class="op">(</span><span class="fl">.25</span><span class="op">)</span> <span class="op">*</span> <span class="va">c.std</span>
-  <span class="va">q.75.est</span> <span class="op">&lt;-</span> <span class="va">c.mean</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">qnorm</a></span><span class="op">(</span><span class="fl">.75</span><span class="op">)</span> <span class="op">*</span> <span class="va">c.std</span>
-
-  <span class="co">## compare (A) and (B)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">quant.dat</span><span class="op">[</span>, <span class="op">-</span><span class="fl">2</span><span class="op">]</span>,  <span class="va">q.25.est</span>, <span class="va">q.75.est</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-
-
-<span class="op">}</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## multivariate mixed outcomes example</span>
-<span class="co">## quantiles are only returned for the continous outcomes</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="va">dta</span> <span class="op">&lt;-</span> <span class="va">mtcars</span>
-<span class="va">dta</span><span class="op">$</span><span class="va">cyl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">dta</span><span class="op">$</span><span class="va">cyl</span><span class="op">)</span>
-<span class="va">dta</span><span class="op">$</span><span class="va">carb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">dta</span><span class="op">$</span><span class="va">carb</span>, ordered <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="va">o</span> <span class="op">&lt;-</span> <span class="fu">quantreg</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">carb</span>, <span class="va">mpg</span>, <span class="va">cyl</span>, <span class="va">disp</span><span class="op">)</span> <span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">dta</span><span class="op">)</span>
-
-<span class="fu"><a href="plot.quantreg.rfsrc.html">plot.quantreg</a></span><span class="op">(</span><span class="va">o</span>, m.target <span class="op">=</span> <span class="st">"mpg"</span><span class="op">)</span>
-<span class="fu"><a href="plot.quantreg.rfsrc.html">plot.quantreg</a></span><span class="op">(</span><span class="va">o</span>, m.target <span class="op">=</span> <span class="st">"disp"</span><span class="op">)</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## multivariate regression example using Mahalanobis splitting</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="va">dta</span> <span class="op">&lt;-</span> <span class="va">mtcars</span>
-<span class="va">o</span> <span class="op">&lt;-</span> <span class="fu">quantreg</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="va">disp</span><span class="op">)</span> <span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">dta</span>, splitrule <span class="op">=</span> <span class="st">"mahal"</span><span class="op">)</span>
-
-<span class="fu"><a href="plot.quantreg.rfsrc.html">plot.quantreg</a></span><span class="op">(</span><span class="va">o</span>, m.target <span class="op">=</span> <span class="st">"mpg"</span><span class="op">)</span>
-<span class="fu"><a href="plot.quantreg.rfsrc.html">plot.quantreg</a></span><span class="op">(</span><span class="va">o</span>, m.target <span class="op">=</span> <span class="st">"disp"</span><span class="op">)</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## example of quantile regression for ordinal data</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="co">## use the wine data for illustration</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">wine</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span>
-
-<span class="co">## run quantile regression</span>
-<span class="va">o</span> <span class="op">&lt;-</span> <span class="fu">quantreg</span><span class="op">(</span><span class="va">quality</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">wine</span>, ntree <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>
-
-<span class="co">## extract "probabilities" = density values</span>
-<span class="va">qo.dens</span> <span class="op">&lt;-</span> <span class="va">o</span><span class="op">$</span><span class="va">quantreg</span><span class="op">$</span><span class="va">density</span>
-<span class="va">yunq</span> <span class="op">&lt;-</span> <span class="va">o</span><span class="op">$</span><span class="va">quantreg</span><span class="op">$</span><span class="va">yunq</span>
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">qo.dens</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">yunq</span>
-
-<span class="co">## convert y to a factor </span>
-<span class="va">yvar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cut.html" class="external-link">cut</a></span><span class="op">(</span><span class="va">o</span><span class="op">$</span><span class="va">yvar</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="va">yunq</span><span class="op">)</span>, labels <span class="op">=</span> <span class="va">yunq</span><span class="op">)</span><span class="op">)</span> 
- 
-<span class="co">## confusion matrix</span>
-<span class="va">qo.confusion</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">get.confusion</a></span><span class="op">(</span><span class="va">yvar</span>, <span class="va">qo.dens</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">qo.confusion</span><span class="op">)</span>
-
-<span class="co">## normalized Brier score</span>
-<span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Brier:"</span>, <span class="fl">100</span> <span class="op">*</span> <span class="fu"><a href="rfsrc.html">get.brier.error</a></span><span class="op">(</span><span class="va">yvar</span>, <span class="va">qo.dens</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span>
-
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## example of large data using Greenwald-Khanna algorithm </span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="co">## load the data and do quick and dirty imputation</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">housing</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span>
-<span class="va">housing</span> <span class="op">&lt;-</span> <span class="fu"><a href="impute.rfsrc.html">impute</a></span><span class="op">(</span><span class="va">SalePrice</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">housing</span>,
-         ntree <span class="op">=</span> <span class="fl">50</span>, nimpute <span class="op">=</span> <span class="fl">1</span>, splitrule <span class="op">=</span> <span class="st">"random"</span><span class="op">)</span>
-
-<span class="co">## Greenwald-Khanna algorithm </span>
-<span class="co">## request a small number of quantiles </span>
-<span class="va">o</span> <span class="op">&lt;-</span> <span class="fu">quantreg</span><span class="op">(</span><span class="va">SalePrice</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">housing</span>, method <span class="op">=</span> <span class="st">"gk"</span>,
-        prob <span class="op">=</span> <span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">)</span> <span class="op">/</span> <span class="fl">20</span>, prob.epsilon <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">20</span>, ntree <span class="op">=</span> <span class="fl">250</span><span class="op">)</span>
-<span class="fu"><a href="plot.quantreg.rfsrc.html">plot.quantreg</a></span><span class="op">(</span><span class="va">o</span><span class="op">)</span>
-  
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## using mse splitting with local cdf method for large data</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="co">## load the data and do quick and dirty imputation</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">housing</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span>
-<span class="va">housing</span> <span class="op">&lt;-</span> <span class="fu"><a href="impute.rfsrc.html">impute</a></span><span class="op">(</span><span class="va">SalePrice</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">housing</span>,
-         ntree <span class="op">=</span> <span class="fl">50</span>, nimpute <span class="op">=</span> <span class="fl">1</span>, splitrule <span class="op">=</span> <span class="st">"random"</span><span class="op">)</span>
-
-<span class="co">## use mse splitting and reduce number of trees</span>
-<span class="va">o</span> <span class="op">&lt;-</span> <span class="fu">quantreg</span><span class="op">(</span><span class="va">SalePrice</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">housing</span>, splitrule <span class="op">=</span> <span class="st">"mse"</span>, ntree <span class="op">=</span> <span class="fl">250</span><span class="op">)</span>
-<span class="fu"><a href="plot.quantreg.rfsrc.html">plot.quantreg</a></span><span class="op">(</span><span class="va">o</span><span class="op">)</span>
-  
-
-
-<span class="co"># }</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># \donttest{</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## regression example</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="co">## standard call</span></span>
+<span><span class="va">o</span> <span class="op">&lt;-</span> <span class="fu">quantreg</span><span class="op">(</span><span class="va">mpg</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">mtcars</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## extract conditional quantiles</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">get.quantile</span><span class="op">(</span><span class="va">o</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">get.quantile</span><span class="op">(</span><span class="va">o</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.25</span>, <span class="fl">.50</span>, <span class="fl">.75</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## extract conditional mean and standard deviation</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">get.quantile.stat</span><span class="op">(</span><span class="va">o</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## continuous rank probabiliy score (crps) performance</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu">get.quantile.crps</span><span class="op">(</span><span class="va">o</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">"l"</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## train/test regression example</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="co">## train (grow) call followed by test call</span></span>
+<span><span class="va">o</span> <span class="op">&lt;-</span> <span class="fu">quantreg</span><span class="op">(</span><span class="va">mpg</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">mtcars</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span>,<span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">o.tst</span> <span class="op">&lt;-</span> <span class="fu">quantreg</span><span class="op">(</span>object <span class="op">=</span> <span class="va">o</span>, newdata <span class="op">=</span> <span class="va">mtcars</span><span class="op">[</span><span class="op">-</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">)</span>,<span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## extract test set quantiles and conditional statistics</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">get.quantile</span><span class="op">(</span><span class="va">o.tst</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">get.quantile.stat</span><span class="op">(</span><span class="va">o.tst</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## quantile regression for Boston Housing using forest method</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"mlbench"</span>, logical.return <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span></span>
+<span>  <span class="co">## quantile regression with mse splitting</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">BostonHousing</span><span class="op">)</span></span>
+<span>  <span class="va">o</span> <span class="op">&lt;-</span> <span class="fu">quantreg</span><span class="op">(</span><span class="va">medv</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">BostonHousing</span>, method <span class="op">=</span> <span class="st">"forest"</span>, nodesize <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co">## continuous rank probabiliy score (crps) </span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu">get.quantile.crps</span><span class="op">(</span><span class="va">o</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">"l"</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co">## quantile regression plot</span></span>
+<span>  <span class="fu"><a href="plot.quantreg.rfsrc.html">plot.quantreg</a></span><span class="op">(</span><span class="va">o</span>, <span class="fl">.05</span>, <span class="fl">.95</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="plot.quantreg.rfsrc.html">plot.quantreg</a></span><span class="op">(</span><span class="va">o</span>, <span class="fl">.25</span>, <span class="fl">.75</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co">## (A) extract 25,50,75 quantiles</span></span>
+<span>  <span class="va">quant.dat</span> <span class="op">&lt;-</span> <span class="fu">get.quantile</span><span class="op">(</span><span class="va">o</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.25</span>, <span class="fl">.50</span>, <span class="fl">.75</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co">## (B) values expected under normality</span></span>
+<span>  <span class="va">quant.stat</span> <span class="op">&lt;-</span> <span class="fu">get.quantile.stat</span><span class="op">(</span><span class="va">o</span><span class="op">)</span></span>
+<span>  <span class="va">c.mean</span> <span class="op">&lt;-</span> <span class="va">quant.stat</span><span class="op">$</span><span class="va">mean</span></span>
+<span>  <span class="va">c.std</span> <span class="op">&lt;-</span> <span class="va">quant.stat</span><span class="op">$</span><span class="va">std</span></span>
+<span>  <span class="va">q.25.est</span> <span class="op">&lt;-</span> <span class="va">c.mean</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">qnorm</a></span><span class="op">(</span><span class="fl">.25</span><span class="op">)</span> <span class="op">*</span> <span class="va">c.std</span></span>
+<span>  <span class="va">q.75.est</span> <span class="op">&lt;-</span> <span class="va">c.mean</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">qnorm</a></span><span class="op">(</span><span class="fl">.75</span><span class="op">)</span> <span class="op">*</span> <span class="va">c.std</span></span>
+<span></span>
+<span>  <span class="co">## compare (A) and (B)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">quant.dat</span><span class="op">[</span>, <span class="op">-</span><span class="fl">2</span><span class="op">]</span>,  <span class="va">q.25.est</span>, <span class="va">q.75.est</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## multivariate mixed outcomes example</span></span>
+<span><span class="co">## quantiles are only returned for the continous outcomes</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="va">dta</span> <span class="op">&lt;-</span> <span class="va">mtcars</span></span>
+<span><span class="va">dta</span><span class="op">$</span><span class="va">cyl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">dta</span><span class="op">$</span><span class="va">cyl</span><span class="op">)</span></span>
+<span><span class="va">dta</span><span class="op">$</span><span class="va">carb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">dta</span><span class="op">$</span><span class="va">carb</span>, ordered <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">o</span> <span class="op">&lt;-</span> <span class="fu">quantreg</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">carb</span>, <span class="va">mpg</span>, <span class="va">cyl</span>, <span class="va">disp</span><span class="op">)</span> <span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">dta</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="plot.quantreg.rfsrc.html">plot.quantreg</a></span><span class="op">(</span><span class="va">o</span>, m.target <span class="op">=</span> <span class="st">"mpg"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="plot.quantreg.rfsrc.html">plot.quantreg</a></span><span class="op">(</span><span class="va">o</span>, m.target <span class="op">=</span> <span class="st">"disp"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## multivariate regression example using Mahalanobis splitting</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="va">dta</span> <span class="op">&lt;-</span> <span class="va">mtcars</span></span>
+<span><span class="va">o</span> <span class="op">&lt;-</span> <span class="fu">quantreg</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="va">disp</span><span class="op">)</span> <span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">dta</span>, splitrule <span class="op">=</span> <span class="st">"mahal"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="plot.quantreg.rfsrc.html">plot.quantreg</a></span><span class="op">(</span><span class="va">o</span>, m.target <span class="op">=</span> <span class="st">"mpg"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="plot.quantreg.rfsrc.html">plot.quantreg</a></span><span class="op">(</span><span class="va">o</span>, m.target <span class="op">=</span> <span class="st">"disp"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## example of quantile regression for ordinal data</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="co">## use the wine data for illustration</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">wine</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## run quantile regression</span></span>
+<span><span class="va">o</span> <span class="op">&lt;-</span> <span class="fu">quantreg</span><span class="op">(</span><span class="va">quality</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">wine</span>, ntree <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## extract "probabilities" = density values</span></span>
+<span><span class="va">qo.dens</span> <span class="op">&lt;-</span> <span class="va">o</span><span class="op">$</span><span class="va">quantreg</span><span class="op">$</span><span class="va">density</span></span>
+<span><span class="va">yunq</span> <span class="op">&lt;-</span> <span class="va">o</span><span class="op">$</span><span class="va">quantreg</span><span class="op">$</span><span class="va">yunq</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">qo.dens</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">yunq</span></span>
+<span></span>
+<span><span class="co">## convert y to a factor </span></span>
+<span><span class="va">yvar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cut.html" class="external-link">cut</a></span><span class="op">(</span><span class="va">o</span><span class="op">$</span><span class="va">yvar</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="va">yunq</span><span class="op">)</span>, labels <span class="op">=</span> <span class="va">yunq</span><span class="op">)</span><span class="op">)</span> </span>
+<span> </span>
+<span><span class="co">## confusion matrix</span></span>
+<span><span class="va">qo.confusion</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">get.confusion</a></span><span class="op">(</span><span class="va">yvar</span>, <span class="va">qo.dens</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">qo.confusion</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## normalized Brier score</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Brier:"</span>, <span class="fl">100</span> <span class="op">*</span> <span class="fu"><a href="rfsrc.html">get.brier.error</a></span><span class="op">(</span><span class="va">yvar</span>, <span class="va">qo.dens</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## example of large data using Greenwald-Khanna algorithm </span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="co">## load the data and do quick and dirty imputation</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">housing</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span></span>
+<span><span class="va">housing</span> <span class="op">&lt;-</span> <span class="fu"><a href="impute.rfsrc.html">impute</a></span><span class="op">(</span><span class="va">SalePrice</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">housing</span>,</span>
+<span>         ntree <span class="op">=</span> <span class="fl">50</span>, nimpute <span class="op">=</span> <span class="fl">1</span>, splitrule <span class="op">=</span> <span class="st">"random"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Greenwald-Khanna algorithm </span></span>
+<span><span class="co">## request a small number of quantiles </span></span>
+<span><span class="va">o</span> <span class="op">&lt;-</span> <span class="fu">quantreg</span><span class="op">(</span><span class="va">SalePrice</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">housing</span>, method <span class="op">=</span> <span class="st">"gk"</span>,</span>
+<span>        prob <span class="op">=</span> <span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">)</span> <span class="op">/</span> <span class="fl">20</span>, prob.epsilon <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">20</span>, ntree <span class="op">=</span> <span class="fl">250</span><span class="op">)</span></span>
+<span><span class="fu"><a href="plot.quantreg.rfsrc.html">plot.quantreg</a></span><span class="op">(</span><span class="va">o</span><span class="op">)</span></span>
+<span>  </span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## using mse splitting with local cdf method for large data</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="co">## load the data and do quick and dirty imputation</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">housing</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span></span>
+<span><span class="va">housing</span> <span class="op">&lt;-</span> <span class="fu"><a href="impute.rfsrc.html">impute</a></span><span class="op">(</span><span class="va">SalePrice</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">housing</span>,</span>
+<span>         ntree <span class="op">=</span> <span class="fl">50</span>, nimpute <span class="op">=</span> <span class="fl">1</span>, splitrule <span class="op">=</span> <span class="st">"random"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## use mse splitting and reduce number of trees</span></span>
+<span><span class="va">o</span> <span class="op">&lt;-</span> <span class="fu">quantreg</span><span class="op">(</span><span class="va">SalePrice</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">housing</span>, splitrule <span class="op">=</span> <span class="st">"mse"</span>, ntree <span class="op">=</span> <span class="fl">250</span><span class="op">)</span></span>
+<span><span class="fu"><a href="plot.quantreg.rfsrc.html">plot.quantreg</a></span><span class="op">(</span><span class="va">o</span><span class="op">)</span></span>
+<span>  </span>
+<span></span>
+<span></span>
+<span><span class="co"># }</span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -444,7 +475,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

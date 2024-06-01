@@ -64,7 +64,7 @@ For an object of class (rfsrc, pred) this is the
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.3</span>
       </span>
     </div>
 
@@ -208,7 +208,7 @@ For an object of class (rfsrc, pred) this is the
 </ol></div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">stat.split</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">stat.split</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -217,14 +217,19 @@ For an object of class (rfsrc, pred) this is the
 <dd><p>An object of class <code>(rfsrc, grow)</code>,
     <code>(rfsrc, synthetic)</code>  or <code>(rfsrc,
 	    predict)</code></p></dd>
-<dt>...</dt>
+
+  <dt>...</dt>
 <dd><p>Further arguments passed to or from other methods.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Invisibly, a list with the following components:</p>
+    
+
+<p>Invisibly, a list with the following components:</p>
 <dl><dt>...</dt>
 <dd><p>...</p></dd>
+
 </dl></div>
     <div id="author">
     <h2>Author</h2>
@@ -238,38 +243,37 @@ For an object of class (rfsrc, pred) this is the
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># \donttest{</span>
-<span class="co">## run a forest, then make a call to stat.split</span>
-<span class="va">grow.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">mpg</span> <span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">mtcars</span>, membership<span class="op">=</span><span class="cn">TRUE</span>, statistics<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
-<span class="va">stat.obj</span> <span class="op">&lt;-</span> <span class="fu">stat.split</span><span class="op">(</span><span class="va">grow.obj</span><span class="op">)</span>
-
-<span class="co">## nice wrapper to extract split-statistic for desired variable</span>
-<span class="co">## for continuous variables plots ECP data</span>
-<span class="va">get.split</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">splitObj</span>, <span class="va">xvar</span>, <span class="va">inches</span> <span class="op">=</span> <span class="fl">0.1</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">which.var</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">splitObj</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">==</span> <span class="va">xvar</span><span class="op">)</span>
-  <span class="va">ntree</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">splitObj</span><span class="op">)</span>
-  <span class="va">stat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">ntree</span>, <span class="kw">function</span><span class="op">(</span><span class="va">b</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">splitObj</span><span class="op">[[</span><span class="va">b</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="va">which.var</span><span class="op">]</span><span class="op">}</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-  <span class="va">dpth</span> <span class="op">&lt;-</span> <span class="va">stat</span><span class="op">$</span><span class="va">dpthID</span>
-  <span class="va">ecp</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">-</span> <span class="va">stat</span><span class="op">$</span><span class="va">spltEC</span>
-  <span class="va">sp</span> <span class="op">&lt;-</span> <span class="va">stat</span><span class="op">$</span><span class="va">contPT</span>
-  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">sp</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">fgC</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-      <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cut.html" class="external-link">cut</a></span><span class="op">(</span><span class="va">x</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">0.2</span>, <span class="fl">0.35</span>, <span class="fl">0.5</span><span class="op">)</span>,
-      labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-    <span class="op">}</span>
-    <span class="fu"><a href="https://rdrr.io/r/graphics/symbols.html" class="external-link">symbols</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/jitter.html" class="external-link">jitter</a></span><span class="op">(</span><span class="va">sp</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/jitter.html" class="external-link">jitter</a></span><span class="op">(</span><span class="va">dpth</span><span class="op">)</span>, <span class="va">ecp</span>, inches <span class="op">=</span> <span class="va">inches</span>, bg <span class="op">=</span> <span class="fu">fgC</span><span class="op">(</span><span class="va">ecp</span><span class="op">)</span>,
-      xlab <span class="op">=</span> <span class="va">xvar</span>, ylab <span class="op">=</span> <span class="st">"node depth"</span>, <span class="va">...</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topleft"</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"low ecp"</span>, <span class="st">"med ecp"</span>, <span class="st">"high ecp"</span><span class="op">)</span>,
-      fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
-   <span class="op">}</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="va">stat</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="co">## use get.split to investigate ECP behavior of variables</span>
-<span class="fu">get.split</span><span class="op">(</span><span class="va">stat.obj</span>, <span class="st">"disp"</span><span class="op">)</span>
-<span class="co"># }</span>
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># \donttest{</span></span>
+<span><span class="co">## run a forest, then make a call to stat.split</span></span>
+<span><span class="va">grow.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">mpg</span> <span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">mtcars</span>, membership<span class="op">=</span><span class="cn">TRUE</span>, statistics<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">stat.obj</span> <span class="op">&lt;-</span> <span class="fu">stat.split</span><span class="op">(</span><span class="va">grow.obj</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## nice wrapper to extract split-statistic for desired variable</span></span>
+<span><span class="co">## for continuous variables plots ECP data</span></span>
+<span><span class="va">get.split</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">splitObj</span>, <span class="va">xvar</span>, <span class="va">inches</span> <span class="op">=</span> <span class="fl">0.1</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">which.var</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">splitObj</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">==</span> <span class="va">xvar</span><span class="op">)</span></span>
+<span>  <span class="va">ntree</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">splitObj</span><span class="op">)</span></span>
+<span>  <span class="va">stat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">ntree</span>, <span class="kw">function</span><span class="op">(</span><span class="va">b</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">splitObj</span><span class="op">[[</span><span class="va">b</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="va">which.var</span><span class="op">]</span><span class="op">}</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="va">dpth</span> <span class="op">&lt;-</span> <span class="va">stat</span><span class="op">$</span><span class="va">dpthID</span></span>
+<span>  <span class="va">ecp</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">-</span> <span class="va">stat</span><span class="op">$</span><span class="va">spltEC</span></span>
+<span>  <span class="va">sp</span> <span class="op">&lt;-</span> <span class="va">stat</span><span class="op">$</span><span class="va">contPT</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">sp</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">fgC</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cut.html" class="external-link">cut</a></span><span class="op">(</span><span class="va">x</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">0.2</span>, <span class="fl">0.35</span>, <span class="fl">0.5</span><span class="op">)</span>,</span>
+<span>      labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/graphics/symbols.html" class="external-link">symbols</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/jitter.html" class="external-link">jitter</a></span><span class="op">(</span><span class="va">sp</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/jitter.html" class="external-link">jitter</a></span><span class="op">(</span><span class="va">dpth</span><span class="op">)</span>, <span class="va">ecp</span>, inches <span class="op">=</span> <span class="va">inches</span>, bg <span class="op">=</span> <span class="fu">fgC</span><span class="op">(</span><span class="va">ecp</span><span class="op">)</span>,</span>
+<span>      xlab <span class="op">=</span> <span class="va">xvar</span>, ylab <span class="op">=</span> <span class="st">"node depth"</span>, <span class="va">...</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topleft"</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"low ecp"</span>, <span class="st">"med ecp"</span>, <span class="st">"high ecp"</span><span class="op">)</span>,</span>
+<span>      fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span>   <span class="op">}</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="va">stat</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co">## use get.split to investigate ECP behavior of variables</span></span>
+<span><span class="fu">get.split</span><span class="op">(</span><span class="va">stat.obj</span>, <span class="st">"disp"</span><span class="op">)</span></span>
+<span><span class="co"># }</span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -283,7 +287,7 @@ For an object of class (rfsrc, pred) this is the
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

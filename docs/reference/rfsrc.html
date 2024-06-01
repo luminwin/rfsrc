@@ -73,7 +73,7 @@ This is the main entry point to the randomForestSRC
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.3</span>
       </span>
     </div>
 
@@ -235,32 +235,32 @@ This is the main entry point to the randomForestSRC
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">rfsrc</span><span class="op">(</span><span class="va">formula</span>, <span class="va">data</span>, ntree <span class="op">=</span> <span class="fl">500</span>,
-  mtry <span class="op">=</span> <span class="cn">NULL</span>, ytry <span class="op">=</span> <span class="cn">NULL</span>,
-  nodesize <span class="op">=</span> <span class="cn">NULL</span>, nodedepth <span class="op">=</span> <span class="cn">NULL</span>,
-  splitrule <span class="op">=</span> <span class="cn">NULL</span>, nsplit <span class="op">=</span> <span class="cn">NULL</span>,
-  importance <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="st">"none"</span>, <span class="st">"anti"</span>, <span class="st">"permute"</span>, <span class="st">"random"</span><span class="op">)</span>,
-  block.size <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/any.html" class="external-link">any</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">is.element</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">importance</span><span class="op">)</span>,
-                     <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"none"</span>, <span class="st">"FALSE"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="cn">NULL</span> <span class="kw">else</span> <span class="fl">10</span>,
-  bootstrap <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"by.root"</span>, <span class="st">"none"</span>, <span class="st">"by.user"</span><span class="op">)</span>,
-  samptype <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"swor"</span>, <span class="st">"swr"</span><span class="op">)</span>, samp <span class="op">=</span> <span class="cn">NULL</span>, membership <span class="op">=</span> <span class="cn">FALSE</span>,
-  sampsize <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="va">samptype</span> <span class="op">==</span> <span class="st">"swor"</span><span class="op">)</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="va">x</span> <span class="op">*</span> <span class="fl">.632</span><span class="op">}</span> <span class="kw">else</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="va">x</span><span class="op">}</span>,
-  na.action <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"na.omit"</span>, <span class="st">"na.impute"</span><span class="op">)</span>, nimpute <span class="op">=</span> <span class="fl">1</span>,
-  ntime <span class="op">=</span> <span class="fl">150</span>, <span class="va">cause</span>,
-  perf.type <span class="op">=</span> <span class="cn">NULL</span>,
-  proximity <span class="op">=</span> <span class="cn">FALSE</span>, distance <span class="op">=</span> <span class="cn">FALSE</span>, forest.wt <span class="op">=</span> <span class="cn">FALSE</span>,
-  xvar.wt <span class="op">=</span> <span class="cn">NULL</span>, yvar.wt <span class="op">=</span> <span class="cn">NULL</span>, split.wt <span class="op">=</span> <span class="cn">NULL</span>, case.wt  <span class="op">=</span> <span class="cn">NULL</span>,
-  forest <span class="op">=</span> <span class="cn">TRUE</span>,
-  save.memory <span class="op">=</span> <span class="cn">FALSE</span>,
-  var.used <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="st">"all.trees"</span>, <span class="st">"by.tree"</span><span class="op">)</span>,
-  split.depth <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="st">"all.trees"</span>, <span class="st">"by.tree"</span><span class="op">)</span>,
-  seed <span class="op">=</span> <span class="cn">NULL</span>,
-  do.trace <span class="op">=</span> <span class="cn">FALSE</span>,
-  statistics <span class="op">=</span> <span class="cn">FALSE</span>,
-  <span class="va">...</span><span class="op">)</span>
-
-<span class="co">## convenient interface for growing a CART tree</span>
-<span class="fu">rfsrc.cart</span><span class="op">(</span><span class="va">formula</span>, <span class="va">data</span>, ntree <span class="op">=</span> <span class="fl">1</span>, mtry <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>, bootstrap <span class="op">=</span> <span class="st">"none"</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">rfsrc</span><span class="op">(</span><span class="va">formula</span>, <span class="va">data</span>, ntree <span class="op">=</span> <span class="fl">500</span>,</span>
+<span>  mtry <span class="op">=</span> <span class="cn">NULL</span>, ytry <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  nodesize <span class="op">=</span> <span class="cn">NULL</span>, nodedepth <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  splitrule <span class="op">=</span> <span class="cn">NULL</span>, nsplit <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  importance <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="st">"none"</span>, <span class="st">"anti"</span>, <span class="st">"permute"</span>, <span class="st">"random"</span><span class="op">)</span>,</span>
+<span>  block.size <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/any.html" class="external-link">any</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">is.element</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">importance</span><span class="op">)</span>,</span>
+<span>                     <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"none"</span>, <span class="st">"FALSE"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="cn">NULL</span> <span class="kw">else</span> <span class="fl">10</span>,</span>
+<span>  bootstrap <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"by.root"</span>, <span class="st">"none"</span>, <span class="st">"by.user"</span><span class="op">)</span>,</span>
+<span>  samptype <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"swor"</span>, <span class="st">"swr"</span><span class="op">)</span>, samp <span class="op">=</span> <span class="cn">NULL</span>, membership <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  sampsize <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="va">samptype</span> <span class="op">==</span> <span class="st">"swor"</span><span class="op">)</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="va">x</span> <span class="op">*</span> <span class="fl">.632</span><span class="op">}</span> <span class="kw">else</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="va">x</span><span class="op">}</span>,</span>
+<span>  na.action <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"na.omit"</span>, <span class="st">"na.impute"</span><span class="op">)</span>, nimpute <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  ntime <span class="op">=</span> <span class="fl">150</span>, <span class="va">cause</span>,</span>
+<span>  perf.type <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  proximity <span class="op">=</span> <span class="cn">FALSE</span>, distance <span class="op">=</span> <span class="cn">FALSE</span>, forest.wt <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  xvar.wt <span class="op">=</span> <span class="cn">NULL</span>, yvar.wt <span class="op">=</span> <span class="cn">NULL</span>, split.wt <span class="op">=</span> <span class="cn">NULL</span>, case.wt  <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  forest <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  save.memory <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  var.used <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="st">"all.trees"</span>, <span class="st">"by.tree"</span><span class="op">)</span>,</span>
+<span>  split.depth <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="st">"all.trees"</span>, <span class="st">"by.tree"</span><span class="op">)</span>,</span>
+<span>  seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  do.trace <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  statistics <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## convenient interface for growing a CART tree</span></span>
+<span><span class="fu">rfsrc.cart</span><span class="op">(</span><span class="va">formula</span>, <span class="va">data</span>, ntree <span class="op">=</span> <span class="fl">1</span>, mtry <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>, bootstrap <span class="op">=</span> <span class="st">"none"</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -269,39 +269,59 @@ This is the main entry point to the randomForestSRC
 <dd><p>Object of class 'formula' describing the model to fit.
     Interaction terms are not supported. If missing, unsupervised
     splitting is implemented.</p></dd>
-<dt>data</dt>
+
+
+  <dt>data</dt>
 <dd><p>Data frame containing the y-outcome and x-variables.</p></dd>
-<dt>ntree</dt>
+
+
+  <dt>ntree</dt>
 <dd><p>Number of trees.</p></dd>
-<dt>mtry</dt>
+
+
+  <dt>mtry</dt>
 <dd><p>Number of variables to possibly split at each node.
     Default is number of variables divided by 3 for regression.  For all
     other families (including unsupervised settings), the square root
     of number of variables.  Values are rounded up.</p></dd>
-<dt>ytry</dt>
+
+  
+  <dt>ytry</dt>
 <dd><p>The number of randomly selected pseudo-outcomes for
     unsupervised families (see details below).  Default is
     <code>ytry</code>=1.</p></dd>
-<dt>nodesize</dt>
+
+
+  <dt>nodesize</dt>
 <dd><p>Minumum size of terminal node.  The defaults are:
     survival (15), competing risk (15), regression (5), classification
     (1), mixed outcomes (3), unsupervised (3).  It is recommended to
     experiment with different <code>nodesize</code> values.</p></dd>
-<dt>nodedepth</dt>
+
+  
+  <dt>nodedepth</dt>
 <dd><p>Maximum depth to which a tree should be grown.
     Parameter is ignored by default.</p></dd>
-<dt>splitrule</dt>
+
+
+  <dt>splitrule</dt>
 <dd><p>Splitting rule (see below).</p></dd>
-<dt>nsplit</dt>
+
+
+  <dt>nsplit</dt>
 <dd><p>Non-negative integer specifying number of random splits
     for splitting a variable.  When zero, all split values are
     used (deterministic splitting), which can be slower.  By default 
     10 is used.</p></dd>
-<dt>importance</dt>
+
+
+ <dt>importance</dt>
 <dd><p>Method for computing variable importance (VIMP); see
     below.  Default action is <code>importance="none"</code> but VIMP can
     be recovered later using <code class="command">vimp</code> or <code class="command">predict</code>.</p></dd>
-<dt>block.size</dt>
+
+
+  <dt>block.size</dt>
 <dd><p>Determines how cumulative error rate is calculated.
     When <code>NULL</code>, only done once for entire forest; thus plot of the
     cumulative error rate will result in a flat line.  To view the
@@ -311,42 +331,58 @@ This is the main entry point to the randomForestSRC
     equal to <code>block.size</code>, thus resulting in a compromise between
     ensemble and tree VIMP. The default action in that case is to use 10
     trees.</p></dd>
-<dt>bootstrap</dt>
+
+
+  <dt>bootstrap</dt>
 <dd><p>Bootstrap protocol.  Default is <code>by.root</code> which
     bootstraps the data by sampling with or without replacement (without
     replacement is the default; see the option <code>samptype</code> below).
     If <code>none</code>, the data is not bootstrapped (it is not possible to
     return OOB ensembles or prediction error in this case).  If
     <code>by.user</code>, the bootstrap specified by <code>samp</code> is used.</p></dd>
-<dt>samptype</dt>
+
+
+  <dt>samptype</dt>
 <dd><p>Type of bootstrap used when <code>by.root</code> is in
     effect.  Choices are <code>swor</code> (sampling without replacement; 
     the default) and <code>swr</code> (sampling with replacement).</p></dd>
-<dt>samp</dt>
+
+
+  <dt>samp</dt>
 <dd><p>Bootstrap specification when <code>by.user</code> is in
     effect.  Array of dim <code>n x ntree</code> specifying how many
     times each record appears inbag in the bootstrap for each tree.</p></dd>
-<dt>membership</dt>
+
+
+  <dt>membership</dt>
 <dd><p>Should terminal node membership and inbag
     information be returned?</p></dd>
-<dt>sampsize</dt>
+
+
+  <dt>sampsize</dt>
 <dd><p>Function specifying bootstrap size when <code>by.root</code>
     is in effect.  For sampling without replacement, it is the requested
     size of the sample, which by default is .632 times the sample size.
     For sampling with replacement, it is the sample size.  Can also be
     specified using a number.</p></dd>
-<dt>na.action</dt>
+
+
+  <dt>na.action</dt>
 <dd><p>Action taken if the data contains <code>NA</code>'s.
     Possible values are <code>na.omit</code> or <code>na.impute</code>.  The default
     <code>na.omit</code> removes the entire record if any entry is
     <code>NA</code>. Selecting <code>na.impute</code> imputes the data (see below
     for details).  Also see the function <code class="command">impute</code> for fast
     imputation.</p></dd>
-<dt>nimpute</dt>
+
+
+  <dt>nimpute</dt>
 <dd><p>Number of iterations of the missing data algorithm.
     Performance measures such as out-of-bag (OOB) error rates are
     optimistic if <code>nimpute</code> is greater than 1.</p></dd>
-<dt>ntime</dt>
+
+  
+  <dt>ntime</dt>
 <dd><p>Integer value used for survival to constrain ensemble
     calculations to an <code>ntime</code> grid of time points over the
     observed event times.  Alternatively if a vector of values of length
@@ -354,7 +390,9 @@ This is the main entry point to the randomForestSRC
     points to be used (these will be adjusted to match closest observed
     event times).  Setting <code>ntime</code> to zero (or NULL) uses all
     observed event times.</p></dd>
-<dt>cause</dt>
+
+
+  <dt>cause</dt>
 <dd><p>Integer value between 1 and <code>J</code> indicating the event
     of interest for splitting a node for competing risks, where <code>J</code>
     is the number of event types. If not specified, the default is to
@@ -364,7 +402,9 @@ This is the main entry point to the randomForestSRC
     reverts to the default composite split statistic).  Regardless of
     how <code>cause</code> is specified, estimates for all event types are
     returned.</p></dd>
-<dt>perf.type</dt>
+
+
+  <dt>perf.type</dt>
 <dd><p>Optional character value specifying metric used
     for predicted value, variable importance (VIMP), and error rate.
     Reverts to the family default metric if not specified.
@@ -374,13 +414,17 @@ This is the main entry point to the randomForestSRC
     univariate/multivariate classification are:
     <code>perf.type="misclass"</code> (default), <code>perf.type="brier"</code> and
     <code>perf.type="gmean"</code>.</p></dd>
-<dt>proximity</dt>
+
+  
+  <dt>proximity</dt>
 <dd><p>Proximity of cases as measured by the frequency of
     sharing the same terminal node.  This is an <code>n</code>x<code>n</code>
     matrix, which can be large.  Choices are <code>inbag</code>, <code>oob</code>,
     <code>all</code>, <code>TRUE</code>, or <code>FALSE</code>.  Setting <code>proximity =
       TRUE</code> is equivalent to <code>proximity = "inbag"</code>.</p></dd>
-<dt>distance</dt>
+
+  
+  <dt>distance</dt>
 <dd><p>Distance between cases as measured by the ratio of the
     sum of the count of edges from each case to their immediate common
     ancestor node to the sum of the count of edges from each case to the
@@ -390,49 +434,68 @@ This is the main entry point to the randomForestSRC
     <code>inbag</code>, <code>oob</code>, <code>all</code>, <code>TRUE</code>, or <code>FALSE</code>.
     Setting <code>distance = TRUE</code> is equivalent to <code>distance =
     "inbag"</code>.</p></dd>
-<dt>forest.wt</dt>
+
+  
+  <dt>forest.wt</dt>
 <dd><p>Calculate the forest weight matrix?  Creates an
     <code>n</code>x<code>n</code> matrix which can be used for prediction and
     constructing customized estimators.  Choices are similar to
     proximity: <code>inbag</code>, <code>oob</code>, <code>all</code>, <code>TRUE</code>, or
     <code>FALSE</code>.  The default is <code>TRUE</code> which is equivalent to
     <code>inbag</code>.</p></dd>
-<dt>xvar.wt</dt>
+
+
+  <dt>xvar.wt</dt>
 <dd><p>Vector of non-negative weights (does not have to sum
     to 1) representing the probability of selecting a variable for
     splitting.  Default is uniform weights.</p></dd>
-<dt>yvar.wt</dt>
+
+
+  
+  <dt>yvar.wt</dt>
 <dd><p>Used for sending in features with custom splitting.
     For expert use only.</p></dd>
-<dt>split.wt</dt>
+
+
+  <dt>split.wt</dt>
 <dd><p>Vector of non-negative weights used for multiplying
     the split statistic for a variable. A large value encourages the
     node to split on a specific variable. Default is uniform
     weights.</p></dd>
-<dt>case.wt</dt>
+
+
+  <dt>case.wt</dt>
 <dd><p>Vector of non-negative weights (does not have to sum to
     1) for sampling cases.  Observations with larger weights will be
     selected with higher probability in the bootstrap (or subsampled)
     samples.  It is generally better to use real weights rather than
     integers. See the breast data example below illustrating its use
     for class imbalanced data.</p></dd>
-<dt>forest</dt>
+
+  
+  <dt>forest</dt>
 <dd><p>Save key forest values?  Used for prediction on new data
     and required by many of the package functions. Turn this off if you
     are only interested in training a forest.</p></dd>
-<dt>save.memory</dt>
+
+
+  <dt>save.memory</dt>
 <dd><p>Save memory?  Default is to store terminal node
     quantities used for prediction on test data.  This yields rapid
     prediction but can be memory intensive for big data, especially
     competing risks and survival models.  Turn this flag off in those
     cases.</p></dd>
-<dt>var.used</dt>
+
+  
+  <dt>var.used</dt>
 <dd><p>Return statistics on number of times a variable split?
     Default is <code>FALSE</code>.  Possible values are <code>all.trees</code> which
     returns total number of splits of each variable, and <code>by.tree</code>
     which returns a matrix of number a splits for each variable for each
     tree.</p></dd>
-<dt>split.depth</dt>
+
+  
+  <dt>split.depth</dt>
 <dd><p>Records the minimal depth for each variable.
     Default is <code>FALSE</code>.  Possible values are <code>all.trees</code> which
     returns a matrix of the average minimal depth for a variable
@@ -440,17 +503,27 @@ This is the main entry point to the randomForestSRC
     returns a three-dimensional array recording minimal depth for a
     specific case (first dimension) for a variable (second dimension)
     for a specific tree (third dimension).</p></dd>
-<dt>seed</dt>
+
+  
+  <dt>seed</dt>
 <dd><p>Negative integer specifying seed for the random number
     generator.</p></dd>
-<dt>do.trace</dt>
+
+
+  <dt>do.trace</dt>
 <dd><p>Number of seconds between updates to the user on
     approximate time to completion.</p></dd>
-<dt>statistics</dt>
+
+
+  <dt>statistics</dt>
 <dd><p>Should split statistics be returned?  Values can be
     parsed using <code class="command">stat.split</code>.</p></dd>
-<dt>...</dt>
+
+
+  <dt>...</dt>
 <dd><p>Further arguments passed to or from other methods.</p></dd>
+
+  
 </dl></div>
     <div id="details">
     <h2>Details</h2>
@@ -766,147 +839,196 @@ This is the main entry point to the randomForestSRC
 </ol></div>
     <div id="value">
     <h2>Value</h2>
-    <p>An object of class <code>(rfsrc, grow)</code> with the following
+    
+
+<p>An object of class <code>(rfsrc, grow)</code> with the following
   components:</p>
 <dl><dt>call</dt>
 <dd><p>The original call to <code class="command">rfsrc</code>.</p></dd>
-<dt>family</dt>
+
+  <dt>family</dt>
 <dd><p>The family used in the analysis.</p></dd>
-<dt>n</dt>
+
+  <dt>n</dt>
 <dd><p>Sample size of the data (depends upon <code>NA</code>'s, see <code>na.action</code>).</p></dd>
-<dt>ntree</dt>
+
+  <dt>ntree</dt>
 <dd><p>Number of trees grown.</p></dd>
-<dt>mtry</dt>
+
+  <dt>mtry</dt>
 <dd><p>Number of variables randomly selected for splitting at each node.</p></dd>
-<dt>nodesize</dt>
+
+  <dt>nodesize</dt>
 <dd><p>Minimum size of terminal nodes.</p></dd>
-<dt>nodedepth</dt>
+
+  <dt>nodedepth</dt>
 <dd><p>Maximum depth allowed for a tree.</p></dd>
-<dt>splitrule</dt>
+
+  <dt>splitrule</dt>
 <dd><p>Splitting rule used.</p></dd>
-<dt>nsplit</dt>
+
+  <dt>nsplit</dt>
 <dd><p>Number of randomly selected split points.</p></dd>
-<dt>yvar</dt>
+
+  <dt>yvar</dt>
 <dd><p>y-outcome values.</p></dd>
-<dt>yvar.names</dt>
+
+  <dt>yvar.names</dt>
 <dd><p>A character vector of the y-outcome names.</p></dd>
-<dt>xvar</dt>
+
+  <dt>xvar</dt>
 <dd><p>Data frame of x-variables.</p></dd>
-<dt>xvar.names</dt>
+
+  <dt>xvar.names</dt>
 <dd><p>A character vector of the x-variable names.</p></dd>
-<dt>xvar.wt</dt>
+
+  <dt>xvar.wt</dt>
 <dd><p>Vector of non-negative weights specifying the
     probability used to select a variable for splitting a node.</p></dd>
-<dt>split.wt</dt>
+
+  <dt>split.wt</dt>
 <dd><p>Vector of non-negative weights specifying
     multiplier by which the split statistic for a covariate is adjusted.</p></dd>
-<dt>cause.wt</dt>
+
+  <dt>cause.wt</dt>
 <dd><p>Vector of weights used for the composite competing
     risk splitting rule.</p></dd>
-<dt>leaf.count</dt>
+
+  <dt>leaf.count</dt>
 <dd><p>Number of terminal nodes for each tree in the
     forest. Vector of length <code>ntree</code>.  A value of zero indicates
     a rejected tree (can occur when imputing missing data).
     Values of one indicate tree stumps.</p></dd>
-<dt>proximity</dt>
+
+  <dt>proximity</dt>
 <dd><p>Proximity matrix recording the frequency of pairs of data points
     occur within the same terminal node.</p></dd>
-<dt>forest</dt>
+
+  <dt>forest</dt>
 <dd><p>If <code>forest=TRUE</code>, the forest object is returned.
     This object is used for prediction with new test data
 	  sets and is required for other R-wrappers.</p></dd>
-<dt>forest.wt</dt>
+
+  <dt>forest.wt</dt>
 <dd><p>Forest weight matrix.</p></dd>
-<dt>membership</dt>
+
+  <dt>membership</dt>
 <dd><p>Matrix recording terminal node membership where
     each column records node mebership for a case for a tree (rows).</p></dd>
-<dt>splitrule</dt>
+
+  <dt>splitrule</dt>
 <dd><p>Splitting rule used.</p></dd>
-<dt>inbag</dt>
+
+  <dt>inbag</dt>
 <dd><p>Matrix recording inbag membership where each column
     contains the number of times that a case appears in the bootstrap
     sample for a tree (rows).</p></dd>
-<dt>var.used</dt>
+
+  <dt>var.used</dt>
 <dd><p>Count of the number of times a variable is used in
     growing the forest.</p></dd>
-<dt>imputed.indv</dt>
+
+  <dt>imputed.indv</dt>
 <dd><p>Vector of indices for cases with missing
     values.</p></dd>
-<dt>imputed.data</dt>
+
+  <dt>imputed.data</dt>
 <dd><p>Data frame of the imputed data. The first
 	  column(s) are reserved for the y-outcomes, after which the
 	  x-variables are listed.</p></dd>
-<dt>split.depth</dt>
+
+  <dt>split.depth</dt>
 <dd><p>Matrix (i,j) or array (i,j,k) recording the
     minimal depth for variable j for case i, either averaged over
     the forest, or by tree k.</p></dd>
-<dt>node.stats</dt>
+
+  <dt>node.stats</dt>
 <dd><p>Split statistics returned when
     <code>statistics=TRUE</code> which can be parsed using <code class="command">stat.split</code>.</p></dd>
-<dt>err.rate</dt>
+
+
+  <dt>err.rate</dt>
 <dd><p>Tree cumulative OOB error rate.</p></dd>
-<dt>err.block.rate</dt>
+
+  <dt>err.block.rate</dt>
 <dd><p>When <code>importance=TRUE</code>, vector of the
   cumulative error rate for each ensemble block comprised of
   <code>block.size</code> trees.  So with <code>block.size = 10</code>, entries are
   the cumulative error rate for the first 10 trees, the first 20 trees,
   30 trees, and so on.  As another exmple, if <code>block.size = 1</code>,
   entries are the error rate for each tree.</p></dd>
-<dt>importance</dt>
+
+
+  
+    
+  <dt>importance</dt>
 <dd><p>Variable importance (VIMP) for each x-variable.</p></dd>
-<dt>predicted</dt>
+
+  <dt>predicted</dt>
 <dd><p>In-bag predicted value.</p></dd>
-<dt>predicted.oob</dt>
+
+  <dt>predicted.oob</dt>
 <dd><p>OOB predicted value.</p></dd>
 </dl><p><br></p>
 <dl><dt>++++++++</dt>
 <dd><p>for classification settings, additionally ++++++++</p></dd>
-</dl><p><br></p>
+ </dl><p><br></p>
 <dl><dt>class</dt>
 <dd><p>In-bag predicted class labels.</p></dd>
-<dt>class.oob</dt>
+
+  <dt>class.oob</dt>
 <dd><p>OOB predicted class labels.</p></dd>
 </dl><p><br></p>
 <dl><dt>++++++++</dt>
 <dd><p>for multivariate settings, additionally ++++++++</p></dd>
-</dl><p><br></p>
+ </dl><p><br></p>
 <dl><dt>regrOutput</dt>
 <dd><p>List containing performance values for
 	  multivariate regression outcomes (applies only in
 	  multivariate settings).</p></dd>
-<dt>clasOutput</dt>
+
+	<dt>clasOutput</dt>
 <dd><p>List containing performance values for
 	  multivariate categorical (factor) outcomes (applies only in
 	  multivariate settings).</p></dd>
 </dl><p><br></p>
 <dl><dt>++++++++</dt>
 <dd><p>for survival settings, additionally ++++++++</p></dd>
-</dl><p><br></p>
+ </dl><p><br></p>
 <dl><dt>survival</dt>
 <dd><p>In-bag survival function.</p></dd>
-<dt>survival.oob</dt>
+
+  <dt>survival.oob</dt>
 <dd><p>OOB survival function.</p></dd>
-<dt>chf</dt>
+
+  <dt>chf</dt>
 <dd><p>In-bag cumulative hazard function (CHF).</p></dd>
-<dt>chf.oob</dt>
+
+  <dt>chf.oob</dt>
 <dd><p>OOB CHF.</p></dd>
-<dt>time.interest</dt>
+
+  <dt>time.interest</dt>
 <dd><p>Ordered unique death times.</p></dd>
-<dt>ndead</dt>
+
+  <dt>ndead</dt>
 <dd><p>Number of deaths.</p></dd>
 </dl><p><br></p>
 <dl><dt>++++++++</dt>
 <dd><p>for competing risks, additionally ++++++++</p></dd>
-</dl><p><br></p>
+ </dl><p><br></p>
 <dl><dt>chf</dt>
 <dd><p>In-bag cause-specific cumulative hazard function (CSCHF)
     for each event.</p></dd>
-<dt>chf.oob</dt>
+
+  <dt>chf.oob</dt>
 <dd><p>OOB CSCHF.</p></dd>
-<dt>cif</dt>
+
+  <dt>cif</dt>
 <dd><p>In-bag cumulative incidence function (CIF) for each event.</p></dd>
-<dt>cif.oob</dt>
+
+  <dt>cif.oob</dt>
 <dd><p>OOB CIF.</p></dd>
+
 </dl></div>
     <div id="note">
     <h2>Note</h2>
@@ -1059,450 +1181,449 @@ This is the main entry point to the randomForestSRC
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co">##------------------------------------------------------------</span>
-<span class="co">## survival analysis</span>
-<span class="co">##------------------------------------------------------------</span>
-
-<span class="co">## veteran data</span>
-<span class="co">## randomized trial of two treatment regimens for lung cancer</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">veteran</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span>
-<span class="va">v.obj</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">veteran</span>, 
-                   ntree <span class="op">=</span> <span class="fl">100</span>, block.size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-
-<span class="co">## plot tree number 3</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="get.tree.rfsrc.html">get.tree</a></span><span class="op">(</span><span class="va">v.obj</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co">## print results of trained forest</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">v.obj</span><span class="op">)</span>
-
-<span class="co">## plot results of trained forest</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">v.obj</span><span class="op">)</span>
-
-<span class="co">## plot survival curves for first 10 individuals -- direct way</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/matplot.html" class="external-link">matplot</a></span><span class="op">(</span><span class="va">v.obj</span><span class="op">$</span><span class="va">time.interest</span>, <span class="fl">100</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">v.obj</span><span class="op">$</span><span class="va">survival.oob</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span><span class="op">)</span>,
-    xlab <span class="op">=</span> <span class="st">"Time"</span>, ylab <span class="op">=</span> <span class="st">"Survival"</span>, type <span class="op">=</span> <span class="st">"l"</span>, lty <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-
-<span class="co">## plot survival curves for first 10 individuals</span>
-<span class="co">## using function "plot.survival" </span>
-<span class="fu"><a href="plot.survival.rfsrc.html">plot.survival</a></span><span class="op">(</span><span class="va">v.obj</span>, subset <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span>
-
-<span class="co"># \donttest{</span>
-<span class="co">## obtain Brier score using KM and RSF censoring distribution estimators</span>
-<span class="va">bs.km</span> <span class="op">&lt;-</span> <span class="fu"><a href="plot.survival.rfsrc.html">get.brier.survival</a></span><span class="op">(</span><span class="va">v.obj</span>, cens.model <span class="op">=</span> <span class="st">"km"</span><span class="op">)</span><span class="op">$</span><span class="va">brier.score</span>
-<span class="va">bs.rsf</span> <span class="op">&lt;-</span> <span class="fu"><a href="plot.survival.rfsrc.html">get.brier.survival</a></span><span class="op">(</span><span class="va">v.obj</span>, cens.model <span class="op">=</span> <span class="st">"rfsrc"</span><span class="op">)</span><span class="op">$</span><span class="va">brier.score</span>
-
-<span class="co">## plot the brier score</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">bs.km</span>, type <span class="op">=</span> <span class="st">"s"</span>, col <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">bs.rsf</span>, type <span class="op">=</span><span class="st">"s"</span>, col <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cens.model = km"</span>, <span class="st">"cens.model = rfsrc"</span><span class="op">)</span>, fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">4</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co">## plot CRPS (continuous rank probability score) as function of time</span>
-<span class="co">## here's how to calculate the CRPS for every time point</span>
-<span class="va">trapz</span> <span class="op">&lt;-</span> <span class="fu">randomForestSRC</span><span class="fu">:::</span><span class="va">trapz</span>
-<span class="va">time</span> <span class="op">&lt;-</span> <span class="va">v.obj</span><span class="op">$</span><span class="va">time.interest</span>
-<span class="va">crps.km</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">time</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">j</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu">trapz</span><span class="op">(</span><span class="va">time</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">j</span><span class="op">]</span>, <span class="va">bs.km</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">j</span>, <span class="fl">2</span><span class="op">]</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/diff.html" class="external-link">diff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">time</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">j</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span>
-<span class="va">crps.rsf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">time</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">j</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu">trapz</span><span class="op">(</span><span class="va">time</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">j</span><span class="op">]</span>, <span class="va">bs.rsf</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">j</span>, <span class="fl">2</span><span class="op">]</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/diff.html" class="external-link">diff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">time</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">j</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">crps.km</span>, ylab <span class="op">=</span> <span class="st">"CRPS"</span>, type <span class="op">=</span> <span class="st">"s"</span>, col <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">crps.rsf</span>, type <span class="op">=</span><span class="st">"s"</span>, col <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"bottomright"</span>, legend<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cens.model = km"</span>, <span class="st">"cens.model = rfsrc"</span><span class="op">)</span>, fill<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">4</span><span class="op">)</span><span class="op">)</span>
-
-
-<span class="co">## fast nodesize optimization for veteran data</span>
-<span class="co">## optimal nodesize in survival is larger than other families</span>
-<span class="co">## see the function "tune" for more examples</span>
-<span class="fu"><a href="tune.rfsrc.html">tune.nodesize</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>,<span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">veteran</span><span class="op">)</span>
-
-
-<span class="co">## Primary biliary cirrhosis (PBC) of the liver</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">pbc</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span>
-<span class="va">pbc.obj</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">days</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">pbc</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">pbc.obj</span><span class="op">)</span>
-
-
-<span class="co">## save.memory example for survival</span>
-<span class="co">## growing many deep trees creates memory issue without this option!</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">pbc</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">rfsrc</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">days</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">pbc</span>, splitrule <span class="op">=</span> <span class="st">"random"</span>,
-            ntree <span class="op">=</span> <span class="fl">25000</span>, nodesize <span class="op">=</span> <span class="fl">1</span>, save.memory <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
-
-
-
-<span class="co">##------------------------------------------------------------</span>
-<span class="co">## trees can be plotted for any family </span>
-<span class="co">## see get.tree for details and more examples</span>
-<span class="co">##------------------------------------------------------------</span>
-
-<span class="co">## survival where factors have many levels</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">veteran</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span>
-<span class="va">vd</span> <span class="op">&lt;-</span> <span class="va">veteran</span>
-<span class="va">vd</span><span class="op">$</span><span class="va">celltype</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">vd</span><span class="op">$</span><span class="va">celltype</span><span class="op">)</span>
-<span class="va">vd</span><span class="op">$</span><span class="va">diagtime</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">vd</span><span class="op">$</span><span class="va">diagtime</span><span class="op">)</span>
-<span class="va">vd.obj</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>,<span class="va">status</span><span class="op">)</span><span class="op">~</span><span class="va">.</span>, <span class="va">vd</span>, ntree <span class="op">=</span> <span class="fl">100</span>, nodesize <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="get.tree.rfsrc.html">get.tree</a></span><span class="op">(</span><span class="va">vd.obj</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co">## classification</span>
-<span class="va">iris.obj</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">iris</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="get.tree.rfsrc.html">get.tree</a></span><span class="op">(</span><span class="va">iris.obj</span>, <span class="fl">25</span>, class.type <span class="op">=</span> <span class="st">"bayes"</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="get.tree.rfsrc.html">get.tree</a></span><span class="op">(</span><span class="va">iris.obj</span>, <span class="fl">25</span>, target <span class="op">=</span> <span class="st">"setosa"</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="get.tree.rfsrc.html">get.tree</a></span><span class="op">(</span><span class="va">iris.obj</span>, <span class="fl">25</span>, target <span class="op">=</span> <span class="st">"versicolor"</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="get.tree.rfsrc.html">get.tree</a></span><span class="op">(</span><span class="va">iris.obj</span>, <span class="fl">25</span>, target <span class="op">=</span> <span class="st">"virginica"</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## simple example of VIMP using iris classification</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="co">## directly from trained forest</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">rfsrc</span><span class="op">(</span><span class="va">Species</span><span class="op">~</span><span class="va">.</span>,<span class="va">iris</span>,importance<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span><span class="va">importance</span><span class="op">)</span>
-
-<span class="co">## VIMP (and performance) use misclassification error by default</span>
-<span class="co">## but brier prediction error can be requested</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">rfsrc</span><span class="op">(</span><span class="va">Species</span><span class="op">~</span><span class="va">.</span>,<span class="va">iris</span>,importance<span class="op">=</span><span class="cn">TRUE</span>,perf.type<span class="op">=</span><span class="st">"brier"</span><span class="op">)</span><span class="op">$</span><span class="va">importance</span><span class="op">)</span>
-
-<span class="co">## example using vimp function (see vimp help file for details)</span>
-<span class="va">iris.obj</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">iris</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="vimp.rfsrc.html">vimp</a></span><span class="op">(</span><span class="va">iris.obj</span><span class="op">)</span><span class="op">$</span><span class="va">importance</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="vimp.rfsrc.html">vimp</a></span><span class="op">(</span><span class="va">iris.obj</span>,perf.type<span class="op">=</span><span class="st">"brier"</span><span class="op">)</span><span class="op">$</span><span class="va">importance</span><span class="op">)</span>
-
-<span class="co">## example using hold out vimp (see holdout.vimp help file for details)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="holdout.vimp.rfsrc.html">holdout.vimp</a></span><span class="op">(</span><span class="va">Species</span><span class="op">~</span><span class="va">.</span>,<span class="va">iris</span><span class="op">)</span><span class="op">$</span><span class="va">importance</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="holdout.vimp.rfsrc.html">holdout.vimp</a></span><span class="op">(</span><span class="va">Species</span><span class="op">~</span><span class="va">.</span>,<span class="va">iris</span>,perf.type<span class="op">=</span><span class="st">"brier"</span><span class="op">)</span><span class="op">$</span><span class="va">importance</span><span class="op">)</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## confidence interval for vimp using subsampling</span>
-<span class="co">## compare with holdout vimp</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="co">## new York air quality measurements</span>
-<span class="va">o</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="va">Ozone</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">airquality</span><span class="op">)</span>
-<span class="va">so</span> <span class="op">&lt;-</span> <span class="fu"><a href="subsample.rfsrc.html">subsample</a></span><span class="op">(</span><span class="va">o</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">so</span><span class="op">)</span>
-
-<span class="co">## compare with holdout vimp</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="holdout.vimp.rfsrc.html">holdout.vimp</a></span><span class="op">(</span><span class="va">Ozone</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">airquality</span><span class="op">)</span><span class="op">$</span><span class="va">importance</span><span class="op">)</span>
-
-
-<span class="co">##------------------------------------------------------------</span>
-<span class="co">## example of imputation in survival analysis</span>
-<span class="co">##------------------------------------------------------------</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">pbc</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span>
-<span class="va">pbc.obj2</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">days</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">pbc</span>, na.action <span class="op">=</span> <span class="st">"na.impute"</span><span class="op">)</span>
-
-<span class="co">## same as above but iterate the missing data algorithm</span>
-<span class="va">pbc.obj3</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">days</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">pbc</span>,
-         na.action <span class="op">=</span> <span class="st">"na.impute"</span>, nimpute <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
-
-<span class="co">## fast way to impute data (no inference is done)</span>
-<span class="co">## see impute for more details</span>
-<span class="va">pbc.imp</span> <span class="op">&lt;-</span> <span class="fu"><a href="impute.rfsrc.html">impute</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">days</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">pbc</span>, splitrule <span class="op">=</span> <span class="st">"random"</span><span class="op">)</span>
-
-<span class="co">##------------------------------------------------------------</span>
-<span class="co">## compare RF-SRC to Cox regression</span>
-<span class="co">## Illustrates C-index and Brier score measures of performance</span>
-<span class="co">## assumes "pec" and "survival" libraries are loaded</span>
-<span class="co">##------------------------------------------------------------</span>
-
-<span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/therneau/survival" class="external-link">"survival"</a></span>, logical.return <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-    <span class="op">&amp;</span> <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"pec"</span>, logical.return <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-    <span class="op">&amp;</span> <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"prodlim"</span>, logical.return <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
-
-<span class="op">{</span>
-  <span class="co">##prediction function required for pec</span>
-  <span class="va">predictSurvProb.rfsrc</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span>, <span class="va">newdata</span>, <span class="va">times</span>, <span class="va">...</span><span class="op">)</span><span class="op">{</span>
-    <span class="va">ptemp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">object</span>,newdata<span class="op">=</span><span class="va">newdata</span>,<span class="va">...</span><span class="op">)</span><span class="op">$</span><span class="va">survival</span>
-    <span class="va">pos</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/prodlim/man/sindex.html" class="external-link">sindex</a></span><span class="op">(</span>jump.times <span class="op">=</span> <span class="va">object</span><span class="op">$</span><span class="va">time.interest</span>, eval.times <span class="op">=</span> <span class="va">times</span><span class="op">)</span>
-    <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fl">1</span>,<span class="va">ptemp</span><span class="op">)</span><span class="op">[</span>, <span class="va">pos</span> <span class="op">+</span> <span class="fl">1</span><span class="op">]</span>
-    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">NROW</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span> <span class="op">!=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">NROW</a></span><span class="op">(</span><span class="va">newdata</span><span class="op">)</span> <span class="op">||</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">NCOL</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span> <span class="op">!=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span><span class="op">)</span>
-      <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"Prediction failed"</span><span class="op">)</span>
-    <span class="va">p</span>
-  <span class="op">}</span>
-
-  <span class="co">## data, formula specifications</span>
-  <span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">pbc</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span>
-  <span class="va">pbc.na</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html" class="external-link">na.omit</a></span><span class="op">(</span><span class="va">pbc</span><span class="op">)</span>  <span class="co">##remove NA's</span>
-  <span class="va">surv.f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">as.formula</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">days</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span><span class="op">)</span>
-  <span class="va">pec.f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">as.formula</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/prodlim/man/Hist.html" class="external-link">Hist</a></span><span class="op">(</span><span class="va">days</span>,<span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="fl">1</span><span class="op">)</span>
-
-  <span class="co">## run cox/rfsrc models</span>
-  <span class="co">## for illustration we use a small number of trees</span>
-  <span class="va">cox.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/coxph.html" class="external-link">coxph</a></span><span class="op">(</span><span class="va">surv.f</span>, data <span class="op">=</span> <span class="va">pbc.na</span>, x <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-  <span class="va">rfsrc.obj</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="va">surv.f</span>, <span class="va">pbc.na</span>, ntree <span class="op">=</span> <span class="fl">150</span><span class="op">)</span>
-
-  <span class="co">## compute bootstrap cross-validation estimate of expected Brier score</span>
-  <span class="co">## see Mogensen, Ishwaran and Gerds (2012) Journal of Statistical Software</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">17743</span><span class="op">)</span>
-  <span class="va">prederror.pbc</span> <span class="op">&lt;-</span> <span class="fu">pec</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">cox.obj</span>,<span class="va">rfsrc.obj</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">pbc.na</span>, formula <span class="op">=</span> <span class="va">pec.f</span>,
-                        splitMethod <span class="op">=</span> <span class="st">"bootcv"</span>, B <span class="op">=</span> <span class="fl">50</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">prederror.pbc</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prederror.pbc</span><span class="op">)</span>
-
-  <span class="co">## compute out-of-bag C-index for cox regression and compare to rfsrc</span>
-  <span class="va">rfsrc.obj</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="va">surv.f</span>, <span class="va">pbc.na</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"out-of-bag Cox Analysis ..."</span>, <span class="st">"\n"</span><span class="op">)</span>
-  <span class="va">cox.err</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="kw">function</span><span class="op">(</span><span class="va">b</span><span class="op">)</span> <span class="op">{</span>
-    <span class="kw">if</span> <span class="op">(</span><span class="va">b</span><span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%%</a></span><span class="fl">10</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"cox bootstrap:"</span>, <span class="va">b</span>, <span class="st">"\n"</span><span class="op">)</span>
-    <span class="va">train</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">pbc.na</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">pbc.na</span><span class="op">)</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-    <span class="va">cox.obj</span> <span class="op">&lt;-</span> <span class="kw"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch</a></span><span class="op">(</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/coxph.html" class="external-link">coxph</a></span><span class="op">(</span><span class="va">surv.f</span>, <span class="va">pbc.na</span><span class="op">[</span><span class="va">train</span>, <span class="op">]</span><span class="op">)</span><span class="op">}</span>, error<span class="op">=</span><span class="kw">function</span><span class="op">(</span><span class="va">ex</span><span class="op">)</span><span class="op">{</span><span class="cn">NULL</span><span class="op">}</span><span class="op">)</span>
-    <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">cox.obj</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-      <span class="fu">get.cindex</span><span class="op">(</span><span class="va">pbc.na</span><span class="op">$</span><span class="va">days</span><span class="op">[</span><span class="op">-</span><span class="va">train</span><span class="op">]</span>, <span class="va">pbc.na</span><span class="op">$</span><span class="va">status</span><span class="op">[</span><span class="op">-</span><span class="va">train</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">cox.obj</span>, <span class="va">pbc.na</span><span class="op">[</span><span class="op">-</span><span class="va">train</span>, <span class="op">]</span><span class="op">)</span><span class="op">)</span>
-    <span class="op">}</span> <span class="kw">else</span> <span class="cn">NA</span>
-  <span class="op">}</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"\n\tOOB error rates\n\n"</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"\tRSF            : "</span>, <span class="va">rfsrc.obj</span><span class="op">$</span><span class="va">err.rate</span><span class="op">[</span><span class="va">rfsrc.obj</span><span class="op">$</span><span class="va">ntree</span><span class="op">]</span>, <span class="st">"\n"</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"\tCox regression : "</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">cox.err</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="co">##------------------------------------------------------------</span>
-<span class="co">## competing risks</span>
-<span class="co">##------------------------------------------------------------</span>
-
-<span class="co">## WIHS analysis</span>
-<span class="co">## cumulative incidence function (CIF) for HAART and AIDS stratified by IDU</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">wihs</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span>
-<span class="va">wihs.obj</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">wihs</span>, nsplit <span class="op">=</span> <span class="fl">3</span>, ntree <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>
-<span class="fu"><a href="plot.competing.risk.rfsrc.html">plot.competing.risk</a></span><span class="op">(</span><span class="va">wihs.obj</span><span class="op">)</span>
-<span class="va">cif</span> <span class="op">&lt;-</span> <span class="va">wihs.obj</span><span class="op">$</span><span class="va">cif.oob</span>
-<span class="va">Time</span> <span class="op">&lt;-</span> <span class="va">wihs.obj</span><span class="op">$</span><span class="va">time.interest</span>
-<span class="va">idu</span> <span class="op">&lt;-</span> <span class="va">wihs</span><span class="op">$</span><span class="va">idu</span>
-<span class="va">cif.haart</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">cif</span><span class="op">[</span>,,<span class="fl">1</span><span class="op">]</span><span class="op">[</span><span class="va">idu</span> <span class="op">==</span> <span class="fl">0</span>,<span class="op">]</span>, <span class="fl">2</span>, <span class="va">mean</span><span class="op">)</span>,
-                   <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">cif</span><span class="op">[</span>,,<span class="fl">1</span><span class="op">]</span><span class="op">[</span><span class="va">idu</span> <span class="op">==</span> <span class="fl">1</span>,<span class="op">]</span>, <span class="fl">2</span>, <span class="va">mean</span><span class="op">)</span><span class="op">)</span>
-<span class="va">cif.aids</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">cif</span><span class="op">[</span>,,<span class="fl">2</span><span class="op">]</span><span class="op">[</span><span class="va">idu</span> <span class="op">==</span> <span class="fl">0</span>,<span class="op">]</span>, <span class="fl">2</span>, <span class="va">mean</span><span class="op">)</span>,
-                   <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">cif</span><span class="op">[</span>,,<span class="fl">2</span><span class="op">]</span><span class="op">[</span><span class="va">idu</span> <span class="op">==</span> <span class="fl">1</span>,<span class="op">]</span>, <span class="fl">2</span>, <span class="va">mean</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/matplot.html" class="external-link">matplot</a></span><span class="op">(</span><span class="va">Time</span>, <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">cif.haart</span>, <span class="va">cif.aids</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">"l"</span>,
-        lty <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">3</span>,
-        ylab <span class="op">=</span> <span class="st">"Cumulative Incidence"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topleft"</span>,
-       legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"HAART (Non-IDU)"</span>, <span class="st">"HAART (IDU)"</span>, <span class="st">"AIDS (Non-IDU)"</span>, <span class="st">"AIDS (IDU)"</span><span class="op">)</span>,
-       lty <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">3</span>, cex <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span>
-
-
-<span class="co">## illustrates the various splitting rules</span>
-<span class="co">## illustrates event specific and non-event specific variable selection</span>
-<span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/therneau/survival" class="external-link">"survival"</a></span>, logical.return <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-
-  <span class="co">## use the pbc data from the survival package</span>
-  <span class="co">## events are transplant (1) and death (2)</span>
-  <span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">pbc</span>, package <span class="op">=</span> <span class="st">"survival"</span><span class="op">)</span>
-  <span class="va">pbc</span><span class="op">$</span><span class="va">id</span> <span class="op">&lt;-</span> <span class="cn">NULL</span>
-
-  <span class="co">## modified Gray's weighted log-rank splitting</span>
-  <span class="co">## (equivalent to cause=c(1,1) and splitrule="logrankCR")</span>
-  <span class="va">pbc.cr</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">pbc</span><span class="op">)</span>
- 
-  <span class="co">## log-rank cause-1 specific splitting and targeted VIMP for cause 1</span>
-  <span class="va">pbc.log1</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">pbc</span>, 
-              splitrule <span class="op">=</span> <span class="st">"logrankCR"</span>, cause <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span>, importance <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-  <span class="co">## log-rank cause-2 specific splitting and targeted VIMP for cause 2</span>
-  <span class="va">pbc.log2</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">pbc</span>, 
-              splitrule <span class="op">=</span> <span class="st">"logrankCR"</span>, cause <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span>, importance <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-  <span class="co">## extract VIMP from the log-rank forests: event-specific</span>
-  <span class="co">## extract minimal depth from the Gray log-rank forest: non-event specific</span>
-  <span class="va">var.perf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>md <span class="op">=</span> <span class="fu"><a href="max.subtree.rfsrc.html">max.subtree</a></span><span class="op">(</span><span class="va">pbc.cr</span><span class="op">)</span><span class="op">$</span><span class="va">order</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>,
-                         vimp1 <span class="op">=</span> <span class="fl">100</span> <span class="op">*</span> <span class="va">pbc.log1</span><span class="op">$</span><span class="va">importance</span><span class="op">[</span> ,<span class="fl">1</span><span class="op">]</span>,
-                         vimp2 <span class="op">=</span> <span class="fl">100</span> <span class="op">*</span> <span class="va">pbc.log2</span><span class="op">$</span><span class="va">importance</span><span class="op">[</span> ,<span class="fl">2</span><span class="op">]</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">var.perf</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">var.perf</span><span class="op">$</span><span class="va">md</span><span class="op">)</span>, <span class="op">]</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
-
-<span class="op">}</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## regression analysis</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="co">## new York air quality measurements</span>
-<span class="va">airq.obj</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="va">Ozone</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">airquality</span>, na.action <span class="op">=</span> <span class="st">"na.impute"</span><span class="op">)</span>
-
-<span class="co"># partial plot of variables (see plot.variable for more details)</span>
-<span class="fu"><a href="plot.variable.rfsrc.html">plot.variable</a></span><span class="op">(</span><span class="va">airq.obj</span>, partial <span class="op">=</span> <span class="cn">TRUE</span>, smooth.lines <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="co">## motor trend cars</span>
-<span class="va">mtcars.obj</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="va">mpg</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## regression with custom bootstrap</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="va">ntree</span> <span class="op">&lt;-</span> <span class="fl">25</span>
-<span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span>
-<span class="va">s.size</span> <span class="op">&lt;-</span> <span class="va">n</span> <span class="op">/</span> <span class="fl">2</span>
-<span class="va">swr</span> <span class="op">&lt;-</span> <span class="cn">TRUE</span>
-<span class="va">samp</span> <span class="op">&lt;-</span> <span class="fu">randomForestSRC</span><span class="fu">:::</span><span class="fu">make.sample</span><span class="op">(</span><span class="va">ntree</span>, <span class="va">n</span>, <span class="va">s.size</span>, <span class="va">swr</span><span class="op">)</span>
-<span class="va">o</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="va">mpg</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">mtcars</span>, bootstrap <span class="op">=</span> <span class="st">"by.user"</span>, samp <span class="op">=</span> <span class="va">samp</span><span class="op">)</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## classification analysis</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="co">## iris data</span>
-<span class="va">iris.obj</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">iris</span><span class="op">)</span>
-
-<span class="co">## wisconsin prognostic breast cancer data</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">breast</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span>
-<span class="va">breast.obj</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="va">status</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">breast</span>, block.size<span class="op">=</span><span class="fl">1</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">breast.obj</span><span class="op">)</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## big data set, reduce number of variables using simple method</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="co">## use Iowa housing data set</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">housing</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span>
-
-<span class="co">## original data contains lots of missing data, use fast imputation</span>
-<span class="co">## however see impute for other methods</span>
-<span class="va">housing2</span> <span class="op">&lt;-</span> <span class="fu"><a href="impute.rfsrc.html">impute</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">housing</span>, fast <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="co">## run shallow trees to find variables that split any tree</span>
-<span class="va">xvar.used</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="va">SalePrice</span> <span class="op">~</span><span class="va">.</span>, <span class="va">housing2</span>, ntree <span class="op">=</span> <span class="fl">250</span>, nodedepth <span class="op">=</span> <span class="fl">4</span>,
-                   var.used<span class="op">=</span><span class="st">"all.trees"</span>, mtry <span class="op">=</span> <span class="cn">Inf</span>, nsplit <span class="op">=</span> <span class="fl">100</span><span class="op">)</span><span class="op">$</span><span class="va">var.used</span>
-
-<span class="co">## now fit forest using filtered variables</span>
-<span class="va">xvar.keep</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">xvar.used</span><span class="op">)</span><span class="op">[</span><span class="va">xvar.used</span> <span class="op">&gt;=</span> <span class="fl">1</span><span class="op">]</span>
-<span class="va">o</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="va">SalePrice</span><span class="op">~</span><span class="va">.</span>, <span class="va">housing2</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SalePrice"</span>, <span class="va">xvar.keep</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">o</span><span class="op">)</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## imbalanced classification data</span>
-<span class="co">## see the "imbalanced" function for further details</span>
-<span class="co">##</span>
-<span class="co">## a) use balanced random forests with undersampling of the majority class</span>
-<span class="co">## Specifically let n0, n1 be sample sizes for majority, minority</span>
-<span class="co">## cases.  We sample 2 x n1 cases with majority, minority cases chosen</span>
-<span class="co">## with probabilities n1/n, n0/n where n=n0+n1</span>
-<span class="co">##</span>
-<span class="co">## b) balanced random forests using "imbalanced"</span>
-<span class="co">##</span>
-<span class="co">## c) q-classifier (RFQ) using "imbalanced" </span>
-<span class="co">##</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="co">## Wisconsin breast cancer example</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">breast</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span>
-<span class="va">breast</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html" class="external-link">na.omit</a></span><span class="op">(</span><span class="va">breast</span><span class="op">)</span>
-
-<span class="co">## balanced random forests - brute force</span>
-<span class="va">y</span> <span class="op">&lt;-</span> <span class="va">breast</span><span class="op">$</span><span class="va">status</span>
-<span class="va">obdirect</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="va">status</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">breast</span>, nsplit <span class="op">=</span> <span class="fl">10</span>,
-            case.wt <span class="op">=</span> <span class="fu">randomForestSRC</span><span class="fu">:::</span><span class="fu">make.wt</span><span class="op">(</span><span class="va">y</span><span class="op">)</span>,
-            sampsize <span class="op">=</span> <span class="fu">randomForestSRC</span><span class="fu">:::</span><span class="fu">make.size</span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">obdirect</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="imbalanced.rfsrc.html">get.imbalanced.performance</a></span><span class="op">(</span><span class="va">obdirect</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co">## balanced random forests - using "imbalanced" </span>
-<span class="va">ob</span> <span class="op">&lt;-</span> <span class="fu"><a href="imbalanced.rfsrc.html">imbalanced</a></span><span class="op">(</span><span class="va">status</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">breast</span>, method <span class="op">=</span> <span class="st">"brf"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">ob</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="imbalanced.rfsrc.html">get.imbalanced.performance</a></span><span class="op">(</span><span class="va">ob</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co">## q-classifier (RFQ) - using "imbalanced" </span>
-<span class="va">oq</span> <span class="op">&lt;-</span> <span class="fu"><a href="imbalanced.rfsrc.html">imbalanced</a></span><span class="op">(</span><span class="va">status</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">breast</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">oq</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="imbalanced.rfsrc.html">get.imbalanced.performance</a></span><span class="op">(</span><span class="va">oq</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co">## q-classifier (RFQ) - with auc splitting</span>
-<span class="va">oqauc</span> <span class="op">&lt;-</span> <span class="fu"><a href="imbalanced.rfsrc.html">imbalanced</a></span><span class="op">(</span><span class="va">status</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">breast</span>, splitrule <span class="op">=</span> <span class="st">"auc"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">oqauc</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="imbalanced.rfsrc.html">get.imbalanced.performance</a></span><span class="op">(</span><span class="va">oqauc</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## unsupervised analysis</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="co">## two equivalent ways to implement unsupervised forests</span>
-<span class="va">mtcars.unspv</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="fu">Unsupervised</span><span class="op">(</span><span class="op">)</span> <span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span>
-<span class="va">mtcars2.unspv</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span>data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span>
-
-
-<span class="co">## illustration of sidClustering for the mtcars data</span>
-<span class="co">## see sidClustering for more details</span>
-<span class="va">mtcars.sid</span> <span class="op">&lt;-</span> <span class="fu"><a href="sidClustering.rfsrc.html">sidClustering</a></span><span class="op">(</span><span class="va">mtcars</span>, k <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">mtcars.sid</span><span class="op">$</span><span class="va">cl</span><span class="op">[</span>, <span class="fl">3</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">mtcars.sid</span><span class="op">$</span><span class="va">cl</span><span class="op">[</span>, <span class="fl">10</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
-
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## bivariate regression using Mahalanobis splitting</span>
-<span class="co">## also illustrates user specified covariance matrix</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"mlbench"</span>, logical.return <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-
-  <span class="co">## load boston housing data, specify the bivariate regression</span>
-  <span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">BostonHousing</span><span class="op">)</span>
-  <span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">formula</a></span><span class="op">(</span><span class="st">"Multivar(lstat, nox) ~."</span><span class="op">)</span>
-  
-  <span class="co">## Mahalanobis splitting  </span>
-  <span class="va">bh.mreg</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="va">f</span>, <span class="va">BostonHousing</span>, importance <span class="op">=</span> <span class="cn">TRUE</span>, splitrule <span class="op">=</span> <span class="st">"mahal"</span><span class="op">)</span>
-  
-  <span class="co">## performance error and vimp</span>
-  <span class="va">vmp</span> <span class="op">&lt;-</span> <span class="fu">get.mv.vimp</span><span class="op">(</span><span class="va">bh.mreg</span><span class="op">)</span>
-  <span class="va">pred</span> <span class="op">&lt;-</span> <span class="fu">get.mv.predicted</span><span class="op">(</span><span class="va">bh.mreg</span><span class="op">)</span>
-
-  <span class="co">## standardized error and vimp</span>
-  <span class="va">err.std</span> <span class="op">&lt;-</span> <span class="fu">get.mv.error</span><span class="op">(</span><span class="va">bh.mreg</span>, standardize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-  <span class="va">vmp.std</span> <span class="op">&lt;-</span> <span class="fu">get.mv.vimp</span><span class="op">(</span><span class="va">bh.mreg</span>, standardize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-  <span class="co">## same analysis, but with user specified covariance matrix</span>
-  <span class="va">sigma</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cov</a></span><span class="op">(</span><span class="va">BostonHousing</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lstat"</span>,<span class="st">"nox"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
-  <span class="va">bh.mreg2</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="va">f</span>, <span class="va">BostonHousing</span>, splitrule <span class="op">=</span> <span class="st">"mahal"</span>, sigma <span class="op">=</span> <span class="va">sigma</span><span class="op">)</span>
-  
-<span class="op">}</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## multivariate mixed forests (nutrigenomic study)</span>
-<span class="co">## study effects of diet, lipids and gene expression for mice</span>
-<span class="co">## diet, genotype and lipids used as the multivariate y</span>
-<span class="co">## genes used for the x features</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="co">## load the data (data is a list)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">nutrigenomic</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span>
-
-<span class="co">## assemble the multivariate y data</span>
-<span class="va">ydta</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>diet <span class="op">=</span> <span class="va">nutrigenomic</span><span class="op">$</span><span class="va">diet</span>,
-                   genotype <span class="op">=</span> <span class="va">nutrigenomic</span><span class="op">$</span><span class="va">genotype</span>,
-                   <span class="va">nutrigenomic</span><span class="op">$</span><span class="va">lipids</span><span class="op">)</span>
-
-<span class="co">## multivariate mixed forest call</span>
-<span class="co">## uses "get.mv.formula" for conveniently setting formula</span>
-<span class="va">mv.obj</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="fu">get.mv.formula</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">ydta</span><span class="op">)</span><span class="op">)</span>,
-                <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">ydta</span>, <span class="va">nutrigenomic</span><span class="op">$</span><span class="va">genes</span><span class="op">)</span>,
-    importance<span class="op">=</span><span class="cn">TRUE</span>, nsplit <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
-
-<span class="co">## print results for diet and genotype y values      </span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">mv.obj</span>, outcome.target <span class="op">=</span> <span class="st">"diet"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">mv.obj</span>, outcome.target <span class="op">=</span> <span class="st">"genotype"</span><span class="op">)</span>
-
-<span class="co">## extract standardized VIMP</span>
-<span class="va">svimp</span> <span class="op">&lt;-</span> <span class="fu">get.mv.vimp</span><span class="op">(</span><span class="va">mv.obj</span>, standardize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="co">## plot standardized VIMP for diet, genotype and lipid for each gene</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/boxplot.html" class="external-link">boxplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">svimp</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"bisque"</span>, cex.axis <span class="op">=</span> <span class="fl">.7</span>, las <span class="op">=</span> <span class="fl">2</span>,
-        outline <span class="op">=</span> <span class="cn">FALSE</span>,
-        ylab <span class="op">=</span> <span class="st">"standardized VIMP"</span>,
-        main <span class="op">=</span> <span class="st">"diet/genotype/lipid VIMP for each gene"</span><span class="op">)</span>
-  
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## custom splitting using the pre-coded examples</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="co">## motor trend cars</span>
-<span class="va">mtcars.obj</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="va">mpg</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">mtcars</span>, splitrule <span class="op">=</span> <span class="st">"custom"</span><span class="op">)</span>
-
-<span class="co">## iris analysis</span>
-<span class="va">iris.obj</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">iris</span>, splitrule <span class="op">=</span> <span class="st">"custom1"</span><span class="op">)</span>
-
-<span class="co">## WIHS analysis</span>
-<span class="va">wihs.obj</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">wihs</span>, nsplit <span class="op">=</span> <span class="fl">3</span>,
-                  ntree <span class="op">=</span> <span class="fl">100</span>, splitrule <span class="op">=</span> <span class="st">"custom1"</span><span class="op">)</span>
-
-<span class="co"># }</span>
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co">##------------------------------------------------------------</span></span>
+<span><span class="co">## survival analysis</span></span>
+<span><span class="co">##------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="co">## veteran data</span></span>
+<span><span class="co">## randomized trial of two treatment regimens for lung cancer</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">veteran</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span></span>
+<span><span class="va">v.obj</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">veteran</span>, </span>
+<span>                   ntree <span class="op">=</span> <span class="fl">100</span>, block.size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## plot tree number 3</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="get.tree.rfsrc.html">get.tree</a></span><span class="op">(</span><span class="va">v.obj</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## print results of trained forest</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">v.obj</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## plot results of trained forest</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">v.obj</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## plot survival curves for first 10 individuals -- direct way</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/matplot.html" class="external-link">matplot</a></span><span class="op">(</span><span class="va">v.obj</span><span class="op">$</span><span class="va">time.interest</span>, <span class="fl">100</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">v.obj</span><span class="op">$</span><span class="va">survival.oob</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span><span class="op">)</span>,</span>
+<span>    xlab <span class="op">=</span> <span class="st">"Time"</span>, ylab <span class="op">=</span> <span class="st">"Survival"</span>, type <span class="op">=</span> <span class="st">"l"</span>, lty <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## plot survival curves for first 10 individuals</span></span>
+<span><span class="co">## using function "plot.survival" </span></span>
+<span><span class="fu"><a href="plot.survival.rfsrc.html">plot.survival</a></span><span class="op">(</span><span class="va">v.obj</span>, subset <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># \donttest{</span></span>
+<span><span class="co">## obtain Brier score using KM and RSF censoring distribution estimators</span></span>
+<span><span class="va">bs.km</span> <span class="op">&lt;-</span> <span class="fu"><a href="plot.survival.rfsrc.html">get.brier.survival</a></span><span class="op">(</span><span class="va">v.obj</span>, cens.model <span class="op">=</span> <span class="st">"km"</span><span class="op">)</span><span class="op">$</span><span class="va">brier.score</span></span>
+<span><span class="va">bs.rsf</span> <span class="op">&lt;-</span> <span class="fu"><a href="plot.survival.rfsrc.html">get.brier.survival</a></span><span class="op">(</span><span class="va">v.obj</span>, cens.model <span class="op">=</span> <span class="st">"rfsrc"</span><span class="op">)</span><span class="op">$</span><span class="va">brier.score</span></span>
+<span></span>
+<span><span class="co">## plot the brier score</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">bs.km</span>, type <span class="op">=</span> <span class="st">"s"</span>, col <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">bs.rsf</span>, type <span class="op">=</span><span class="st">"s"</span>, col <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cens.model = km"</span>, <span class="st">"cens.model = rfsrc"</span><span class="op">)</span>, fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## plot CRPS (continuous rank probability score) as function of time</span></span>
+<span><span class="co">## here's how to calculate the CRPS for every time point</span></span>
+<span><span class="va">trapz</span> <span class="op">&lt;-</span> <span class="fu">randomForestSRC</span><span class="fu">:::</span><span class="va">trapz</span></span>
+<span><span class="va">time</span> <span class="op">&lt;-</span> <span class="va">v.obj</span><span class="op">$</span><span class="va">time.interest</span></span>
+<span><span class="va">crps.km</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">time</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">j</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">trapz</span><span class="op">(</span><span class="va">time</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">j</span><span class="op">]</span>, <span class="va">bs.km</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">j</span>, <span class="fl">2</span><span class="op">]</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/diff.html" class="external-link">diff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">time</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">j</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span><span class="va">crps.rsf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">time</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">j</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">trapz</span><span class="op">(</span><span class="va">time</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">j</span><span class="op">]</span>, <span class="va">bs.rsf</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">j</span>, <span class="fl">2</span><span class="op">]</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/diff.html" class="external-link">diff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">time</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">j</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">crps.km</span>, ylab <span class="op">=</span> <span class="st">"CRPS"</span>, type <span class="op">=</span> <span class="st">"s"</span>, col <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">crps.rsf</span>, type <span class="op">=</span><span class="st">"s"</span>, col <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"bottomright"</span>, legend<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cens.model = km"</span>, <span class="st">"cens.model = rfsrc"</span><span class="op">)</span>, fill<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co">## fast nodesize optimization for veteran data</span></span>
+<span><span class="co">## optimal nodesize in survival is larger than other families</span></span>
+<span><span class="co">## see the function "tune" for more examples</span></span>
+<span><span class="fu"><a href="tune.rfsrc.html">tune.nodesize</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>,<span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">veteran</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co">## Primary biliary cirrhosis (PBC) of the liver</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">pbc</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span></span>
+<span><span class="va">pbc.obj</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">days</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">pbc</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">pbc.obj</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co">## save.memory example for survival</span></span>
+<span><span class="co">## growing many deep trees creates memory issue without this option!</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">pbc</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">rfsrc</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">days</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">pbc</span>, splitrule <span class="op">=</span> <span class="st">"random"</span>,</span>
+<span>            ntree <span class="op">=</span> <span class="fl">25000</span>, nodesize <span class="op">=</span> <span class="fl">1</span>, save.memory <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span></span>
+<span><span class="co">##------------------------------------------------------------</span></span>
+<span><span class="co">## trees can be plotted for any family </span></span>
+<span><span class="co">## see get.tree for details and more examples</span></span>
+<span><span class="co">##------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="co">## survival where factors have many levels</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">veteran</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span></span>
+<span><span class="va">vd</span> <span class="op">&lt;-</span> <span class="va">veteran</span></span>
+<span><span class="va">vd</span><span class="op">$</span><span class="va">celltype</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">vd</span><span class="op">$</span><span class="va">celltype</span><span class="op">)</span></span>
+<span><span class="va">vd</span><span class="op">$</span><span class="va">diagtime</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">vd</span><span class="op">$</span><span class="va">diagtime</span><span class="op">)</span></span>
+<span><span class="va">vd.obj</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>,<span class="va">status</span><span class="op">)</span><span class="op">~</span><span class="va">.</span>, <span class="va">vd</span>, ntree <span class="op">=</span> <span class="fl">100</span>, nodesize <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="get.tree.rfsrc.html">get.tree</a></span><span class="op">(</span><span class="va">vd.obj</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## classification</span></span>
+<span><span class="va">iris.obj</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">iris</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="get.tree.rfsrc.html">get.tree</a></span><span class="op">(</span><span class="va">iris.obj</span>, <span class="fl">25</span>, class.type <span class="op">=</span> <span class="st">"bayes"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="get.tree.rfsrc.html">get.tree</a></span><span class="op">(</span><span class="va">iris.obj</span>, <span class="fl">25</span>, target <span class="op">=</span> <span class="st">"setosa"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="get.tree.rfsrc.html">get.tree</a></span><span class="op">(</span><span class="va">iris.obj</span>, <span class="fl">25</span>, target <span class="op">=</span> <span class="st">"versicolor"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="get.tree.rfsrc.html">get.tree</a></span><span class="op">(</span><span class="va">iris.obj</span>, <span class="fl">25</span>, target <span class="op">=</span> <span class="st">"virginica"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## simple example of VIMP using iris classification</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="co">## directly from trained forest</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">rfsrc</span><span class="op">(</span><span class="va">Species</span><span class="op">~</span><span class="va">.</span>,<span class="va">iris</span>,importance<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span><span class="va">importance</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## VIMP (and performance) use misclassification error by default</span></span>
+<span><span class="co">## but brier prediction error can be requested</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">rfsrc</span><span class="op">(</span><span class="va">Species</span><span class="op">~</span><span class="va">.</span>,<span class="va">iris</span>,importance<span class="op">=</span><span class="cn">TRUE</span>,perf.type<span class="op">=</span><span class="st">"brier"</span><span class="op">)</span><span class="op">$</span><span class="va">importance</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## example using vimp function (see vimp help file for details)</span></span>
+<span><span class="va">iris.obj</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">iris</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="vimp.rfsrc.html">vimp</a></span><span class="op">(</span><span class="va">iris.obj</span><span class="op">)</span><span class="op">$</span><span class="va">importance</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="vimp.rfsrc.html">vimp</a></span><span class="op">(</span><span class="va">iris.obj</span>,perf.type<span class="op">=</span><span class="st">"brier"</span><span class="op">)</span><span class="op">$</span><span class="va">importance</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## example using hold out vimp (see holdout.vimp help file for details)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="holdout.vimp.rfsrc.html">holdout.vimp</a></span><span class="op">(</span><span class="va">Species</span><span class="op">~</span><span class="va">.</span>,<span class="va">iris</span><span class="op">)</span><span class="op">$</span><span class="va">importance</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="holdout.vimp.rfsrc.html">holdout.vimp</a></span><span class="op">(</span><span class="va">Species</span><span class="op">~</span><span class="va">.</span>,<span class="va">iris</span>,perf.type<span class="op">=</span><span class="st">"brier"</span><span class="op">)</span><span class="op">$</span><span class="va">importance</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## confidence interval for vimp using subsampling</span></span>
+<span><span class="co">## compare with holdout vimp</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="co">## new York air quality measurements</span></span>
+<span><span class="va">o</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="va">Ozone</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">airquality</span><span class="op">)</span></span>
+<span><span class="va">so</span> <span class="op">&lt;-</span> <span class="fu"><a href="subsample.rfsrc.html">subsample</a></span><span class="op">(</span><span class="va">o</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">so</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## compare with holdout vimp</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="holdout.vimp.rfsrc.html">holdout.vimp</a></span><span class="op">(</span><span class="va">Ozone</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">airquality</span><span class="op">)</span><span class="op">$</span><span class="va">importance</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co">##------------------------------------------------------------</span></span>
+<span><span class="co">## example of imputation in survival analysis</span></span>
+<span><span class="co">##------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">pbc</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span></span>
+<span><span class="va">pbc.obj2</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">days</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">pbc</span>, na.action <span class="op">=</span> <span class="st">"na.impute"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## same as above but iterate the missing data algorithm</span></span>
+<span><span class="va">pbc.obj3</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">days</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">pbc</span>,</span>
+<span>         na.action <span class="op">=</span> <span class="st">"na.impute"</span>, nimpute <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## fast way to impute data (no inference is done)</span></span>
+<span><span class="co">## see impute for more details</span></span>
+<span><span class="va">pbc.imp</span> <span class="op">&lt;-</span> <span class="fu"><a href="impute.rfsrc.html">impute</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">days</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">pbc</span>, splitrule <span class="op">=</span> <span class="st">"random"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">##------------------------------------------------------------</span></span>
+<span><span class="co">## compare RF-SRC to Cox regression</span></span>
+<span><span class="co">## Illustrates C-index and Brier score measures of performance</span></span>
+<span><span class="co">## assumes "pec" and "survival" libraries are loaded</span></span>
+<span><span class="co">##------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/therneau/survival" class="external-link">"survival"</a></span>, logical.return <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>    <span class="op">&amp;</span> <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"pec"</span>, logical.return <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>    <span class="op">&amp;</span> <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"prodlim"</span>, logical.return <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="op">{</span></span>
+<span>  <span class="co">##prediction function required for pec</span></span>
+<span>  <span class="va">predictSurvProb.rfsrc</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">object</span>, <span class="va">newdata</span>, <span class="va">times</span>, <span class="va">...</span><span class="op">)</span><span class="op">{</span></span>
+<span>    <span class="va">ptemp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">object</span>,newdata<span class="op">=</span><span class="va">newdata</span>,<span class="va">...</span><span class="op">)</span><span class="op">$</span><span class="va">survival</span></span>
+<span>    <span class="va">pos</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/prodlim/man/sindex.html" class="external-link">sindex</a></span><span class="op">(</span>jump.times <span class="op">=</span> <span class="va">object</span><span class="op">$</span><span class="va">time.interest</span>, eval.times <span class="op">=</span> <span class="va">times</span><span class="op">)</span></span>
+<span>    <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fl">1</span>,<span class="va">ptemp</span><span class="op">)</span><span class="op">[</span>, <span class="va">pos</span> <span class="op">+</span> <span class="fl">1</span><span class="op">]</span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">NROW</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span> <span class="op">!=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">NROW</a></span><span class="op">(</span><span class="va">newdata</span><span class="op">)</span> <span class="op">||</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">NCOL</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span> <span class="op">!=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">times</span><span class="op">)</span><span class="op">)</span></span>
+<span>      <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"Prediction failed"</span><span class="op">)</span></span>
+<span>    <span class="va">p</span></span>
+<span>  <span class="op">}</span></span>
+<span></span>
+<span>  <span class="co">## data, formula specifications</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">pbc</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span></span>
+<span>  <span class="va">pbc.na</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html" class="external-link">na.omit</a></span><span class="op">(</span><span class="va">pbc</span><span class="op">)</span>  <span class="co">##remove NA's</span></span>
+<span>  <span class="va">surv.f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">as.formula</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">days</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span><span class="op">)</span></span>
+<span>  <span class="va">pec.f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">as.formula</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/prodlim/man/Hist.html" class="external-link">Hist</a></span><span class="op">(</span><span class="va">days</span>,<span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co">## run cox/rfsrc models</span></span>
+<span>  <span class="co">## for illustration we use a small number of trees</span></span>
+<span>  <span class="va">cox.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/coxph.html" class="external-link">coxph</a></span><span class="op">(</span><span class="va">surv.f</span>, data <span class="op">=</span> <span class="va">pbc.na</span>, x <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="va">rfsrc.obj</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="va">surv.f</span>, <span class="va">pbc.na</span>, ntree <span class="op">=</span> <span class="fl">150</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co">## compute bootstrap cross-validation estimate of expected Brier score</span></span>
+<span>  <span class="co">## see Mogensen, Ishwaran and Gerds (2012) Journal of Statistical Software</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">17743</span><span class="op">)</span></span>
+<span>  <span class="va">prederror.pbc</span> <span class="op">&lt;-</span> <span class="fu">pec</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">cox.obj</span>,<span class="va">rfsrc.obj</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">pbc.na</span>, formula <span class="op">=</span> <span class="va">pec.f</span>,</span>
+<span>                        splitMethod <span class="op">=</span> <span class="st">"bootcv"</span>, B <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">prederror.pbc</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prederror.pbc</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co">## compute out-of-bag C-index for cox regression and compare to rfsrc</span></span>
+<span>  <span class="va">rfsrc.obj</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="va">surv.f</span>, <span class="va">pbc.na</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"out-of-bag Cox Analysis ..."</span>, <span class="st">"\n"</span><span class="op">)</span></span>
+<span>  <span class="va">cox.err</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="kw">function</span><span class="op">(</span><span class="va">b</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="va">b</span><span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%%</a></span><span class="fl">10</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"cox bootstrap:"</span>, <span class="va">b</span>, <span class="st">"\n"</span><span class="op">)</span></span>
+<span>    <span class="va">train</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">pbc.na</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">pbc.na</span><span class="op">)</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>    <span class="va">cox.obj</span> <span class="op">&lt;-</span> <span class="kw"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch</a></span><span class="op">(</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/coxph.html" class="external-link">coxph</a></span><span class="op">(</span><span class="va">surv.f</span>, <span class="va">pbc.na</span><span class="op">[</span><span class="va">train</span>, <span class="op">]</span><span class="op">)</span><span class="op">}</span>, error<span class="op">=</span><span class="kw">function</span><span class="op">(</span><span class="va">ex</span><span class="op">)</span><span class="op">{</span><span class="cn">NULL</span><span class="op">}</span><span class="op">)</span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">cox.obj</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="fu">get.cindex</span><span class="op">(</span><span class="va">pbc.na</span><span class="op">$</span><span class="va">days</span><span class="op">[</span><span class="op">-</span><span class="va">train</span><span class="op">]</span>, <span class="va">pbc.na</span><span class="op">$</span><span class="va">status</span><span class="op">[</span><span class="op">-</span><span class="va">train</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">cox.obj</span>, <span class="va">pbc.na</span><span class="op">[</span><span class="op">-</span><span class="va">train</span>, <span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="op">}</span> <span class="kw">else</span> <span class="cn">NA</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"\n\tOOB error rates\n\n"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"\tRSF            : "</span>, <span class="va">rfsrc.obj</span><span class="op">$</span><span class="va">err.rate</span><span class="op">[</span><span class="va">rfsrc.obj</span><span class="op">$</span><span class="va">ntree</span><span class="op">]</span>, <span class="st">"\n"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"\tCox regression : "</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">cox.err</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co">##------------------------------------------------------------</span></span>
+<span><span class="co">## competing risks</span></span>
+<span><span class="co">##------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="co">## WIHS analysis</span></span>
+<span><span class="co">## cumulative incidence function (CIF) for HAART and AIDS stratified by IDU</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">wihs</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span></span>
+<span><span class="va">wihs.obj</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">wihs</span>, nsplit <span class="op">=</span> <span class="fl">3</span>, ntree <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span><span class="fu"><a href="plot.competing.risk.rfsrc.html">plot.competing.risk</a></span><span class="op">(</span><span class="va">wihs.obj</span><span class="op">)</span></span>
+<span><span class="va">cif</span> <span class="op">&lt;-</span> <span class="va">wihs.obj</span><span class="op">$</span><span class="va">cif.oob</span></span>
+<span><span class="va">Time</span> <span class="op">&lt;-</span> <span class="va">wihs.obj</span><span class="op">$</span><span class="va">time.interest</span></span>
+<span><span class="va">idu</span> <span class="op">&lt;-</span> <span class="va">wihs</span><span class="op">$</span><span class="va">idu</span></span>
+<span><span class="va">cif.haart</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">cif</span><span class="op">[</span>,,<span class="fl">1</span><span class="op">]</span><span class="op">[</span><span class="va">idu</span> <span class="op">==</span> <span class="fl">0</span>,<span class="op">]</span>, <span class="fl">2</span>, <span class="va">mean</span><span class="op">)</span>,</span>
+<span>                   <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">cif</span><span class="op">[</span>,,<span class="fl">1</span><span class="op">]</span><span class="op">[</span><span class="va">idu</span> <span class="op">==</span> <span class="fl">1</span>,<span class="op">]</span>, <span class="fl">2</span>, <span class="va">mean</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">cif.aids</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">cif</span><span class="op">[</span>,,<span class="fl">2</span><span class="op">]</span><span class="op">[</span><span class="va">idu</span> <span class="op">==</span> <span class="fl">0</span>,<span class="op">]</span>, <span class="fl">2</span>, <span class="va">mean</span><span class="op">)</span>,</span>
+<span>                   <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">cif</span><span class="op">[</span>,,<span class="fl">2</span><span class="op">]</span><span class="op">[</span><span class="va">idu</span> <span class="op">==</span> <span class="fl">1</span>,<span class="op">]</span>, <span class="fl">2</span>, <span class="va">mean</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/matplot.html" class="external-link">matplot</a></span><span class="op">(</span><span class="va">Time</span>, <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">cif.haart</span>, <span class="va">cif.aids</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">"l"</span>,</span>
+<span>        lty <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>        ylab <span class="op">=</span> <span class="st">"Cumulative Incidence"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topleft"</span>,</span>
+<span>       legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"HAART (Non-IDU)"</span>, <span class="st">"HAART (IDU)"</span>, <span class="st">"AIDS (Non-IDU)"</span>, <span class="st">"AIDS (IDU)"</span><span class="op">)</span>,</span>
+<span>       lty <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">3</span>, cex <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co">## illustrates the various splitting rules</span></span>
+<span><span class="co">## illustrates event specific and non-event specific variable selection</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/therneau/survival" class="external-link">"survival"</a></span>, logical.return <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span></span>
+<span>  <span class="co">## use the pbc data from the survival package</span></span>
+<span>  <span class="co">## events are transplant (1) and death (2)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">pbc</span>, package <span class="op">=</span> <span class="st">"survival"</span><span class="op">)</span></span>
+<span>  <span class="va">pbc</span><span class="op">$</span><span class="va">id</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span>
+<span></span>
+<span>  <span class="co">## modified Gray's weighted log-rank splitting</span></span>
+<span>  <span class="co">## (equivalent to cause=c(1,1) and splitrule="logrankCR")</span></span>
+<span>  <span class="va">pbc.cr</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">pbc</span><span class="op">)</span></span>
+<span> </span>
+<span>  <span class="co">## log-rank cause-1 specific splitting and targeted VIMP for cause 1</span></span>
+<span>  <span class="va">pbc.log1</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">pbc</span>, </span>
+<span>              splitrule <span class="op">=</span> <span class="st">"logrankCR"</span>, cause <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span>, importance <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co">## log-rank cause-2 specific splitting and targeted VIMP for cause 2</span></span>
+<span>  <span class="va">pbc.log2</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">pbc</span>, </span>
+<span>              splitrule <span class="op">=</span> <span class="st">"logrankCR"</span>, cause <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span>, importance <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co">## extract VIMP from the log-rank forests: event-specific</span></span>
+<span>  <span class="co">## extract minimal depth from the Gray log-rank forest: non-event specific</span></span>
+<span>  <span class="va">var.perf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>md <span class="op">=</span> <span class="fu"><a href="max.subtree.rfsrc.html">max.subtree</a></span><span class="op">(</span><span class="va">pbc.cr</span><span class="op">)</span><span class="op">$</span><span class="va">order</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>,</span>
+<span>                         vimp1 <span class="op">=</span> <span class="fl">100</span> <span class="op">*</span> <span class="va">pbc.log1</span><span class="op">$</span><span class="va">importance</span><span class="op">[</span> ,<span class="fl">1</span><span class="op">]</span>,</span>
+<span>                         vimp2 <span class="op">=</span> <span class="fl">100</span> <span class="op">*</span> <span class="va">pbc.log2</span><span class="op">$</span><span class="va">importance</span><span class="op">[</span> ,<span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">var.perf</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">var.perf</span><span class="op">$</span><span class="va">md</span><span class="op">)</span>, <span class="op">]</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## regression analysis</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="co">## new York air quality measurements</span></span>
+<span><span class="va">airq.obj</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="va">Ozone</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">airquality</span>, na.action <span class="op">=</span> <span class="st">"na.impute"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># partial plot of variables (see plot.variable for more details)</span></span>
+<span><span class="fu"><a href="plot.variable.rfsrc.html">plot.variable</a></span><span class="op">(</span><span class="va">airq.obj</span>, partial <span class="op">=</span> <span class="cn">TRUE</span>, smooth.lines <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## motor trend cars</span></span>
+<span><span class="va">mtcars.obj</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="va">mpg</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## regression with custom bootstrap</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="va">ntree</span> <span class="op">&lt;-</span> <span class="fl">25</span></span>
+<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span></span>
+<span><span class="va">s.size</span> <span class="op">&lt;-</span> <span class="va">n</span> <span class="op">/</span> <span class="fl">2</span></span>
+<span><span class="va">swr</span> <span class="op">&lt;-</span> <span class="cn">TRUE</span></span>
+<span><span class="va">samp</span> <span class="op">&lt;-</span> <span class="fu">randomForestSRC</span><span class="fu">:::</span><span class="fu">make.sample</span><span class="op">(</span><span class="va">ntree</span>, <span class="va">n</span>, <span class="va">s.size</span>, <span class="va">swr</span><span class="op">)</span></span>
+<span><span class="va">o</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="va">mpg</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">mtcars</span>, bootstrap <span class="op">=</span> <span class="st">"by.user"</span>, samp <span class="op">=</span> <span class="va">samp</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## classification analysis</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="co">## iris data</span></span>
+<span><span class="va">iris.obj</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">iris</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## wisconsin prognostic breast cancer data</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">breast</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span></span>
+<span><span class="va">breast.obj</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="va">status</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">breast</span>, block.size<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">breast.obj</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## big data set, reduce number of variables using simple method</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="co">## use Iowa housing data set</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">housing</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## original data contains lots of missing data, use fast imputation</span></span>
+<span><span class="co">## however see impute for other methods</span></span>
+<span><span class="va">housing2</span> <span class="op">&lt;-</span> <span class="fu"><a href="impute.rfsrc.html">impute</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">housing</span>, fast <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## run shallow trees to find variables that split any tree</span></span>
+<span><span class="va">xvar.used</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="va">SalePrice</span> <span class="op">~</span><span class="va">.</span>, <span class="va">housing2</span>, ntree <span class="op">=</span> <span class="fl">250</span>, nodedepth <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>                   var.used<span class="op">=</span><span class="st">"all.trees"</span>, mtry <span class="op">=</span> <span class="cn">Inf</span>, nsplit <span class="op">=</span> <span class="fl">100</span><span class="op">)</span><span class="op">$</span><span class="va">var.used</span></span>
+<span></span>
+<span><span class="co">## now fit forest using filtered variables</span></span>
+<span><span class="va">xvar.keep</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">xvar.used</span><span class="op">)</span><span class="op">[</span><span class="va">xvar.used</span> <span class="op">&gt;=</span> <span class="fl">1</span><span class="op">]</span></span>
+<span><span class="va">o</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="va">SalePrice</span><span class="op">~</span><span class="va">.</span>, <span class="va">housing2</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SalePrice"</span>, <span class="va">xvar.keep</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">o</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## imbalanced classification data</span></span>
+<span><span class="co">## see the "imbalanced" function for further details</span></span>
+<span><span class="co">##</span></span>
+<span><span class="co">## a) use balanced random forests with undersampling of the majority class</span></span>
+<span><span class="co">## Specifically let n0, n1 be sample sizes for majority, minority</span></span>
+<span><span class="co">## cases.  We sample 2 x n1 cases with majority, minority cases chosen</span></span>
+<span><span class="co">## with probabilities n1/n, n0/n where n=n0+n1</span></span>
+<span><span class="co">##</span></span>
+<span><span class="co">## b) balanced random forests using "imbalanced"</span></span>
+<span><span class="co">##</span></span>
+<span><span class="co">## c) q-classifier (RFQ) using "imbalanced" </span></span>
+<span><span class="co">##</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="co">## Wisconsin breast cancer example</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">breast</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span></span>
+<span><span class="va">breast</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html" class="external-link">na.omit</a></span><span class="op">(</span><span class="va">breast</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## balanced random forests - brute force</span></span>
+<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="va">breast</span><span class="op">$</span><span class="va">status</span></span>
+<span><span class="va">obdirect</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="va">status</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">breast</span>, nsplit <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>            case.wt <span class="op">=</span> <span class="fu">randomForestSRC</span><span class="fu">:::</span><span class="fu">make.wt</span><span class="op">(</span><span class="va">y</span><span class="op">)</span>,</span>
+<span>            sampsize <span class="op">=</span> <span class="fu">randomForestSRC</span><span class="fu">:::</span><span class="fu">make.size</span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">obdirect</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="imbalanced.rfsrc.html">get.imbalanced.performance</a></span><span class="op">(</span><span class="va">obdirect</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## balanced random forests - using "imbalanced" </span></span>
+<span><span class="va">ob</span> <span class="op">&lt;-</span> <span class="fu"><a href="imbalanced.rfsrc.html">imbalanced</a></span><span class="op">(</span><span class="va">status</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">breast</span>, method <span class="op">=</span> <span class="st">"brf"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">ob</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="imbalanced.rfsrc.html">get.imbalanced.performance</a></span><span class="op">(</span><span class="va">ob</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## q-classifier (RFQ) - using "imbalanced" </span></span>
+<span><span class="va">oq</span> <span class="op">&lt;-</span> <span class="fu"><a href="imbalanced.rfsrc.html">imbalanced</a></span><span class="op">(</span><span class="va">status</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">breast</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">oq</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="imbalanced.rfsrc.html">get.imbalanced.performance</a></span><span class="op">(</span><span class="va">oq</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## q-classifier (RFQ) - with auc splitting</span></span>
+<span><span class="va">oqauc</span> <span class="op">&lt;-</span> <span class="fu"><a href="imbalanced.rfsrc.html">imbalanced</a></span><span class="op">(</span><span class="va">status</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">breast</span>, splitrule <span class="op">=</span> <span class="st">"auc"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">oqauc</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="imbalanced.rfsrc.html">get.imbalanced.performance</a></span><span class="op">(</span><span class="va">oqauc</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## unsupervised analysis</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="co">## two equivalent ways to implement unsupervised forests</span></span>
+<span><span class="va">mtcars.unspv</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="fu">Unsupervised</span><span class="op">(</span><span class="op">)</span> <span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span>
+<span><span class="va">mtcars2.unspv</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span>data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co">## illustration of sidClustering for the mtcars data</span></span>
+<span><span class="co">## see sidClustering for more details</span></span>
+<span><span class="va">mtcars.sid</span> <span class="op">&lt;-</span> <span class="fu"><a href="sidClustering.rfsrc.html">sidClustering</a></span><span class="op">(</span><span class="va">mtcars</span>, k <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">mtcars.sid</span><span class="op">$</span><span class="va">cl</span><span class="op">[</span>, <span class="fl">3</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">mtcars.sid</span><span class="op">$</span><span class="va">cl</span><span class="op">[</span>, <span class="fl">10</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## bivariate regression using Mahalanobis splitting</span></span>
+<span><span class="co">## also illustrates user specified covariance matrix</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"mlbench"</span>, logical.return <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span></span>
+<span>  <span class="co">## load boston housing data, specify the bivariate regression</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">BostonHousing</span><span class="op">)</span></span>
+<span>  <span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">formula</a></span><span class="op">(</span><span class="st">"Multivar(lstat, nox) ~."</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="co">## Mahalanobis splitting  </span></span>
+<span>  <span class="va">bh.mreg</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="va">f</span>, <span class="va">BostonHousing</span>, importance <span class="op">=</span> <span class="cn">TRUE</span>, splitrule <span class="op">=</span> <span class="st">"mahal"</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="co">## performance error and vimp</span></span>
+<span>  <span class="va">vmp</span> <span class="op">&lt;-</span> <span class="fu">get.mv.vimp</span><span class="op">(</span><span class="va">bh.mreg</span><span class="op">)</span></span>
+<span>  <span class="va">pred</span> <span class="op">&lt;-</span> <span class="fu">get.mv.predicted</span><span class="op">(</span><span class="va">bh.mreg</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co">## standardized error and vimp</span></span>
+<span>  <span class="va">err.std</span> <span class="op">&lt;-</span> <span class="fu">get.mv.error</span><span class="op">(</span><span class="va">bh.mreg</span>, standardize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="va">vmp.std</span> <span class="op">&lt;-</span> <span class="fu">get.mv.vimp</span><span class="op">(</span><span class="va">bh.mreg</span>, standardize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co">## same analysis, but with user specified covariance matrix</span></span>
+<span>  <span class="va">sigma</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cov</a></span><span class="op">(</span><span class="va">BostonHousing</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lstat"</span>,<span class="st">"nox"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
+<span>  <span class="va">bh.mreg2</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="va">f</span>, <span class="va">BostonHousing</span>, splitrule <span class="op">=</span> <span class="st">"mahal"</span>, sigma <span class="op">=</span> <span class="va">sigma</span><span class="op">)</span></span>
+<span>  </span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## multivariate mixed forests (nutrigenomic study)</span></span>
+<span><span class="co">## study effects of diet, lipids and gene expression for mice</span></span>
+<span><span class="co">## diet, genotype and lipids used as the multivariate y</span></span>
+<span><span class="co">## genes used for the x features</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="co">## load the data (data is a list)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">nutrigenomic</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## assemble the multivariate y data</span></span>
+<span><span class="va">ydta</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>diet <span class="op">=</span> <span class="va">nutrigenomic</span><span class="op">$</span><span class="va">diet</span>,</span>
+<span>                   genotype <span class="op">=</span> <span class="va">nutrigenomic</span><span class="op">$</span><span class="va">genotype</span>,</span>
+<span>                   <span class="va">nutrigenomic</span><span class="op">$</span><span class="va">lipids</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## multivariate mixed forest call</span></span>
+<span><span class="co">## uses "get.mv.formula" for conveniently setting formula</span></span>
+<span><span class="va">mv.obj</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="fu">get.mv.formula</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">ydta</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>                <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">ydta</span>, <span class="va">nutrigenomic</span><span class="op">$</span><span class="va">genes</span><span class="op">)</span>,</span>
+<span>    importance<span class="op">=</span><span class="cn">TRUE</span>, nsplit <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## print results for diet and genotype y values      </span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">mv.obj</span>, outcome.target <span class="op">=</span> <span class="st">"diet"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">mv.obj</span>, outcome.target <span class="op">=</span> <span class="st">"genotype"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## extract standardized VIMP</span></span>
+<span><span class="va">svimp</span> <span class="op">&lt;-</span> <span class="fu">get.mv.vimp</span><span class="op">(</span><span class="va">mv.obj</span>, standardize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## plot standardized VIMP for diet, genotype and lipid for each gene</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/boxplot.html" class="external-link">boxplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">svimp</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"bisque"</span>, cex.axis <span class="op">=</span> <span class="fl">.7</span>, las <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>        outline <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>        ylab <span class="op">=</span> <span class="st">"standardized VIMP"</span>,</span>
+<span>        main <span class="op">=</span> <span class="st">"diet/genotype/lipid VIMP for each gene"</span><span class="op">)</span></span>
+<span>  </span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## custom splitting using the pre-coded examples</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="co">## motor trend cars</span></span>
+<span><span class="va">mtcars.obj</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="va">mpg</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">mtcars</span>, splitrule <span class="op">=</span> <span class="st">"custom"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## iris analysis</span></span>
+<span><span class="va">iris.obj</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">iris</span>, splitrule <span class="op">=</span> <span class="st">"custom1"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## WIHS analysis</span></span>
+<span><span class="va">wihs.obj</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">wihs</span>, nsplit <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>                  ntree <span class="op">=</span> <span class="fl">100</span>, splitrule <span class="op">=</span> <span class="st">"custom1"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># }</span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -1516,7 +1637,7 @@ This is the main entry point to the randomForestSRC
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

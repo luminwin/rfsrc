@@ -24,7 +24,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.3</span>
       </span>
     </div>
 
@@ -140,57 +140,71 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">tune</span><span class="op">(</span><span class="va">formula</span>, <span class="va">data</span>,
-  mtryStart <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">/</span> <span class="fl">2</span>,
-  nodesizeTry <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">9</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">100</span>, by <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span>, ntreeTry <span class="op">=</span> <span class="fl">100</span>,
-  sampsize <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">x</span> <span class="op">*</span> <span class="fl">.632</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fl">150</span>, <span class="va">x</span> <span class="op">^</span> <span class="op">(</span><span class="fl">3</span><span class="op">/</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">}</span>,
-  nsplit <span class="op">=</span> <span class="fl">1</span>, stepFactor <span class="op">=</span> <span class="fl">1.25</span>, improve <span class="op">=</span> <span class="fl">1e-3</span>, strikeout <span class="op">=</span> <span class="fl">3</span>, maxIter <span class="op">=</span> <span class="fl">25</span>,
-  trace <span class="op">=</span> <span class="cn">FALSE</span>, doBest <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">tune.nodesize</span><span class="op">(</span><span class="va">formula</span>, <span class="va">data</span>,
-  nodesizeTry <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">9</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">150</span>, by <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span>, ntreeTry <span class="op">=</span> <span class="fl">100</span>,
-  sampsize <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">x</span> <span class="op">*</span> <span class="fl">.632</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fl">150</span>, <span class="va">x</span> <span class="op">^</span> <span class="op">(</span><span class="fl">4</span><span class="op">/</span><span class="fl">5</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">}</span>,
-  nsplit <span class="op">=</span> <span class="fl">1</span>, trace <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">tune</span><span class="op">(</span><span class="va">formula</span>, <span class="va">data</span>,</span>
+<span>  mtryStart <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">/</span> <span class="fl">2</span>,</span>
+<span>  nodesizeTry <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">9</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">100</span>, by <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span>, ntreeTry <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  sampsize <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">x</span> <span class="op">*</span> <span class="fl">.632</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fl">150</span>, <span class="va">x</span> <span class="op">^</span> <span class="op">(</span><span class="fl">3</span><span class="op">/</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">}</span>,</span>
+<span>  nsplit <span class="op">=</span> <span class="fl">1</span>, stepFactor <span class="op">=</span> <span class="fl">1.25</span>, improve <span class="op">=</span> <span class="fl">1e-3</span>, strikeout <span class="op">=</span> <span class="fl">3</span>, maxIter <span class="op">=</span> <span class="fl">25</span>,</span>
+<span>  trace <span class="op">=</span> <span class="cn">FALSE</span>, doBest <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">tune.nodesize</span><span class="op">(</span><span class="va">formula</span>, <span class="va">data</span>,</span>
+<span>  nodesizeTry <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">9</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">150</span>, by <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span>, ntreeTry <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  sampsize <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">x</span> <span class="op">*</span> <span class="fl">.632</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fl">150</span>, <span class="va">x</span> <span class="op">^</span> <span class="op">(</span><span class="fl">4</span><span class="op">/</span><span class="fl">5</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">}</span>,</span>
+<span>  nsplit <span class="op">=</span> <span class="fl">1</span>, trace <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>formula</dt>
 <dd><p>A symbolic description of the model to be fit.</p></dd>
-<dt>data</dt>
+
+  <dt>data</dt>
 <dd><p>Data frame containing the y-outcome and x-variables.</p></dd>
-<dt>mtryStart</dt>
+ 
+  <dt>mtryStart</dt>
 <dd><p>Starting value of mtry.</p></dd>
-<dt>nodesizeTry</dt>
+
+  <dt>nodesizeTry</dt>
 <dd><p>Values of nodesize optimized over.</p></dd>
-<dt>ntreeTry</dt>
+
+  <dt>ntreeTry</dt>
 <dd><p>Number of trees used for the tuning step.</p></dd>
-<dt>sampsize</dt>
+
+  <dt>sampsize</dt>
 <dd><p>Function specifying requested size of subsampled data.
     Can also be passed in as a number.</p></dd>
-<dt>nsplit</dt>
+
+  <dt>nsplit</dt>
 <dd><p>Number of random splits used for splitting.</p></dd>
-<dt>stepFactor</dt>
+
+  <dt>stepFactor</dt>
 <dd><p>At each iteration, mtry is inflated (or deflated) by
     this value.</p></dd>
-<dt>improve</dt>
+
+  <dt>improve</dt>
 <dd><p>The (relative) improvement in out-of-sample error must be by this
     much for the search to continue.</p></dd>
-<dt>strikeout</dt>
+
+  <dt>strikeout</dt>
 <dd><p>The search is discontinued when the relative
     improvement in OOB error is negative.  However <code>strikeout</code>
     allows for some tolerance in this.  If a negative improvement is
     noted a total of <code>strikeout</code> times, the search is stopped.
     Increase this value only if you want an exhaustive search.</p></dd>
-<dt>maxIter</dt>
+
+  <dt>maxIter</dt>
 <dd><p>The maximum number of iterations allowed for each mtry
     bisection search.</p></dd>
-<dt>trace</dt>
+
+  <dt>trace</dt>
 <dd><p>Print the progress of the search?</p></dd>
-<dt>doBest</dt>
+
+  <dt>doBest</dt>
 <dd><p>Return a forest fit with the optimal mtry and nodesize parameters?</p></dd>
-<dt>...</dt>
+
+  <dt>...</dt>
 <dd><p>Further options to be passed to <code><a href="rfsrc.fast.html">rfsrc.fast</a></code>.</p></dd>
+
 </dl></div>
     <div id="details">
     <h2>Details</h2>
@@ -226,73 +240,73 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># \donttest{</span>
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## White wine classification example</span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="co">## load the data</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">wine</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span>
-<span class="va">wine</span><span class="op">$</span><span class="va">quality</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">wine</span><span class="op">$</span><span class="va">quality</span><span class="op">)</span>
-
-<span class="co">## set the sample size manually</span>
-<span class="va">o</span> <span class="op">&lt;-</span> <span class="fu">tune</span><span class="op">(</span><span class="va">quality</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">wine</span>, sampsize <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>
-
-<span class="co">## here is the optimized forest </span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">o</span><span class="op">$</span><span class="va">rf</span><span class="op">)</span>
-
-<span class="co">## visualize the nodesize/mtry OOB surface</span>
-<span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"interp"</span>, logical.return <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-
-  <span class="co">## nice little wrapper for plotting results</span>
-  <span class="va">plot.tune</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">o</span>, <span class="va">linear</span> <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">o</span><span class="op">$</span><span class="va">results</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span>
-    <span class="va">y</span> <span class="op">&lt;-</span> <span class="va">o</span><span class="op">$</span><span class="va">results</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span>
-    <span class="va">z</span> <span class="op">&lt;-</span> <span class="va">o</span><span class="op">$</span><span class="va">results</span><span class="op">[</span>,<span class="fl">3</span><span class="op">]</span>
-    <span class="va">so</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/interp/man/interp.html" class="external-link">interp</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>, y<span class="op">=</span><span class="va">y</span>, z<span class="op">=</span><span class="va">z</span>, linear <span class="op">=</span> <span class="va">linear</span><span class="op">)</span>
-    <span class="va">idx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.min</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span>
-    <span class="va">x0</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[</span><span class="va">idx</span><span class="op">]</span>
-    <span class="va">y0</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="va">idx</span><span class="op">]</span>
-    <span class="fu"><a href="https://rdrr.io/r/graphics/filled.contour.html" class="external-link">filled.contour</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">so</span><span class="op">$</span><span class="va">x</span>,
-                   y <span class="op">=</span> <span class="va">so</span><span class="op">$</span><span class="va">y</span>,
-                   z <span class="op">=</span> <span class="va">so</span><span class="op">$</span><span class="va">z</span>,
-                   xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">so</span><span class="op">$</span><span class="va">x</span>, finite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>,
-                   ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">so</span><span class="op">$</span><span class="va">y</span>, finite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>,
-                   color.palette <span class="op">=</span>
-                     <span class="fu"><a href="https://rdrr.io/r/grDevices/colorRamp.html" class="external-link">colorRampPalette</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"yellow"</span>, <span class="st">"red"</span><span class="op">)</span><span class="op">)</span>,
-                   xlab <span class="op">=</span> <span class="st">"nodesize"</span>,
-                   ylab <span class="op">=</span> <span class="st">"mtry"</span>,
-                   main <span class="op">=</span> <span class="st">"error rate for nodesize and mtry"</span>,
-                   key.title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"OOB error"</span>, cex.main <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,
-                   plot.axes <span class="op">=</span> <span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/graphics/axis.html" class="external-link">axis</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>;<span class="fu"><a href="https://rdrr.io/r/graphics/axis.html" class="external-link">axis</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>;<span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">x0</span>,<span class="va">y0</span>,pch<span class="op">=</span><span class="st">"x"</span>,cex<span class="op">=</span><span class="fl">1</span>,font<span class="op">=</span><span class="fl">2</span><span class="op">)</span>;
-                                <span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">x</span>,<span class="va">y</span>,pch<span class="op">=</span><span class="fl">16</span>,cex<span class="op">=</span><span class="fl">.25</span><span class="op">)</span><span class="op">}</span><span class="op">)</span>
-  <span class="op">}</span>
-
-  <span class="co">## plot the surface</span>
-  <span class="fu">plot.tune</span><span class="op">(</span><span class="va">o</span><span class="op">)</span>
-
-<span class="op">}</span>
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## tuning for class imbalanced data problem</span>
-<span class="co">## - see imbalanced function for details</span>
-<span class="co">## - use rfq and perf.type = "gmean" </span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">breast</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span>
-<span class="va">breast</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html" class="external-link">na.omit</a></span><span class="op">(</span><span class="va">breast</span><span class="op">)</span>
-<span class="va">o</span> <span class="op">&lt;-</span> <span class="fu">tune</span><span class="op">(</span><span class="va">status</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">breast</span>, rfq <span class="op">=</span> <span class="cn">TRUE</span>, perf.type <span class="op">=</span> <span class="st">"gmean"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">o</span><span class="op">)</span>
-
-
-<span class="co">## ------------------------------------------------------------</span>
-<span class="co">## tune nodesize for competing risk - wihs data </span>
-<span class="co">## ------------------------------------------------------------</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">wihs</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu">tune.nodesize</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">wihs</span>, trace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span><span class="va">err</span><span class="op">)</span>
-
-<span class="co"># }</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># \donttest{</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## White wine classification example</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="co">## load the data</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">wine</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span></span>
+<span><span class="va">wine</span><span class="op">$</span><span class="va">quality</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">wine</span><span class="op">$</span><span class="va">quality</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## set the sample size manually</span></span>
+<span><span class="va">o</span> <span class="op">&lt;-</span> <span class="fu">tune</span><span class="op">(</span><span class="va">quality</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">wine</span>, sampsize <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## here is the optimized forest </span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">o</span><span class="op">$</span><span class="va">rf</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## visualize the nodesize/mtry OOB surface</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"interp"</span>, logical.return <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span></span>
+<span>  <span class="co">## nice little wrapper for plotting results</span></span>
+<span>  <span class="va">plot.tune</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">o</span>, <span class="va">linear</span> <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">o</span><span class="op">$</span><span class="va">results</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span></span>
+<span>    <span class="va">y</span> <span class="op">&lt;-</span> <span class="va">o</span><span class="op">$</span><span class="va">results</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span></span>
+<span>    <span class="va">z</span> <span class="op">&lt;-</span> <span class="va">o</span><span class="op">$</span><span class="va">results</span><span class="op">[</span>,<span class="fl">3</span><span class="op">]</span></span>
+<span>    <span class="va">so</span> <span class="op">&lt;-</span> <span class="fu">interp</span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>, y<span class="op">=</span><span class="va">y</span>, z<span class="op">=</span><span class="va">z</span>, linear <span class="op">=</span> <span class="va">linear</span><span class="op">)</span></span>
+<span>    <span class="va">idx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.min</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span></span>
+<span>    <span class="va">x0</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[</span><span class="va">idx</span><span class="op">]</span></span>
+<span>    <span class="va">y0</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="va">idx</span><span class="op">]</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/graphics/filled.contour.html" class="external-link">filled.contour</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">so</span><span class="op">$</span><span class="va">x</span>,</span>
+<span>                   y <span class="op">=</span> <span class="va">so</span><span class="op">$</span><span class="va">y</span>,</span>
+<span>                   z <span class="op">=</span> <span class="va">so</span><span class="op">$</span><span class="va">z</span>,</span>
+<span>                   xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">so</span><span class="op">$</span><span class="va">x</span>, finite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>,</span>
+<span>                   ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">so</span><span class="op">$</span><span class="va">y</span>, finite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>,</span>
+<span>                   color.palette <span class="op">=</span></span>
+<span>                     <span class="fu"><a href="https://rdrr.io/r/grDevices/colorRamp.html" class="external-link">colorRampPalette</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"yellow"</span>, <span class="st">"red"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>                   xlab <span class="op">=</span> <span class="st">"nodesize"</span>,</span>
+<span>                   ylab <span class="op">=</span> <span class="st">"mtry"</span>,</span>
+<span>                   main <span class="op">=</span> <span class="st">"error rate for nodesize and mtry"</span>,</span>
+<span>                   key.title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"OOB error"</span>, cex.main <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
+<span>                   plot.axes <span class="op">=</span> <span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/graphics/axis.html" class="external-link">axis</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>;<span class="fu"><a href="https://rdrr.io/r/graphics/axis.html" class="external-link">axis</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>;<span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">x0</span>,<span class="va">y0</span>,pch<span class="op">=</span><span class="st">"x"</span>,cex<span class="op">=</span><span class="fl">1</span>,font<span class="op">=</span><span class="fl">2</span><span class="op">)</span>;</span>
+<span>                                <span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">x</span>,<span class="va">y</span>,pch<span class="op">=</span><span class="fl">16</span>,cex<span class="op">=</span><span class="fl">.25</span><span class="op">)</span><span class="op">}</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span></span>
+<span>  <span class="co">## plot the surface</span></span>
+<span>  <span class="fu">plot.tune</span><span class="op">(</span><span class="va">o</span><span class="op">)</span></span>
+<span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## tuning for class imbalanced data problem</span></span>
+<span><span class="co">## - see imbalanced function for details</span></span>
+<span><span class="co">## - use rfq and perf.type = "gmean" </span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">breast</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span></span>
+<span><span class="va">breast</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html" class="external-link">na.omit</a></span><span class="op">(</span><span class="va">breast</span><span class="op">)</span></span>
+<span><span class="va">o</span> <span class="op">&lt;-</span> <span class="fu">tune</span><span class="op">(</span><span class="va">status</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">breast</span>, rfq <span class="op">=</span> <span class="cn">TRUE</span>, perf.type <span class="op">=</span> <span class="st">"gmean"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">o</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## tune nodesize for competing risk - wihs data </span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">wihs</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu">tune.nodesize</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">wihs</span>, trace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span><span class="va">err</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># }</span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -306,7 +320,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
