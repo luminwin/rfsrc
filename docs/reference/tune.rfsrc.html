@@ -24,7 +24,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.3.1</span>
       </span>
     </div>
 
@@ -263,7 +263,7 @@
 <span>    <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">o</span><span class="op">$</span><span class="va">results</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span></span>
 <span>    <span class="va">y</span> <span class="op">&lt;-</span> <span class="va">o</span><span class="op">$</span><span class="va">results</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span></span>
 <span>    <span class="va">z</span> <span class="op">&lt;-</span> <span class="va">o</span><span class="op">$</span><span class="va">results</span><span class="op">[</span>,<span class="fl">3</span><span class="op">]</span></span>
-<span>    <span class="va">so</span> <span class="op">&lt;-</span> <span class="fu">interp</span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>, y<span class="op">=</span><span class="va">y</span>, z<span class="op">=</span><span class="va">z</span>, linear <span class="op">=</span> <span class="va">linear</span><span class="op">)</span></span>
+<span>    <span class="va">so</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/interp/man/interp.html" class="external-link">interp</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>, y<span class="op">=</span><span class="va">y</span>, z<span class="op">=</span><span class="va">z</span>, linear <span class="op">=</span> <span class="va">linear</span><span class="op">)</span></span>
 <span>    <span class="va">idx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.min</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span></span>
 <span>    <span class="va">x0</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[</span><span class="va">idx</span><span class="op">]</span></span>
 <span>    <span class="va">y0</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="va">idx</span><span class="op">]</span></span>

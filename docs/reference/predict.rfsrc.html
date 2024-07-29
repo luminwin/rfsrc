@@ -24,7 +24,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.3.1</span>
       </span>
     </div>
 
@@ -155,7 +155,9 @@
 <span>  ptn.count <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  distance <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  var.used <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="st">"all.trees"</span>, <span class="st">"by.tree"</span><span class="op">)</span>,</span>
-<span>  split.depth <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="st">"all.trees"</span>, <span class="st">"by.tree"</span><span class="op">)</span>, seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  split.depth <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="st">"all.trees"</span>, <span class="st">"by.tree"</span><span class="op">)</span>,</span>
+<span>  case.depth <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  do.trace <span class="op">=</span> <span class="cn">FALSE</span>, membership <span class="op">=</span> <span class="cn">FALSE</span>, statistics <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>   </span>
 <span>  <span class="va">...</span><span class="op">)</span></span></code></pre></div>
@@ -271,6 +273,11 @@
 <dd><p>Return minimal depth for each variable for each case?</p></dd>
 
 
+  <dt>case.depth</dt>
+<dd><p>Return a matrix recording the depth at which a case
+    first splits in a tree. Default is <code>FALSE</code>.</p></dd>
+
+  
   <dt>seed</dt>
 <dd><p>Negative integer specifying seed for the random number
     generator.</p></dd>
@@ -522,18 +529,19 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co">## ------------------------------------------------------------</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># \donttest{</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
 <span><span class="co">## typical train/testing scenario</span></span>
 <span><span class="co">## ------------------------------------------------------------</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">veteran</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span></span>
 <span><span class="va">train</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">veteran</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">veteran</span><span class="op">)</span> <span class="op">*</span> <span class="fl">0.80</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">veteran.grow</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">veteran</span><span class="op">[</span><span class="va">train</span>, <span class="op">]</span>, ntree <span class="op">=</span> <span class="fl">100</span><span class="op">)</span> </span>
+<span><span class="va">veteran.grow</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">veteran</span><span class="op">[</span><span class="va">train</span>, <span class="op">]</span><span class="op">)</span> </span>
 <span><span class="va">veteran.pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">veteran.grow</span>, <span class="va">veteran</span><span class="op">[</span><span class="op">-</span><span class="va">train</span>, <span class="op">]</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">veteran.grow</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">veteran.pred</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># \donttest{</span></span>
+<span></span>
 <span><span class="co">## ------------------------------------------------------------</span></span>
 <span><span class="co">## restore mode</span></span>
 <span><span class="co">## - if predict is called without specifying the test data</span></span>
@@ -767,7 +775,7 @@
 <span><span class="va">mix.pred</span> <span class="op">&lt;-</span> <span class="va">mix.obj</span><span class="op">$</span><span class="va">regrOutput</span><span class="op">$</span><span class="va">days</span><span class="op">$</span><span class="va">predicted.oob</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">rsf.pred</span>, <span class="va">mix.pred</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## compare C-index error rate</span></span>
+<span><span class="co">## compare C-error rate</span></span>
 <span><span class="va">rsf.err</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">get.cindex</a></span><span class="op">(</span><span class="va">yvar</span><span class="op">$</span><span class="va">days</span>, <span class="va">yvar</span><span class="op">$</span><span class="va">status</span>, <span class="va">rsf.pred</span><span class="op">)</span></span>
 <span><span class="va">mix.err</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="rfsrc.html">get.cindex</a></span><span class="op">(</span><span class="va">yvar</span><span class="op">$</span><span class="va">days</span>, <span class="va">yvar</span><span class="op">$</span><span class="va">status</span>, <span class="va">mix.pred</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"RSF                :"</span>, <span class="va">rsf.err</span>, <span class="st">"\n"</span><span class="op">)</span></span>

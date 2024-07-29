@@ -25,7 +25,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.3.1</span>
       </span>
     </div>
 
@@ -332,7 +332,7 @@
 <span><span class="co">## extract conditional mean and standard deviation</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">get.quantile.stat</span><span class="op">(</span><span class="va">o</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## continuous rank probabiliy score (crps) performance</span></span>
+<span><span class="co">## standardized continuous rank probabiliy score (crps) performance</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu">get.quantile.crps</span><span class="op">(</span><span class="va">o</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">"l"</span><span class="op">)</span></span>
 <span></span>
 <span></span>
@@ -359,7 +359,7 @@
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">BostonHousing</span><span class="op">)</span></span>
 <span>  <span class="va">o</span> <span class="op">&lt;-</span> <span class="fu">quantreg</span><span class="op">(</span><span class="va">medv</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">BostonHousing</span>, method <span class="op">=</span> <span class="st">"forest"</span>, nodesize <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span></span>
-<span>  <span class="co">## continuous rank probabiliy score (crps) </span></span>
+<span>  <span class="co">## standardized continuous rank probabiliy score (crps) </span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu">get.quantile.crps</span><span class="op">(</span><span class="va">o</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">"l"</span><span class="op">)</span></span>
 <span></span>
 <span>  <span class="co">## quantile regression plot</span></span>

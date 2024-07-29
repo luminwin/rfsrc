@@ -24,7 +24,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.3.1</span>
       </span>
     </div>
 
@@ -141,8 +141,8 @@
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plot.subsample</span><span class="op">(</span><span class="va">x</span>, alpha <span class="op">=</span> <span class="fl">.01</span>, <span class="va">xvar.names</span>,</span>
-<span> standardize <span class="op">=</span> <span class="cn">TRUE</span>, normal <span class="op">=</span> <span class="cn">TRUE</span>, jknife <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span> <span class="va">target</span>, m.target <span class="op">=</span> <span class="cn">NULL</span>, pmax <span class="op">=</span> <span class="fl">75</span>, main <span class="op">=</span> <span class="st">""</span>, sorted <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span> standardize <span class="op">=</span> <span class="cn">TRUE</span>, normal <span class="op">=</span> <span class="cn">TRUE</span>, jknife <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">target</span>, m.target <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span> pmax <span class="op">=</span> <span class="fl">75</span>, main <span class="op">=</span> <span class="st">""</span>, sorted <span class="op">=</span> <span class="cn">TRUE</span>, show.plots <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -162,8 +162,8 @@
   
   <dt>standardize</dt>
 <dd><p>Standardize VIMP?  For regression families, VIMP is
-    standardized by dividing by the variance and then multipled by 100.
-    For all other families, VIMP is scaled by 100.</p></dd>
+    standardized by dividing by the variance.  For all other families,
+    VIMP is unaltered.</p></dd>
 
 
   <dt>normal</dt>
@@ -200,6 +200,11 @@
   
   <dt>sorted</dt>
 <dd><p>Should variables be sorted by importance values?</p></dd>
+
+
+  <dt>show.plots</dt>
+<dd><p>Should plots be displayed?  Allows users to produce
+    their own custom plots.</p></dd>
 
 
   <dt>...</dt>
