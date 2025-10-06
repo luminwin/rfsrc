@@ -1357,39 +1357,41 @@ predictive accuracy of their random forest models.</p>
 <span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>iris.obj <span class="ot">&lt;-</span> <span class="fu">rfsrc</span>(Species <span class="sc">~</span> ., <span class="at">data =</span> iris, <span class="at">block.size =</span> <span class="dv">1</span>)</span>
 <span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>iris.obj</span>
 <span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a></span>
-<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a><span class="sc">&gt;</span>                          Sample size<span class="sc">:</span> <span class="dv">150</span></span>
-<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a><span class="sc">&gt;</span>            Frequency of class labels<span class="sc">:</span> <span class="dv">50</span>, <span class="dv">50</span>, <span class="dv">50</span></span>
-<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a><span class="sc">&gt;</span>                      Number of trees<span class="sc">:</span> <span class="dv">500</span></span>
-<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a><span class="sc">&gt;</span>            Forest terminal node size<span class="sc">:</span> <span class="dv">1</span></span>
-<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a><span class="sc">&gt;</span>        Average no. of terminal nodes<span class="sc">:</span> <span class="fl">9.56</span></span>
-<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a><span class="sc">&gt;</span> No. of variables tried at each split<span class="sc">:</span> <span class="dv">2</span></span>
-<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a><span class="sc">&gt;</span>               Total no. of variables<span class="sc">:</span> <span class="dv">4</span></span>
-<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a><span class="sc">&gt;</span>        Resampling used to grow trees<span class="sc">:</span> swor</span>
-<span id="cb10-16"><a href="#cb10-16" tabindex="-1"></a><span class="sc">&gt;</span>     Resample size used to grow trees<span class="sc">:</span> <span class="dv">95</span></span>
-<span id="cb10-17"><a href="#cb10-17" tabindex="-1"></a><span class="sc">&gt;</span>                             Analysis<span class="sc">:</span> RF<span class="sc">-</span>C</span>
-<span id="cb10-18"><a href="#cb10-18" tabindex="-1"></a><span class="sc">&gt;</span>                               Family<span class="sc">:</span> class</span>
-<span id="cb10-19"><a href="#cb10-19" tabindex="-1"></a><span class="sc">&gt;</span>                       Splitting rule<span class="sc">:</span> gini <span class="sc">*</span>random<span class="sc">*</span></span>
-<span id="cb10-20"><a href="#cb10-20" tabindex="-1"></a><span class="er">&gt;</span>        Number of random split points<span class="sc">:</span> <span class="dv">10</span></span>
-<span id="cb10-21"><a href="#cb10-21" tabindex="-1"></a><span class="sc">&gt;</span>                    (OOB) Brier score<span class="sc">:</span> <span class="fl">0.02518434</span></span>
-<span id="cb10-22"><a href="#cb10-22" tabindex="-1"></a><span class="sc">&gt;</span>         (OOB) Normalized Brier score<span class="sc">:</span> <span class="fl">0.11332955</span> </span>
-<span id="cb10-23"><a href="#cb10-23" tabindex="-1"></a><span class="sc">&gt;</span>                            (OOB) AUC<span class="sc">:</span> <span class="fl">0.99136667</span> </span>
-<span id="cb10-24"><a href="#cb10-24" tabindex="-1"></a><span class="sc">&gt;</span>                     (OOB) Error rate<span class="sc">:</span> <span class="fl">0.04666667</span>, <span class="fl">0.02</span>, <span class="fl">0.06</span>, <span class="fl">0.06</span></span>
-<span id="cb10-25"><a href="#cb10-25" tabindex="-1"></a><span class="sc">&gt;</span> </span>
-<span id="cb10-26"><a href="#cb10-26" tabindex="-1"></a><span class="er">&gt;</span> Confusion matrix<span class="sc">:</span></span>
-<span id="cb10-27"><a href="#cb10-27" tabindex="-1"></a><span class="er">&gt;</span> </span>
-<span id="cb10-28"><a href="#cb10-28" tabindex="-1"></a><span class="er">&gt;</span>             predicted</span>
-<span id="cb10-29"><a href="#cb10-29" tabindex="-1"></a><span class="sc">&gt;</span>   observed   setosa versicolor virginica class.error</span>
-<span id="cb10-30"><a href="#cb10-30" tabindex="-1"></a><span class="sc">&gt;</span>   setosa         <span class="dv">49</span>          <span class="dv">1</span>         <span class="dv">0</span>        <span class="fl">0.02</span></span>
-<span id="cb10-31"><a href="#cb10-31" tabindex="-1"></a><span class="sc">&gt;</span>   versicolor      <span class="dv">0</span>         <span class="dv">47</span>         <span class="dv">3</span>        <span class="fl">0.06</span></span>
-<span id="cb10-32"><a href="#cb10-32" tabindex="-1"></a><span class="sc">&gt;</span>   virginica       <span class="dv">0</span>          <span class="dv">3</span>        <span class="dv">47</span>        <span class="fl">0.06</span></span>
-<span id="cb10-33"><a href="#cb10-33" tabindex="-1"></a><span class="sc">&gt;</span> </span>
-<span id="cb10-34"><a href="#cb10-34" tabindex="-1"></a><span class="er">&gt;</span>   (OOB) Misclassification rate<span class="sc">:</span> <span class="fl">0.04666667</span></span>
-<span id="cb10-35"><a href="#cb10-35" tabindex="-1"></a></span>
-<span id="cb10-36"><a href="#cb10-36" tabindex="-1"></a><span class="sc">&gt;</span> Random<span class="sc">-</span>classifier <span class="fu">baselines</span> (uniform)<span class="sc">:</span></span>
-<span id="cb10-37"><a href="#cb10-37" tabindex="-1"></a><span class="er">&gt;</span>     Brier<span class="sc">:</span> <span class="fl">0.22222222</span>   Normalized Brier<span class="sc">:</span> <span class="dv">1</span>   Log<span class="sc">-</span>loss<span class="sc">:</span> <span class="fl">1.09861229</span></span>
-<span id="cb10-38"><a href="#cb10-38" tabindex="-1"></a></span>
-<span id="cb10-39"><a href="#cb10-39" tabindex="-1"></a><span class="do">## plot the error rate</span></span>
-<span id="cb10-40"><a href="#cb10-40" tabindex="-1"></a><span class="fu">plot</span>(iris.obj)</span></code></pre></div>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a><span class="sc">&gt;</span>                              Sample size<span class="sc">:</span> <span class="dv">150</span></span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a><span class="sc">&gt;</span>                Frequency of class labels<span class="sc">:</span> setosa<span class="ot">=</span><span class="dv">50</span>, versicolor<span class="ot">=</span><span class="dv">50</span>, virginica<span class="ot">=</span><span class="dv">50</span></span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a><span class="sc">&gt;</span>                          Number of trees<span class="sc">:</span> <span class="dv">500</span></span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a><span class="sc">&gt;</span>                Forest terminal node size<span class="sc">:</span> <span class="dv">1</span></span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a><span class="sc">&gt;</span>            Average no. of terminal nodes<span class="sc">:</span> <span class="fl">9.41</span></span>
+<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a><span class="sc">&gt;</span>     No. of variables tried at each split<span class="sc">:</span> <span class="dv">2</span></span>
+<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a><span class="sc">&gt;</span>                   Total no. of variables<span class="sc">:</span> <span class="dv">4</span></span>
+<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a><span class="sc">&gt;</span>            Resampling used to grow trees<span class="sc">:</span> swor</span>
+<span id="cb10-16"><a href="#cb10-16" tabindex="-1"></a><span class="sc">&gt;</span>         Resample size used to grow trees<span class="sc">:</span> <span class="dv">95</span></span>
+<span id="cb10-17"><a href="#cb10-17" tabindex="-1"></a><span class="sc">&gt;</span>                                 Analysis<span class="sc">:</span> RF<span class="sc">-</span>C</span>
+<span id="cb10-18"><a href="#cb10-18" tabindex="-1"></a><span class="sc">&gt;</span>                                   Family<span class="sc">:</span> class</span>
+<span id="cb10-19"><a href="#cb10-19" tabindex="-1"></a><span class="sc">&gt;</span>                           Splitting rule<span class="sc">:</span> gini <span class="sc">*</span>random<span class="sc">*</span></span>
+<span id="cb10-20"><a href="#cb10-20" tabindex="-1"></a><span class="er">&gt;</span>            Number of random split points<span class="sc">:</span> <span class="dv">10</span></span>
+<span id="cb10-21"><a href="#cb10-21" tabindex="-1"></a><span class="sc">&gt;</span>                        (OOB) Brier score<span class="sc">:</span> <span class="fl">0.02502816</span></span>
+<span id="cb10-22"><a href="#cb10-22" tabindex="-1"></a><span class="sc">&gt;</span>             (OOB) Normalized Brier score<span class="sc">:</span> <span class="fl">0.11262672</span></span>
+<span id="cb10-23"><a href="#cb10-23" tabindex="-1"></a><span class="sc">&gt;</span>                                (OOB) AUC<span class="sc">:</span> <span class="fl">0.99266667</span></span>
+<span id="cb10-24"><a href="#cb10-24" tabindex="-1"></a><span class="sc">&gt;</span>                           (OOB) Log<span class="sc">-</span>loss<span class="sc">:</span> <span class="fl">0.13334159</span></span>
+<span id="cb10-25"><a href="#cb10-25" tabindex="-1"></a><span class="sc">&gt;</span>        (OOB) Requested performance error<span class="sc">:</span> <span class="fl">0.04</span>, <span class="dv">0</span>, <span class="fl">0.06</span>, <span class="fl">0.06</span></span>
+<span id="cb10-26"><a href="#cb10-26" tabindex="-1"></a></span>
+<span id="cb10-27"><a href="#cb10-27" tabindex="-1"></a><span class="sc">&gt;</span>     Confusion matrix<span class="sc">:</span></span>
+<span id="cb10-28"><a href="#cb10-28" tabindex="-1"></a></span>
+<span id="cb10-29"><a href="#cb10-29" tabindex="-1"></a><span class="er">&gt;</span>                 predicted</span>
+<span id="cb10-30"><a href="#cb10-30" tabindex="-1"></a><span class="sc">&gt;</span>       observed   setosa versicolor virginica class.error</span>
+<span id="cb10-31"><a href="#cb10-31" tabindex="-1"></a><span class="sc">&gt;</span>       setosa         <span class="dv">50</span>          <span class="dv">0</span>         <span class="dv">0</span>        <span class="fl">0.00</span></span>
+<span id="cb10-32"><a href="#cb10-32" tabindex="-1"></a><span class="sc">&gt;</span>       versicolor      <span class="dv">0</span>         <span class="dv">47</span>         <span class="dv">3</span>        <span class="fl">0.06</span></span>
+<span id="cb10-33"><a href="#cb10-33" tabindex="-1"></a><span class="sc">&gt;</span>       virginica       <span class="dv">0</span>          <span class="dv">3</span>        <span class="dv">47</span>        <span class="fl">0.06</span></span>
+<span id="cb10-34"><a href="#cb10-34" tabindex="-1"></a></span>
+<span id="cb10-35"><a href="#cb10-35" tabindex="-1"></a><span class="sc">&gt;</span>           (OOB) Misclassification rate<span class="sc">:</span> <span class="fl">0.04</span></span>
+<span id="cb10-36"><a href="#cb10-36" tabindex="-1"></a></span>
+<span id="cb10-37"><a href="#cb10-37" tabindex="-1"></a><span class="sc">&gt;</span>     Random<span class="sc">-</span>classifier <span class="fu">baselines</span> (uniform)<span class="sc">:</span></span>
+<span id="cb10-38"><a href="#cb10-38" tabindex="-1"></a><span class="er">&gt;</span>        Brier<span class="sc">:</span> <span class="fl">0.22222222</span>   Normalized Brier<span class="sc">:</span> <span class="dv">1</span>   Log<span class="sc">-</span>loss<span class="sc">:</span> <span class="fl">1.09861229</span></span>
+<span id="cb10-39"><a href="#cb10-39" tabindex="-1"></a></span>
+<span id="cb10-40"><a href="#cb10-40" tabindex="-1"></a></span>
+<span id="cb10-41"><a href="#cb10-41" tabindex="-1"></a><span class="do">## plot the error rate</span></span>
+<span id="cb10-42"><a href="#cb10-42" tabindex="-1"></a><span class="fu">plot</span>(iris.obj)</span></code></pre></div>
 <p><img src="pic/irismisc.png" style="width:50.0%"><br></p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="co"># VIMP using misclassification error</span></span>
 <span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="fu">vimp</span>(iris.obj)<span class="sc">$</span>importance    </span>
@@ -1633,7 +1635,9 @@ classifier <span>(RFQ)</span> vignette. 2021. <a href="http://randomforestsrc.or
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-<nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+            <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
+
       </div>
 
 </div>
