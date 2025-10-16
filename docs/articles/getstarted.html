@@ -136,7 +136,9 @@
   </a>
 </li>
       </ul>
+<ul class="nav navbar-nav navbar-right">
 
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -1396,11 +1398,11 @@ predictive accuracy of their random forest models.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="co"># VIMP using misclassification error</span></span>
 <span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="fu">vimp</span>(iris.obj)<span class="sc">$</span>importance    </span>
 <span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="sc">&gt;</span>                       all     setosa   versicolor    virginica</span>
-<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a><span class="sc">&gt;</span> Sepal.Length <span class="fl">0.0173019084</span> <span class="fl">0.07502458</span>  <span class="fl">0.057627575</span>  <span class="fl">0.006523876</span></span>
-<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="sc">&gt;</span> Sepal.Width  <span class="fl">0.0001450874</span> <span class="fl">0.01957163</span> <span class="sc">-</span><span class="fl">0.007611189</span> <span class="sc">-</span><span class="fl">0.010873127</span></span>
-<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a><span class="sc">&gt;</span> Petal.Length <span class="fl">0.1972315261</span> <span class="fl">0.68718165</span>  <span class="fl">0.548005617</span>  <span class="fl">0.354463950</span></span>
-<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a><span class="sc">&gt;</span> Petal.Width  <span class="fl">0.2460699898</span> <span class="fl">0.98401802</span>  <span class="fl">0.662173453</span>  <span class="fl">0.338154259</span></span></code></pre></div>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>                    all setosa versicolor virginica</span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a>Sepal.Length <span class="fl">0.07376689</span> <span class="fl">0.0384</span>     <span class="fl">0.1684</span>    <span class="fl">0.0124</span></span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a>Sepal.Width  <span class="fl">0.03555453</span> <span class="fl">0.0484</span>     <span class="fl">0.0440</span>    <span class="fl">0.0132</span></span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a>Petal.Length <span class="fl">0.53146747</span> <span class="fl">0.4756</span>     <span class="fl">0.6976</span>    <span class="fl">0.4068</span></span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a>Petal.Width  <span class="fl">0.61502332</span> <span class="fl">0.6216</span>     <span class="fl">0.7608</span>    <span class="fl">0.4444</span></span></code></pre></div>
 <p>In the above output, the <code>all</code> column displays the VIMP
 calculated from misclassification error for all OOB data. The
 <code>setosa</code> column displays the VIMP calculated from
@@ -1422,11 +1424,11 @@ using the normalized brier score.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="co"># VIMP using brier prediction error</span></span>
 <span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="fu">vimp</span>(iris.obj)<span class="sc">$</span>importance    </span>
 <span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a></span>
-<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a><span class="sc">&gt;</span>                      all      setosa versicolor    virginica</span>
-<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a><span class="sc">&gt;</span> Sepal.Length <span class="fl">0.031711153</span> <span class="fl">0.012045941</span> <span class="fl">0.02779454</span>  <span class="fl">0.017626090</span></span>
-<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a><span class="sc">&gt;</span> Sepal.Width  <span class="fl">0.008385799</span> <span class="fl">0.009732653</span> <span class="fl">0.00738077</span> <span class="sc">-</span><span class="fl">0.001916779</span></span>
-<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a><span class="sc">&gt;</span> Petal.Length <span class="fl">0.443495042</span> <span class="fl">0.257702871</span> <span class="fl">0.30627377</span>  <span class="fl">0.239719704</span></span>
-<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a><span class="sc">&gt;</span> Petal.Width  <span class="fl">0.499869566</span> <span class="fl">0.316016498</span> <span class="fl">0.35508893</span>  <span class="fl">0.234752147</span></span></code></pre></div>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>                    all     setosa versicolor   virginica</span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>Sepal.Length <span class="fl">0.13445559</span> <span class="fl">0.01785341</span> <span class="fl">0.06200186</span> <span class="fl">0.054600319</span></span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a>Sepal.Width  <span class="fl">0.06435805</span> <span class="fl">0.02531877</span> <span class="fl">0.03175047</span> <span class="fl">0.007288816</span></span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a>Petal.Length <span class="fl">1.04822212</span> <span class="fl">0.34201589</span> <span class="fl">0.35791100</span> <span class="fl">0.348295226</span></span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a>Petal.Width  <span class="fl">1.28963628</span> <span class="fl">0.50619203</span> <span class="fl">0.42904892</span> <span class="fl">0.354395332</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="helper-functions-for-extracting-information-from-classification">Helper Functions for Extracting Information from Classification<a class="anchor" aria-label="anchor" href="#helper-functions-for-extracting-information-from-classification"></a>
@@ -1437,11 +1439,11 @@ performance. The functions <code>get.auc</code> and
 score and OOB AUC values:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="fu">get.auc</span>(iris<span class="sc">$</span>Species, iris.obj<span class="sc">$</span>predicted.oob)</span>
 <span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a></span>
-<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">1</span>] <span class="fl">0.9933333</span></span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">1</span>] <span class="fl">0.9937333</span></span>
 <span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a></span>
 <span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a><span class="fu">get.brier.error</span>(iris<span class="sc">$</span>Species, iris.obj<span class="sc">$</span>predicted.oob)</span>
 <span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a></span>
-<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">1</span>] <span class="fl">0.1056888</span> </span></code></pre></div>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a><span class="sc">&gt;</span> [<span class="dv">1</span>] <span class="fl">0.1073053</span> </span></code></pre></div>
 <p>For <a href="imbalance.html">two-class imbalanced analyses</a>, there
 are functions <code>get.imbalanced.performance</code> and
 <code>get.imbalanced.optimize</code>. Other useful functions for
@@ -1635,10 +1637,13 @@ classifier <span>(RFQ)</span> vignette. 2021. <a href="http://randomforestsrc.or
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-            <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
 
       </div>
+        <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
+</div>
 
 </div>
 
