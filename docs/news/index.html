@@ -89,7 +89,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Development version">3.4.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Development version">3.5.0</span>
       </span>
     </div>
 
@@ -197,6 +197,25 @@
       <h1 data-toc-skip>Changelog <small></small></h1>
       
     </div>
+    
+                                                        <div id="release-343" class="section level2">
+<h2 class="hasAnchor">
+<a href="#release-344" class="anchor"></a>RELEASE 3.5.0</h2>
+<p>For survival and competing risk analysis, concordance-based
+performance is now computed using Uno inverse-probability-of-censoring
+weighting (Uno et al. 2001). This affects all survival performance
+values derived from the concordance index, including out-of-bag and
+test error rates and variable importance (VIMP). To revert to
+unweighted Harrell concordance, set use.uno = FALSE when fitting a
+survival forest.  Concordance calculations now use an efficient O(n,
+log n) algorithm based on a binary indexed tree (Fenwick 1994,
+Therneau 2024), replacing the naive O(n^2) pairwise computation for
+large n.  All mclapply() have been eliminated or replaced by PSOCK
+providing Windows compatibility as well.</p>
+<hr>
+</div>
+    
+    
         
                                                     <div id="release-343" class="section level2">
 <h2 class="hasAnchor">
