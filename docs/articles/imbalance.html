@@ -155,7 +155,7 @@
 Robert O’Brien <br><br><a href="https://www.luminwin.net/" class="external-link">Min Lu</a>
 <br><br> Udaya B. Kogalur</h4>
             
-            <h4 data-toc-skip class="date">2026-01-22</h4>
+            <h4 data-toc-skip class="date">2026-01-30</h4>
       
 
       <div class="hidden name"><code>imbalance.Rmd</code></div>
@@ -268,22 +268,24 @@ since misclassification error is often minimized by classifying most (if
 not) all of the data as belonging to the majority class. More formally,
 let
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Y</mi><mo>∈</mo><mo stretchy="false" form="prefix">{</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">Y\in\{0,1\}</annotation></semantics></math>
-denote the two-class outcome and let <span class="math inline">$p({\bf
-x}) = \mathbb{P}\{Y = 1
-\mid {\bf X}= {\bf x}\}$</span> be the classification probability for
-the minority group. The Bayes rule classifies cases to class label 1 if
-the classification probability is
+denote the two-class outcome and let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐱</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>ℙ</mi><mo stretchy="false" form="prefix">{</mo><mi>Y</mi><mo>=</mo><mn>1</mn><mo>∣</mo><mi>𝐗</mi><mo>=</mo><mi>𝐱</mi><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">p(\mathbf{x}) = \mathbb{P}\{Y = 1
+\mid \mathbf{X}= \mathbf{x}\}</annotation></semantics></math> be the
+classification probability for the minority group. The Bayes rule
+classifies cases to class label 1 if the classification probability is
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi>/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">1/2</annotation></semantics></math>
 or larger, <span class="math display">$$
-\delta_{\textrm B}({\bf x})=I{\{p({\bf x}) \ge 1/2\}}.
-$$</span> The problem is that <span class="math inline">$p({\bf
-x})$</span> is small in imbalanced problems. This forces the Bayes
-decision rule to classify all cases to class label 0 as the
+\delta_{\textrm B}(\mathbf{x})=I{\{p(\mathbf{x}) \ge 1/2\}}.
+$$</span> The problem is that
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐱</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">p(\mathbf{x})</annotation></semantics></math>
+is small in imbalanced problems. This forces the Bayes decision rule to
+classify all cases to class label 0 as the
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">I</mi><mi mathvariant="normal">R</mi></mrow><annotation encoding="application/x-tex">\mathrm{IR}</annotation></semantics></math>
 increases. Indeed, in the limit: <span class="math display">$$
-\delta_{\textrm B}({\bf x})=I{\{p({\bf x}) \ge 1/2\}}\rightarrow 0,
+\delta_{\textrm B}(\mathbf{x})=I{\{p(\mathbf{x}) \ge 1/2\}}\rightarrow
+0,
 \quad\text{if }
-p({\bf x}) \rightarrow 0.
+p(\mathbf{x}) \rightarrow 0.
 $$</span> This seemingly works out for the Bayes decision rule, because
 [as will be shown in equation <a href="#section">(1)</a>] this yields a
 misclassification error rate of zero. But is this really a good
@@ -294,8 +296,9 @@ thing?</p>
 </h2>
 <p>Our goal is to build an accurate classifier for
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math>
-given <span class="math inline">${\bf X}={\bf x}$</span> when the
-learning data is imbalanced. To help quantify what is meant by
+given
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝐗</mi><mo>=</mo><mi>𝐱</mi></mrow><annotation encoding="application/x-tex">\mathbf{X}=\mathbf{x}</annotation></semantics></math>
+when the learning data is imbalanced. To help quantify what is meant by
 <em>imbalancedness</em>, we provide the following formal definitions,
 beginning with the imbalance ratio described earlier. Following the
 convention in the literature, we assume that the majority class labels
@@ -330,10 +333,12 @@ are of the majority class, respectively.
 important role in the performance of a classifier.</p>
 <p class="comment">
 <strong> <span style="font-style:normal">Definition 3:</span> </strong>
-The data is marginally imbalanced if <span class="math inline">$p({\bf
-x})\ll 1/2$</span> for all <span class="math inline">${\bf
-x}\in\mathscr{X}$</span> where <span class="math inline">$p({\bf
-x})=\mathbb{P}\{Y=1|{\bf X}={\bf x}\}$</span>.
+The data is marginally imbalanced if
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐱</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>≪</mo><mn>1</mn><mi>/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">p(\mathbf{x})\ll 1/2</annotation></semantics></math>
+for all
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝐱</mi><mo>∈</mo><mi>𝒳</mi></mrow><annotation encoding="application/x-tex">\mathbf{x}\in\mathscr{X}</annotation></semantics></math>
+where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐱</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>ℙ</mi><mo stretchy="false" form="prefix">{</mo><mi>Y</mi><mo>=</mo><mn>1</mn><mo stretchy="false" form="prefix">|</mo><mi>𝐗</mi><mo>=</mo><mi>𝐱</mi><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">p(\mathbf{x})=\mathbb{P}\{Y=1|\mathbf{X}=\mathbf{x}\}</annotation></semantics></math>.
 </p>
 <p>Thus, marginally imbalanced data is data for which the probability of
 the minority class is close to zero throughout the feature space.</p>
@@ -341,9 +346,14 @@ the minority class is close to zero throughout the feature space.</p>
 <strong> <span style="font-style:normal">Definition 4:</span> </strong>
 The data is conditionally imbalanced if there exists a set
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>⊂</mo><mi>𝒳</mi></mrow><annotation encoding="application/x-tex">A\subset\mathscr{X}</annotation></semantics></math>
-with nonzero probability, <span class="math inline">$\mathbb{P}\{{\bf
-X}\in A\}&gt;0$</span>, such that <span class="math inline">$\mathbb{P}\{Y=1|{\bf X}\in A\}\approx 1$</span> and
-<span class="math inline">$p({\bf x})\ll 1/2$</span> for <span class="math inline">${\bf x}\notin A$</span>.
+with nonzero probability,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ℙ</mi><mo stretchy="false" form="prefix">{</mo><mi>𝐗</mi><mo>∈</mo><mi>A</mi><mo stretchy="false" form="postfix">}</mo><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\mathbb{P}\{\mathbf{X}\in A\}&gt;0</annotation></semantics></math>,
+such that
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ℙ</mi><mo stretchy="false" form="prefix">{</mo><mi>Y</mi><mo>=</mo><mn>1</mn><mo stretchy="false" form="prefix">|</mo><mi>𝐗</mi><mo>∈</mo><mi>A</mi><mo stretchy="false" form="postfix">}</mo><mo>≈</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\mathbb{P}\{Y=1|\mathbf{X}\in A\}\approx 1</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐱</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>≪</mo><mn>1</mn><mi>/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">p(\mathbf{x})\ll 1/2</annotation></semantics></math>
+for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝐱</mi><mo>∉</mo><mi>A</mi></mrow><annotation encoding="application/x-tex">\mathbf{x}\notin A</annotation></semantics></math>.
 </p>
 <p>In contrast to marginally imbalanced data, conditional imbalancedness
 occurs when the probability of the minority class is close to 1 given
@@ -357,19 +367,20 @@ both cases, it is assumed that the minority class is rare.</p>
 classifier
 (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>q</mi><annotation encoding="application/x-tex">q</annotation></semantics></math>-classifier)
 as <span class="math display">$$
-\delta_{\textrm q}({\bf x}) = I{\{p({\bf x}) \ge q\}},\quad\text{}
+\delta_{\textrm q}(\mathbf{x}) = I{\{p(\mathbf{x}) \ge q\}},\quad\text{}
 0&lt;q&lt;1.
 $$</span> Observe that the median classifier
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>q</mi><annotation encoding="application/x-tex">q</annotation></semantics></math>
 = 1/2 yields the Bayes classifier <span class="math display">$$
-\delta_{\textrm B}({\bf x})=I{\{p({\bf x}) \ge 1/2\}}.
+\delta_{\textrm B}(\mathbf{x})=I{\{p(\mathbf{x}) \ge 1/2\}}.
 $$</span> Define the cost-weighted risk for a classifier
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mo>:</mo><mi>𝒳</mi><mo>→</mo><mo stretchy="false" form="prefix">{</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\delta:\mathscr{X}\rightarrow\{0,1\}</annotation></semantics></math>
-as <span class="math display">$$
+as
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>δ</mi><mo>,</mo><msub><mo>ℓ</mo><mn>0</mn></msub><mo>,</mo><msub><mo>ℓ</mo><mn>1</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>𝔼</mi><mrow><mo stretchy="true" form="prefix">[</mo><msub><mo>ℓ</mo><mn>0</mn></msub><mi>I</mi><mrow><mo stretchy="false" form="prefix">{</mo><mi>δ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐗</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>1</mn><mo>,</mo><mi>Y</mi><mo>=</mo><mn>0</mn><mo stretchy="false" form="postfix">}</mo></mrow><mo>+</mo><msub><mo>ℓ</mo><mn>1</mn></msub><mi>I</mi><mrow><mo stretchy="false" form="prefix">{</mo><mi>δ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐗</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>0</mn><mo>,</mo><mi>Y</mi><mo>=</mo><mn>1</mn><mo stretchy="false" form="postfix">}</mo></mrow><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">
 r(\delta,\ell_0,\ell_1) = \mathbb{E}\left[
-\ell_0 I{\{\delta({\bf X})=1, Y=0\}}
-+ \ell_1 I{\{\delta({\bf X})=0, Y=1\}} \right]
-$$</span> where
+\ell_0 I{\{\delta(\mathbf{X})=1, Y=0\}}
++ \ell_1 I{\{\delta(\mathbf{X})=0, Y=1\}} \right]
+</annotation></semantics></math> where
 <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><msub><mo>ℓ</mo><mn>0</mn></msub><mo>&gt;</mo><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"></mtd><mtd columnalign="left" style="text-align: left"><mtext mathvariant="normal">cost of misclassifying a majority case</mtext></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><msub><mo>ℓ</mo><mn>1</mn></msub><mo>&gt;</mo><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"></mtd><mtd columnalign="left" style="text-align: left"><mtext mathvariant="normal">cost of misclassifying a minority case</mtext><mi>.</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{eqnarray}
 \ell_0 &gt; 0 &amp;&amp; \text{cost of misclassifying a majority case}\\
 \ell_1 &gt; 0 &amp;&amp; \text{cost of misclassifying a minority case}.
@@ -379,17 +390,17 @@ is the weighted Bayes rule.</p>
 <p class="comment">
 <strong> <span style="font-style:normal">Theorem 1:</span> </strong>
 Under cost-weighted risk, the optimal classifier is the weighted Bayes
-rule <span class="math display">$$
-\delta_{\textrm{WB}}({\bf x})=I{\{p({\bf x}) \ge
-\ell_0/(\ell_0+\ell_1)\}}
-$$</span> which we recognize as a quantile classifier with
+rule
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>δ</mi><mtext mathvariant="normal">WB</mtext></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐱</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>I</mi><mrow><mo stretchy="false" form="prefix">{</mo><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐱</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>≥</mo><msub><mo>ℓ</mo><mn>0</mn></msub><mi>/</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mo>ℓ</mo><mn>0</mn></msub><mo>+</mo><msub><mo>ℓ</mo><mn>1</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="false" form="postfix">}</mo></mrow></mrow><annotation encoding="application/x-tex">
+\delta_{\textrm{WB}}(\mathbf{x})=I{\{p(\mathbf{x}) \ge \ell_0/(\ell_0+\ell_1)\}}
+</annotation></semantics></math> which we recognize as a quantile
+classifier with
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>q</mi><mo>=</mo><msub><mo>ℓ</mo><mn>0</mn></msub><mi>/</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mo>ℓ</mo><mn>0</mn></msub><mo>+</mo><msub><mo>ℓ</mo><mn>1</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">q =  \ell_0/(\ell_0+\ell_1)</annotation></semantics></math>
-and its risk is <span class="math display">$$
+and its risk is
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>δ</mi><mtext mathvariant="normal">WB</mtext></msub><mo>,</mo><msub><mo>ℓ</mo><mn>0</mn></msub><mo>,</mo><msub><mo>ℓ</mo><mn>1</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>𝔼</mi><mrow><mo stretchy="true" form="prefix">[</mo><mo>min</mo><mo stretchy="false" form="prefix">{</mo><msub><mo>ℓ</mo><mn>1</mn></msub><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐗</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><msub><mo>ℓ</mo><mn>0</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐗</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="false" form="postfix">}</mo><mo stretchy="true" form="postfix">]</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">
 r(\delta_{\textrm{WB}}, \ell_0,\ell_1)
-= \mathbb{E}\left[\min \{\ell_1 p({\bf X}), \ell_0(1-p({\bf
-X}))\}\right].
-$$</span>
-</p>
+= \mathbb{E}\left[\min \{\ell_1 p(\mathbf{X}), \ell_0(1-p(\mathbf{X}))\}\right].
+</annotation></semantics></math></p>
 <p>The Bayes rule is the median quantile rule corresponding to
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>q</mi><mo>=</mo><mn>1</mn><mi>/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">q=1/2</annotation></semantics></math>
 with equal misclassification costs
@@ -400,11 +411,12 @@ Thus, its cost-weighted risk is</p>
 </h5>
 <p><span class="math display">$$
 r(\delta_{\textrm B},1,1)
-=\mathbb{P}\{\delta_{\textrm B}({\bf X})\ne Y\}
-= \mathbb{E}\left[\min \{p({\bf X}), 1-p({\bf
-X})\}\right]=\mathbb{E}[p({\bf X})].
-$$</span> Notice this will be nearly zero when <span class="math inline">$p({\bf x})$</span> is near zero as happens in
-marginally imbalanced data.</p>
+=\mathbb{P}\{\delta_{\textrm B}(\mathbf{X})\ne Y\}
+= \mathbb{E}\left[\min \{p(\mathbf{X}),
+1-p(\mathbf{X})\}\right]=\mathbb{E}[p(\mathbf{X})].
+$$</span> Notice this will be nearly zero when
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐱</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">p(\mathbf{x})</annotation></semantics></math>
+is near zero as happens in marginally imbalanced data.</p>
 </div>
 </div>
 <div class="section level2">
@@ -478,8 +490,8 @@ TPR.
 classifier
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>δ</mi><annotation encoding="application/x-tex">\delta</annotation></semantics></math>
 as follows: <span class="math display">$$
-\textrm{TNR}(\delta)=\mathbb{P}\{\delta({\bf X})=0|Y=0\},\hskip15pt
-\textrm{TPR}(\delta)=\mathbb{P}\{\delta({\bf X})=1|Y=1\}.
+\textrm{TNR}(\delta)=\mathbb{P}\{\delta(\mathbf{X})=0|Y=0\},\hskip15pt
+\textrm{TPR}(\delta)=\mathbb{P}\{\delta(\mathbf{X})=1|Y=1\}.
 $$</span> Notice that the Bayes rule, <span class="math inline">$\delta_{\textrm B}$</span>, is unlikely to achieve
 this goal because it has a TNR value of 1 but a TPR value of 0 in the
 limit.</p>
@@ -490,27 +502,30 @@ limit.</p>
 </h2>
 <p>We introduce the following classifier derived from a density-based
 approach: <span class="math display">$$
-\delta_{\textrm D}({\bf x})=
-I{\left\{\cfrac{f_{{\bf X}|Y}({\bf x}|1)}{f_{{\bf X}|Y}({\bf
-x}|0)}\,\,\ge\,\, 1\right\}}.
+\delta_{\textrm D}(\mathbf{x})=
+I{\left\{\cfrac{f_{\mathbf{X}|Y}(\mathbf{x}|1)}{f_{\mathbf{X}|Y}(\mathbf{x}|0)}\,\,\ge\,\,
+1\right\}}.
 $$</span> Basing the classifier on the conditional density of the
-features, <span class="math inline">$f_{{\bf X}|Y}$</span>, rather than
-the conditional density of the response, <span class="math inline">$p({\bf x})$</span>, removes the effect of the
-prevalence of the minority class.</p>
+features,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>f</mi><mrow><mi>𝐗</mi><mo stretchy="false" form="prefix">|</mo><mi>Y</mi></mrow></msub><annotation encoding="application/x-tex">f_{\mathbf{X}|Y}</annotation></semantics></math>,
+rather than the conditional density of the response,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐱</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">p(\mathbf{x})</annotation></semantics></math>,
+removes the effect of the prevalence of the minority class.</p>
 <p>It can be shown that <span class="math inline">$\delta_{\textrm
-D}({\bf x})$</span> has the TNR+TPR-property <span class="citation">[2]</span>. Therefore we have the optimal classifier we
+D}(\mathbf{x})$</span> has the TNR+TPR-property <span class="citation">[2]</span>. Therefore we have the optimal classifier we
 seek. However, while it is convenient theoretically to describe the
 density-based classifier in terms of the conditional density of the
 data, in practice it will be difficult to implement the classifier as
-stated. But using Bayes’ Theorem, we can rewrite <span class="math inline">$\delta_{\textrm D}({\bf x})$</span> more
+stated. But using Bayes’ Theorem, we can rewrite <span class="math inline">$\delta_{\textrm D}(\mathbf{x})$</span> more
 conveniently as <span class="math display">$$\begin{eqnarray}
-\delta_{\textrm D}({\bf x})
-&amp;=&amp; I{\left\{\cfrac{f_{{\bf X}|Y}({\bf x}|1)}{f_{{\bf X}|Y}({\bf
-x}|0)}\,\,\ge\,\, 1\right\}}\\
-&amp;=&amp; I{\{\Delta_{\textrm D}({\bf x}) \ge 1\}},
-\hskip20pt \Delta_{\textrm D}({\bf x})= \frac{p({\bf
-x})(1-\pi)}{(1-p({\bf x}))\pi}\\
-&amp;=&amp; I{\{p({\bf x})\ge\pi\}},
+\delta_{\textrm D}(\mathbf{x})
+&amp;=&amp;
+I{\left\{\cfrac{f_{\mathbf{X}|Y}(\mathbf{x}|1)}{f_{\mathbf{X}|Y}(\mathbf{x}|0)}\,\,\ge\,\,
+1\right\}}\\
+&amp;=&amp; I{\{\Delta_{\textrm D}(\mathbf{x}) \ge 1\}},
+\hskip20pt \Delta_{\textrm D}(\mathbf{x})=
+\frac{p(\mathbf{x})(1-\pi)}{(1-p(\mathbf{x}))\pi}\\
+&amp;=&amp; I{\{p(\mathbf{x})\ge\pi\}},
 \hskip27pt\pi=\mathbb{P}\{Y=1\}.
 \end{eqnarray}$$</span> This shows that the density-based estimator is
 actually a
@@ -529,8 +544,8 @@ then this becomes the Bayes rule. We call this new classifier the
 
 <p class="comment">
 <strong> <span style="font-style:normal">Definition 6:</span> </strong>
-Call <span class="math inline">$\delta_{\textrm q^*}({\bf x}) =
-I{\{p({\bf x})\ge\pi\}}=\delta_{\textrm D}({\bf x})$</span> the
+Call <span class="math inline">$\delta_{\textrm q^*}(\mathbf{x}) =
+I{\{p(\mathbf{x})\ge\pi\}}=\delta_{\textrm D}(\mathbf{x})$</span> the
 <span style="font-style:italic">q*</span>-classifier.
 </p>
 <p>The classifier has the following optimality properties.</p>
@@ -550,9 +565,9 @@ conditional imbalance.
 <p>Notice the <span style="font-style:italic">q*</span>-classifier
 achieves the optimal weighted risk <span class="math display">$$\begin{eqnarray}
 r(\delta_{\textrm q^*}, \pi,1-\pi)
-&amp;=&amp;\mathbb{E}\left[\min \{(1-\pi) p({\bf X}), \pi (1-p({\bf
-X}))\}\right]\\
-&amp;\le&amp; \mathbb{E}\left[\pi(1-p({\bf X}))\right]\\
+&amp;=&amp;\mathbb{E}\left[\min \{(1-\pi) p(\mathbf{X}), \pi
+(1-p(\mathbf{X}))\}\right]\\
+&amp;\le&amp; \mathbb{E}\left[\pi(1-p(\mathbf{X}))\right]\\
 &amp;\le&amp; \pi \approx 0
 \end{eqnarray}$$</span> which holds for both marginal and conditional
 imbalance.</p>
