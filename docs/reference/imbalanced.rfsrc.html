@@ -27,7 +27,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.6.0</span>
       </span>
     </div>
 
@@ -71,6 +71,9 @@
     </li>
     <li>
       <a href="../articles/competing.html">Competing Risks</a>
+    </li>
+    <li>
+      <a href="../articles/uno.html">Improved Concordance via Uno's IPCW C-statistic</a>
     </li>
     <li>
       <a href="../articles/imbalance.html">Random Forests Quantile Classifier (RFQ)</a>
@@ -212,7 +215,7 @@
 large value for <code>ntree</code> in imbalanced problems to ensure stable
 performance estimation, especially for G-mean. As a general guideline,
 use at least five times the usual number of trees.</p>
-<p><strong>Performance metrics:</strong> A helper function, <code>get.imbalanced.performance</code>, is provided for extracting classification performance summaries. The metric names are self-explanatory in most cases. Some key metrics include:</p><ul><li><p><code>F1</code>: The harmonic mean of precision and recall.</p></li>
+<p><strong>Performance metrics:</strong> A helper function, <code><a href="https://www.randomforestsrc.org//reference/utilities_internal.html">get.imbalanced.performance</a></code>, is provided for extracting classification performance summaries. The metric names are self-explanatory in most cases. Some key metrics include:</p><ul><li><p><code>F1</code>: The harmonic mean of precision and recall.</p></li>
 <li><p><code>F1mod</code>: The harmonic mean of sensitivity, specificity, precision, and negative predictive value.</p></li>
 <li><p><code>F1gmean</code>: The average of F1 and G-mean.</p></li>
 <li><p><code>F1modgmean</code>: The average of F1mod and G-mean.</p></li>
@@ -271,7 +274,7 @@ use at least five times the usual number of trees.</p>
 <span><span class="co">## detailed output using customized performance function</span></span>
 <span><span class="co">##----------------------------------------------------------------</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">get.imbalanced.performance</span><span class="op">(</span><span class="va">o.rfq</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://www.randomforestsrc.org//reference/utilities_internal.html">get.imbalanced.performance</a></span><span class="op">(</span><span class="va">o.rfq</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">##-----------------------------------------------------------------</span></span>
 <span><span class="co">## RF using misclassification error with gini splitting</span></span>
@@ -346,19 +349,19 @@ use at least five times the usual number of trees.</p>
 <span>  <span class="va">o</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">trn</span><span class="op">)</span></span>
 <span></span>
 <span>  <span class="co">## (1) default threshold (2) directly optimized gmean threshold</span></span>
-<span>  <span class="va">th.1</span> <span class="op">&lt;-</span> <span class="fu">get.imbalanced.performance</span><span class="op">(</span><span class="va">o</span><span class="op">)</span><span class="op">[</span><span class="st">"threshold"</span><span class="op">]</span></span>
-<span>  <span class="va">th.2</span> <span class="op">&lt;-</span> <span class="fu">get.imbalanced.optimize</span><span class="op">(</span><span class="va">o</span><span class="op">)</span><span class="op">[</span><span class="st">"threshold"</span><span class="op">]</span></span>
+<span>  <span class="va">th.1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://www.randomforestsrc.org//reference/utilities_internal.html">get.imbalanced.performance</a></span><span class="op">(</span><span class="va">o</span><span class="op">)</span><span class="op">[</span><span class="st">"threshold"</span><span class="op">]</span></span>
+<span>  <span class="va">th.2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://www.randomforestsrc.org//reference/utilities_internal.html">get.imbalanced.optimize</a></span><span class="op">(</span><span class="va">o</span><span class="op">)</span><span class="op">[</span><span class="st">"threshold"</span><span class="op">]</span></span>
 <span></span>
 <span>  <span class="co">## training performance</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"-------- train performance ---------\n"</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">get.imbalanced.performance</span><span class="op">(</span><span class="va">o</span>, thresh<span class="op">=</span><span class="va">th.1</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">get.imbalanced.performance</span><span class="op">(</span><span class="va">o</span>, thresh<span class="op">=</span><span class="va">th.2</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://www.randomforestsrc.org//reference/utilities_internal.html">get.imbalanced.performance</a></span><span class="op">(</span><span class="va">o</span>, thresh<span class="op">=</span><span class="va">th.1</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://www.randomforestsrc.org//reference/utilities_internal.html">get.imbalanced.performance</a></span><span class="op">(</span><span class="va">o</span>, thresh<span class="op">=</span><span class="va">th.2</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span>  <span class="co">## test performance</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"-------- test performance ---------\n"</span><span class="op">)</span></span>
 <span>  <span class="va">pred.o</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">o</span>, <span class="va">tst</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">get.imbalanced.performance</span><span class="op">(</span><span class="va">pred.o</span>, thresh<span class="op">=</span><span class="va">th.1</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">get.imbalanced.performance</span><span class="op">(</span><span class="va">pred.o</span>, thresh<span class="op">=</span><span class="va">th.2</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://www.randomforestsrc.org//reference/utilities_internal.html">get.imbalanced.performance</a></span><span class="op">(</span><span class="va">pred.o</span>, thresh<span class="op">=</span><span class="va">th.1</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://www.randomforestsrc.org//reference/utilities_internal.html">get.imbalanced.performance</a></span><span class="op">(</span><span class="va">pred.o</span>, thresh<span class="op">=</span><span class="va">th.2</span><span class="op">)</span><span class="op">)</span></span>
 <span> </span>
 <span><span class="op">}</span> </span>
 <span></span>
