@@ -681,7 +681,7 @@ predictor set.</p>
 <span></span>
 <span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/warning.html" class="external-link">suppressWarnings</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://www.randomforestsrc.org//reference/impute.learn.rfsrc.html">impute.learn</a></span><span class="op">(</span></span>
-<span>    <span class="fu">Surv</span><span class="op">(</span><span class="va">days</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">days</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>,</span>
 <span>    <span class="va">train</span>,</span>
 <span>    deployment.xvars <span class="op">=</span> <span class="va">xvars</span>,</span>
 <span>    keep.models <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -782,59 +782,6 @@ format requires the package.</p></li>
 <li><p> Only cells that are missing after the new data are matched to
 the training variables are ever updated during prediction.</p></li>
 </ol>
-</div>
-<div class="section level2">
-<h2 id="discussion">Discussion<a class="anchor" aria-label="anchor" href="#discussion"></a>
-</h2>
-<p>Random forest imputation has long been treated as something you do to
-a data set once and then move on. Recent work on
-<code>missForestPredict</code> (Albu et al., 2025) showed that the same
-idea can be extended to new observations arriving after training, and
-<code><a href="https://www.randomforestsrc.org//reference/impute.learn.rfsrc.html">impute.learn()</a></code> pursues that goal within
-<code>randomForestSRC</code>. The goal is to estimate an imputation rule
-from training data once, save it in memory or on disk, and apply it
-unchanged whenever new observations appear. No forest is refit at test
-time. This is especially natural when model development and later use
-are separated in time, as in external validation, prospective data
-collection, or enterprise prediction pipelines.</p>
-<p>What makes <code><a href="https://www.randomforestsrc.org//reference/impute.learn.rfsrc.html">impute.learn()</a></code> distinctive is that it saves
-only one forest per target variable. When the training data themselves
-contain missing values, the earlier iterations used to impute those data
-are simply discarded. Only the final sweep is kept. This is a deliberate
-departure from approaches that replay a full iterative sequence at test
-time. Doing so reduces storage requirements and reload times, making the
-imputer more practical for day-to-day work.</p>
-<p>The method is also flexible about how much protection the user wants
-against later missingness. If the training data are already complete,
-<code><a href="https://www.randomforestsrc.org//reference/impute.learn.rfsrc.html">impute.learn()</a></code> can still be fit by setting
-<code>target.mode = "all"</code>, so that every retained variable
-receives a saved forest and can later be updated if needed. More
-generally, <code>target.mode</code> determines which variables are
-eligible for model-based updating, whereas <code>deployment.xvars</code>
-restricts which variables may be used as predictors in those updates.
-This separation lets the user control both sides of the problem, namely
-which variables may be imputed later and which accompanying information
-may be used to impute them.</p>
-<p>Because the saved forests are fit with the usual
-<code>randomForestSRC</code> forest engine, the method also retains
-familiar fitting controls. At prediction time the procedure remains
-straightforward. New data are matched to the retained training
-variables, missing values are started from stored training summaries,
-and saved targets are then updated in the stored sweep order. Even
-extreme cases behave predictably. A new observation that is entirely
-missing is not discarded at test time. It is first filled with starting
-values and then updated wherever a saved target forest is available.
-Variables that are not saved targets remain at their starting
-values.</p>
-<p>The idea of for random forests is a new exciting concept which we
-believe has many ways to grow in the future. Once an imputer is learned
-from one sample and carried forward to another, concerns such as
-distributional shift, early warning signs that the learned rule no
-longer fits the incoming data, and the tradeoff between accuracy,
-storage, and reload time all become genuine statistical problems in
-their own right. Although the present method does not resolve those
-questions, it provides a practical and transparent framework in which we
-can begin to address them.</p>
 <br><br><p class="comment2">
 <strong> Cite this vignette as </strong> <br> H. Ishwaran, M. Lu, and
 U. B. Kogalur. 2026. “randomForestSRC: learned test-time imputation
