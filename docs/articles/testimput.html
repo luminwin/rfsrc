@@ -142,7 +142,15 @@
   </a>
 </li>
       </ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/kogalur/randomForestSRC/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
 
+    GitHub
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -160,7 +168,7 @@
 <a href="https://ishwaran.org/ishwaran.html" class="external-link">Hemant Ishwaran</a> <br><br><a href="https://www.luminwin.net/" class="external-link">Min Lu</a> <br><br> Udaya B.
 Kogalur</h4>
             
-            <h4 data-toc-skip class="date">2026-03-28</h4>
+            <h4 data-toc-skip class="date">2026-03-30</h4>
       
 
       <div class="hidden name"><code>testimput.Rmd</code></div>
@@ -222,7 +230,7 @@ learned imputer.</p>
 mixed-type missing data. It is flexible, capable of capturing nonlinear
 structure and interactions, and requires little in the way of
 distributional assumptions. The classical <code>missForest</code>
-algorithm of Stekhoven and B"uhlmann (2012) and the random forest
+algorithm of Stekhoven and Buhlmann (2012) and the random forest
 missing-data algorithms studied by Tang and Ishwaran (2017) are
 representative of this approach <span class="citation">[1, 2]</span>. In
 both cases, an incomplete data set is iteratively imputed by fitting
@@ -351,12 +359,12 @@ and the observed target values
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>X</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">X_{ij}</annotation></semantics></math>:
 <span class="math display">$$
 \widehat{f}_j
-\;=\;
+=
 \operatorname{RF}_j\Bigl(
-\bigl\{(\widetilde{X}_{i,\mathcal{P}(j)},X_{ij}) :
-i\in\mathcal{O}_j\bigr\}
+\bigl\{(\widetilde{X}_{i,\mathcal{P}(j)}, X_{ij}) : i \in
+\mathcal{O}_j\bigr\}
 \Bigr),
-\qquad j\in\mathcal{T}.
+\qquad j \in \mathcal{T}.
 $$</span> Only one forest is produced and saved per target. This
 single-sweep design is a defining feature of the method. Because nothing
 from the earlier iterative imputation of the training data needs to be
@@ -393,18 +401,19 @@ exactly as they are.</p>
 denote the set of rows in the new data for which target
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi><mo>∈</mo><mi>𝒯</mi></mrow><annotation encoding="application/x-tex">j\in\mathcal{T}</annotation></semantics></math>
 is missing after the column-matching step. Starting from the initialized
-matrix <span class="math inline">${\bf X}^{(0)}$</span>, the method
-sweeps repeatedly through the saved targets in their stored order. In
-each pass, for each target
+matrix
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>𝐗</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow></msup><annotation encoding="application/x-tex">\mathbf{X}^{(0)}</annotation></semantics></math>,
+the method sweeps repeatedly through the saved targets in their stored
+order. In each pass, for each target
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi><mo>∈</mo><mi>𝒯</mi></mrow><annotation encoding="application/x-tex">j\in\mathcal{T}</annotation></semantics></math>,
 the saved forest
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>f</mi><mo accent="true">̂</mo></mover><mi>j</mi></msub><annotation encoding="application/x-tex">\widehat{f}_j</annotation></semantics></math>
 fills in only the rows that are still missing,
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>X</mi><mrow><mi>i</mi><mi>j</mi></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></msubsup><mspace width="0.278em"></mspace><mo>←</mo><mspace width="0.278em"></mspace><msub><mover><mi>f</mi><mo accent="true">̂</mo></mover><mi>j</mi></msub><mo minsize="1.2" maxsize="1.2" stretchy="false" form="prefix">(</mo><msubsup><mi>X</mi><mrow><mi>i</mi><mo>,</mo><mi>𝒫</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>j</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo>,</mo><mrow><mi mathvariant="normal">c</mi><mi mathvariant="normal">u</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">r</mi></mrow><mo stretchy="true" form="postfix">)</mo></mrow></msubsup><mo minsize="1.2" maxsize="1.2" stretchy="false" form="postfix">)</mo><mo>,</mo><mspace width="2.0em"></mspace><mi>i</mi><mo>∈</mo><msubsup><mi>ℳ</mi><mi>j</mi><mrow><mi mathvariant="normal">t</mi><mi mathvariant="normal">e</mi></mrow></msubsup><mo>,</mo><mspace width="1.0em"></mspace><mi>j</mi><mo>∈</mo><mi>𝒯</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>X</mi><mrow><mi>i</mi><mi>j</mi></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></msubsup><mspace width="0.278em"></mspace><mo>←</mo><mspace width="0.278em"></mspace><msub><mover><mi>f</mi><mo accent="true">̂</mo></mover><mi>j</mi></msub><mo minsize="1.2" maxsize="1.2" stretchy="false" form="prefix">(</mo><msubsup><mi>X</mi><mrow><mi>i</mi><mo>,</mo><mi>𝒫</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>j</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo>,</mo><mtext mathvariant="normal">curr</mtext><mo stretchy="true" form="postfix">)</mo></mrow></msubsup><mo minsize="1.2" maxsize="1.2" stretchy="false" form="postfix">)</mo><mo>,</mo><mspace width="2.0em"></mspace><mi>i</mi><mo>∈</mo><msubsup><mi>ℳ</mi><mi>j</mi><mtext mathvariant="normal">te</mtext></msubsup><mo>,</mo><mspace width="1.0em"></mspace><mi>j</mi><mo>∈</mo><mi>𝒯</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">
 X_{ij}^{(t)}
 \;\leftarrow\;
-\widehat{f}_j\bigl(X_{i,\mathcal{P}(j)}^{(t,\mathrm{curr})}\bigr),
-\qquad i\in\mathcal{M}_j^{\mathrm{te}},\quad j\in\mathcal{T}.
+\widehat{f}_j\bigl(X_{i,\mathcal{P}(j)}^{(t,\text{curr})}\bigr),
+\qquad i\in\mathcal{M}_j^{\text{te}},\quad j\in\mathcal{T}.
 </annotation></semantics></math> Here
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>X</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo>,</mo><mrow><mi mathvariant="normal">c</mi><mi mathvariant="normal">u</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">r</mi></mrow><mo stretchy="true" form="postfix">)</mo></mrow></msup><annotation encoding="application/x-tex">X^{(t,\mathrm{curr})}</annotation></semantics></math>
 denotes the current working matrix within pass
