@@ -146,126 +146,105 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">max.subtree</span><span class="op">(</span><span class="va">object</span>,</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for class 'rfsrc'</span></span>
+<span><span class="fu">max.subtree</span><span class="op">(</span><span class="va">object</span>,</span>
 <span>  max.order <span class="op">=</span> <span class="fl">2</span>, sub.order <span class="op">=</span> <span class="cn">FALSE</span>, conservative <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <p></p>
+
+
+<p></p>
 <dl><dt id="arg-object">object<a class="anchor" aria-label="anchor" href="#arg-object"></a></dt>
-<dd><p>An object of class <code>(rfsrc, grow)</code> or <code>(rfsrc,
-	    forest).</code></p></dd>
+<dd><p>An object of class <code>(rfsrc, grow)</code> or <code>(rfsrc, forest)</code>.</p></dd>
+
 
   <dt id="arg-max-order">max.order<a class="anchor" aria-label="anchor" href="#arg-max-order"></a></dt>
-<dd><p>Non-negative integer specifying the target number
-    of order depths.  Default is to return the first and second order
-    depths.  Used to identify predictive variables.  Setting
-    <span class="option">max.order=0</span> returns the first order depth for each
-    variable by tree.  A side effect is that <span class="option">conservative</span> is
-    automatically set to <code>FALSE</code>.</p></dd>
+<dd><p>Non-negative integer specifying the maximum interaction order for which minimal depth is calculated. Defaults to 2. Set <code>max.order=0</code> to return first-order depths only. When <code>max.order=0</code>, <code>conservative</code> is automatically set to <code>FALSE</code>.</p></dd>
+
 
   <dt id="arg-sub-order">sub.order<a class="anchor" aria-label="anchor" href="#arg-sub-order"></a></dt>
-<dd><p>Set this value to <code>TRUE</code> to return the
-    minimal depth of each variable relative to another variable.
-    Used to identify interrelationship between variables.  See
-    details below.</p></dd>
+<dd><p>Logical. If <code>TRUE</code>, returns the minimal depth of each variable conditional on every other variable. Useful for investigating variable interdependence. See <code>Details</code>.</p></dd>
+
 
   <dt id="arg-conservative">conservative<a class="anchor" aria-label="anchor" href="#arg-conservative"></a></dt>
-<dd><p>If <code>TRUE</code>, the threshold value for selecting
-    variables is calculated using a conservative marginal
-    approximation to the minimal depth distribution (the method used
-    in Ishwaran et al. 2010).  Otherwise, the minimal depth
-    distribution is the tree-averaged distribution.  The latter method
-    tends to give larger threshold values and discovers more
-    variables, especially in high-dimensions.</p></dd>
+<dd><p>Logical. If <code>TRUE</code>, uses a conservative threshold for selecting variables based on the marginal minimal depth distribution (Ishwaran et al., 2010). If <code>FALSE</code>, uses the tree-averaged distribution, which is less conservative and typically identifies more variables in high-dimensional settings.</p></dd>
+
 
   <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Further arguments passed to or from other methods.</p></dd>
+<dd><p>Additional arguments passed to or from other methods.</p></dd>
 
 </dl></div>
     <div id="details">
     <h2>Details</h2>
-    <p>The maximal subtree for a variable <em>x</em> is the largest subtree
-  whose root node splits on <em>x</em>.  Thus, all parent nodes of
-  <em>x</em>'s maximal subtree have nodes that split on variables other
-  than <em>x</em>.  The largest maximal subtree possible is the root
-  node.  In general, however, there can be more than one maximal
-  subtree for a variable. A maximal subtree may also not exist if
-  there are no splits on the variable.  See Ishwaran et al. (2010,
-  2011) for details.</p>
-<p>The minimal depth of a maximal subtree (the first order depth)
-  measures predictiveness of a variable <em>x</em>.  It equals the
-  shortest distance (the depth) from the root node to the parent node
-  of the maximal subtree (zero is the smallest value possible).  The
-  smaller the minimal depth, the more impact <em>x</em> has on
-  prediction. The mean of the minimal depth distribution is used as
-  the threshold value for deciding whether a variable's minimal depth
-  value is small enough for the variable to be classified as strong.</p>
-<p>The second order depth is the distance from the root node to the
-  second closest maximal subtree of <em>x</em>.  To specify the target
-  order depth, use the <code>max.order</code> option (e.g., setting
-  <span class="option">max.order=2</span> returns the first and second order depths).
-  Setting <span class="option">max.order=0</span> returns the first order depth for each
-  variable for each tree.</p>
-<p>Set <span class="option">sub.order=TRUE</span> to obtain the minimal depth of a
-  variable relative to another variable.  This returns a
-  <code>p</code>x<code>p</code> matrix, where <code>p</code> is the number of variables,
-  and entries (i,j) are the normalized relative minimal depth of a
-  variable j within the maximal subtree for variable i, where
-  normalization adjusts for the size of i's maximal subtree.  Entry
-  (i,i) is the normalized minimal depth of i relative to the root
-  node.  The matrix should be read by looking across rows (not down
-  columns) and identifies interrelationship between variables.  Small
-  (i,j) entries indicate interactions.  See
-  <code class="command">find.interaction</code> for related details.</p>
-<p>For competing risk data, maximal subtree analyses are unconditional
-  (i.e., they are non-event specific).</p>
+    <p>The maximal subtree for a variable <em>x</em> is the largest subtree in which the root node splits on <em>x</em>. The largest possible maximal subtree is the full tree (root node), though multiple maximal subtrees may exist for a variable. A variable may also have no maximal subtree if it is never used for splitting. See Ishwaran et al. (2010, 2011) for further discussion.</p>
+<p>The minimal depth of a maximal subtree-called the <em>first-order depth</em>-quantifies the predictive strength of a variable. It is defined as the distance from the root node to the parent of the closest maximal subtree for <em>x</em>. Smaller values indicate stronger predictive impact. A variable is flagged as strong if its minimal depth is below the mean of the minimal depth distribution.</p>
+<p>The <em>second-order depth</em> is the distance from the root to the second-closest maximal subtree of <em>x</em>. To request depths beyond first order, use the <code>max.order</code> option (e.g., <code>max.order = 2</code> returns both first and second-order depths). Set <code>max.order = 0</code> to retrieve first-order depths for each variable in each tree.</p>
+<p>Set <code>sub.order = TRUE</code> to obtain the relative minimal depth of
+  each variable <em>j</em> within the maximal subtree of another variable
+  <em>i</em>. This returns a <code>p x p</code> matrix (with <code>p</code> the number
+  of variables) whose entry (i,j) is the normalized relative depth of
+  <em>j</em> in <em>i</em>'s subtree. Entry (i,i) gives the depth of
+  <em>i</em> relative to the root. Read the matrix across rows to assess
+  inter-variable relationships: small (i,j) entries suggest interactions
+  between variables <em>i</em> and <em>j</em>.</p>
+<p>For competing risks, all analyses are unconditional (non-event specific).</p>
     </div>
     <div id="value">
     <h2>Value</h2>
-    <p>Invisibly, a list with the following components:</p>
+
+
+<p>Invisibly returns a list with the following components:</p>
+<p></p>
 <dl><dt>order</dt>
-<dd><p>Order depths for a given variable up to <code>max.order</code>
-    averaged over a tree and the forest.  Matrix of dimension
-    <code>p</code>x<code>max.order</code>.  If <span class="option">max.order=0</span>, a matrix of
-    <code>p</code>x<code>ntree</code> is returned containing the first order depth
-    for each variable by tree.</p></dd>
+<dd><p>Matrix of order depths for each variable up to
+  <code>max.order</code>, averaged over trees. The matrix has <code>p</code> rows
+  and <code>max.order</code> columns, where <code>p</code> is the number of
+  variables. If <code>max.order = 0</code>, returns a matrix of dimension
+  <code>p x ntree</code> containing first-order depths for each variable by
+  tree.</p></dd>
+
 
   <dt>count</dt>
-<dd><p>Averaged number of  maximal subtrees, normalized by
-    the size of a tree, for each variable.</p></dd>
+<dd><p>Average number of maximal subtrees per variable, normalized by tree size.</p></dd>
+
 
   <dt>nodes.at.depth</dt>
-<dd><p>Number of non-terminal nodes by depth for each tree.</p></dd>
+<dd><p>List of vectors recording the number of non-terminal nodes at each depth level for each tree.</p></dd>
+
 
   <dt>sub.order</dt>
-<dd><p>Average minimal depth of a variable relative to another
-    variable.  Can be <code>NULL</code>.</p></dd>
+<dd><p>Matrix of average minimal depths of each variable relative to others (i.e., conditional minimal depth matrix). <code>NULL</code> if <code>sub.order = FALSE</code>.</p></dd>
+
 
   <dt>threshold</dt>
-<dd><p>Threshold value (the mean minimal depth) used to
-    select variables.</p></dd>
+<dd><p>Threshold value for selecting strong variables based on the mean of the minimal depth distribution.</p></dd>
+
 
   <dt>threshold.1se</dt>
-<dd><p>Mean minimal depth plus one standard error.</p></dd>
+<dd><p>Conservative threshold equal to the mean minimal depth plus one standard error.</p></dd>
+
 
   <dt>topvars</dt>
-<dd><p>Character vector of names of the final selected
-    variables.</p></dd>
+<dd><p>Character vector of selected variable names using the <code>threshold</code> criterion.</p></dd>
+
 
   <dt>topvars.1se</dt>
-<dd><p>Character vector of names of the final selected
-    variables using the 1se threshold rule.</p></dd>
+<dd><p>Character vector of selected variable names using the <code>threshold.1se</code> criterion.</p></dd>
+
 
   <dt>percentile</dt>
-<dd><p>Minimal depth percentile for each variable.</p></dd>
+<dd><p>Percentile value of minimal depth for each variable.</p></dd>
+
 
   <dt>density</dt>
-<dd><p>Estimated minimal depth density.</p></dd>
+<dd><p>Estimated density of the minimal depth distribution.</p></dd>
+
 
   <dt>second.order.threshold</dt>
-<dd><p>Threshold for second order depth.</p></dd>
+<dd><p>Threshold used for selecting strong second-order depth variables.</p></dd>
+
 
 </dl></div>
     <div id="author">
@@ -284,7 +263,6 @@
     <div id="see-also">
     <h2>See also</h2>
     <div class="dont-index"><p><code class="command"><a href="holdout.vimp.rfsrc.html">holdout.vimp.rfsrc</a></code>,
-  <code class="command">var.select.rfsrc</code>,
   <code class="command"><a href="vimp.rfsrc.html">vimp.rfsrc</a></code></p></div>
     </div>
 

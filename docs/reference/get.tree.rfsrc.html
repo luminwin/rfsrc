@@ -146,7 +146,8 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get.tree</span><span class="op">(</span><span class="va">object</span>, <span class="va">tree.id</span>, <span class="va">target</span>, m.target <span class="op">=</span> <span class="cn">NULL</span>,</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for class 'rfsrc'</span></span>
+<span><span class="fu">get.tree</span><span class="op">(</span><span class="va">object</span>, <span class="va">tree.id</span>, <span class="va">target</span>, m.target <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>   <span class="va">time</span>, surv.type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mort"</span>, <span class="st">"rel.freq"</span>, <span class="st">"surv"</span>, <span class="st">"years.lost"</span>, <span class="st">"cif"</span>, <span class="st">"chf"</span><span class="op">)</span>,</span>
 <span>   class.type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bayes"</span>, <span class="st">"rfq"</span>, <span class="st">"prob"</span><span class="op">)</span>,</span>
 <span>   ensemble <span class="op">=</span> <span class="cn">FALSE</span>, oob <span class="op">=</span> <span class="cn">TRUE</span>, show.plots <span class="op">=</span> <span class="cn">TRUE</span>, do.trace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
@@ -158,98 +159,84 @@
 <dl><dt id="arg-object">object<a class="anchor" aria-label="anchor" href="#arg-object"></a></dt>
 <dd><p>An object of class <code>(rfsrc, grow)</code>.</p></dd>
 
+
   <dt id="arg-tree-id">tree.id<a class="anchor" aria-label="anchor" href="#arg-tree-id"></a></dt>
-<dd><p>Integer value specifying the tree to be extracted.</p></dd>
+<dd><p>Integer specifying the tree to extract.</p></dd>
+
 
   <dt id="arg-target">target<a class="anchor" aria-label="anchor" href="#arg-target"></a></dt>
-<dd><p>For classification, an integer or
-    character value specifying the class to focus on (defaults to the
-    first class).  For competing risks, an integer value between
-    1 and <code>J</code> indicating the event of interest, where <code>J</code> is
-    the number of event types.  The default is to use the first event
-    type.</p></dd>
+<dd><p>For classification: integer or character indicating the class of interest (defaults to the first class). For competing risks: integer between 1 and <code>J</code> (number of event types) specifying the event of interest (default is the first event type).</p></dd>
+
 
   <dt id="arg-m-target">m.target<a class="anchor" aria-label="anchor" href="#arg-m-target"></a></dt>
-<dd><p>Character value for multivariate families
-    specifying the target outcome to be used.  If left unspecified, the
-    algorithm will choose a default target.</p></dd>
+<dd><p>Character string specifying the target outcome for multivariate families. If unspecified, a default is selected.</p></dd>
 
-   <dt id="arg-time">time<a class="anchor" aria-label="anchor" href="#arg-time"></a></dt>
-<dd><p>For survival, the time at which the predicted
-    survival value is evaluated at (depends on <code>surv.type</code>).</p></dd>
+
+  <dt id="arg-time">time<a class="anchor" aria-label="anchor" href="#arg-time"></a></dt>
+<dd><p>For survival: time point at which the predicted value is evaluated (depends on <code>surv.type</code>).</p></dd>
+
 
   <dt id="arg-surv-type">surv.type<a class="anchor" aria-label="anchor" href="#arg-surv-type"></a></dt>
-<dd><p>For survival, specifies the predicted value.
-    See details below.</p></dd>
+<dd><p>For survival: specifies the type of predicted value returned. See <code>Details</code>.</p></dd>
+
 
   <dt id="arg-class-type">class.type<a class="anchor" aria-label="anchor" href="#arg-class-type"></a></dt>
-<dd><p>For classification, specifies the predicted value.
-    See details below.</p></dd>
+<dd><p>For classification: specifies the type of predicted value. See <code>Details</code>.</p></dd>
+
 
   <dt id="arg-ensemble">ensemble<a class="anchor" aria-label="anchor" href="#arg-ensemble"></a></dt>
-<dd><p>Use the ensemble (of all trees) for prediction, or use
-    the requested tree for prediction (this is the default).</p></dd>
+<dd><p>Logical. If <code>TRUE</code>, prediction is based on the ensemble of all trees. If <code>FALSE</code> (default), prediction is based on the specified tree.</p></dd>
+
 
   <dt id="arg-oob">oob<a class="anchor" aria-label="anchor" href="#arg-oob"></a></dt>
-<dd><p>OOB (TRUE) or in-bag (FALSE) predicted values.  Only
-    applies when <code>ensemble=TRUE</code>.</p></dd>
+<dd><p>Logical. Use OOB predicted values (<code>TRUE</code>) or in-bag values (<code>FALSE</code>). Only applies when <code>ensemble=TRUE</code>.</p></dd>
+
 
   <dt id="arg-show-plots">show.plots<a class="anchor" aria-label="anchor" href="#arg-show-plots"></a></dt>
-<dd><p>Should plots be displayed?</p></dd>
+<dd><p>Logical. Should plots be displayed?</p></dd>
+
 
   <dt id="arg-do-trace">do.trace<a class="anchor" aria-label="anchor" href="#arg-do-trace"></a></dt>
-<dd><p>Number of seconds between updates to the user on
-    approximate time to completion.</p></dd>
-
+<dd><p>Number of seconds between progress updates.</p></dd>
 
 </dl></div>
     <div id="details">
     <h2>Details</h2>
 
 
-<p>Extracts a specified tree from a forest and converts the tree to a
-  hierarchical structure suitable for use with the "data.tree" package.
-  Plotting the object will conveniently render the tree on the users
-  browser. Left tree splits are displayed.  For continuous values, left
-  split is displayed as an inequality with right split equal to the
-  reversed inequality.  For factors, split values are described in terms
-  of the levels of the factor. In this case, the left daughter split is
-  a set consisting of all levels that are assigned to the left daughter
-  node.  The right daughter split is the complement of this set.</p>
-<p>Terminal nodes are highlighted by color and display the sample size
-  and predicted value.  By default, predicted value equals the tree
-  predicted value and sample size are terminal node inbag sample sizes.
-  If <code>ensemble=TRUE</code>, then the predicted value equals the forest
-  ensemble value which could be useful as it allows one to visualize the
-  ensemble predictor over a given tree and therefore for a given
-  partition of the feature space.  In this case, sample sizes are for
-  all cases and not the tree specific inbag cases.</p>
-<p>The predicted value displayed is as follows:</p>
+<p>Extracts a specified tree from a forest and converts it into a
+  hierarchical structure compatible with the <span class="pkg">data.tree</span>
+  package. Plotting the resulting object renders an interactive tree
+  visualization in the user's web browser.</p>
 
-<p></p><ol><li><p>For regression, the mean of the response.</p></li>
-<li><p>For classification, for the target class specified by
-    <span class="option">target</span>, either the class with most votes if
-    <code>class.type="bayes"</code>; or in a two-class problem the classifier
-    using the RFQ quantile threshold if <code>class.type="bayes"</code>
-    (see <a href="imbalanced.rfsrc.html">imbalanced</a> for more details); or the relative class
-    frequency when <code>class.type="prob"</code>.</p></li>
-<li><p>For multivariate families, the predicted value of the outcome
-    specified by <span class="option">m.target</span>.  This being the value for regression
-    or classification described above, depending on whether the outcome
-    is real valued or a factor.</p></li>
-<li><p>For survival, the choices are:</p><ul><li><p>Mortality (<code>mort</code>).</p></li>
-<li><p>Relative frequency of mortality (<code>rel.freq</code>).</p></li>
-<li><p>Predicted survival (<code>surv</code>), where the predicted
-      survival is for the time point specified using
-      <code>time</code> (the default is the median follow up time).</p></li>
+<p>Left-hand splits are shown. For continuous variables, the left split
+  is displayed as an inequality (e.g., <code>x &lt; value</code>); the right
+  split is the reverse. For factor variables, the left daughter node is
+  defined by a set of levels assigned to it; the right daughter is its
+  complement.</p>
+
+<p>Terminal nodes are highlighted with color and display both sample size
+  and predicted value. By default, the predicted value corresponds to
+  the prediction from the selected tree, and the sample size refers to
+  the in-bag cases reaching the terminal node. If <code>ensemble =
+  TRUE</code>, the predicted value equals the forest ensemble prediction,
+  allowing visualization of the full forest predictor over the selected
+  tree's partition. In this case, sample sizes refer to all observations
+  (not just in-bag cases).</p>
+<p>Predicted values displayed in terminal nodes are defined as follows:</p>
+<p></p><ol><li><p>For regression: the mean of the response.</p></li>
+<li><p>For classification: depends on the <code>class.type</code> argument and target class:</p><ul><li><p>If <code>class.type = "bayes"</code>, the predicted class with the most votes, or the RFQ classifier threshold in two-class problems.</p></li>
+<li><p>If <code>class.type = "prob"</code>, the class probability for the target class.</p></li>
 </ul></li>
-<li><p>For competing risks, the choices are:</p><ul><li><p>The expected number of life years lost (<code>years.lost</code>).</p></li>
-<li><p>The cumulative incidence function (<code>cif</code>).</p></li>
-<li><p>The cumulative hazard function (<code>chf</code>).</p></li>
-</ul><p>In all three cases, the predicted value is for the event type
-    specified by <span class="option">target</span>.  For <code>cif</code> and
-    <code>chf</code> the quantity is evaluated at the time point specified
-    by <code>time</code>.</p></li>
+<li><p>For multivariate families: the predicted value for the outcome specified by <code>m.target</code>, using the logic above depending on whether the outcome is continuous or categorical.</p></li>
+<li><p>For survival:</p><ul><li><p><code>mort</code>: estimated mortality (Ishwaran et al., 2008).</p></li>
+<li><p><code>rel.freq</code>: relative frequency of mortality.</p></li>
+<li><p><code>surv</code>: predicted survival probability at the specified time (<code>time</code>).</p></li>
+</ul></li>
+<li><p>For competing risks:</p><ul><li><p><code>years.lost</code>: expected number of life years lost.</p></li>
+<li><p><code>cif</code>: cumulative incidence function.</p></li>
+<li><p><code>chf</code>: cause-specific cumulative hazard function.</p></li>
+</ul><p>For <code>cif</code> and <code>chf</code>, predictions are evaluated at the time point given by <code>time</code>, and all metrics are specific to the event type indicated by <code>target</code>.</p></li>
 </ol></div>
     <div id="value">
     <h2>Value</h2>

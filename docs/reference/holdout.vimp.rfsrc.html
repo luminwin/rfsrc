@@ -148,7 +148,8 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">holdout.vimp</span><span class="op">(</span><span class="va">formula</span>, <span class="va">data</span>,</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for class 'rfsrc'</span></span>
+<span><span class="fu">holdout.vimp</span><span class="op">(</span><span class="va">formula</span>, <span class="va">data</span>,</span>
 <span>  ntree <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">p</span>, <span class="va">vtry</span><span class="op">)</span><span class="op">{</span><span class="fl">1000</span> <span class="op">*</span> <span class="va">p</span> <span class="op">/</span> <span class="va">vtry</span><span class="op">}</span>,</span>
 <span>  nsplit <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  ntime <span class="op">=</span> <span class="fl">50</span>,</span>
@@ -165,111 +166,83 @@
 <dl><dt id="arg-formula">formula<a class="anchor" aria-label="anchor" href="#arg-formula"></a></dt>
 <dd><p>A symbolic description of the model to be fit.</p></dd>
 
+
   <dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
 <dd><p>Data frame containing the y-outcome and x-variables.</p></dd>
 
+
   <dt id="arg-ntree">ntree<a class="anchor" aria-label="anchor" href="#arg-ntree"></a></dt>
-<dd><p>Function specifying requested number of trees used for
-    growing the forest.  Inputs are dimension and number of holdout
-    variables. The requested number of trees can also be a number.</p></dd>
+<dd><p>Specifies the number of trees used to grow the forest. Can be a function of
+  data dimension and number of holdout variables, or a fixed numeric value.</p></dd>
+
 
   <dt id="arg-nsplit">nsplit<a class="anchor" aria-label="anchor" href="#arg-nsplit"></a></dt>
-<dd><p>Non-negative integer value specifying number of
-    random split points used to split a node (deterministic splitting
-    corresponds to the value zero and is much slower).</p></dd>
+<dd><p>Non-negative integer specifying the number of random split points used to split a node.
+  A value of zero corresponds to deterministic splitting, which is significantly slower.</p></dd>
+
 
   <dt id="arg-ntime">ntime<a class="anchor" aria-label="anchor" href="#arg-ntime"></a></dt>
-<dd><p>Integer value used for survival to
-    constrain ensemble calculations to a grid of <code>ntime</code> time points.</p></dd>
+<dd><p>Integer value used for survival settings to constrain ensemble
+  calculations to a grid of <code>ntime</code> time points.</p></dd>
+
 
   <dt id="arg-sampsize">sampsize<a class="anchor" aria-label="anchor" href="#arg-sampsize"></a></dt>
-<dd><p>Function specifying size of subsampled data. Can also
-    be a number.</p></dd>
+<dd><p>Specifies the size of the subsampled data. Can be either a function or a numeric value.</p></dd>
+
 
   <dt id="arg-samptype">samptype<a class="anchor" aria-label="anchor" href="#arg-samptype"></a></dt>
-<dd><p>Type of bootstrap used.</p></dd>
+<dd><p>Type of bootstrap used when subsampling.</p></dd>
+
 
   <dt id="arg-vtry">vtry<a class="anchor" aria-label="anchor" href="#arg-vtry"></a></dt>
 <dd><p>Number of variables randomly selected to be held out when
-    growing a tree.  This can also be set to a list for a targeted hold
-    out VIMP analysis.  See details below for more information.</p></dd>
+  growing a tree.  Can also be a list for targeted holdout variable
+  importance analysis. See <code>details</code> for more information.</p></dd>
+
 
   <dt id="arg-block-size">block.size<a class="anchor" aria-label="anchor" href="#arg-block-size"></a></dt>
-<dd><p>Specifies number of trees in a block when calculating
-    holdout variable importance.</p></dd>
+<dd><p>Specifies the number of trees in a block when calculating holdout variable importance.</p></dd>
+
 
   <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Further arguments to be passed to <code><a href="rfsrc.html">rfsrc</a></code>.</p></dd>
+<dd><p>Further arguments passed to <code><a href="rfsrc.html">rfsrc</a></code>.</p></dd>
 
 </dl></div>
     <div id="details">
     <h2>Details</h2>
 
 
-<p>Holdout variable importance (holdout VIMP) is based on comparing error
-  performance of two mini forests of trees (blocks of trees): the first in
-  which a random set of <code>vtry</code> features are held out (the holdout
-  forest), and the second in which no features are held out (the
-  baseline forest).</p>
-<p>To summarize, holdout VIMP measures the importance of a variable when
-  that variable is truly removed from the tree growing process.</p>
-<p>Specifically, if a feature is held out in a block of trees, we refer
-  to this as the (feature, block) pair.  The bootstrap for the trees in
-  a (feature, block) pair are identical in both forests. That is, the
-  holdout block is grown by holding out the feature, and the baseline
-  block is grown over the same trees, with the same bootstrap, but
-  without holding out any features.  <code>vtry</code> controls how many
-  features are held out in every tree. If set to one (default), only one
-  variable is held out in every tree.  Once a (feature, block) of trees
-  has been grown, holdout VIMP for a given variable v is calculated as
-  follows.  Gather the block of trees where the feature was held out
-  (from the holdout forest) and calculate OOB prediction error.  Next
-  gather the corresponding block of trees where v was not held out (from
-  the baseline forest) and calculate OOB prediction error.  Holdout VIMP
-  for the (feature, block) pair is the difference between these two
-  values.  The final holdout VIMP estimate for a feature v is obtained
-  by averaging holdout VIMP for (feature=v, block) over all blocks.</p>
-<p>Accuracy of hold out VIMP depends critically on total number of trees.
-  If total number of trees is too small, then number of times a variable
-  is held out will be small and OOB error can suffer from high variance.
-  Therefore, <code>ntree</code> should be set fairly high—we recommend using
-  1000 times the number of features.  Increasing <code>vtry</code> is another
-  way to increase number of times a variable is held out and therefore
-  reduces the burden of growing a large number of trees.  In particular,
-  total number of trees needed decreases linearly with <code>vtry</code>.  The
-  default <code>ntree</code> equals 1000 trees for each feature divided by
-  <code>vtry</code>.  Keep in mind intrepretation of holdout VIMP is altered
-  when <code>vtry</code> is different than one.  Thus this option should be
-  used with caution.</p>
-<p>Accuracy also depends on the value of <code>block.size</code>.  Smaller
-  values generally produce better results but are more computationally
-  demanding.  The most computationally demanding, but most accurate, is
-  <code>block.size=1</code>.  This is similar to how <code>block.size</code> is used
-  for usual variable importance: see the help file for <code class="command">rfsrc</code>
-  for details.  Note the value of <code>block.size</code> should not exceed
-  <code>ntree</code> divided by number of features, otherwise there may not be
-  enough trees to satisify the target block size for a feature and
-  missing values will result.</p>
-<p>A targeted hold out VIMP analysis can be requested by setting
-  <code>vtry</code> to a list with two entries.  The first entry is a vector
-  of integer values specifying the variables of interest.  The second
-  entry is a boolean logical flag indicating whether individual or joint
-  VIMP should be calculated.  For example, suppose variables 1, 4 and 5
-  are our variables of interest.  To calculate holdout VIMP for these
-  variables, and these variables only, <code>vtry</code> would be specified by</p>
-<p>vtry = list(xvar = c(1, 4, 5), joint = FALSE)</p>
-<p>On the other hand, if we are interested in the joint effect when we
-   remove the three variables simultaneously, then</p>
-<p>vtry = list(xvar = c(1, 4, 5), joint = TRUE)</p>
-<p>The benefits of a targeted analysis is that the user may have a
-   pre-conceived idea of which variables are interesting.  Only VIMP for
-   these variables will be calculated which greatly reduces
-   computational time.  Another benefit is that when joint VIMP is
-   requested, this provides the user with a way to assess importance of
-   specific groups of variables.  See the iris example below for
-   illustration.</p>
-
-
+<p>Holdout variable importance (holdout VIMP) measures the importance of a variable
+  by comparing prediction error between two forests (blocks of trees):
+  one in which selected variables are held out during tree growing (the <em>holdout forest</em>)
+  and one in which no variables are held out (the <em>baseline forest</em>).</p>
+<p>For each variable-block combination, the bootstrap samples used to grow the trees
+  are the same in both forests. The difference in out-of-bag (OOB) prediction error
+  between the holdout and baseline forests gives the holdout VIMP for that variable-block pair.
+  The final holdout VIMP for a variable is the average of these differences over all blocks
+  in which the variable was held out.</p>
+<p>The option <code>vtry</code> controls how many variables are held out per tree.
+  The default is one, meaning a single variable is held out per tree.
+  Larger values of <code>vtry</code> increase the number of times each variable is held out,
+  reducing the required total number of trees. However, interpretation of holdout VIMP
+  changes when <code>vtry</code> exceeds one, and this option should be used cautiously.</p>
+<p>High accuracy requires a sufficiently large number of trees.
+  As a general guideline, we recommend using <code>ntree = 1000 * p / vtry</code>,
+  where <code>p</code> is the number of features. Accuracy also depends on <code>block.size</code>,
+  which determines how many trees comprise a block. Smaller values yield better accuracy
+  but are computationally more demanding. The most accurate setting is <code>block.size = 1</code>.
+  Ensure that <code>block.size</code> does not exceed <code>ntree / p</code>,
+  otherwise insufficient trees may be available for certain variables.</p>
+<p>Targeted holdout VIMP analysis can be requested by specifying <code>vtry</code> as a list
+  with two components: a vector of variable indices (<code>xvar</code>) and a logical flag
+  <code>joint</code> indicating whether to compute joint VIMP. For example, to compute holdout VIMP
+  only for variables 1, 4, and 5 individually:</p>
+<p><code>vtry = list(xvar = c(1, 4, 5), joint = FALSE)</code></p>
+<p>To compute the joint effect of removing these three variables together:</p>
+<p><code>vtry = list(xvar = c(1, 4, 5), joint = TRUE)</code></p>
+<p>Targeted analysis is useful when the user has prior knowledge of variables of interest
+  and can significantly reduce computation. Joint VIMP quantifies the combined importance
+  of specific groups of variables. See the Iris example below for illustration.</p>
     </div>
     <div id="value">
     <h2>Value</h2>

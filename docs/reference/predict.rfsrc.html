@@ -146,9 +146,9 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">object</span>,</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for class 'rfsrc'</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">object</span>,</span>
 <span>  <span class="va">newdata</span>,</span>
-<span>  m.target <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  importance <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="st">"none"</span>, <span class="st">"anti"</span>, <span class="st">"permute"</span>, <span class="st">"random"</span><span class="op">)</span>,</span>
 <span>  get.tree <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  block.size <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/any.html" class="external-link">any</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">is.element</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">importance</span><span class="op">)</span>,</span>
@@ -164,353 +164,234 @@
 <span>  split.depth <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="st">"all.trees"</span>, <span class="st">"by.tree"</span><span class="op">)</span>,</span>
 <span>  case.depth <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  do.trace <span class="op">=</span> <span class="cn">FALSE</span>, membership <span class="op">=</span> <span class="cn">FALSE</span>, statistics <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>   </span>
-<span>  <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span>  do.trace <span class="op">=</span> <span class="cn">FALSE</span>, membership <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  marginal.xvar <span class="op">=</span> <span class="cn">NULL</span>,  <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <p></p>
 <dl><dt id="arg-object">object<a class="anchor" aria-label="anchor" href="#arg-object"></a></dt>
-<dd><p>An object of class <code>(rfsrc, grow)</code> or <code>(rfsrc,
-	    forest)</code>.</p></dd>
+<dd><p>An object of class <code>(rfsrc, grow)</code> or <code>(rfsrc, forest)</code>.</p></dd>
 
 
   <dt id="arg-newdata">newdata<a class="anchor" aria-label="anchor" href="#arg-newdata"></a></dt>
-<dd><p>Test data. If missing, the original grow (training)
-    data is used.</p></dd>
-
-
-
-  <dt id="arg-m-target">m.target<a class="anchor" aria-label="anchor" href="#arg-m-target"></a></dt>
-<dd><p>Character vector for multivariate families
-    specifying the target outcomes to be used. The default uses all
-    coordinates.</p></dd>
+<dd><p>Test data. If omitted, the original training data is used.</p></dd>
 
 
   <dt id="arg-importance">importance<a class="anchor" aria-label="anchor" href="#arg-importance"></a></dt>
-<dd><p>Method used for variable importance (VIMP).  Also
-    see <code class="command">vimp</code> for more flexibility, including joint vimp
-    calculations.  See <code class="command">holdoutvimp</code> for an alternate importance
-    measure.</p></dd>
+<dd><p>Method for computing variable importance (VIMP). See <code><a href="vimp.rfsrc.html">vimp</a></code> for additional options including joint importance. See <code><a href="holdout.vimp.rfsrc.html">holdout.vimp</a></code> for an alternative importance measure.</p></dd>
 
 
   <dt id="arg-get-tree">get.tree<a class="anchor" aria-label="anchor" href="#arg-get-tree"></a></dt>
-<dd><p>Vector of integer(s) identifying trees over which the
-    ensembles are calculated over.  By default, uses all trees in the
-    forest.  As an example, the user can extract the ensemble, the VIMP
-    , or proximity from a single tree (or several trees).  Note that
-    <code>block.size</code> will be over-ridden so that it is no larger than
-    the requested number of trees.  See example below illustrating how
-    to extract VIMP for each tree.</p></dd>
+<dd><p>Vector of integers specifying which trees to use for ensemble calculations. Defaults to all trees. Useful for extracting ensembles, VIMP, or proximity from specific trees. If specified, <code>block.size</code> is overridden to match the number of trees. See examples for per-tree VIMP extraction.</p></dd>
 
 
   <dt id="arg-block-size">block.size<a class="anchor" aria-label="anchor" href="#arg-block-size"></a></dt>
-<dd><p>Should the error rate be calculated on every tree?
-    When <code>NULL</code>, it will only be calculated on the last tree.  To
-    view the error rate on every nth tree, set the value to an integer
-    between <code>1</code> and <code>ntree</code>.  If importance is requested, VIMP
-    is calculated in "blocks" of size equal to <code>block.size</code>, thus
-    resulting in a compromise between ensemble and permutation VIMP.</p></dd>
+<dd><p>Controls the granularity of error rate and VIMP calculation. If <code>NULL</code>, error is reported only for the final tree. Set to an integer <code>k</code> to compute error every <code>k</code> trees. For VIMP, calculations are done in blocks of size <code>block.size</code>, balancing between tree-level and forest-level assessments.</p></dd>
 
 
   <dt id="arg-na-action">na.action<a class="anchor" aria-label="anchor" href="#arg-na-action"></a></dt>
-<dd><p>Missing value action. The default <code>na.omit</code>
-    removes the entire record if any entry is <code>NA</code>.
-    Selecting <span class="option">na.random</span> uses fast random imputation, while
-    <span class="option">na.impute</span> uses the imputation method described in
-    <code class="command">rfsrc</code>.</p></dd>
+<dd><p>Action to take when missing values are present. Options are <code>"na.omit"</code> (default), <code>"na.random"</code> for fast random imputation, or <code>"na.impute"</code> to use the imputation method in <code>rfsrc</code>.</p></dd>
 
 
   <dt id="arg-outcome">outcome<a class="anchor" aria-label="anchor" href="#arg-outcome"></a></dt>
-<dd><p>Determines whether the y-outcomes from the training
-    data or the test data are used to calculate the predicted value.
-    The default and natural choice is <code>train</code> which uses the
-    original training data.  Option is ignored when <code>newdata</code> is
-    missing as the training data is used for the test data in such
-    settings.  The option is also ignored whenever the test data is
-    devoid of y-outcomes.  See the details and examples below for more
-    information.</p></dd>
+<dd><p>Specifies whether predicted values should be based on the outcomes from the training data (<code>"train"</code>, default) or test data. Ignored if <code>newdata</code> is missing or if test outcomes are unavailable.</p></dd>
 
 
   <dt id="arg-perf-type">perf.type<a class="anchor" aria-label="anchor" href="#arg-perf-type"></a></dt>
-<dd><p>Optional character value for requesting metric used
-    for predicted value, variable importance (VIMP) and error rate.  If not
-    specified, values returned are calculated by the default action used
-    for the family. Currently applicable only to classification and
-    multivariate classification; allowed values are
-    <code>perf.type="misclass"</code> (default), <code>perf.type="brier"</code> and
-    <code>perf.type="gmean"</code>.</p></dd>
+<dd><p>Optional metric for prediction, VIMP, and error. Currently used for classification and multivariate classification. Choices: <code>"misclass"</code> (default), <code>"brier"</code>, and <code>"gmean"</code>.</p></dd>
 
 
   <dt id="arg-proximity">proximity<a class="anchor" aria-label="anchor" href="#arg-proximity"></a></dt>
-<dd><p>Should proximity between test observations
-    be calculated?  Possible choices are <code>"inbag"</code>, <code>"oob"</code>,
-    <code>"all"</code>, <code>TRUE</code>, or <code>FALSE</code> — but some options may
-    not be valid and will depend on the context of the predict call.
-    The safest choice is <code>TRUE</code> if proximity is desired.</p></dd>
+<dd><p>Whether to compute the proximity matrix for test observations. Options include <code>"inbag"</code>, <code>"oob"</code>, <code>"all"</code>, <code>TRUE</code>, or <code>FALSE</code>. Not all options are valid in all contexts; <code>TRUE</code> is the safest choice.</p></dd>
 
 
   <dt id="arg-distance">distance<a class="anchor" aria-label="anchor" href="#arg-distance"></a></dt>
-<dd><p>Should distance between test observations
-    be calculated?  Possible choices are <code>"inbag"</code>, <code>"oob"</code>,
-    <code>"all"</code>, <code>TRUE</code>, or <code>FALSE</code> — but some options may
-    not be valid and will depend on the context of the predict call.
-    The safest choice is <code>TRUE</code> if distance is desired.</p></dd>
+<dd><p>Whether to compute the distance matrix. Options are the same as for <code>proximity</code>.</p></dd>
 
 
   <dt id="arg-forest-wt">forest.wt<a class="anchor" aria-label="anchor" href="#arg-forest-wt"></a></dt>
-<dd><p>Should the forest weight matrix for test observations
-    be calculated?  Choices are the same as proximity.</p></dd>
+<dd><p>Whether to compute the forest weight matrix. Options are the same as for <code>proximity</code>.</p></dd>
 
 
   <dt id="arg-ptn-count">ptn.count<a class="anchor" aria-label="anchor" href="#arg-ptn-count"></a></dt>
-<dd><p>The number of terminal nodes that each tree in the
-    grow forest should be pruned back to.  The terminal node membership
-    for the pruned forest is returned but no other action is taken.  The
-    default is <code>ptn.count=0</code> which does no pruning.</p></dd>
+<dd><p>If nonzero, each tree is pruned to have this many terminal nodes. Only the terminal node membership is returned; no prediction is made. Default is <code>ptn.count = 0</code>.</p></dd>
 
 
   <dt id="arg-var-used">var.used<a class="anchor" aria-label="anchor" href="#arg-var-used"></a></dt>
-<dd><p>Record the number of times a variable is split?</p></dd>
+<dd><p>If <code>TRUE</code>, records how many times each variable was used for splitting.</p></dd>
 
 
   <dt id="arg-split-depth">split.depth<a class="anchor" aria-label="anchor" href="#arg-split-depth"></a></dt>
-<dd><p>Return minimal depth for each variable for each case?</p></dd>
+<dd><p>If <code>TRUE</code>, returns minimal depth of each variable per case.</p></dd>
 
 
   <dt id="arg-case-depth">case.depth<a class="anchor" aria-label="anchor" href="#arg-case-depth"></a></dt>
-<dd><p>Return a matrix recording the depth at which a case
-    first splits in a tree. Default is <code>FALSE</code>.</p></dd>
+<dd><p>If <code>TRUE</code>, returns a matrix of the depth at which each case first splits in each tree.</p></dd>
 
 
   <dt id="arg-seed">seed<a class="anchor" aria-label="anchor" href="#arg-seed"></a></dt>
-<dd><p>Negative integer specifying seed for the random number
-    generator.</p></dd>
+<dd><p>Negative integer used to set the random seed.</p></dd>
 
 
   <dt id="arg-do-trace">do.trace<a class="anchor" aria-label="anchor" href="#arg-do-trace"></a></dt>
-<dd><p>Number of seconds between updates to the user on
-    approximate time to completion.</p></dd>
+<dd><p>Number of seconds between progress updates during execution.</p></dd>
 
 
   <dt id="arg-membership">membership<a class="anchor" aria-label="anchor" href="#arg-membership"></a></dt>
-<dd><p>Should terminal node membership and inbag
-    information be returned?</p></dd>
+<dd><p>If <code>TRUE</code>, returns terminal node membership and in-bag information.</p></dd>
 
 
-  <dt id="arg-statistics">statistics<a class="anchor" aria-label="anchor" href="#arg-statistics"></a></dt>
-<dd><p>Should split statistics be returned?  Values can be
-    parsed using <code class="command">stat.split</code>.</p></dd>
-
-
-
+  <dt id="arg-marginal-xvar">marginal.xvar<a class="anchor" aria-label="anchor" href="#arg-marginal-xvar"></a></dt>
+<dd><p>Vector of variable names to marginalize over when calculating weights or proximity. If a variable is marginalized, its split does not partition the data; all cases are passed to both daughters. When all splits involve marginalized variables, terminal nodes contain the full dataset. When no marginalized variables are used, membership is unchanged. Default is <code>NULL</code> (no marginalization).</p></dd>
 
 
   <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Further arguments passed to or from other methods.</p></dd>
-
+<dd><p>Additional arguments passed to or from other methods.</p></dd>
 
 </dl></div>
     <div id="details">
     <h2>Details</h2>
 
 
-<p>Predicted values are obtained by "dropping" test data down the trained
-  forest (forest calculated using training data).  Performance values are
-  returned if test data contains y-outcome values.  Single as well as
-  joint VIMP are also returned if requested.</p>
-<p>If no test data is provided, the original training data is used, and
-  the code reverts to restore mode allowing the user to restore the
-  original trained forest.  This feature allows extracting outputs from
-  the forest not asked for in the original grow call.</p>
-<p>If <span class="option">outcome="test"</span>, the predictor is calculated by using
-  y-outcomes from the test data (outcome information must be present).
-  Terminal nodes from the trained forest are recalculated using y-outcomes
-  from the test set.  This yields a modified predictor in which the
-  topology of the forest is based solely on the training data, but where
-  predicted values are obtained from test data.  Error rates and VIMP
-  are calculated by bootstrapping the test data and using out-of-bagging
-  to ensure unbiased estimates.</p>
-<p><code>csv=TRUE</code> returns case specific VIMP;  <code>cse=TRUE</code> returns
-  case specific error rates.  Applies to all families except survival.
-  These options can also be applied while training.</p>
+<p>Predicted values are obtained by "dropping" the test data down the trained forest-i.e., the forest grown using the training data. If the test data includes y-outcome values, performance metrics are also returned. Variable importance (VIMP), including joint VIMP, is returned if requested.</p>
+<p>If no test data is supplied, the function uses the original training data and enters "restore" mode. This allows users to extract outputs from the trained forest that were not requested during the original grow call.</p>
+<p>If <code>outcome = "test"</code>, predictions are computed using y-outcomes from the test data (which must include outcome values). Terminal node statistics are recalculated using these outcomes, while the tree topology remains fixed from training. Error rates and VIMP are then computed by bootstrapping the test set and applying out-of-bagging to maintain unbiased estimates.</p>
+<p>Set <code>csv = TRUE</code> to return case-specific VIMP, and <code>cse = TRUE</code> to return case-specific error rates. These apply to all families except survival. Both options can also be used at training time.</p>
     </div>
     <div id="value">
     <h2>Value</h2>
-    <p>An object of class <code>(rfsrc, predict)</code>, which is a list with the
-  following components:</p>
+    <p>An object of class <code>(rfsrc, predict)</code>, which is a list with the following components:</p>
 <dl><dt>call</dt>
-<dd><p>The original grow call to <code class="command">rfsrc</code>.</p></dd>
+<dd><p>The original grow call to <code>rfsrc</code>.</p></dd>
 
   <dt>family</dt>
 <dd><p>The family used in the analysis.</p></dd>
 
   <dt>n</dt>
-<dd><p>Sample size of test data (depends upon <code>NA</code> values).</p></dd>
+<dd><p>Sample size of the test data (after handling missing values).</p></dd>
 
   <dt>ntree</dt>
-<dd><p>Number of trees in the grow forest.</p></dd>
+<dd><p>Number of trees in the trained forest.</p></dd>
 
   <dt>yvar</dt>
-<dd><p>Test set y-outcomes or original grow y-outcomes if none.</p></dd>
+<dd><p>Y-outcome values from the test data or original grow data (if <code>newdata</code> is missing).</p></dd>
 
   <dt>yvar.names</dt>
-<dd><p>A character vector of the y-outcome names.</p></dd>
+<dd><p>Character vector of response variable names.</p></dd>
 
   <dt>xvar</dt>
-<dd><p>Data frame of test set x-variables.</p></dd>
+<dd><p>Data frame of test set predictor variables.</p></dd>
 
   <dt>xvar.names</dt>
-<dd><p>A character vector of the x-variable names.</p></dd>
+<dd><p>Character vector of predictor variable names.</p></dd>
 
   <dt>leaf.count</dt>
-<dd><p>Number of terminal nodes for each tree in the
-    grow forest.  Vector of length <code>ntree</code>.</p></dd>
+<dd><p>Vector of length <code>ntree</code> giving the number of terminal nodes per tree.</p></dd>
 
   <dt>proximity</dt>
-<dd><p>Symmetric proximity matrix of the test data.</p></dd>
+<dd><p>Proximity matrix computed on the test data.</p></dd>
 
   <dt>forest</dt>
-<dd><p>The grow forest.</p></dd>
+<dd><p>The trained forest object.</p></dd>
 
+  <dt>forest.wt</dt>
+<dd><p>Forest weight matrix for test cases.</p></dd>
 
-
+  <dt>ptn.membership</dt>
+<dd><p>Matrix of pruned terminal node membership. Only returned if <code>ptn.count &gt; 0</code>.</p></dd>
 
   <dt>membership</dt>
-<dd><p>Matrix recording terminal node membership for the
-    test data where each column contains the node number that a
-    case falls in for that tree.</p></dd>
+<dd><p>Matrix of terminal node membership for test cases. Each column corresponds to one tree.</p></dd>
 
   <dt>inbag</dt>
-<dd><p>Matrix recording inbag membership for the test data
-    where each column contains the number of times that a case
-    appears in the bootstrap sample for that tree.</p></dd>
+<dd><p>Matrix indicating how many times each case appears in the bootstrap sample for each tree.</p></dd>
 
   <dt>var.used</dt>
-<dd><p>Count of the number of times a variable was used in
-    growing the forest.</p></dd>
+<dd><p>Number of times each variable was used in splitting.</p></dd>
 
   <dt>imputed.indv</dt>
-<dd><p>Vector of indices of records in test data with
-    missing values.</p></dd>
+<dd><p>Indices of test observations with missing values.</p></dd>
 
   <dt>imputed.data</dt>
-<dd><p>Data frame comprising imputed test data.  The first
-    columns are the y-outcomes followed by the x-variables.</p></dd>
+<dd><p>Imputed version of the test data. Columns are ordered with responses first, followed by predictors.</p></dd>
 
   <dt>split.depth</dt>
-<dd><p>Matrix (i,j) or array (i,j,k) recording the
-    minimal depth for variable j for case i, either averaged over
-    the forest, or by tree k.</p></dd>
-
-  <dt>node.stats</dt>
-<dd><p>Split statistics returned when
-    <code>statistics=TRUE</code> which can be parsed using <code class="command">stat.split</code>.</p></dd>
+<dd><p>Matrix or array recording minimal depth of each variable for each case, optionally by tree.</p></dd>
 
   <dt>err.rate</dt>
-<dd><p>Cumulative OOB error rate for the test data if
-    y-outcomes are present.</p></dd>
+<dd><p>Cumulative out-of-bag (OOB) error rate, if y-outcomes are present.</p></dd>
 
   <dt>importance</dt>
-<dd><p>Test set variable importance (VIMP).  Can be
-    <code>NULL</code>.</p></dd>
+<dd><p>Variable importance (VIMP) for the test data. May be <code>NULL</code>.</p></dd>
 
   <dt>predicted</dt>
-<dd><p>Test set predicted value.</p></dd>
+<dd><p>Predicted values for the test data.</p></dd>
 
   <dt>predicted.oob</dt>
-<dd><p>OOB predicted value (<code>NULL</code> unless
-    <span class="option">outcome="test"</span>).</p></dd>
-</dl><p><br></p>
-<dl><dt>quantile</dt>
-<dd><p>Quantile value at probabilities requested.</p></dd>
+<dd><p>OOB predicted values. May be <code>NULL</code> depending on context.</p></dd>
+
+  <dt>quantile</dt>
+<dd><p>Estimated quantile values at the requested probabilities (quantile regression only).</p></dd>
 
   <dt>quantile.oob</dt>
-<dd><p>OOB quantile value at probabilities requested (<code>NULL</code> unless
-    <span class="option">outcome="test"</span>).</p></dd>
-</dl><p><br></p>
+<dd><p>OOB quantile values. May be <code>NULL</code>.</p></dd>
 
-<p></p>
-<dl><dt>++++++++</dt>
-<dd><p>for classification settings, additionally ++++++++</p></dd>
- </dl><p><br></p>
-<dl><dt>class</dt>
-<dd><p>In-bag predicted class labels.</p></dd>
+
+  <dt>class</dt>
+<dd><p>(Classification only) Predicted class labels.</p></dd>
 
   <dt>class.oob</dt>
-<dd><p>OOB predicted class labels (<code>NULL</code> unless <span class="option">outcome="test"</span>).</p></dd>
-</dl><p><br></p>
-<p></p>
-<dl><dt>++++++++</dt>
-<dd><p>for multivariate settings, additionally ++++++++</p></dd>
- </dl><p><br></p>
-<p></p>
-<dl><dt>regrOutput</dt>
-<dd><p>List containing performance values for
-	  test multivariate regression responses (applies only in
-	  multivariate settings).</p></dd>
-
-	<dt>clasOutput</dt>
-<dd><p>List containing performance values for
-	  test multivariate categorical (factor) responses (applies only in
-	  multivariate settings).</p></dd>
+<dd><p>(Classification only) OOB predicted class labels.</p></dd>
 
 
-  <dt>++++++++</dt>
-<dd><p>for survival settings, additionally ++++++++</p></dd>
- </dl><p><br></p>
-<p></p>
-<dl><dt>chf</dt>
-<dd><p>Cumulative hazard function (CHF).</p></dd>
+  <dt>regrOutput</dt>
+<dd><p>(Multivariate only) List of performance measures for multivariate regression outcomes.</p></dd>
+
+  <dt>clasOutput</dt>
+<dd><p>(Multivariate only) List of performance measures for multivariate categorical outcomes.</p></dd>
+
+
+  <dt>chf</dt>
+<dd><p>(Survival or competing risks) Cumulative hazard function (CHF).</p></dd>
 
   <dt>chf.oob</dt>
-<dd><p>OOB CHF (<code>NULL</code> unless <span class="option">outcome="test"</span>).</p></dd>
+<dd><p>(Survival or competing risks) OOB CHF. May be <code>NULL</code>.</p></dd>
 
   <dt>survival</dt>
-<dd><p>Survival function.</p></dd>
+<dd><p>(Survival only) Survival function estimates.</p></dd>
 
   <dt>survival.oob</dt>
-<dd><p>OOB survival function (<code>NULL</code> unless <span class="option">outcome="test"</span>).</p></dd>
+<dd><p>(Survival only) OOB survival function. May be <code>NULL</code>.</p></dd>
 
   <dt>time.interest</dt>
-<dd><p>Ordered unique death times.</p></dd>
+<dd><p>(Survival or competing risks) Sorted unique event times.</p></dd>
 
   <dt>ndead</dt>
-<dd><p>Number of deaths.</p></dd>
-</dl><p><br></p>
-<p></p>
-<dl><dt>++++++++</dt>
-<dd><p>for competing risks, additionally ++++++++</p></dd>
- </dl><p><br></p>
-<p></p>
-<dl><dt>chf</dt>
-<dd><p>Cause-specific cumulative hazard function (CSCHF)
-    for each event.</p></dd>
+<dd><p>(Survival or competing risks) Number of deaths observed.</p></dd>
 
-  <dt>chf.oob</dt>
-<dd><p>OOB CSCHF for each event (<code>NULL</code> unless <span class="option">outcome="test"</span>).</p></dd>
 
   <dt>cif</dt>
-<dd><p>Cumulative incidence function (CIF) for each event.</p></dd>
+<dd><p>(Competing risks only) Cumulative incidence function (CIF) for each event type.</p></dd>
 
   <dt>cif.oob</dt>
-<dd><p>OOB CIF (<code>NULL</code> unless <span class="option">outcome="test"</span>).</p></dd>
+<dd><p>(Competing risks only) OOB CIF. May be <code>NULL</code>.</p></dd>
+
+  <dt>chf</dt>
+<dd><p>(Competing risks only) Cause-specific cumulative hazard function (CSCHF).</p></dd>
+
+  <dt>chf.oob</dt>
+<dd><p>(Competing risks only) OOB CSCHF. May be <code>NULL</code>.</p></dd>
+
 
 </dl></div>
     <div id="note">
     <h2>Note</h2>
 
 
-<p>The dimensions and values of returned objects depend heavily on the
-  underlying family and whether y-outcomes are present in the test data.
-  In particular, items related to performance will be <code>NULL</code> when
-  y-outcomes are not present.  For multivariate families, predicted
-  values, VIMP, error rate, and performance values are stored in the
-  lists <code>regrOutput</code> and <code>clasOutput</code> which can be extracted
-  using functions <code>get.mv.error</code>, <code>get.mv.predicted</code> and
-  <code>get.mv.vimp</code>.</p>
+<p>The dimensions and contents of returned objects depend on the forest family and whether y-outcomes are available in the test data. In particular, performance-related components (e.g., error rate, VIMP) will be <code>NULL</code> if y-outcomes are missing.</p>
+<p>For multivariate families, predicted values, VIMP, error rates, and performance metrics are stored in the lists <code>regrOutput</code> and <code>clasOutput</code>. These can be accessed using the helper functions <code><a href="utilities_internal.html">get.mv.predicted</a></code>, <code><a href="utilities_internal.html">get.mv.vimp</a></code>, and <code><a href="utilities_internal.html">get.mv.error</a></code>.</p>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -534,8 +415,6 @@
   <code class="command"><a href="plot.variable.rfsrc.html">plot.variable.rfsrc</a></code>,
   <code class="command"><a href="rfsrc.html">rfsrc</a></code>,
   <code class="command"><a href="rfsrc.fast.html">rfsrc.fast</a></code>,
-  <code class="command"><a href="stat.split.rfsrc.html">stat.split.rfsrc</a></code>,
-  <code class="command"><a href="synthetic.rfsrc.html">synthetic.rfsrc</a></code>,
   <code class="command"><a href="vimp.rfsrc.html">vimp.rfsrc</a></code></p></div>
     </div>
 
@@ -652,7 +531,7 @@
 <span></span>
 <span><span class="va">o</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">mpg</span><span class="op">~</span><span class="va">.</span>, <span class="va">mtcars</span><span class="op">)</span></span>
 <span><span class="va">op</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">o</span>, importance <span class="op">=</span> <span class="cn">TRUE</span>, csv <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">csvimp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://www.randomforestsrc.org//reference/utilities_internal.html">get.mv.csvimp</a></span><span class="op">(</span><span class="va">op</span>, standardize<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">csvimp</span> <span class="op">&lt;-</span> <span class="fu"><a href="utilities_internal.html">get.mv.csvimp</a></span><span class="op">(</span><span class="va">op</span>, standardize<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">csvimp</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## ------------------------------------------------------------</span></span>
@@ -662,7 +541,7 @@
 <span></span>
 <span><span class="va">o</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">mpg</span><span class="op">~</span><span class="va">.</span>, <span class="va">mtcars</span><span class="op">)</span></span>
 <span><span class="va">op</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">o</span>, importance <span class="op">=</span> <span class="cn">TRUE</span>, cse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">cserror</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://www.randomforestsrc.org//reference/utilities_internal.html">get.mv.cserror</a></span><span class="op">(</span><span class="va">op</span>, standardize<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">cserror</span> <span class="op">&lt;-</span> <span class="fu"><a href="utilities_internal.html">get.mv.cserror</a></span><span class="op">(</span><span class="va">op</span>, standardize<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">cserror</span><span class="op">)</span></span>
 <span></span>
 <span></span>
@@ -767,31 +646,22 @@
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/matplot.html" class="external-link">matlines</a></span><span class="op">(</span><span class="va">Time</span>, <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">pbc.test</span><span class="op">$</span><span class="va">survival</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,<span class="op">]</span><span class="op">)</span>, col <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## ------------------------------------------------------------</span></span>
-<span><span class="co">## ... just for _fun_ ...</span></span>
-<span><span class="co">## survival analysis using mixed multivariate outcome analysis </span></span>
-<span><span class="co">## compare the predicted value to RSF</span></span>
+<span><span class="co">## multivariate forest example</span></span>
 <span><span class="co">## ------------------------------------------------------------</span></span>
 <span></span>
-<span><span class="co">## train survival forest using pbc data</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">pbc</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span></span>
-<span><span class="va">rsf.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">days</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">pbc</span><span class="op">)</span></span>
-<span><span class="va">yvar</span> <span class="op">&lt;-</span> <span class="va">rsf.obj</span><span class="op">$</span><span class="va">yvar</span></span>
+<span><span class="co">## train the forest</span></span>
+<span><span class="va">trn</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">20</span></span>
+<span><span class="va">o</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="va">disp</span><span class="op">)</span><span class="op">~</span><span class="va">.</span>,<span class="va">mtcars</span><span class="op">[</span><span class="va">trn</span>,<span class="op">]</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## fit a mixed outcome forest using days and status as y-variables</span></span>
-<span><span class="va">pbc.mod</span> <span class="op">&lt;-</span> <span class="va">pbc</span></span>
-<span><span class="va">pbc.mod</span><span class="op">$</span><span class="va">status</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">pbc.mod</span><span class="op">$</span><span class="va">status</span><span class="op">)</span></span>
-<span><span class="va">mix.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu">Multivar</span><span class="op">(</span><span class="va">days</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span><span class="va">.</span>, <span class="va">pbc.mod</span><span class="op">)</span></span>
+<span><span class="co">## print training results for each outcome</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">o</span>, outcome.target<span class="op">=</span><span class="st">"mpg"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">o</span>, outcome.target<span class="op">=</span><span class="st">"disp"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## compare oob predicted values</span></span>
-<span><span class="va">rsf.pred</span> <span class="op">&lt;-</span> <span class="va">rsf.obj</span><span class="op">$</span><span class="va">predicted.oob</span></span>
-<span><span class="va">mix.pred</span> <span class="op">&lt;-</span> <span class="va">mix.obj</span><span class="op">$</span><span class="va">regrOutput</span><span class="op">$</span><span class="va">days</span><span class="op">$</span><span class="va">predicted.oob</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">rsf.pred</span>, <span class="va">mix.pred</span><span class="op">)</span></span>
+<span><span class="co">## print test results for each outcome</span></span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">o</span>, <span class="va">mtcars</span><span class="op">[</span><span class="op">-</span><span class="va">trn</span>,<span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p</span>, outcome.target<span class="op">=</span><span class="st">"mpg"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p</span>, outcome.target<span class="op">=</span><span class="st">"disp"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## compare C-error rate</span></span>
-<span><span class="va">rsf.err</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://www.randomforestsrc.org//reference/utilities_internal.html">get.cindex</a></span><span class="op">(</span><span class="va">yvar</span><span class="op">$</span><span class="va">days</span>, <span class="va">yvar</span><span class="op">$</span><span class="va">status</span>, <span class="va">rsf.pred</span><span class="op">)</span></span>
-<span><span class="va">mix.err</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://www.randomforestsrc.org//reference/utilities_internal.html">get.cindex</a></span><span class="op">(</span><span class="va">yvar</span><span class="op">$</span><span class="va">days</span>, <span class="va">yvar</span><span class="op">$</span><span class="va">status</span>, <span class="va">mix.pred</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"RSF                :"</span>, <span class="va">rsf.err</span>, <span class="st">"\n"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"multivariate forest:"</span>, <span class="va">mix.err</span>, <span class="st">"\n"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># }</span></span></code></pre></div>
     </div>

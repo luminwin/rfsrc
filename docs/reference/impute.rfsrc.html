@@ -152,7 +152,8 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">impute</span><span class="op">(</span><span class="va">formula</span>, <span class="va">data</span>,</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for class 'rfsrc'</span></span>
+<span><span class="fu">impute</span><span class="op">(</span><span class="va">formula</span>, <span class="va">data</span>,</span>
 <span>  ntree <span class="op">=</span> <span class="fl">100</span>, nodesize <span class="op">=</span> <span class="fl">1</span>, nsplit <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  nimpute <span class="op">=</span> <span class="fl">2</span>, fast <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">blocks</span>,</span>
 <span>  <span class="va">mf.q</span>, max.iter <span class="op">=</span> <span class="fl">10</span>, eps <span class="op">=</span> <span class="fl">0.01</span>,</span>
@@ -167,7 +168,7 @@
 <dl><dt id="arg-formula">formula<a class="anchor" aria-label="anchor" href="#arg-formula"></a></dt>
 <dd><p>A symbolic model description. Can be omitted if
     outcomes are unspecified or if distinction between outcomes and
-    predictors is unnecessary. Ignored for multivariate missForest.</p></dd>
+    predictors is unnecessary. Ignored for missForest.</p></dd>
 
 
   <dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
@@ -193,7 +194,7 @@
 
 
   <dt id="arg-fast">fast<a class="anchor" aria-label="anchor" href="#arg-fast"></a></dt>
-<dd><p>If <code>TRUE</code>, uses <code>rfsrcFast</code> instead of
+<dd><p>If <code>TRUE</code>, uses <code>rfsrc.fast</code> instead of
     <code>rfsrc</code>. Increases speed but may reduce accuracy.</p></dd>
 
 
@@ -304,9 +305,7 @@
     </div>
     <div id="references">
     <h2>References</h2>
-    <p>Ishwaran H., Kogalur U.B., Blackstone E.H. and Lauer M.S.
-  (2008). Random survival forests, <em>Ann. Appl. Stat.</em>, 2:841–860.</p>
-<p>Stekhoven D.J. and Buhlmann P. (2012). MissForest–non-parametric
+    <p>Stekhoven D.J. and Buhlmann P. (2012). MissForest–non-parametric
   missing value imputation for mixed-type data.
   <em>Bioinformatics</em>, 28(1):112–118.</p>
 <p>Tang F. and Ishwaran H. (2017). Random forest missing data
@@ -314,7 +313,8 @@
     </div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p><code class="command"><a href="rfsrc.html">rfsrc</a></code>,
+    <div class="dont-index"><p><code class="command"><a href="impute.learn.rfsrc.html">impute.learn.rfsrc</a></code>,
+  <code class="command"><a href="rfsrc.html">rfsrc</a></code>,
   <code class="command"><a href="rfsrc.fast.html">rfsrc.fast</a></code></p></div>
     </div>
 

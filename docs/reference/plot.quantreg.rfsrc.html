@@ -148,42 +148,52 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plot.quantreg</span><span class="op">(</span><span class="va">x</span>, prbL <span class="op">=</span> <span class="fl">.25</span>, prbU <span class="op">=</span> <span class="fl">.75</span>,</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for class 'rfsrc'</span></span>
+<span><span class="fu">plot.quantreg</span><span class="op">(</span><span class="va">x</span>, prbL <span class="op">=</span> <span class="fl">.25</span>, prbU <span class="op">=</span> <span class="fl">.75</span>,</span>
 <span>   m.target <span class="op">=</span> <span class="cn">NULL</span>, crps <span class="op">=</span> <span class="cn">TRUE</span>, subset <span class="op">=</span> <span class="cn">NULL</span>, xlab <span class="op">=</span> <span class="cn">NULL</span>, ylab <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <p></p>
+
+
+<p></p>
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>A quantile regression object obtained from calling <code class="command">quantreg</code>.</p></dd>
+<dd><p>A quantile regression object returned by a call to <code class="command">quantreg</code>.</p></dd>
+
 
   <dt id="arg-prbl">prbL<a class="anchor" aria-label="anchor" href="#arg-prbl"></a></dt>
-<dd><p>Lower quantile (preferably &lt; .5).</p></dd>
+<dd><p>Lower quantile level, typically less than <code>0.5</code>.</p></dd>
+
 
   <dt id="arg-prbu">prbU<a class="anchor" aria-label="anchor" href="#arg-prbu"></a></dt>
-<dd><p>Upper quantile (preferably &gt; .5).</p></dd>
+<dd><p>Upper quantile level, typically greater than <code>0.5</code>.</p></dd>
+
 
   <dt id="arg-m-target">m.target<a class="anchor" aria-label="anchor" href="#arg-m-target"></a></dt>
-<dd><p>Character value for multivariate families
-    specifying the target outcome to be used.  If left unspecified, the
-    algorithm will choose a default target.</p></dd>
+<dd><p>Character string specifying the target outcome for multivariate families.
+  If not provided, a default target is selected automatically.</p></dd>
+
 
   <dt id="arg-crps">crps<a class="anchor" aria-label="anchor" href="#arg-crps"></a></dt>
-<dd><p>Calculate crps and inset it?</p></dd>
+<dd><p>Logical. If <code>TRUE</code>, calculates the continuous ranked probability score (CRPS) and adds it to the plot.</p></dd>
+
 
   <dt id="arg-subset">subset<a class="anchor" aria-label="anchor" href="#arg-subset"></a></dt>
-<dd><p>Restricts plotted values to a subset of the data.
-    Default is to use the entire data.</p></dd>
+<dd><p>Optional vector specifying a subset of the data to be plotted.
+  Defaults to plotting all data points.</p></dd>
+
 
   <dt id="arg-xlab">xlab<a class="anchor" aria-label="anchor" href="#arg-xlab"></a></dt>
-<dd><p>Horizontal axis label.</p></dd>
+<dd><p>Label for the x-axis.</p></dd>
+
 
   <dt id="arg-ylab">ylab<a class="anchor" aria-label="anchor" href="#arg-ylab"></a></dt>
-<dd><p>Vertical axis label.</p></dd>
+<dd><p>Label for the y-axis.</p></dd>
+
 
   <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Further arguments passed to or from other methods.</p></dd>
+<dd><p>Additional arguments passed to or from other methods.</p></dd>
 
 </dl></div>
     <div id="author">
