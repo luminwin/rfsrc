@@ -44,7 +44,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.6.1</span>
       </span>
     </div>
 
@@ -229,25 +229,7 @@ in your default library, change to the directory
 <p><code>R CMD INSTALL --preclean --clean randomForestSRC</code></p>
 <p>This will install an OpenMP parallel version of the package if the
 host system is capable of supporting this mode of execution.</p>
-<p>Please note that on some platforms, even though an OpenMP C-compiler
-may have been installed, the R packaging and installation engine does
-not pick up the appropriate compiler. For example, on macOS, the default
-compiler is Clang. It is not OpenMP capable out-of-the-box. You will
-need to install an OpenMP version of it, or install GCC using Homebrew
-or another package manager. Most importantly, you will also need to
-direct the R packaging and installtion engine to the OpenMP capable
-compiler. This is done by creating an <code>.R</code> directory in your
-<code>HOME</code> directory, and creating a <code>Makevars</code> file
-in that directory containing the appropriate compiler instructions. As
-an example, on macOS Sierra (v10.12) our installation has the following
-as its <code>Makevars</code> file:</p>
-<p class="comment">
-F77 = gfortran-7 <br> FC = gfortran-7 <br> CC = gcc-7 <br> CXX =
-g++-7 CFLAGS = -I/usr/local/Cellar/gcc/7.2.0/include LDFLAGS =
--L/usr/local/Cellar/gcc/7.2.0/lib/gcc/7
-</p>
-<div class="section level3">
-<h3 id="to-set-number-of-cpu-parameters-for-parallel-processing-see-the-parallel-processing-vignette-hemantparallel-">To set number of CPU parameters for parallel processing, see <a href="parallel.html">the Parallel Processing vignette</a> <span class="citation">[1]</span>.<a class="anchor" aria-label="anchor" href="#to-set-number-of-cpu-parameters-for-parallel-processing-see-the-parallel-processing-vignette-hemantparallel-"></a>
+<p>Please note that on some platforms, even though an OpenMP C-compiler may have been installed, the R packaging and installation engine does not pick up the appropriate compiler. For example, on macOS, the default compiler is Clang which is not OpenMP capable out-of-the-box. See <a href="parallel.html">the Parallel Processing vignette</a> <span class="citation">[1]</span><a class="anchor" aria-label="anchor" href="#to-set-number-of-cpu-parameters-for-parallel-processing-see-the-parallel-processing-vignette-hemantparallel-"></a> for details.
 </h3>
 </div>
 </div>

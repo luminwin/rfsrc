@@ -46,7 +46,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.6.1</span>
       </span>
     </div>
 
@@ -311,8 +311,7 @@ package with the OpenMP option enabled. <br> 2. It is important to NOT
 write programs that fork R processes containing OpenMP threads. That is,
 one should not use <code>mclapply()</code> around the functions
 <code><a href="../reference/rfsrc.html">rfsrc()</a></code>, <code><a href="../reference/predict.rfsrc.html">predict.rfsrc()</a></code>,
-<code>vimp.rfsc()</code>, <code><a href="../reference/var.select.rfsrc.html">var.select.rfsrc()</a></code>,
-<code><a href="../reference/find.interaction.rfsrc.html">find.interaction.rfsrc()</a></code> and <code><a href="../reference/partial.rfsrc.html">partial.rfsrc()</a></code>.
+<code>vimp.rfsc()</code> and <code><a href="../reference/partial.rfsrc.html">partial.rfsrc()</a></code>.
 In such a scenario, program execution is not guaranteed.
 </p>
 <br><br><p class="comment2">

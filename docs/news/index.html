@@ -201,6 +201,31 @@
       
     </div>
     
+                                                                <div id="release-361" class="section level2">
+<h2 class="hasAnchor">
+<a href="#release-361" class="anchor"></a>RELEASE 3.6.1</h2>
+<h3>New features</h3>
+<ul>
+<li><code>impute.learn()</code> now supports training-time storage of out-of-distribution (OOD) calibration references through <code>save.ood = TRUE</code> (default), enabling a new test-time OOD scoring workflow via <code>impute.ood()</code> / <code>impute.ood.rfsrc()</code>.</li>
+<li><code>impute.ood()</code> scores new cases by masked reconstruction across the learned imputation targets and returns row-level OOD scores, plus score percentiles when the saved row-level calibration is directly reusable.</li>
+<li>OOD scoring now calibrates each target against training-time out-of-bag reconstruction behavior saved in the imputer manifest, avoiding a second scoring pass over the training data.</li>
+<li>Numeric targets are scored using calibrated absolute reconstruction error. Factor targets use probability-based surprise when available, with safe fallback behavior for cases where probability output is unavailable.</li>
+<li>Deployment rows containing previously unseen factor levels are now flagged explicitly and assigned maximal OOD scores so schema and category anomalies are easy to identify.</li>
+<li>Prediction-time imputation and OOD scoring now share the same harmonization and learner-loading pipeline, including caching controls and richer diagnostics for skipped targets, unseen levels, and learner reloads.</li>
+</ul>
+<h3>Documentation</h3>
+<ul>
+<li>Added <code>impute.ood()</code> usage, arguments, return values, and examples to the existing <code>impute.learn</code> help topic instead of creating a separate help page.</li>
+<li>Documented that <code>target.mode = "all"</code> is the recommended training configuration when OOD scoring is intended for deployment use.</li>
+</ul>
+<h3>Bug fixes</h3>
+<ul>
+<li>Fixed <code>cache.learners</code> argument normalization in the OOD scoring path.</li>
+</ul>
+<hr>
+</div>
+    
+    
                                                                 <div id="release-360" class="section level2">
 <h2 class="hasAnchor">
 <a href="#release-360" class="anchor"></a>RELEASE 3.6.0</h2>
