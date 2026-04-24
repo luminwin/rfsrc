@@ -6,10 +6,12 @@ If the training data contain missing values, the function first
   those learners later to update missing values in new data without
   refitting on the test set.
 The same saved learner bank can also be used to score new data for
-  out-of-distribution (OOD) behavior. Each selected target is reconstructed
-  from its saved conditional learner and compared with the observed value.
-  Target-wise discrepancies are calibrated against a training reference saved
-  in the manifest, preferably from out-of-bag predictions computed during fit.
+  out-of-distribution (OOD) behavior. Note that OOD scores are available
+  even when new data have missing values.  Each selected target is
+  reconstructed from its saved conditional learner and compared with the
+  observed value.  Target-wise discrepancies are calibrated against a
+  training reference calculated from out-of-bag predictions computed
+  during the training.
 If the training data are complete and target.mode = "all",
   the initial training-data imputation step is skipped and the
   full-sweep learners are fit directly from the complete training data.'><meta property="og:image" content="https://www.randomforestsrc.org/logo.svg"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -36,7 +38,7 @@ If the training data are complete and target.mode = "all",
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.6.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.6.2</span>
       </span>
     </div>
 
@@ -160,10 +162,12 @@ If the training data are complete and target.mode = "all",
   those learners later to update missing values in new data without
   refitting on the test set.</p>
 <p>The same saved learner bank can also be used to score new data for
-  out-of-distribution (OOD) behavior. Each selected target is reconstructed
-  from its saved conditional learner and compared with the observed value.
-  Target-wise discrepancies are calibrated against a training reference saved
-  in the manifest, preferably from out-of-bag predictions computed during fit.</p>
+  out-of-distribution (OOD) behavior. Note that OOD scores are available
+  even when new data have missing values.  Each selected target is
+  reconstructed from its saved conditional learner and compared with the
+  observed value.  Target-wise discrepancies are calibrated against a
+  training reference calculated from out-of-bag predictions computed
+  during the training.</p>
 <p>If the training data are complete and <code>target.mode = "all"</code>,
   the initial training-data imputation step is skipped and the
   full-sweep learners are fit directly from the complete training data.</p>
@@ -187,7 +191,8 @@ If the training data are complete and target.mode = "all",
 <span>  keep.models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">out.dir</span><span class="op">)</span>,</span>
 <span>  keep.ximp <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  save.on.fit <span class="op">=</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">out.dir</span><span class="op">)</span>,</span>
-<span>  save.ood <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  save.ood <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  weight <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">save.impute.learn.rfsrc</span><span class="op">(</span><span class="va">object</span>, <span class="va">path</span>, wipe <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
@@ -209,6 +214,9 @@ If the training data are complete and target.mode = "all",
 <span>  eps <span class="op">=</span> <span class="fl">1e-3</span>,</span>
 <span>  cache.learners <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"all"</span>, <span class="st">"session"</span>, <span class="st">"none"</span><span class="op">)</span>,</span>
 <span>  weight <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  aggregate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bounded.product"</span>,  <span class="st">"weighted.mean"</span>,</span>
+<span>    <span class="st">"weighted.lp"</span>, <span class="st">"weighted.lp.log"</span>, <span class="st">"top.k"</span><span class="op">)</span>,</span>
+<span>  aggregate.args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  return.details <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">...</span><span class="op">)</span></span></code></pre></div>
@@ -228,7 +236,7 @@ If the training data are complete and target.mode = "all",
 <dd><p>Training data. Variables that are not real-valued are
     coerced to factors before fitting when possible; otherwise fitting
     stops with an error. Rows and columns that are entirely missing are
-    dropped before the training schema is recorded.</p></dd>
+    dropped before the training begins.</p></dd>
 
 
   <dt id="arg-ntree-nodesize-nsplit-nimpute-fast-blocks-max-iter-ytry-always-use-verbose">ntree, nodesize, nsplit, nimpute, fast, blocks,
@@ -335,10 +343,15 @@ If the training data are complete and target.mode = "all",
 
 
   <dt id="arg-save-ood">save.ood<a class="anchor" aria-label="anchor" href="#arg-save-ood"></a></dt>
-<dd><p>If <code>TRUE</code>, computes and stores an OOD reference
-    in <code>object$manifest$ood</code>. The reference is built during
-    training from target-wise out-of-bag reconstruction discrepancies
-    and a row-level aggregate using the default equal target weights.</p></dd>
+<dd><p>If <code>TRUE</code>, computes and stores an OOD reference.
+    The reference is built during training from target-wise out-of-bag
+    reconstruction discrepancies, their target-wise calibrated training
+    scores, and a default row-level weighted mean using the saved OOD
+    target weights. If no <code>weight</code> is supplied at fit time, equal
+    target weights are used. The saved target-wise training-score matrix
+    allows <code>impute.ood</code> to rebuild a calibrated row-level
+    percentile for arbitrary target subsets, test-time weight overrides,
+    and alternate row aggregates besides the weighted mean.</p></dd>
 
 
   <dt id="arg-object">object<a class="anchor" aria-label="anchor" href="#arg-object"></a></dt>
@@ -355,9 +368,9 @@ If the training data are complete and target.mode = "all",
   <dt id="arg-targets">targets<a class="anchor" aria-label="anchor" href="#arg-targets"></a></dt>
 <dd><p>Optional subset of target variables to load, update,
     or score. Unknown names are ignored with a warning. For
-    <code>impute.ood</code>, the row-level percentile calibration stored in
-    the manifest is only directly reusable when the original saved OOD
-    target set is scored.</p></dd>
+    <code>impute.ood</code>, row-level percentile calibration is rebuilt for
+    the requested target subset from the saved target-wise training OOD
+    scores whenever those scores are available in the manifest.</p></dd>
 
 
   <dt id="arg-lazy">lazy<a class="anchor" aria-label="anchor" href="#arg-lazy"></a></dt>
@@ -401,10 +414,46 @@ If the training data are complete and target.mode = "all",
 
 
   <dt id="arg-weight">weight<a class="anchor" aria-label="anchor" href="#arg-weight"></a></dt>
-<dd><p>Optional nonnegative target weights used by
-    <code>impute.ood</code> when aggregating calibrated target scores into a
-    row-level score. If omitted, the saved default weights from the
-    manifest are used, or equal weights if no defaults are available.</p></dd>
+<dd><p>Optional nonnegative target weights used for row-level OOD
+    aggregation. In <code>impute.learn</code>, these weights define the
+    default row-level OOD weighting scheme stored in the manifest. In
+    <code>impute.ood</code>, they define the active row-level weighting scheme
+    for the current scoring call. If supplied as a named vector, entries
+    are matched to targets by name; omitted targets are set to zero, and
+    extra names are ignored. If omitted in <code>impute.ood</code>, the saved
+    training-time OOD weights are used automatically. Because the fit
+    stores target-wise training OOD scores, <code>score.percentile</code> can
+    be recalibrated automatically for test-time weight overrides rather
+    than being limited to the original training-time weights.</p></dd>
+
+
+  <dt id="arg-aggregate">aggregate<a class="anchor" aria-label="anchor" href="#arg-aggregate"></a></dt>
+<dd><p>Row-level aggregation metric used by
+    <code>impute.ood</code> to combine calibrated target-wise OOD scores.  The
+    default <code>"bounded.product"</code> applies a weighted product of
+    the form \(1-\prod_j (1-u_j+\varepsilon)^{\tilde w_j}\) where
+    \(u_j\) are row level calibrated scores for target feature
+    \(j\).  <code>"weighted.mean"</code> is the weighted
+    average. <code>"weighted.lp"</code> applies a weighted Minkowski \(L_p\)
+    aggregation to the calibrated target scores.
+    <code>"weighted.lp.log"</code> first applies the tail-stretching transform
+    \(-\log(1-u_j+\varepsilon)\) to each calibrated target score
+    \(u_j\) and then applies the weighted \(L_p\)
+    aggregation. <code>"top.k"</code> averages only the \(k\) largest
+    scoreable target scores among the positively weighted targets.  When
+    the fit stores target-wise training OOD scores,
+    <code>score.percentile</code> is rebuilt for the requested aggregate as
+    well as the requested targets and weights.</p></dd>
+
+
+  <dt id="arg-aggregate-args">aggregate.args<a class="anchor" aria-label="anchor" href="#arg-aggregate-args"></a></dt>
+<dd><p>Optional list of tuning arguments for
+    <code>aggregate</code>. Recognized entries are <code>p</code> for
+    <code>"weighted.lp"</code> and <code>"weighted.lp.log"</code>, <code>k</code>
+    (or <code>top.k</code>) for <code>"top.k"</code>, and <code>eps</code> for
+    <code>"weighted.lp.log"</code> and <code>"bounded.product"</code>. The
+    default values are <code>p = 2</code>, <code>k = 1</code>, and
+    <code>eps = 1e-12</code>. Unknown entries are ignored with a warning.</p></dd>
 
 
   <dt id="arg-return-details">return.details<a class="anchor" aria-label="anchor" href="#arg-return-details"></a></dt>
@@ -415,7 +464,7 @@ If the training data are complete and target.mode = "all",
 </dl></div>
     <div id="details">
     <h2>Details</h2>
-    <p>This functionality fits a predictive imputer in two stages.</p>
+    <p>A predictive imputer is calculated in two stages.</p>
 <p>The training data are first normalized to a data frame. Variables
   that are not real-valued are coerced to factors when possible;
   otherwise fitting stops with an error. Rows and columns that are
@@ -469,23 +518,38 @@ If the training data are complete and target.mode = "all",
   probabilities are unavailable, unordered factors fall back to a 0/1
   mismatch score and ordered factors fall back to a scaled rank
   distance.</p>
+<p>The row-level OOD calibration stored at fit time is built by
+  aggregating the target-wise training scores with a weighted mean using
+  <code>weight</code>. If <code>weight</code> is omitted at fit time, all saved OOD
+  targets receive weight 1. If a named vector is supplied, entries are
+  matched by target name, omitted saved OOD targets receive weight 0,
+  and the resulting weighting scheme is carried forward in the manifest
+  for later deployment-time scoring.</p>
 <p><code>impute.ood</code> first completes the predictor side of <code>newdata</code>
-  using the same iterative sweep method of
-  <code>predict.impute.learn</code>. It then reconstructs each requested
-  target directly from its saved learner and compares the reconstruction
-  with the observed value. Raw target discrepancies are converted to
-  target-wise OOD scores using the saved target-specific training
-  references, which places continuous and factor targets on a common
-  scale.</p>
-<p>The row-level OOD score is the weighted mean of those calibrated
-  target-wise scores over the targets that are both observed and
-  scoreable for that row. A second component, <code>score.percentile</code>,
-  is returned when the saved row-level training reference can be used.
-  That percentile is directly reusable only when the original saved OOD
-  target set is scored with the default saved weights. If a different
-  target subset or different weights are used, the weighted mean score
-  is still returned but the saved row-level percentile is left
-  unavailable.</p>
+  using the same harmonization, initialization, and iterative sweep
+  logic used by <code>predict.impute.learn</code>. It then reconstructs each
+  requested target directly from its saved learner and compares the
+  reconstruction with the observed value. Raw target discrepancies are
+  converted to target-wise OOD scores using the saved target-specific
+  training references, which places continuous and factor targets on a
+  common scale.</p>
+<p>The row-level OOD score combines those calibrated target-wise scores
+  over the targets that are both observed and scoreable for that row. By
+  default, <code>impute.ood</code> uses a bounded product rule, but the row
+  aggregate can be changed to weighted mean, a weighted \(L_p\) rule,
+  a log-tail weighted \(L_p\) rule, or a top-\(k\) rule. This makes
+  it possible to explore row scores that are more sensitive to sparse
+  but severe coordinate shifts.  By default, <code>impute.ood</code> reuses
+  the same OOD weights saved during <code>impute.learn</code>, so a pipeline
+  can fix its weighting scheme once upstream and carry it forward
+  automatically.</p>
+<p>A second component, <code>score.percentile</code>, is obtained by rebuilding
+  the row-level training reference from the saved target-wise training
+  OOD scores using the requested target subset, the active weight
+  vector, and the active row aggregate. This means percentile
+  calibration remains available when the user leaves the saved weights
+  in place, overrides them at test time, scores only a subset of the
+  saved OOD targets, or experiments with alternate row aggregates.</p>
 <p>Unseen factor levels are tracked row-wise during harmonization.
   Because such values are immediate anomalies relative to the training
   schema, <code>impute.ood</code> flags those rows and assigns them the
@@ -500,8 +564,10 @@ If the training data are complete and target.mode = "all",
   contains a manifest, optionally the fitted full-sweep learners,
   optionally the completed training data, and optionally a path to the
   saved imputer on disk. If <code>save.ood = TRUE</code>, the manifest also
-  contains an <code>ood</code> component storing compact target-wise and
-  row-wise OOD references.</p>
+  contains an <code>ood</code> component storing compact target-wise OOD
+  references, the saved row-by-target training OOD score matrix used for
+  later percentile recalibration, and the default OOD aggregation
+  weights.</p>
 <p><code>load.impute.learn</code> returns an object of the same class.</p>
 <p><code>predict.impute.learn</code> returns a data frame with imputed values
   overlaid. An attribute named <code>"impute.learn.info"</code> contains
@@ -511,13 +577,18 @@ If the training data are complete and target.mode = "all",
   skipped because a learner was unavailable or a prediction failed.</p>
 <p><code>impute.ood</code> returns an object of class
   <code>c("impute.ood.rfsrc", "impute.ood")</code>. It is a list with the
-  following components:</p><ul><li><p><code>score</code>: the row-level weighted mean of calibrated
-      target-wise OOD scores. Larger values indicate greater
-      out-of-distribution behavior.</p></li>
+  following components:</p><ul><li><p><code>score</code>: the row-level aggregate of calibrated
+      target-wise OOD scores under the requested <code>aggregate</code> and
+      <code>weight</code>. Larger values indicate greater
+      out-of-distribution behavior. For <code>aggregate = "weighted.lp.log"</code>,
+      this raw score is on a positive unbounded scale.</p></li>
 <li><p><code>score.percentile</code>: the percentile of <code>score</code>
-      relative to the saved row-level training reference when that
-      calibration is valid for the requested targets and weights;
-      otherwise <code>NA</code>.</p></li>
+      relative to a row-level training reference rebuilt from the saved
+      target-wise training OOD scores for the requested targets,
+      weights, and row aggregate. For legacy fitted objects that do not
+      contain those saved
+      training scores, the original saved row-level reference is used
+      when possible; otherwise <code>NA</code>.</p></li>
 <li><p><code>targets.used</code>: the number of weighted targets that
       contributed to each row-level score.</p></li>
 <li><p><code>target.score</code>: optional matrix of target-wise calibrated
@@ -527,8 +598,9 @@ If the training data are complete and target.mode = "all",
       <code>return.details = TRUE</code>.</p></li>
 <li><p><code>info</code>: a list of diagnostics including harmonization
       details, row-wise unseen-factor flags, learner-loading
-      information, whether the saved row-level calibration was used, and
-      any target-specific issues.</p></li>
+      information, the active row aggregate and its arguments, whether
+      the saved row-level calibration was used, and any target-specific
+      issues.</p></li>
 </ul></div>
     <div id="author">
     <h2>Author</h2>
@@ -576,6 +648,9 @@ If the training data are complete and target.mode = "all",
 <span></span>
 <span><span class="co">## OOD scoring is most informative when every deployment-time</span></span>
 <span><span class="co">## variable can be reconstructed, so target.mode = "all" is recommended.</span></span>
+<span><span class="co">## Optional named OOD weights can also be supplied here. Any omitted</span></span>
+<span><span class="co">## targets receive weight 0, and the saved weights are reused</span></span>
+<span><span class="co">## automatically later by impute.ood().</span></span>
 <span><span class="va">ood.fit</span> <span class="op">&lt;-</span> <span class="fu">impute.learn</span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">train</span>,</span>
 <span>  ntree <span class="op">=</span> <span class="fl">25</span>,</span>
@@ -591,13 +666,12 @@ If the training data are complete and target.mode = "all",
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ood</span><span class="op">$</span><span class="va">score</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ood</span><span class="op">$</span><span class="va">score.percentile</span><span class="op">)</span></span>
 <span></span>
-<span></span>
-<span><span class="co">## example where test data has unseen levels for a factor</span></span>
-<span><span class="va">test.mod</span> <span class="op">&lt;-</span> <span class="va">test</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">test.mod</span><span class="op">$</span><span class="va">Month</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">test.mod</span><span class="op">$</span><span class="va">Month</span><span class="op">)</span>, <span class="st">"fake"</span><span class="op">)</span></span>
-<span><span class="va">test.mod</span><span class="op">$</span><span class="va">Month</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">test.mod</span><span class="op">)</span><span class="op">)</span>, <span class="fl">10</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"fake"</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">impute.ood</span><span class="op">(</span><span class="va">ood.fit</span>, <span class="va">test.mod</span><span class="op">)</span><span class="op">$</span><span class="va">score</span><span class="op">)</span></span>
-<span></span>
+<span><span class="co">## try a more spike-sensitive row aggregate</span></span>
+<span><span class="va">ood.lp</span> <span class="op">&lt;-</span> <span class="fu">impute.ood</span><span class="op">(</span><span class="va">ood.fit</span>, <span class="va">test</span>,</span>
+<span>                     aggregate <span class="op">=</span> <span class="st">"weighted.lp"</span>,</span>
+<span>                     aggregate.args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>p <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>,</span>
+<span>                     verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ood.lp</span><span class="op">$</span><span class="va">score.percentile</span><span class="op">)</span></span>
 <span><span class="co"># }</span></span>
 <span></span>
 <span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span>
@@ -649,7 +723,7 @@ If the training data are complete and target.mode = "all",
 <span></span>
 <span><span class="co">## train forest</span></span>
 <span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/warning.html" class="external-link">suppressWarnings</a></span><span class="op">(</span></span>
-<span>  <span class="fu">impute.learn</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">days</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">train</span>,</span>
+<span>  <span class="fu">impute.learn</span><span class="op">(</span><span class="fu">Surv</span><span class="op">(</span><span class="va">days</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">train</span>,</span>
 <span>               target.mode <span class="op">=</span> <span class="st">"all"</span>,</span>
 <span>               save.ood <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>               keep.models <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>

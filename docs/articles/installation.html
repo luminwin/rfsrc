@@ -6,12 +6,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Installing randomForestSRC • Fast Unified Random Forests with randomForestSRC</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
+<!-- favicons --><link rel="icon" type="image/png" sizes="48x48" href="../favicon-48x48.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
@@ -44,7 +43,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.6.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.6.2</span>
       </span>
     </div>
 
@@ -161,7 +160,7 @@
 <a href="https://ishwaran.org/ishwaran.html" class="external-link">Hemant Ishwaran</a> <br><br><a href="https://www.luminwin.net/" class="external-link">Min Lu</a> <br><br> Udaya B.
 Kogalur</h4>
             
-            <h4 data-toc-skip class="date">2025-05-13</h4>
+            <h4 data-toc-skip class="date">2026-04-24</h4>
       
 
       <div class="hidden name"><code>installation.Rmd</code></div>
@@ -206,7 +205,7 @@ branch of our GitHub repository.</p>
 <code>randomForestSRC</code> is to install it directly from CRAN via
 typing the following command in R console:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"randomForestSRC"</span>)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"randomForestSRC"</span><span class="op">)</span></span></code></pre></div>
 <p>To create the R package using the GitHub repository, you will need an
 installation of R (&gt; v3.0) that is capable of compiling source code
 packages containing C-code. This means that the approprate C-code
@@ -229,7 +228,25 @@ in your default library, change to the directory
 <p><code>R CMD INSTALL --preclean --clean randomForestSRC</code></p>
 <p>This will install an OpenMP parallel version of the package if the
 host system is capable of supporting this mode of execution.</p>
-<p>Please note that on some platforms, even though an OpenMP C-compiler may have been installed, the R packaging and installation engine does not pick up the appropriate compiler. For example, on macOS, the default compiler is Clang which is not OpenMP capable out-of-the-box. See <a href="parallel.html">the Parallel Processing vignette</a> <span class="citation">[1]</span><a class="anchor" aria-label="anchor" href="#to-set-number-of-cpu-parameters-for-parallel-processing-see-the-parallel-processing-vignette-hemantparallel-"></a> for details.
+<p>Please note that on some platforms, even though an OpenMP C-compiler
+may have been installed, the R packaging and installation engine does
+not pick up the appropriate compiler. For example, on macOS, the default
+compiler is Clang. It is not OpenMP capable out-of-the-box. You will
+need to install an OpenMP version of it, or install GCC using Homebrew
+or another package manager. Most importantly, you will also need to
+direct the R packaging and installtion engine to the OpenMP capable
+compiler. This is done by creating an <code>.R</code> directory in your
+<code>HOME</code> directory, and creating a <code>Makevars</code> file
+in that directory containing the appropriate compiler instructions. As
+an example, on macOS Sierra (v10.12) our installation has the following
+as its <code>Makevars</code> file:</p>
+<p class="comment">
+F77 = gfortran-7 <br> FC = gfortran-7 <br> CC = gcc-7 <br> CXX =
+g++-7 CFLAGS = -I/usr/local/Cellar/gcc/7.2.0/include LDFLAGS =
+-L/usr/local/Cellar/gcc/7.2.0/lib/gcc/7
+</p>
+<div class="section level3">
+<h3 id="to-set-number-of-cpu-parameters-for-parallel-processing-see-the-parallel-processing-vignette-hemantparallel-">To set number of CPU parameters for parallel processing, see <a href="parallel.html">the Parallel Processing vignette</a> <span class="citation">[1]</span>.<a class="anchor" aria-label="anchor" href="#to-set-number-of-cpu-parameters-for-parallel-processing-see-the-parallel-processing-vignette-hemantparallel-"></a>
 </h3>
 </div>
 </div>
@@ -301,7 +318,7 @@ vignette.” <a href="http://randomforestsrc.org/articles/installation.html" cla
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
       </footer>
