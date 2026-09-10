@@ -7,14 +7,22 @@ If the training data contain missing values, the function first
   refitting on the test set.
 The same saved learner bank can also be used to score new data for
   out-of-distribution (OOD) behavior. Note that OOD scores are available
-  even when new data have missing values.  Each selected target is
+  even when new data have missing values. Each selected target is
   reconstructed from its saved conditional learner and compared with the
-  observed value.  Target-wise discrepancies are calibrated against a
+  observed value. Target-wise discrepancies are calibrated against a
   training reference calculated from out-of-bag predictions computed
-  during the training.
+  during training.
 If the training data are complete and target.mode = "all",
   the initial training-data imputation step is skipped and the
-  full-sweep learners are fit directly from the complete training data.'><meta property="og:image" content="https://www.randomforestsrc.org/logo.svg"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
+  full-sweep learners are fit directly from the complete training data.
+If supervised.formula is supplied, the function also fits an
+  internal supervised forest from the training data.  The supervised
+  forest plays no role in the training imputation but is used downstream
+  to create auxiliary variables which are appended as predictors which
+  can improve test-time imputation and OOD scoring. Users who want only
+  the basic unsupervised learned imputer and do not want test time
+  contamination from outcomes should leave supervised.formula
+  unspecified.'><meta property="og:image" content="https://www.randomforestsrc.org/logo.svg"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-WZWXVK817Z"></script><script>
@@ -38,7 +46,7 @@ If the training data are complete and target.mode = "all",
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.6.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.7.0</span>
       </span>
     </div>
 
@@ -163,14 +171,22 @@ If the training data are complete and target.mode = "all",
   refitting on the test set.</p>
 <p>The same saved learner bank can also be used to score new data for
   out-of-distribution (OOD) behavior. Note that OOD scores are available
-  even when new data have missing values.  Each selected target is
+  even when new data have missing values. Each selected target is
   reconstructed from its saved conditional learner and compared with the
-  observed value.  Target-wise discrepancies are calibrated against a
+  observed value. Target-wise discrepancies are calibrated against a
   training reference calculated from out-of-bag predictions computed
-  during the training.</p>
+  during training.</p>
 <p>If the training data are complete and <code>target.mode = "all"</code>,
   the initial training-data imputation step is skipped and the
   full-sweep learners are fit directly from the complete training data.</p>
+<p>If <code>supervised.formula</code> is supplied, the function also fits an
+  internal supervised forest from the training data.  The supervised
+  forest plays no role in the training imputation but is used downstream
+  to create auxiliary variables which are appended as predictors which
+  can improve test-time imputation and OOD scoring. Users who want only
+  the basic unsupervised learned imputer and do not want test time
+  contamination from outcomes should leave <code>supervised.formula</code>
+  unspecified.</p>
     </div>
 
     <div id="ref-usage">
@@ -180,6 +196,8 @@ If the training data are complete and target.mode = "all",
 <span>  <span class="va">mf.q</span>, max.iter <span class="op">=</span> <span class="fl">10</span>, eps <span class="op">=</span> <span class="fl">0.01</span>,</span>
 <span>  ytry <span class="op">=</span> <span class="cn">NULL</span>, always.use <span class="op">=</span> <span class="cn">NULL</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">...</span>,</span>
+<span>  supervised.formula <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  supervised.args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  full.sweep.options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ntree <span class="op">=</span> <span class="fl">100</span>, nsplit <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
 <span>  target.mode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"missing.only"</span>, <span class="st">"all"</span><span class="op">)</span>,</span>
 <span>  deployment.xvars <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -218,25 +236,36 @@ If the training data are complete and target.mode = "all",
 <span>    <span class="st">"weighted.lp"</span>, <span class="st">"weighted.lp.log"</span>, <span class="st">"top.k"</span><span class="op">)</span>,</span>
 <span>  aggregate.args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  return.details <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  return.reconstruction <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <p></p>
+
+
+<p></p>
 <dl><dt id="arg-formula">formula<a class="anchor" aria-label="anchor" href="#arg-formula"></a></dt>
-<dd><p>A symbolic model description. Can be omitted. The same
-    interpretation as in <code>impute</code> is used for the initial
-    training-data imputation stage. The saved full-sweep learner bank is
-    controlled by <code>deployment.xvars</code>, not by <code>formula</code>.</p></dd>
+<dd><p>An optional symbolic model description passed to
+    <code>impute</code> for the initial training-data imputation when
+    <code>supervised.formula</code> is not supplied. It follows the same
+    guidelines as in <code>impute</code>. This formula does not specify the
+    full-sweep learner bank, the OOD targets, or the supervised
+    auxiliary forest. When <code>supervised.formula</code> is supplied, the
+    raw predictor block is taken from the right-hand side of
+    <code>supervised.formula</code>, and <code>formula</code> is not used.</p></dd>
 
 
   <dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
 <dd><p>Training data. Variables that are not real-valued are
     coerced to factors before fitting when possible; otherwise fitting
     stops with an error. Rows and columns that are entirely missing are
-    dropped before the training begins.</p></dd>
+    dropped before training begins. If <code>supervised.formula</code> is
+    supplied, <code>data</code> should contain both the supervised response
+    columns and the raw predictor columns. The learned imputer is then
+    built on the raw predictor block defined by the right-hand side of
+    <code>supervised.formula</code>.</p></dd>
 
 
   <dt id="arg-ntree-nodesize-nsplit-nimpute-fast-blocks-max-iter-ytry-always-use-verbose">ntree, nodesize, nsplit, nimpute, fast, blocks,
@@ -270,6 +299,28 @@ If the training data are complete and target.mode = "all",
     <code>impute.ood</code>, additional arguments are currently ignored.</p></dd>
 
 
+  <dt id="arg-supervised-formula">supervised.formula<a class="anchor" aria-label="anchor" href="#arg-supervised-formula"></a></dt>
+<dd><p>Optional supervised learning formula used to
+    augment the learned imputer for improved OOD detection in supervised
+    settings.  The left-hand side defines the supervised response and
+    the right-hand side defines the raw predictor block to be learned by
+    <code>impute.learn</code>. The supervised forest is fit internally after
+    the raw predictor block has been completed. Its training out-of-bag
+    <code>predicted</code> values and test-time <code>predicted</code> values are
+    appended internally as auxiliary predictors.  These auxiliary
+    predictors are internal and are not expected in <code>newdata</code>.</p></dd>
+
+
+  <dt id="arg-supervised-args">supervised.args<a class="anchor" aria-label="anchor" href="#arg-supervised-args"></a></dt>
+<dd><p>Optional named list of arguments passed to the
+    internal supervised <code>rfsrc</code> fit. Entries for <code>formula</code>,
+    <code>data</code>, and <code>forest</code> are controlled internally and are
+    ignored if supplied. All other entries override the defaults used
+    for this supervised fit, including defaults inherited from
+    top-level arguments such as <code>fast</code> and internally supplied
+    defaults such as <code>perf.type = "none"</code>.</p></dd>
+
+
   <dt id="arg-full-sweep-options">full.sweep.options<a class="anchor" aria-label="anchor" href="#arg-full-sweep-options"></a></dt>
 <dd><p>A <code>list</code> of options used when fitting
     the full sweep after the training data have been imputed.
@@ -281,35 +332,49 @@ If the training data are complete and target.mode = "all",
 
 
   <dt id="arg-target-mode">target.mode<a class="anchor" aria-label="anchor" href="#arg-target-mode"></a></dt>
-<dd><p>Determines which variables receive a saved
+<dd><p>Determines which raw variables receive a saved
     full-sweep learner. The default <code>"missing.only"</code> saves
     learners only for variables that were missing in the training data.
-    The option <code>"all"</code> saves a learner for every variable. If the
-    training data are complete, <code>target.mode = "all"</code> must be
-    used. For the broadest OOD coverage, <code>target.mode = "all"</code> is
-    recommended so every deployment-time variable can be reconstructed.</p></dd>
+    The option <code>"all"</code> saves a learner for every retained raw
+    variable. If the training data are complete, <code>target.mode =
+    "all"</code> must be used. When <code>supervised.formula</code> is supplied,
+    the default is promoted internally to <code>"all"</code> so that every
+    retained raw predictor can later be updated and scored. For the
+    broadest OOD coverage, <code>target.mode = "all"</code> is recommended so
+    every deployment-time variable can be reconstructed.</p></dd>
 
 
   <dt id="arg-deployment-xvars">deployment.xvars<a class="anchor" aria-label="anchor" href="#arg-deployment-xvars"></a></dt>
-<dd><p>Controls which predictors are assumed to be
-    available later when the saved imputer is used on new data. If
-    <code>NULL</code>, all columns except the target are used. If a character
-    vector, the same predictor set is used for all targets. If a named
-    list, each target can have its own predictor set. By default, all
-    non-target columns are eligible predictors, so users should exclude
-    outcomes, future information, identifiers, or any variables that
-    will not be available at deployment time.</p></dd>
+<dd><p>Controls which raw predictors are assumed to
+    be available later when the saved imputer is used on new data. If
+    <code>NULL</code>, all raw non-target columns are used. If a character
+    vector, the same raw predictor set is used for all targets. If a
+    named list, names must be target variables and each entry gives the
+    raw predictor set for that target; targets omitted from the list
+    fall back to all raw non-target columns. Unnamed or duplicated list
+    entries are not allowed. Entries named for non-target variables, and
+    predictor names not found in the training data, are ignored with a
+    warning. When <code>supervised.formula</code> is supplied, the internal
+    auxiliary <code>predicted.*</code> columns are added automatically on top
+    of these raw predictor sets. In other words,
+    <code>deployment.xvars</code> restricts the raw predictors only.</p></dd>
 
 
   <dt id="arg-anonymous">anonymous<a class="anchor" aria-label="anchor" href="#arg-anonymous"></a></dt>
 <dd><p>If <code>TRUE</code>, uses <code>rfsrc.anonymous</code> when
-    fitting the full sweep. This usually reduces the size of the saved
-    object.</p></dd>
+    fitting the saved target-wise full-sweep learner bank. The internal
+    supervised forest, when requested through <code>supervised.formula</code>,
+    is fit with <code>rfsrc</code> because it must be retained for later
+    prediction-time auxiliary variables. Thus <code>anonymous</code> usually
+    reduces the size of the target-wise learner bank, but not
+    necessarily the size of the supervised forest.</p></dd>
 
 
   <dt id="arg-learner-prefix-learner-root">learner.prefix, learner.root<a class="anchor" aria-label="anchor" href="#arg-learner-prefix-learner-root"></a></dt>
 <dd><p>Names used when writing saved
-    full-sweep learners to disk.</p></dd>
+    full-sweep learners to disk. If <code>supervised.formula</code> is
+    supplied, the internal supervised forest is saved under the same
+    learner root.</p></dd>
 
 
   <dt id="arg-out-dir">out.dir<a class="anchor" aria-label="anchor" href="#arg-out-dir"></a></dt>
@@ -317,7 +382,8 @@ If the training data are complete and target.mode = "all",
     <code>save.on.fit = TRUE</code>, the manifest and the saved full-sweep
     learners are written to this directory during fitting. This requires
     the <span class="pkg">fst</span> package because learners are serialized with
-    <code>fast.save</code>.</p></dd>
+    <code>fast.save</code>. If <code>supervised.formula</code> is supplied, the
+    internal supervised forest is also saved there.</p></dd>
 
 
   <dt id="arg-wipe">wipe<a class="anchor" aria-label="anchor" href="#arg-wipe"></a></dt>
@@ -329,12 +395,15 @@ If the training data are complete and target.mode = "all",
 <dd><p>If <code>TRUE</code>, keeps the fitted full-sweep
     learners in memory in the returned object. At least one storage mode
     must be enabled: either <code>keep.models = TRUE</code> or
-    <code>out.dir</code> with <code>save.on.fit = TRUE</code>.</p></dd>
+    <code>out.dir</code> with <code>save.on.fit = TRUE</code>. If
+    <code>supervised.formula</code> is supplied, the internal supervised
+    forest is kept in memory under the same rule.</p></dd>
 
 
   <dt id="arg-keep-ximp">keep.ximp<a class="anchor" aria-label="anchor" href="#arg-keep-ximp"></a></dt>
-<dd><p>If <code>TRUE</code>, keeps the completed training data in
-    the returned object. This is not required for later prediction.</p></dd>
+<dd><p>If <code>TRUE</code>, keeps the completed raw training
+    predictor table in the returned object. This is not required for
+    later prediction.</p></dd>
 
 
   <dt id="arg-save-on-fit">save.on.fit<a class="anchor" aria-label="anchor" href="#arg-save-on-fit"></a></dt>
@@ -375,16 +444,29 @@ If the training data are complete and target.mode = "all",
 
   <dt id="arg-lazy">lazy<a class="anchor" aria-label="anchor" href="#arg-lazy"></a></dt>
 <dd><p>If <code>TRUE</code>, saved learners are loaded only when they
-    are needed. If <code>FALSE</code>, all saved learners are loaded at once.</p></dd>
+    are needed. If <code>FALSE</code>, all saved learners are loaded at once.
+    If <code>supervised.formula</code> was used at fit time, the internal
+    supervised forest follows the same lazy versus eager loading rule.</p></dd>
 
 
   <dt id="arg-newdata">newdata<a class="anchor" aria-label="anchor" href="#arg-newdata"></a></dt>
 <dd><p>New data to be imputed or scored. Missing columns are
     added and extra columns are dropped to match the training schema.
     Unseen factor levels are converted to <code>NA</code> for harmonization,
-    but they are also tracked row-wise. In <code>impute.ood</code>, any row
-    containing an unseen factor level is flagged and its row-level OOD
-    score is set to the maximum value.</p></dd>
+    but they are also tracked row-wise. In supervised mode,
+    <code>newdata</code> should contain only the raw predictor columns learned
+    by the imputer. The internal auxiliary columns are created
+    automatically and should not be supplied by the user. If supervised
+    response columns are supplied in <code>newdata</code> and are not part of
+    the learned raw predictor block, they are treated as extra columns
+    and dropped; they are not used to compute auxiliary predictors,
+    imputations, or OOD scores. In <code>impute.ood</code>,
+    observed raw target values are used to compute target-wise
+    discrepancies. Missing raw target values are completed for
+    predictor-side reconstruction but do not themselves contribute a
+    finite target-wise OOD score. Any row containing an unseen factor
+    level is flagged and its row-level OOD score is set to the maximum
+    value.</p></dd>
 
 
   <dt id="arg-max-predict-iter">max.predict.iter<a class="anchor" aria-label="anchor" href="#arg-max-predict-iter"></a></dt>
@@ -394,12 +476,16 @@ If the training data are complete and target.mode = "all",
 
 
   <dt id="arg-restore-integer">restore.integer<a class="anchor" aria-label="anchor" href="#arg-restore-integer"></a></dt>
-<dd><p>If <code>TRUE</code>, integer columns in the
-    returned data are rounded and restored as integers. Factor columns
-    are always conformed back to the training schema. The package
-    operates on real-valued and factor variables; inputs that are not
-    real-valued are coerced to factors during preprocessing when
-    possible, otherwise an error is raised.</p></dd>
+<dd><p>If <code>TRUE</code>, integer-supported variables
+    in the returned data are restored to the integer grid. This includes
+    columns stored as R integers and numeric columns whose observed
+    finite training values were all integer-valued. Numeric columns
+    remain numeric; returned values are rounded to integer support.
+    Columns stored as R integers are returned as integer vectors.
+    Factor columns are always conformed back to the training schema.
+    The package operates on real-valued and factor variables;
+    inputs that are not real-valued are coerced to factors during
+    preprocessing when possible, otherwise an error is raised.</p></dd>
 
 
   <dt id="arg-cache-learners">cache.learners<a class="anchor" aria-label="anchor" href="#arg-cache-learners"></a></dt>
@@ -429,18 +515,18 @@ If the training data are complete and target.mode = "all",
 
   <dt id="arg-aggregate">aggregate<a class="anchor" aria-label="anchor" href="#arg-aggregate"></a></dt>
 <dd><p>Row-level aggregation metric used by
-    <code>impute.ood</code> to combine calibrated target-wise OOD scores.  The
+    <code>impute.ood</code> to combine calibrated target-wise OOD scores. The
     default <code>"bounded.product"</code> applies a weighted product of
     the form \(1-\prod_j (1-u_j+\varepsilon)^{\tilde w_j}\) where
     \(u_j\) are row level calibrated scores for target feature
-    \(j\).  <code>"weighted.mean"</code> is the weighted
+    \(j\). <code>"weighted.mean"</code> is the weighted
     average. <code>"weighted.lp"</code> applies a weighted Minkowski \(L_p\)
     aggregation to the calibrated target scores.
     <code>"weighted.lp.log"</code> first applies the tail-stretching transform
     \(-\log(1-u_j+\varepsilon)\) to each calibrated target score
     \(u_j\) and then applies the weighted \(L_p\)
     aggregation. <code>"top.k"</code> averages only the \(k\) largest
-    scoreable target scores among the positively weighted targets.  When
+    scoreable target scores among the positively weighted targets. When
     the fit stores target-wise training OOD scores,
     <code>score.percentile</code> is rebuilt for the requested aggregate as
     well as the requested targets and weights.</p></dd>
@@ -459,87 +545,117 @@ If the training data are complete and target.mode = "all",
   <dt id="arg-return-details">return.details<a class="anchor" aria-label="anchor" href="#arg-return-details"></a></dt>
 <dd><p>If <code>TRUE</code>, <code>impute.ood</code> returns the
     per-target discrepancy and calibrated target-score matrices and a
-    row-by-variable unseen-level mask in the diagnostics.</p></dd>
+    richer <code>info</code> list.</p></dd>
+
+
+  <dt id="arg-return-reconstruction">return.reconstruction<a class="anchor" aria-label="anchor" href="#arg-return-reconstruction"></a></dt>
+<dd><p>If <code>TRUE</code>, <code>impute.ood</code> returns
+    the target-wise reconstructed values used during OOD scoring.  The
+    reconstructed values are returned on the raw target scale, with one
+    column per scored target.  Typically these values are computed
+    internally and discarded.</p></dd>
+
+
 
 </dl></div>
     <div id="details">
     <h2>Details</h2>
     <p>A predictive imputer is calculated in two stages.</p>
-<p>The training data are first normalized to a data frame. Variables
-  that are not real-valued are coerced to factors when possible;
-  otherwise fitting stops with an error. Rows and columns that are
-  entirely missing are removed before the training schema is stored.</p>
-<p>If the resulting training data contain missing values, the first
-  stage uses <code>impute</code> to complete the training data. The
-  imputation engine is chosen in exactly the same way as for
-  <code>impute</code> itself. In particular, <code>mf.q = 1</code> gives standard
-  <code>missForest</code>, <code>mf.q &gt; 1</code> gives the multivariate
-  <code>missForest</code> generalization, and if <code>mf.q</code> is omitted the
-  default <code>impute</code> behavior is used. If the training data are
-  already complete and <code>target.mode = "all"</code>, this initial
-  imputation step is skipped.</p>
-<p>In the second stage, a full sweep is fit on the completed training
-  data. For each target selected by <code>target.mode</code>, rows where that
-  target was observed are used to fit a forest with that target on the
-  left-hand side and the selected deployment predictors on the
-  right-hand side. The saved learner bank therefore depends on
-  <code>deployment.xvars</code>. The <code>formula</code> argument affects the
-  initial training-data imputation step, but it does not define the
-  saved predictor bank for the later test-time sweep.</p>
+<p>The training data are first processed. Variables that are not
+  real-valued are coerced to factors when possible; otherwise fitting
+  stops with an error. Rows and columns that are entirely missing are
+  removed before the training schema is stored.</p>
+<p>If the resulting training data contain missing values, the first stage
+  uses <code>impute</code> as the imputation engine to complete the training
+  data.  Options are specified exactly as in <code>impute</code>.  In
+  particular, <code>mf.q = 1</code> gives standard <code>missForest</code>,
+  <code>mf.q &gt; 1</code> gives the multivariate <code>missForest</code>
+  generalization, and if <code>mf.q</code> is omitted, on the fly imputation
+  is used if <code>formula</code> is specified, otherwise default unsupervised
+  imputation is used. If the training data are already complete and
+  <code>target.mode = "all"</code>, this initial imputation step is skipped.</p>
+<p>In the second stage, a full forest sweep is fit on the completed
+  training data. For each target selected by <code>target.mode</code>, rows
+  where that target was observed are used to fit a forest with that
+  target on the left-hand side and the selected deployment predictors on
+  the right-hand side are specified by <code>deployment.xvars</code>.</p>
 <p>By default, <code>deployment.xvars = NULL</code> allows every non-target
   column to be used as a predictor. This is convenient, but it can also
   introduce leakage if the training data include outcomes, future-only
   variables, identifiers, or any fields that will not be available when
   the learned imputer is applied to new data. Restrict
   <code>deployment.xvars</code> when that is a concern.</p>
+<p>If <code>supervised.formula</code> is supplied, the function also fits an
+  internal supervised forest from the training data. Out-of-bag
+  <code>predicted</code> values for the training sample, and <code>predicted</code>
+  values for new data, are appended internally as auxiliary
+  predictors. These auxiliary variables are not used as imputation
+  targets, however, they are available as predictors for the saved
+  forests and can therefore influence both test-time imputation and OOD
+  scoring. Users who want only the basic unsupervised learned imputer
+  should leave <code>supervised.formula</code> unspecified.</p>
+<p>When <code>supervised.formula</code> is used, <code>deployment.xvars</code>
+  continues to restrict only the raw predictors. The internally created
+  auxiliary variables are added automatically to the predictor sets for
+  the saved raw targets. This lets the learned imputer benefit from
+  supervised signal without asking the user to prepare and pass those
+  auxiliary columns manually.</p>
 <p>When the imputer is saved to disk, each full-sweep learner is written
   separately using <code>fast.save</code>. Loading uses <code>fast.load</code>. In
   practice this gives a small manifest plus a directory of saved
   learners. The <span class="pkg">fst</span> package is therefore required for save and
   load operations. The explicit save method can write learners either
-  from memory or by reloading them from an attached saved path.</p>
+  from memory or by reloading them from an attached saved path. If
+  <code>supervised.formula</code> is used, the internal supervised forest is
+  saved alongside the target-wise learner bank.</p>
 <p>Prediction starts by matching <code>newdata</code> to the training schema,
-  filling missing values with training means or modes, and then
-  applying one or more full-sweep passes. Only the targets selected by
-  <code>target.mode</code> are updated by saved learners.</p>
+  filling missing values with training means or modes, and then applying
+  one or more full-sweep passes. Only the targets selected by
+  <code>target.mode</code> are updated by saved learners. In supervised mode,
+  this same test-time preparation first initializes the raw predictor
+  table, then computes the internal auxiliary variables from the saved
+  supervised forest, and then runs the forest test-time sweep.
+  Supervised response columns, if present in <code>newdata</code> but not in
+  the learned raw predictor block, are dropped before this step and play
+  no role at prediction or scoring time.</p>
 <p>If <code>target.mode = "missing.only"</code>, a variable that was complete
   in training but missing in new data is initialized from the training
   fit but does not receive a model-based update. Use
   <code>target.mode = "all"</code> if missing values may appear later in any
-  variable. Complete training data also require
+  raw variable. Complete training data also require
   <code>target.mode = "all"</code>, because otherwise there are no missing
   variables from which to determine the saved targets.</p>
 <p>If <code>save.ood = TRUE</code>, the fit also stores an OOD reference in the
   manifest. For each saved target, the out-of-bag prediction from the
   fitted learner is compared with the observed training value to form a
   target-wise reconstruction discrepancy. Continuous and integer targets
-  use absolute reconstruction error. Factor targets prefer the negative
-  log predictive probability assigned to the observed class. When class
-  probabilities are unavailable, unordered factors fall back to a 0/1
-  mismatch score and ordered factors fall back to a scaled rank
-  distance.</p>
+  use absolute reconstruction error. Factor targets use negative log
+  predictive probabilities.</p>
 <p>The row-level OOD calibration stored at fit time is built by
   aggregating the target-wise training scores with a weighted mean using
   <code>weight</code>. If <code>weight</code> is omitted at fit time, all saved OOD
   targets receive weight 1. If a named vector is supplied, entries are
   matched by target name, omitted saved OOD targets receive weight 0,
-  and the resulting weighting scheme is carried forward in the manifest
-  for later deployment-time scoring.</p>
+  and the resulting weighting scheme is carried forward for later
+  deployment-time scoring.</p>
 <p><code>impute.ood</code> first completes the predictor side of <code>newdata</code>
   using the same harmonization, initialization, and iterative sweep
   logic used by <code>predict.impute.learn</code>. It then reconstructs each
-  requested target directly from its saved learner and compares the
-  reconstruction with the observed value. Raw target discrepancies are
-  converted to target-wise OOD scores using the saved target-specific
-  training references, which places continuous and factor targets on a
-  common scale.</p>
+  requested raw target directly from its saved learner and compares the
+  reconstruction with the observed raw target value supplied in
+  <code>newdata</code>. If a scored raw target is missing in a row, that
+  target does not contribute to that row's OOD score. Raw target
+  discrepancies are converted to target-wise OOD scores using the saved
+  target-specific training references. In supervised mode, auxiliary
+  variables participate as predictors in the reconstruction, but the
+  supervised response itself is not used at deployment time.</p>
 <p>The row-level OOD score combines those calibrated target-wise scores
   over the targets that are both observed and scoreable for that row. By
   default, <code>impute.ood</code> uses a bounded product rule, but the row
   aggregate can be changed to weighted mean, a weighted \(L_p\) rule,
   a log-tail weighted \(L_p\) rule, or a top-\(k\) rule. This makes
   it possible to explore row scores that are more sensitive to sparse
-  but severe coordinate shifts.  By default, <code>impute.ood</code> reuses
+  but severe coordinate shifts. By default, <code>impute.ood</code> reuses
   the same OOD weights saved during <code>impute.learn</code>, so a pipeline
   can fix its weighting scheme once upstream and carry it forward
   automatically.</p>
@@ -562,18 +678,24 @@ If the training data are complete and target.mode = "all",
     <p><code>impute.learn</code> returns an object of class
   <code>c("impute.learn.rfsrc", "impute.learn")</code>. The object
   contains a manifest, optionally the fitted full-sweep learners,
-  optionally the completed training data, and optionally a path to the
-  saved imputer on disk. If <code>save.ood = TRUE</code>, the manifest also
-  contains an <code>ood</code> component storing compact target-wise OOD
-  references, the saved row-by-target training OOD score matrix used for
-  later percentile recalibration, and the default OOD aggregation
-  weights.</p>
+  optionally the internal supervised forest when
+  <code>supervised.formula</code> is used, optionally the completed raw
+  training predictor table, and optionally a path to the saved imputer
+  on disk. If <code>save.ood = TRUE</code>, the manifest also contains an
+  <code>ood</code> component storing compact target-wise OOD references, the
+  saved row-by-target training OOD score matrix used for later
+  percentile recalibration, and the default OOD aggregation weights.
+  When supervised mode is active, the manifest also records the
+  supervised family, response names, and the internally created
+  auxiliary <code>predicted.*</code> variable names.</p>
 <p><code>load.impute.learn</code> returns an object of the same class.</p>
 <p><code>predict.impute.learn</code> returns a data frame with imputed values
-  overlaid. An attribute named <code>"impute.learn.info"</code> contains
-  prediction-time diagnostics such as the number of sweep passes,
-  pass-difference history, caching mode, disk-load counts, schema
-  harmonization details, row-wise unseen-factor flags, and any targets
+  overlaid on the raw predictor table. An attribute named
+  <code>"impute.learn.info"</code> contains prediction-time diagnostics such
+  as the number of sweep passes, pass-difference history, caching mode,
+  disk-load counts, schema harmonization details, dropped supervised
+  response columns when present, row-wise unseen-factor flags,
+  supervised-auxiliary diagnostics when present, and any targets
   skipped because a learner was unavailable or a prediction failed.</p>
 <p><code>impute.ood</code> returns an object of class
   <code>c("impute.ood.rfsrc", "impute.ood")</code>. It is a list with the
@@ -586,9 +708,8 @@ If the training data are complete and target.mode = "all",
       relative to a row-level training reference rebuilt from the saved
       target-wise training OOD scores for the requested targets,
       weights, and row aggregate. For legacy fitted objects that do not
-      contain those saved
-      training scores, the original saved row-level reference is used
-      when possible; otherwise <code>NA</code>.</p></li>
+      contain those saved training scores, the original saved row-level
+      reference is used when possible; otherwise <code>NA</code>.</p></li>
 <li><p><code>targets.used</code>: the number of weighted targets that
       contributed to each row-level score.</p></li>
 <li><p><code>target.score</code>: optional matrix of target-wise calibrated
@@ -597,10 +718,11 @@ If the training data are complete and target.mode = "all",
       reconstruction discrepancies, returned when
       <code>return.details = TRUE</code>.</p></li>
 <li><p><code>info</code>: a list of diagnostics including harmonization
-      details, row-wise unseen-factor flags, learner-loading
-      information, the active row aggregate and its arguments, whether
-      the saved row-level calibration was used, and any target-specific
-      issues.</p></li>
+      details, dropped supervised response columns when present,
+      row-wise unseen-factor flags, learner-loading information,
+      supervised-auxiliary diagnostics when present, the active row
+      aggregate and its arguments, whether the saved row-level
+      calibration was used, and any target-specific issues.</p></li>
 </ul></div>
     <div id="author">
     <h2>Author</h2>
@@ -616,14 +738,14 @@ If the training data are complete and target.mode = "all",
     </div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p><code><a href="impute.rfsrc.html">impute.rfsrc</a></code>, <code><a href="rfsrc.html">rfsrc</a></code>, and
+    <div class="dont-index"><p><code><a href="impute.rfsrc.html">impute.rfsrc</a></code>,
+  <code><a href="rfsrc.html">rfsrc</a></code>,
   <code><a href="predict.rfsrc.html">predict.rfsrc</a></code>.</p></div>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># \donttest{</span></span>
-<span><span class="co">## ------------------------------------------------------------</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co">## ------------------------------------------------------------</span></span>
 <span><span class="co">## small data example: uses missForest for impute engine</span></span>
 <span><span class="co">## ------------------------------------------------------------</span></span>
 <span></span>
@@ -635,6 +757,7 @@ If the training data are complete and target.mode = "all",
 <span><span class="va">train</span> <span class="op">&lt;-</span> <span class="va">aq</span><span class="op">[</span><span class="va">id</span>, <span class="op">]</span></span>
 <span><span class="va">test</span> <span class="op">&lt;-</span> <span class="va">aq</span><span class="op">[</span><span class="op">-</span><span class="va">id</span>, <span class="op">]</span></span>
 <span></span>
+<span><span class="co">## training the imputer</span></span>
 <span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu">impute.learn</span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">train</span>,</span>
 <span>  ntree <span class="op">=</span> <span class="fl">25</span>,</span>
@@ -643,14 +766,18 @@ If the training data are complete and target.mode = "all",
 <span>  full.sweep.options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ntree <span class="op">=</span> <span class="fl">25</span>, nsplit <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
+<span><span class="co">## test time imputation</span></span>
 <span><span class="va">test.imp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit</span>, <span class="va">test</span>, max.predict.iter <span class="op">=</span> <span class="fl">2</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">test.imp</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">test.imp</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># \donttest{</span></span>
 <span></span>
 <span><span class="co">## OOD scoring is most informative when every deployment-time</span></span>
 <span><span class="co">## variable can be reconstructed, so target.mode = "all" is recommended.</span></span>
 <span><span class="co">## Optional named OOD weights can also be supplied here. Any omitted</span></span>
 <span><span class="co">## targets receive weight 0, and the saved weights are reused</span></span>
 <span><span class="co">## automatically later by impute.ood().</span></span>
+<span></span>
 <span><span class="va">ood.fit</span> <span class="op">&lt;-</span> <span class="fu">impute.learn</span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">train</span>,</span>
 <span>  ntree <span class="op">=</span> <span class="fl">25</span>,</span>
@@ -663,18 +790,63 @@ If the training data are complete and target.mode = "all",
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">ood</span> <span class="op">&lt;-</span> <span class="fu">impute.ood</span><span class="op">(</span><span class="va">ood.fit</span>, <span class="va">test</span>, return.details <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ood</span><span class="op">$</span><span class="va">score</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ood</span><span class="op">$</span><span class="va">score.percentile</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ood</span><span class="op">$</span><span class="va">score</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ood</span><span class="op">$</span><span class="va">score.percentile</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## try a more spike-sensitive row aggregate</span></span>
 <span><span class="va">ood.lp</span> <span class="op">&lt;-</span> <span class="fu">impute.ood</span><span class="op">(</span><span class="va">ood.fit</span>, <span class="va">test</span>,</span>
 <span>                     aggregate <span class="op">=</span> <span class="st">"weighted.lp"</span>,</span>
 <span>                     aggregate.args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>p <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>,</span>
 <span>                     verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ood.lp</span><span class="op">$</span><span class="va">score.percentile</span><span class="op">)</span></span>
-<span><span class="co"># }</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ood.lp</span><span class="op">$</span><span class="va">score.percentile</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## supervised OOD example: regression benchmark</span></span>
+<span><span class="co">## the user supplies only the raw x-columns at test time</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="va">friedman1_sim</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span> <span class="op">=</span> <span class="fl">150</span>, <span class="va">p</span> <span class="op">=</span> <span class="fl">10</span>, <span class="va">sigma</span> <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="va">n</span> <span class="op">*</span> <span class="va">p</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="va">n</span><span class="op">)</span></span>
+<span>  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fl">10</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="va">pi</span> <span class="op">*</span> <span class="va">X</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span> <span class="op">*</span> <span class="va">X</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span>
+<span>       <span class="fl">20</span> <span class="op">*</span> <span class="op">(</span><span class="va">X</span><span class="op">[</span>, <span class="fl">3</span><span class="op">]</span> <span class="op">-</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span></span>
+<span>       <span class="fl">10</span> <span class="op">*</span> <span class="va">X</span><span class="op">[</span>, <span class="fl">4</span><span class="op">]</span> <span class="op">+</span> <span class="fl">5</span> <span class="op">*</span> <span class="va">X</span><span class="op">[</span>, <span class="fl">5</span><span class="op">]</span> <span class="op">+</span></span>
+<span>       <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span>, sd <span class="op">=</span> <span class="va">sigma</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>X <span class="op">=</span> <span class="va">X</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span></span>
+<span><span class="va">trn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="fu">friedman1_sim</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">tst</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="fu">friedman1_sim</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">xvars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">trn</span><span class="op">)</span>, <span class="st">"y"</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co">## impute data using missForest, construct a supervised forest</span></span>
+<span><span class="co">## - supervised forests are used to create auxiliary variables</span></span>
+<span><span class="co">## - improves test time OOD in supervised problems</span></span>
+<span></span>
+<span><span class="va">sup.fit</span> <span class="op">&lt;-</span> <span class="fu">impute.learn</span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">trn</span>,</span>
+<span>  mf.q <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  supervised.formula <span class="op">=</span> <span class="va">y</span> <span class="op">~</span> <span class="va">.</span>,</span>
+<span>  supervised.args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ntree <span class="op">=</span> <span class="fl">50</span>, nsplit <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>,</span>
+<span>  full.sweep.options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ntree <span class="op">=</span> <span class="fl">25</span>, nsplit <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>,</span>
+<span>  save.ood <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## add some missing values to the test data</span></span>
+<span><span class="va">xnew</span> <span class="op">&lt;-</span> <span class="va">tst</span><span class="op">[</span>, <span class="va">xvars</span>, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span></span>
+<span><span class="va">xnew</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">xnew</span><span class="op">)</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span>, <span class="va">xvars</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span>
+<span><span class="va">xnew</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">xnew</span><span class="op">)</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span>, <span class="va">xvars</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span>
+<span></span>
+<span><span class="co">## imputation</span></span>
+<span><span class="va">xnew.imp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">sup.fit</span>, <span class="va">xnew</span>, max.predict.iter <span class="op">=</span> <span class="fl">2</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">xnew.imp</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## OOD score</span></span>
+<span><span class="va">ood.sup</span> <span class="op">&lt;-</span> <span class="fu">impute.ood</span><span class="op">(</span><span class="va">sup.fit</span>, <span class="va">xnew</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ood.sup</span><span class="op">$</span><span class="va">score.percentile</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
 <span><span class="co">## ------------------------------------------------------------</span></span>
 <span><span class="co">## Save the learned imputer to disk and load it later.</span></span>
 <span><span class="co">## This explicit save example writes learners kept in memory.</span></span>
@@ -735,10 +907,10 @@ If the training data are complete and target.mode = "all",
 <span><span class="va">imp</span> <span class="op">&lt;-</span> <span class="fu">load.impute.learn</span><span class="op">(</span><span class="va">bundle.dir</span>, lazy <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">test.imp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">imp</span>, <span class="va">test</span>, max.predict.iter <span class="op">=</span> <span class="fl">2</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">ood</span> <span class="op">&lt;-</span> <span class="fu">impute.ood</span><span class="op">(</span><span class="va">imp</span>, <span class="va">test</span>, return.details <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">ood</span><span class="op">$</span><span class="va">info</span><span class="op">$</span><span class="va">unseen.rows</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">ood</span><span class="op">$</span><span class="va">info</span><span class="op">$</span><span class="va">unseen.rows</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">test.imp</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">bundle.dir</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="op">}</span> <span class="co"># }</span></span></code></pre></div>
+<span><span class="co"># }</span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

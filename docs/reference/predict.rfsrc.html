@@ -24,7 +24,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.6.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.7.0</span>
       </span>
     </div>
 
@@ -204,11 +204,18 @@
 
 
   <dt id="arg-proximity">proximity<a class="anchor" aria-label="anchor" href="#arg-proximity"></a></dt>
-<dd><p>Whether to compute the proximity matrix for test observations. Options include <code>"inbag"</code>, <code>"oob"</code>, <code>"all"</code>, <code>TRUE</code>, or <code>FALSE</code>. Not all options are valid in all contexts; <code>TRUE</code> is the safest choice.</p></dd>
+<dd><p>Whether to compute a proximity matrix. Options include
+    <code>"inbag"</code>, <code>"oob"</code>, <code>"all"</code>, <code>"hybrid"</code>,
+    <code>TRUE</code>, or <code>FALSE</code>. With <code>newdata</code>, <code>"hybrid"</code>
+    compares test observations (rows) with original training observations
+    (columns). Hybrid mode is valid only when <code>newdata</code> is supplied
+    with the default <code>outcome = "train"</code>.</p></dd>
 
 
   <dt id="arg-distance">distance<a class="anchor" aria-label="anchor" href="#arg-distance"></a></dt>
-<dd><p>Whether to compute the distance matrix. Options are the same as for <code>proximity</code>.</p></dd>
+<dd><p>Whether to compute the distance matrix. Options are the
+    same as for <code>proximity</code>. Hybrid mode uses the same rectangular
+    test-by-training layout.</p></dd>
 
 
   <dt id="arg-forest-wt">forest.wt<a class="anchor" aria-label="anchor" href="#arg-forest-wt"></a></dt>
@@ -257,6 +264,12 @@
 
 <p>Predicted values are obtained by "dropping" the test data down the trained forest-i.e., the forest grown using the training data. If the test data includes y-outcome values, performance metrics are also returned. Variable importance (VIMP), including joint VIMP, is returned if requested.</p>
 <p>If no test data is supplied, the function uses the original training data and enters "restore" mode. This allows users to extract outputs from the trained forest that were not requested during the original grow call.</p>
+<p>When <code>newdata</code> is supplied, non-hybrid proximity and distance matrices
+compare test observations with one another. Setting either option to
+<code>"hybrid"</code> instead compares each retained test observation with each
+retained original training observation, producing an <code>ntest</code> by
+<code>ntrain</code> matrix without constructing a square matrix over the combined
+data. Hybrid mode should not be combined with <code>marginal.xvar</code>.</p>
 <p>If <code>outcome = "test"</code>, predictions are computed using y-outcomes from the test data (which must include outcome values). Terminal node statistics are recalculated using these outcomes, while the tree topology remains fixed from training. Error rates and VIMP are then computed by bootstrapping the test set and applying out-of-bagging to maintain unbiased estimates.</p>
 <p>Set <code>csv = TRUE</code> to return case-specific VIMP, and <code>cse = TRUE</code> to return case-specific error rates. These apply to all families except survival. Both options can also be used at training time.</p>
     </div>
@@ -291,7 +304,13 @@
 <dd><p>Vector of length <code>ntree</code> giving the number of terminal nodes per tree.</p></dd>
 
   <dt>proximity</dt>
-<dd><p>Proximity matrix computed on the test data.</p></dd>
+<dd><p>Proximity matrix computed on the test data. In hybrid
+    mode, rows correspond to retained test observations and columns correspond
+    to retained original training observations.</p></dd>
+
+  <dt>distance</dt>
+<dd><p>Distance matrix. Hybrid mode uses the same test-by-training
+    layout as hybrid proximity.</p></dd>
 
   <dt>forest</dt>
 <dd><p>The trained forest object.</p></dd>
@@ -431,6 +450,25 @@
 <span><span class="va">veteran.pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">veteran.grow</span>, <span class="va">veteran</span><span class="op">[</span><span class="op">-</span><span class="va">train</span>, <span class="op">]</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">veteran.grow</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">veteran.pred</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## hybrid proximity and distance</span></span>
+<span><span class="co">## - rows are test cases; columns are training cases</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span></span>
+<span><span class="va">hybrid.train</span> <span class="op">&lt;-</span> <span class="va">mtcars</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">24</span>, <span class="op">]</span></span>
+<span><span class="va">hybrid.test</span> <span class="op">&lt;-</span> <span class="va">mtcars</span><span class="op">[</span><span class="fl">25</span><span class="op">:</span><span class="fl">32</span>, <span class="op">]</span></span>
+<span><span class="va">hybrid.obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">mpg</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">hybrid.train</span>, ntree <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">hybrid.proximity</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">hybrid.obj</span>, <span class="va">hybrid.test</span>,</span>
+<span>                            proximity <span class="op">=</span> <span class="st">"hybrid"</span><span class="op">)</span><span class="op">$</span><span class="va">proximity</span></span>
+<span><span class="va">hybrid.distance</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">hybrid.obj</span>, <span class="va">hybrid.test</span>,</span>
+<span>                           distance <span class="op">=</span> <span class="st">"hybrid"</span><span class="op">)</span><span class="op">$</span><span class="va">distance</span></span>
+<span></span>
+<span><span class="co">## Both matrices have 8 test rows and 24 training columns.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">hybrid.proximity</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">hybrid.distance</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span></span>
 <span><span class="co">## ------------------------------------------------------------</span></span>

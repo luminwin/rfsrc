@@ -27,7 +27,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.6.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.7.0</span>
       </span>
     </div>
 
@@ -158,17 +158,20 @@
 <span>  nimpute <span class="op">=</span> <span class="fl">2</span>, fast <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">blocks</span>,</span>
 <span>  <span class="va">mf.q</span>, max.iter <span class="op">=</span> <span class="fl">10</span>, eps <span class="op">=</span> <span class="fl">0.01</span>,</span>
 <span>  ytry <span class="op">=</span> <span class="cn">NULL</span>, always.use <span class="op">=</span> <span class="cn">NULL</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  full.sweep <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  full.sweep <span class="op">=</span> <span class="cn">FALSE</span>, restore.integer <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <p></p>
+
+
+<p></p>
 <dl><dt id="arg-formula">formula<a class="anchor" aria-label="anchor" href="#arg-formula"></a></dt>
-<dd><p>A symbolic model description. Can be omitted if
-    outcomes are unspecified or if distinction between outcomes and
-    predictors is unnecessary. Ignored for missForest.</p></dd>
+<dd><p>A symbolic model description used to specify on the fly
+    imputation.  Can be omitted for unsupervised imputation in settings
+    where the outcomes are unspecified or if distinction between
+    outcomes and predictors is unnecessary. Ignored for missForest.</p></dd>
 
 
   <dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
@@ -244,6 +247,17 @@
     the cost of extra computation.</p></dd>
 
 
+  <dt id="arg-restore-integer">restore.integer<a class="anchor" aria-label="anchor" href="#arg-restore-integer"></a></dt>
+<dd><p>If <code>TRUE</code>, variables that were integer
+    supported in the original data are restored to the integer grid after
+    imputation. This includes columns stored as R integers and numeric
+    columns whose observed finite training values are all integer-valued.
+    Numeric columns remain numeric; returned values are rounded
+    to integer support. Columns stored as R integers are returned as
+    integer vectors. Set to <code>FALSE</code> to retain the raw numeric forest
+    predictions.</p></dd>
+
+
   <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Additional arguments passed to or from methods.
     Recognized advanced options include <code>full.sweep.options</code> (a
@@ -293,6 +307,12 @@
   <code>ntree = 500</code>, <code>nodesize = NULL</code>, <code>nsplit = 10</code>, and
   can be customized via <code>full.sweep.options</code> passed through
   <code>...</code>. This applies to both standard and missForest modes.</p></li>
+<li><p>If <code>restore.integer = TRUE</code>, integer support is detected
+  from the original retained data before imputation begins. Restoration
+  is applied after the missForest rough-fix initialization, before and
+  after the optional final sweep, and once more before returning the
+  completed data. The missForest iterative updates themselves are not
+  rounded between variable or block updates.</p></li>
 </ol></div>
     <div id="value">
     <h2>Value</h2>

@@ -89,7 +89,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Development version">3.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Development version">3.7.0</span>
       </span>
     </div>
 
@@ -201,6 +201,61 @@
       
     </div>
     
+                                                                <div id="release-370" class="section level2">
+<h2 class="hasAnchor">
+<a href="#release-370" class="anchor"></a>RELEASE 3.7.0</h2>
+<h3>Survival prediction performance</h3>
+<ul>
+<li>Expanded <code>get.brier.survival()</code> to support user-selected prediction horizons, optional pointwise confidence intervals, and optional retention of the subject-by-time IPCW loss matrix. The censoring distribution is estimated from the full grow data, while predictions are scored against their correctly aligned grow or test outcomes.</li>
+<li>Added <code>get.auct.survival()</code> for cumulative/dynamic time-dependent AUC using the time-specific risk <code>1 - S(t)</code>. The implementation uses efficient weighted rank calculations, gives half credit to ties, and returns case and control counts together with IPCW effective sample sizes and maximum normalized weights.</li>
+<li>Added <code>plotBrierAUC()</code>, a base-R helper for plotting Brier and AUC(t) curves with optional pointwise confidence bands. No new package dependencies are required.</li>
+<li>Added fixed-fit conditional standard errors. Brier-score uncertainty uses the delete-one jackknife of subject-level IPCW losses, which is equivalent to the empirical influence-value calculation when predictions and censoring weights are held fixed. AUC(t) uncertainty uses a stratified delete-one jackknife that separately deletes cases and controls and renormalizes the remaining IPCW weights; with equal weights it reduces to the ordinary DeLong variance.</li>
+<li>Corrected <code>plot.survival()</code> and the underlying Brier calculations for prediction objects. Test predictions are now paired with test outcomes, arbitrary subsets retain their proper outcome alignment, and prediction objects without outcomes are limited to survival-curve displays rather than incorrectly calculating Brier score or CRPS.</li>
+<li>Restored compatibility with reduced objects returned by <code>rfsrc.fast(..., forest = FALSE)</code> for the default Kaplan&ndash;Meier censoring model. Requests for <code>cens.model = "rfsrc"</code> now give an informative error when stored grow or evaluation covariates are unavailable.</li>
+<li>New <code>hybrid</code> proximity and distance that compares test observations (rows) with original training observations.</li>
+</ul>
+<hr>
+</div>
+
+
+                                                                <div id="release-362" class="section level2">
+<h2 class="hasAnchor">
+<a href="#release-362" class="anchor"></a>RELEASE 3.6.2</h2>
+<h3>New features</h3>
+<ul>
+<li><code>impute.learn()</code> now supports training-time storage of OOD calibration objects through <code>save.ood = TRUE</code> (default), allowing deployment pipelines to return row-level anomaly summaries in addition to imputed values.</li>
+<li><code>impute.learn()</code> now accepts optional OOD <code>weight</code> values at fit time. These can be supplied as named target weights, are stored in the manifest, and are reused automatically by <code>impute.ood()</code> when score-time weights are not supplied.</li>
+<li>OOD scoring now returns both a row-level <code>score</code> and a calibrated <code>score.percentile</code>, with optional target-level details when <code>return.details = TRUE</code>.</li>
+<li><code>impute.ood()</code> now supports generalized row aggregation through <code>aggregate</code> and <code>aggregate.args</code>, allowing users to experiment with row-level anomaly metrics beyond the default weighted mean. Initial options include weighted mean, weighted <code>L_p</code>, weighted <code>L_p</code> after a log-tail transform, top-<code>k</code>, and a bounded product metric on <code>1 - u_j</code>.</li>
+</ul>
+<h3>Improvements</h3>
+<ul>
+<li>OOD scoring is based on masked reconstruction of imputation targets, using training-time out-of-bag behavior to calibrate target-wise anomalies.</li>
+<li>Numeric targets are scored through reconstruction error, while factor targets use probability-based surprise when available, with fallback behavior for cases where probability output is unavailable.</li>
+<li>Unseen factor levels in <code>newdata</code> are now tracked row-wise and are assigned maximal row-level OOD scores so schema and category anomalies are easy to identify.</li>
+<li>Prediction-time imputation and OOD scoring now share the same harmonization, iterative sweep, and learner-loading pipeline, including <code>cache.learners</code> support and richer diagnostics.</li>
+<li>When a named OOD <code>weight</code> vector is supplied, weights are matched by target name; omitted targets receive weight <code>0</code>, and extra names are ignored.</li>
+<li>Row-level percentile calibration is now rebuilt from saved training target-wise OOD scores, so <code>score.percentile</code> remains available for arbitrary target subsets and test-time weight overrides rather than being limited to the original training-time weighting scheme.</li>
+<li>Row-level percentile calibration is now aligned to the active row aggregator, so alternate aggregators use their own training-time reference distribution rather than reusing the weighted-mean calibration.</li>
+<li>If training data are complete and <code>target.mode = "all"</code>, <code>impute.learn()</code> still fits deployable predictive-imputation learners so later score-time missingness and OOD scoring can be handled without retraining.</li>
+</ul>
+<h3>Bug fixes</h3>
+<ul>
+<li>Fixed <code>cache.learners</code> normalization in the OOD scoring path.</li>
+<li>Fixed row-level OOD calibration reuse after post-fit changes to saved OOD weights.</li>
+<li>Fixed percentile calibration when score-time weights differ from the original saved weighting scheme.</li>
+<li>Fixed handling of partial named weight vectors so omitted targets are no longer implicitly treated as weight <code>1</code>.</li>
+<li>Improved compatibility behavior for older fitted objects by preserving raw <code>score</code> output even when legacy objects do not contain enough saved OOD information to rebuild <code>score.percentile</code> under the new calibration logic.</li>
+</ul>
+<h3>Documentation</h3>
+<ul>
+<li>Expanded the <code>impute.learn</code> help topic to document <code>impute.ood()</code>, OOD score interpretation, saved weights, test-time overrides, and unseen-level diagnostics.</li>
+<li>Added examples illustrating deployment-oriented use with <code>target.mode = "all"</code>, weighted OOD scoring, and alternate row aggregators.</li>
+</ul>
+<hr>
+</div>
+
+
                                                                 <div id="release-361" class="section level2">
 <h2 class="hasAnchor">
 <a href="#release-361" class="anchor"></a>RELEASE 3.6.1</h2>
