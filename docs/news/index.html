@@ -89,7 +89,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Development version">3.7.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Development version">3.8.0</span>
       </span>
     </div>
 
@@ -201,6 +201,46 @@
       
     </div>
     
+                                                                <div id="release-380" class="section level2">
+<h2 class="hasAnchor">
+<a href="#release-380" class="anchor"></a>RELEASE 3.8.0</h2>
+<h3>Quantile regression</h3>
+<ul>
+<li>Renamed the default <code>quantreg()</code> method from <code>"local"</code> to <code>"exchangeable"</code>, retaining <code>"local"</code> as an alias. Exchangeable and forest-weighted quantiles and moments are now calculated directly from the saved residual distribution. They no longer depend on the <code>maxn</code> reporting grid, and quantiles can extend beyond the training-response range.</li>
+<li>Added <code>get.pinball.error()</code> for scoring selected probability levels, observations, and continuous outcomes without refitting. Added <code>quantreg.tau</code> controls for printed losses and optional plot annotations.</li>
+<li>Quantile plots now include an empirical training-response null CRPS curve by default, controlled by <code>crps.null</code>. Graphical arguments in <code>...</code> now customize the main panel; use the new <code>inset.args</code> argument for the CRPS inset. Improved subset handling and preservation of multipanel graphics layouts.</li>
+<li>Fixed prediction-time quantile probability alignment and default Greenwald&ndash;Khanna tolerances for singleton or repeated-singleton probability requests. Improved handling of selected multivariate responses, missing predictions, and singleton output dimensions.</li>
+</ul>
+<h3>Imputation and out-of-distribution scoring</h3>
+<ul>
+<li>Improved validation of imputation inputs and controls, support for tabular data containers and non-syntactic column names, and column alignment in blocked imputation.</li>
+<li>Integer restoration now rounds only generated imputations, preserving observed fractional values. Corrected detection of integer-supported variables and avoided integer conversion when it would lose information.</li>
+<li>Learned-imputer saving now stages and reads back learners before replacing an existing destination. Added path and learner-layout checks, protection against overwriting a full learner bank with a loaded subset, and recovery handling for failed replacements.</li>
+<li>Training now reports partially failed learner banks and stops when no target learner succeeds. Prediction preserves previous fills when an update fails and reports convergence and failed-update diagnostics. Added support for empty deployment tables and reporting of numeric conversion failures.</li>
+<li>Corrected OOD scoring of invalid class probabilities and discrepancies above the training reference. Improved numerical stability for extreme aggregation weights and powers.</li>
+</ul>
+<h3>Partial dependence and subsampling</h3>
+<ul>
+<li>Fixed partial-dependence extraction for multivariate and mixed outcomes, singleton dimensions, factor codes, and competing-risk event selection. <code>plot.variable()</code> now returns <code>partial.summary</code> with means, standard deviations, standard errors, and finite prediction counts. Standard errors consistently use the empirical spread and available row count.</li>
+<li>Improved graphical argument handling and cached partial-plot reuse, together with axis limits, labels, and horizontal layouts in <code>plot.subsample()</code>.</li>
+<li>Corrected nonparametric VIMP p-values to use the same centered subsampling distribution as confidence intervals. Subsampling and double-bootstrap summaries now align outcomes, predictors, and class/event columns by name and preserve unavailable statistics. Fixed performance-only double bootstrapping when the original forest already contains VIMP, and singleton-stratum sampling.</li>
+</ul>
+<h3>Survival and classification performance</h3>
+<ul>
+<li>Added a training-data Kaplan&ndash;Meier null Brier reference to <code>plotBrierAUC()</code>, enabled by default through <code>brier.null = TRUE</code>. The reference uses the same evaluation rows and censoring weights as the forest score.</li>
+<li>Added <code>threshold = "auto"</code> and <code>threshold = "bayes"</code> to <code>get.imbalanced.performance()</code>. Improved probability-column alignment, consistent exclusion of unavailable outcomes and predictions, and handling of zero-valued F-scores and threshold optimization.</li>
+<li>Corrected AUC and Brier handling when scores are unavailable, and preserved available multivariate errors when another response has no error output.</li>
+</ul>
+<h3>Compatibility and documentation</h3>
+<ul>
+<li>Quantile grow objects now store numerical training residuals as <code>residual</code> and <code>residual.oob</code>, also retained in the saved forest, with source metadata recorded separately. These replace the legacy <code>yvar.grow</code> and <code>res.grow</code> fields.</li>
+<li>Normalize data-frame subclasses before training and prediction. Removed the <code>lsos</code> export.</li>
+<li>Added dedicated help topics for classification performance, multivariate extraction, and fast save/load utilities. Expanded documentation for quantile regression, imputation, partial dependence, subsampling, and plotting.</li>
+</ul>
+<hr>
+</div>
+
+
                                                                 <div id="release-370" class="section level2">
 <h2 class="hasAnchor">
 <a href="#release-370" class="anchor"></a>RELEASE 3.7.0</h2>

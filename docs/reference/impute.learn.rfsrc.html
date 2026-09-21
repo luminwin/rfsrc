@@ -17,12 +17,13 @@ If the training data are complete and target.mode = "all",
   full-sweep learners are fit directly from the complete training data.
 If supervised.formula is supplied, the function also fits an
   internal supervised forest from the training data.  The supervised
-  forest plays no role in the training imputation but is used downstream
-  to create auxiliary variables which are appended as predictors which
-  can improve test-time imputation and OOD scoring. Users who want only
-  the basic unsupervised learned imputer and do not want test time
-  contamination from outcomes should leave supervised.formula
-  unspecified.'><meta property="og:image" content="https://www.randomforestsrc.org/logo.svg"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
+  forest is fit after training imputation and provides auxiliary
+  predictors for test-time imputation and OOD scoring. The auxiliary
+  predictors use supervised information learned from the training
+  outcomes. Supervised outcomes supplied with new data are dropped and
+  are not used at deployment time. Leave supervised.formula
+  unspecified to use the learned imputer without these auxiliary
+  predictors.'><meta property="og:image" content="https://www.randomforestsrc.org/logo.svg"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-WZWXVK817Z"></script><script>
@@ -46,7 +47,7 @@ If supervised.formula is supplied, the function also fits an
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.7.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.8.0</span>
       </span>
     </div>
 
@@ -181,12 +182,13 @@ If supervised.formula is supplied, the function also fits an
   full-sweep learners are fit directly from the complete training data.</p>
 <p>If <code>supervised.formula</code> is supplied, the function also fits an
   internal supervised forest from the training data.  The supervised
-  forest plays no role in the training imputation but is used downstream
-  to create auxiliary variables which are appended as predictors which
-  can improve test-time imputation and OOD scoring. Users who want only
-  the basic unsupervised learned imputer and do not want test time
-  contamination from outcomes should leave <code>supervised.formula</code>
-  unspecified.</p>
+  forest is fit after training imputation and provides auxiliary
+  predictors for test-time imputation and OOD scoring. The auxiliary
+  predictors use supervised information learned from the training
+  outcomes. Supervised outcomes supplied with new data are dropped and
+  are not used at deployment time. Leave <code>supervised.formula</code>
+  unspecified to use the learned imputer without these auxiliary
+  predictors.</p>
     </div>
 
     <div id="ref-usage">
@@ -258,7 +260,12 @@ If supervised.formula is supplied, the function also fits an
 
 
   <dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>Training data. Variables that are not real-valued are
+<dd><p>Training data, converted to a plain data frame before
+    processing. Matrices, tibbles, and <code>data.table</code> objects can be
+    supplied. Column names must be unique and nonempty, each column
+    must be a vector, and numeric values must be finite or missing.
+    Bare vectors and nested matrix or list columns are not supported.
+    Variables that are not real-valued are
     coerced to factors before fitting when possible; otherwise fitting
     stops with an error. Rows and columns that are entirely missing are
     dropped before training begins. If <code>supervised.formula</code> is
@@ -273,21 +280,32 @@ If supervised.formula is supplied, the function also fits an
 <dd><p>Arguments passed to
     <code>impute</code> for the initial training-data imputation. The
     argument <code>full.sweep</code> is controlled internally and should not
-    be supplied. The same <code>verbose</code>, <code>max.predict.iter</code>,
+    be supplied. <code>fast</code> is also forwarded to the saved target
+    learners and, unless overridden by <code>supervised.args</code>, to the
+    supervised forest. <code>verbose</code> controls progress throughout
+    training, prediction, and scoring. The same <code>verbose</code>, <code>max.predict.iter</code>,
     <code>eps</code>, and <code>cache.learners</code> controls are also used by
-    <code>predict.impute.learn</code> and <code>impute.ood</code>.</p></dd>
+    <code>predict.impute.learn</code> and <code>impute.ood</code>.
+    Iteration and forest-size controls must be scalar integers in their
+    permitted ranges; <code>max.iter</code> must be at least one.</p></dd>
 
 
   <dt id="arg-mf-q">mf.q<a class="anchor" aria-label="anchor" href="#arg-mf-q"></a></dt>
-<dd><p>Controls the imputation engine used by <code>impute</code>. If
-    <code>mf.q = 1</code>, training uses standard <code>missForest</code>. If
-    <code>mf.q &gt; 1</code>, training uses the multivariate <code>missForest</code>
-    generalization. If <code>mf.q</code> is omitted, the training imputation
-    follows the default behavior of <code>impute</code>.</p></dd>
+<dd><p>Controls the imputation engine used by <code>impute</code>.
+    With <code>mf.q = 1</code> and <code>always.use = NULL</code>, targets are
+    updated one at a time using <code>missForest</code>. Other positive
+    settings use the multivariate <code>missForest</code> generalization;
+    a fraction below one controls the proportion of missing-data
+    variables grouped as responses, and a value above one specifies
+    their requested group size. A non-<code>NULL</code> <code>always.use</code>
+    selects the multivariate branch, including an empty vector or a
+    vector with no matching column names. If <code>mf.q</code> is omitted,
+    training uses on-the-fly imputation. The selected method is recorded
+    in <code>manifest$train.imputation</code>.</p></dd>
 
 
   <dt id="arg-eps">eps<a class="anchor" aria-label="anchor" href="#arg-eps"></a></dt>
-<dd><p>Convergence threshold. In <code>impute.learn</code> this
+<dd><p>Finite nonnegative convergence threshold. In <code>impute.learn</code> this
     controls the initial training-data imputation. In
     <code>predict.impute.learn</code> and <code>impute.ood</code> it controls early
     stopping for the prediction-time sweep.</p></dd>
@@ -307,8 +325,15 @@ If supervised.formula is supplied, the function also fits an
     <code>impute.learn</code>. The supervised forest is fit internally after
     the raw predictor block has been completed. Its training out-of-bag
     <code>predicted</code> values and test-time <code>predicted</code> values are
-    appended internally as auxiliary predictors.  These auxiliary
-    predictors are internal and are not expected in <code>newdata</code>.</p></dd>
+    appended internally as auxiliary predictors. Training auxiliary
+    values use out-of-bag predictions when available, with ordinary
+    forest predictions and training means used as fallbacks. At
+    deployment, auxiliary values are computed once from the initialized
+    raw predictors and held fixed during the imputation passes.
+    Predictors must be raw column names; non-syntactic names can be
+    enclosed in backticks. Interactions and transformations are not
+    supported. These auxiliary predictors are internal and are not expected in
+    <code>newdata</code>.</p></dd>
 
 
   <dt id="arg-supervised-args">supervised.args<a class="anchor" aria-label="anchor" href="#arg-supervised-args"></a></dt>
@@ -322,13 +347,16 @@ If supervised.formula is supplied, the function also fits an
 
 
   <dt id="arg-full-sweep-options">full.sweep.options<a class="anchor" aria-label="anchor" href="#arg-full-sweep-options"></a></dt>
-<dd><p>A <code>list</code> of options used when fitting
-    the full sweep after the training data have been imputed.
-    Recognized entries include <code>ntree</code>, <code>nodesize</code>,
+<dd><p>A named <code>list</code> of options used when fitting
+    saved target learners after initial training-data imputation.
+    Defaults are <code>ntree = 100</code>, <code>nodesize = NULL</code>, and
+    <code>nsplit = 10</code>, independently of the corresponding settings
+    used for initial imputation. Recognized entries include <code>ntree</code>, <code>nodesize</code>,
     <code>nsplit</code>, <code>mtry</code>, <code>splitrule</code>, <code>bootstrap</code>,
     <code>sampsize</code>, <code>samptype</code>, <code>perf.type</code>, <code>rfq</code>,
     <code>save.memory</code>, <code>importance</code>, and <code>proximity</code>.
-    Unknown entries are ignored with a warning.</p></dd>
+    Unknown entries are ignored with a warning. Duplicate names produce
+    a warning, and the last entry for each name is used.</p></dd>
 
 
   <dt id="arg-target-mode">target.mode<a class="anchor" aria-label="anchor" href="#arg-target-mode"></a></dt>
@@ -374,7 +402,10 @@ If supervised.formula is supplied, the function also fits an
 <dd><p>Names used when writing saved
     full-sweep learners to disk. If <code>supervised.formula</code> is
     supplied, the internal supervised forest is saved under the same
-    learner root.</p></dd>
+    learner root. <code>learner.root</code> must be a relative directory path
+    within the imputer directory. <code>learner.prefix</code> must be a single
+    file-name component. Absolute paths and parent-directory components
+    are not allowed.</p></dd>
 
 
   <dt id="arg-out-dir">out.dir<a class="anchor" aria-label="anchor" href="#arg-out-dir"></a></dt>
@@ -387,8 +418,10 @@ If supervised.formula is supplied, the function also fits an
 
 
   <dt id="arg-wipe">wipe<a class="anchor" aria-label="anchor" href="#arg-wipe"></a></dt>
-<dd><p>If <code>TRUE</code>, removes an existing output directory
-    before writing a new one.</p></dd>
+<dd><p>If <code>TRUE</code>, replaces an existing output directory
+    after the new imputer has been written and verified. If <code>FALSE</code>,
+    unrelated existing files are retained. Saving uses a temporary
+    bundle and requires additional disk space.</p></dd>
 
 
   <dt id="arg-keep-models">keep.models<a class="anchor" aria-label="anchor" href="#arg-keep-models"></a></dt>
@@ -429,9 +462,14 @@ If supervised.formula is supplied, the function also fits an
 
 
   <dt id="arg-path">path<a class="anchor" aria-label="anchor" href="#arg-path"></a></dt>
-<dd><p>Directory containing a saved imputer. Save and load
-    operations require the <span class="pkg">fst</span> package because learners are read
-    and written with <code>fast.save</code> and <code>fast.load</code>.</p></dd>
+<dd><p>Directory containing a saved imputer. Use a dedicated
+    directory rather than a filesystem root, home directory, working
+    directory, or an ancestor of these. A complete bank can be saved
+    back to its source path. Otherwise, source and destination directories
+    must not contain one another. An object loaded with a target subset
+    must be saved to a different directory. Save and load operations
+    require the <span class="pkg">fst</span> package because learners are read and written
+    with <code>fast.save</code> and <code>fast.load</code>.</p></dd>
 
 
   <dt id="arg-targets">targets<a class="anchor" aria-label="anchor" href="#arg-targets"></a></dt>
@@ -439,7 +477,10 @@ If supervised.formula is supplied, the function also fits an
     or score. Unknown names are ignored with a warning. For
     <code>impute.ood</code>, row-level percentile calibration is rebuilt for
     the requested target subset from the saved target-wise training OOD
-    scores whenever those scores are available in the manifest.</p></dd>
+    scores whenever those scores are available in the manifest.
+    A load-time subset limits which learners are available for predictor
+    completion. It can therefore differ from scoring a subset of a fully
+    loaded bank when other predictors are missing.</p></dd>
 
 
   <dt id="arg-lazy">lazy<a class="anchor" aria-label="anchor" href="#arg-lazy"></a></dt>
@@ -450,8 +491,15 @@ If supervised.formula is supplied, the function also fits an
 
 
   <dt id="arg-newdata">newdata<a class="anchor" aria-label="anchor" href="#arg-newdata"></a></dt>
-<dd><p>New data to be imputed or scored. Missing columns are
-    added and extra columns are dropped to match the training schema.
+<dd><p>New data to be imputed or scored, converted to a
+    plain data frame before processing. The column-name and vector-column
+    requirements for <code>data</code> also apply. Missing columns are added
+    and extra columns are dropped to match the training schema. A zero-row
+    table returns correctly typed empty output without calling forests.
+    Retained numeric values must be finite or missing. Nonmissing values
+    that cannot be converted to a required numeric type become missing
+    with a warning; their row indices are recorded in
+    <code>conversion.issues</code>.
     Unseen factor levels are converted to <code>NA</code> for harmonization,
     but they are also tracked row-wise. In supervised mode,
     <code>newdata</code> should contain only the raw predictor columns learned
@@ -472,16 +520,25 @@ If supervised.formula is supplied, the function also fits an
   <dt id="arg-max-predict-iter">max.predict.iter<a class="anchor" aria-label="anchor" href="#arg-max-predict-iter"></a></dt>
 <dd><p>Maximum number of full-sweep passes applied to
     <code>newdata</code> before the saved learner bank is used for OOD
-    reconstruction or returned prediction-time imputations.</p></dd>
+    reconstruction or returned prediction-time imputations. Must be a
+    nonnegative integer. Zero performs initialization without iterative
+    target updates; OOD reconstruction is still performed.</p></dd>
 
 
   <dt id="arg-restore-integer">restore.integer<a class="anchor" aria-label="anchor" href="#arg-restore-integer"></a></dt>
-<dd><p>If <code>TRUE</code>, integer-supported variables
-    in the returned data are restored to the integer grid. This includes
-    columns stored as R integers and numeric columns whose observed
-    finite training values were all integer-valued. Numeric columns
-    remain numeric; returned values are rounded to integer support.
-    Columns stored as R integers are returned as integer vectors.
+<dd><p>If <code>TRUE</code>, generated imputations in
+    integer-supported variables are rounded to the integer grid. This
+    includes columns stored as R integers and numeric columns whose
+    observed finite training values were all integer-valued. Observed
+    numeric values in <code>newdata</code> are preserved, including fractional
+    values, both as predictors during imputation and in the returned data.
+    Restoration applies to initialization values and model-based updates.
+    Numeric training columns retain numeric storage. Columns stored as
+    R integers during training are returned as integer vectors only when
+    every nonmissing completed value is exactly integral and within R's
+    integer range; otherwise numeric storage preserves observed fractions
+    and out-of-range values. Set to <code>FALSE</code> to retain unrounded
+    generated numeric values.
     Factor columns are always conformed back to the training schema.
     The package operates on real-valued and factor variables;
     inputs that are not real-valued are coerced to factors during
@@ -517,13 +574,14 @@ If supervised.formula is supplied, the function also fits an
 <dd><p>Row-level aggregation metric used by
     <code>impute.ood</code> to combine calibrated target-wise OOD scores. The
     default <code>"bounded.product"</code> applies a weighted product of
-    the form \(1-\prod_j (1-u_j+\varepsilon)^{\tilde w_j}\) where
-    \(u_j\) are row level calibrated scores for target feature
-    \(j\). <code>"weighted.mean"</code> is the weighted
+    the form \(1-\prod_j \max(1-u_j,\varepsilon)^{\tilde w_j}\),
+    where \(u_j\) is the calibrated score for target \(j\) and
+    \(\tilde w_j\) denotes weights normalized over the positively
+    weighted, scoreable targets in the row. <code>"weighted.mean"</code> is the weighted
     average. <code>"weighted.lp"</code> applies a weighted Minkowski \(L_p\)
     aggregation to the calibrated target scores.
     <code>"weighted.lp.log"</code> first applies the tail-stretching transform
-    \(-\log(1-u_j+\varepsilon)\) to each calibrated target score
+    \(-\log\{\max(1-u_j,\varepsilon)\}\) to each calibrated target score
     \(u_j\) and then applies the weighted \(L_p\)
     aggregation. <code>"top.k"</code> averages only the \(k\) largest
     scoreable target scores among the positively weighted targets. When
@@ -533,13 +591,13 @@ If supervised.formula is supplied, the function also fits an
 
 
   <dt id="arg-aggregate-args">aggregate.args<a class="anchor" aria-label="anchor" href="#arg-aggregate-args"></a></dt>
-<dd><p>Optional list of tuning arguments for
+<dd><p>Optional named list of tuning arguments for
     <code>aggregate</code>. Recognized entries are <code>p</code> for
     <code>"weighted.lp"</code> and <code>"weighted.lp.log"</code>, <code>k</code>
     (or <code>top.k</code>) for <code>"top.k"</code>, and <code>eps</code> for
     <code>"weighted.lp.log"</code> and <code>"bounded.product"</code>. The
     default values are <code>p = 2</code>, <code>k = 1</code>, and
-    <code>eps = 1e-12</code>. Unknown entries are ignored with a warning.</p></dd>
+    <code>eps = 1e-12</code>.</p></dd>
 
 
   <dt id="arg-return-details">return.details<a class="anchor" aria-label="anchor" href="#arg-return-details"></a></dt>
@@ -568,17 +626,20 @@ If supervised.formula is supplied, the function also fits an
 <p>If the resulting training data contain missing values, the first stage
   uses <code>impute</code> as the imputation engine to complete the training
   data.  Options are specified exactly as in <code>impute</code>.  In
-  particular, <code>mf.q = 1</code> gives standard <code>missForest</code>,
-  <code>mf.q &gt; 1</code> gives the multivariate <code>missForest</code>
-  generalization, and if <code>mf.q</code> is omitted, on the fly imputation
+  particular, <code>mf.q = 1</code> with <code>always.use = NULL</code>
+  updates one target at a time, other positive settings give the
+  multivariate <code>missForest</code> generalization, and if <code>mf.q</code>
+  is omitted, on the fly imputation
   is used if <code>formula</code> is specified, otherwise default unsupervised
   imputation is used. If the training data are already complete and
   <code>target.mode = "all"</code>, this initial imputation step is skipped.</p>
 <p>In the second stage, a full forest sweep is fit on the completed
   training data. For each target selected by <code>target.mode</code>, rows
   where that target was observed are used to fit a forest with that
-  target on the left-hand side and the selected deployment predictors on
-  the right-hand side are specified by <code>deployment.xvars</code>.</p>
+  target on the left-hand side and the predictors selected by
+  <code>deployment.xvars</code> on the right-hand side. These saved forests
+  all use the same completed training table; fitting the learner bank
+  does not further update that table.</p>
 <p>By default, <code>deployment.xvars = NULL</code> allows every non-target
   column to be used as a predictor. This is convenient, but it can also
   introduce leakage if the training data include outcomes, future-only
@@ -607,17 +668,30 @@ If supervised.formula is supplied, the function also fits an
   load operations. The explicit save method can write learners either
   from memory or by reloading them from an attached saved path. If
   <code>supervised.formula</code> is used, the internal supervised forest is
-  saved alongside the target-wise learner bank.</p>
+  saved alongside the target-wise learner bank. Both training-time and
+  explicit saving write and read back the new learners before replacing
+  an existing destination. A failed staging operation leaves the previous
+  saved imputer unchanged. If replacement fails, restoration of the
+  previous directory is attempted; an unrecovered backup path is reported.</p>
+<p>Training stops if every requested target learner fails. A partial bank
+  is returned with one summary warning when some learners succeed.
+  <code>manifest$learners</code> records each target's status and error,
+  and printing the imputer reports successful and unavailable learners.</p>
 <p>Prediction starts by matching <code>newdata</code> to the training schema,
   filling missing values with training means or modes, and then applying
   one or more full-sweep passes. Only the targets selected by
   <code>target.mode</code> are updated by saved learners. In supervised mode,
   this same test-time preparation first initializes the raw predictor
   table, then computes the internal auxiliary variables from the saved
-  supervised forest, and then runs the forest test-time sweep.
+  supervised forest, and then runs the forest test-time sweep. The
+  auxiliary predictors remain fixed throughout these passes.
   Supervised response columns, if present in <code>newdata</code> but not in
   the learned raw predictor block, are dropped before this step and play
-  no role at prediction or scoring time.</p>
+  no role at prediction or scoring time. A target update requires one
+  valid prediction per requested row. Failed or unavailable predictions
+  retain the preceding imputed values and are recorded in
+  <code>target.issues</code>. A pass with no valid model updates is reported
+  separately from convergence.</p>
 <p>If <code>target.mode = "missing.only"</code>, a variable that was complete
   in training but missing in new data is initialized from the training
   fit but does not receive a model-based update. Use
@@ -630,7 +704,10 @@ If supervised.formula is supplied, the function also fits an
   fitted learner is compared with the observed training value to form a
   target-wise reconstruction discrepancy. Continuous and integer targets
   use absolute reconstruction error. Factor targets use negative log
-  predictive probabilities.</p>
+  predictive probabilities. Unavailable or invalid probabilities remain
+  missing discrepancies; a genuine zero probability is scored using
+  the probability floor. Each learner entry records <code>n.oob.finite</code>
+  and <code>n.oob.nonfinite</code> when OOD reference construction is enabled.</p>
 <p>The row-level OOD calibration stored at fit time is built by
   aggregating the target-wise training scores with a weighted mean using
   <code>weight</code>. If <code>weight</code> is omitted at fit time, all saved OOD
@@ -646,7 +723,11 @@ If supervised.formula is supplied, the function also fits an
   <code>newdata</code>. If a scored raw target is missing in a row, that
   target does not contribute to that row's OOD score. Raw target
   discrepancies are converted to target-wise OOD scores using the saved
-  target-specific training references. In supervised mode, auxiliary
+  target-specific training references. Discrepancies strictly above a
+  nonempty reference's maximum, including positive infinity, receive its
+  largest stored probability. The existing convention for ties is retained,
+  including equality at the largest quantile. Missing discrepancies and
+  empty references remain unscored. In supervised mode, auxiliary
   variables participate as predictors in the reconstruction, but the
   supervised response itself is not used at deployment time.</p>
 <p>The row-level OOD score combines those calibrated target-wise scores
@@ -690,20 +771,30 @@ If supervised.formula is supplied, the function also fits an
   auxiliary <code>predicted.*</code> variable names.</p>
 <p><code>load.impute.learn</code> returns an object of the same class.</p>
 <p><code>predict.impute.learn</code> returns a data frame with imputed values
-  overlaid on the raw predictor table. An attribute named
+  overlaid on the raw predictor table, retaining its row names. An attribute named
   <code>"impute.learn.info"</code> contains prediction-time diagnostics such
   as the number of sweep passes, pass-difference history, caching mode,
   disk-load counts, schema harmonization details, dropped supervised
   response columns when present, row-wise unseen-factor flags,
   supervised-auxiliary diagnostics when present, and any targets
-  skipped because a learner was unavailable or a prediction failed.</p>
+  skipped because a learner was unavailable or a prediction failed.
+  <code>pass.updated.cells</code> and <code>pass.failed.cells</code> count accepted
+  updates and failed updates in each pass; <code>converged</code> and
+  <code>stopping.reason</code> distinguish convergence from initialization-only,
+  empty-input, iteration-limit, and failed-update stopping.
+  <code>conversion.issues</code> records the row indices of nonmissing values
+  that became missing during numeric conversion. In both prediction and
+  OOD diagnostics, <code>n.disk.loads</code> counts successful target-learner
+  load operations, including repeated loads with <code>cache.learners = "none"</code>.
+  <code>disk.load.targets</code> lists the distinct targets loaded. Supervised
+  forest loading is reported separately in <code>info$supervised</code> and is
+  not included in the target-learner count.</p>
 <p><code>impute.ood</code> returns an object of class
   <code>c("impute.ood.rfsrc", "impute.ood")</code>. It is a list with the
   following components:</p><ul><li><p><code>score</code>: the row-level aggregate of calibrated
       target-wise OOD scores under the requested <code>aggregate</code> and
       <code>weight</code>. Larger values indicate greater
-      out-of-distribution behavior. For <code>aggregate = "weighted.lp.log"</code>,
-      this raw score is on a positive unbounded scale.</p></li>
+      out-of-distribution behavior.</p></li>
 <li><p><code>score.percentile</code>: the percentile of <code>score</code>
       relative to a row-level training reference rebuilt from the saved
       target-wise training OOD scores for the requested targets,
@@ -717,6 +808,17 @@ If supervised.formula is supplied, the function also fits an
 <li><p><code>target.delta</code>: optional matrix of raw target-wise
       reconstruction discrepancies, returned when
       <code>return.details = TRUE</code>.</p></li>
+<li><p><code>target.reconstruction</code>: when
+      <code>return.reconstruction = TRUE</code>, a data frame containing
+      the saved learners' predictions for the scored targets.</p></li>
+<li><p><code>reconstructed.data</code>: when
+      <code>return.reconstruction = TRUE</code>, the harmonized raw table
+      with scored targets replaced by their reconstructions. Other
+      columns retain their harmonized values before schema restoration.</p></li>
+<li><p><code>completed.data</code>: when both <code>return.details</code>
+      and <code>return.reconstruction</code> are <code>TRUE</code>, the raw
+      predictor table after prediction-time imputation. This is distinct
+      from the target reconstruction table.</p></li>
 <li><p><code>info</code>: a list of diagnostics including harmonization
       details, dropped supervised response columns when present,
       row-wise unseen-factor flags, learner-loading information,

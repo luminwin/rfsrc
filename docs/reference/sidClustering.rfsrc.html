@@ -25,7 +25,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.7.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.8.0</span>
       </span>
     </div>
 
@@ -159,7 +159,9 @@
 <span>  x.no.sid <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  use.sid.for.x <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  x.only <span class="op">=</span> <span class="cn">NULL</span>, y.only <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  dist.sharpen <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span>  dist.sharpen <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">sid.perf.metric</span><span class="op">(</span><span class="va">truth</span>, <span class="va">cluster</span>, mode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"entropy"</span>, <span class="st">"gini"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -215,6 +217,24 @@
 <dd><p>Logical. If <code>TRUE</code> (default), applies Euclidean distance to the forest distance matrix to improve clustering ("distance sharpening"). The resulting distance matrix will not be bounded between 0 and 1. Turning this off speeds up computation but may reduce clustering quality. Applies only when <code>method = "sid"</code> or <code>"unsupv"</code>.</p></dd>
 
 
+  <dt id="arg-truth">truth<a class="anchor" aria-label="anchor" href="#arg-truth"></a></dt>
+<dd><p>Known class labels used to evaluate a clustering. Supply a
+    complete vector with unused factor levels removed.</p></dd>
+
+
+  <dt id="arg-cluster">cluster<a class="anchor" aria-label="anchor" href="#arg-cluster"></a></dt>
+<dd><p>Cluster labels for the same observations, in the same
+    order as <code>truth</code>. Supply one complete vector of the same length,
+    with unused factor levels removed. If several clustering solutions
+    were requested, select one column of <code>clustering</code>.</p></dd>
+
+
+  <dt id="arg-mode">mode<a class="anchor" aria-label="anchor" href="#arg-mode"></a></dt>
+<dd><p>Measure used by <code>sid.perf.metric</code>: cluster-size-weighted
+    entropy (the default) or Gini impurity. Smaller values indicate purer
+    clusters.</p></dd>
+
+
   <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Additional arguments passed to <code><a href="rfsrc.html">rfsrc</a></code> to control forest construction.</p></dd>
 
@@ -242,13 +262,93 @@ Ishwaran (2021) for further details.</p>
 <li><p><code>mode 2</code>: draws uniformly between the observed minimum and maximum of each feature.</p></li>
 </ul><p>This method is invoked by setting <code>method = "sh"</code>, <code>"sh1"</code>, or <code>"sh2"</code>. Mantero and Ishwaran (2021) found that while this approach works in certain settings, it can fail when clusters exist in lower-dimensional subspaces (e.g., when defined by interactions or involving both factors and continuous variables). Among the two modes, mode 1 is generally more robust.</p>
 <p>The third method, <code>method = "unsupv"</code>, trains a multivariate forest using the data both as predictors and as responses. The multivariate splitting rule is applied at each node. This method is fast and simple but may be less accurate compared to SID clustering.</p>
-<p>The package includes a helper function <code>sid.perf.metric</code> for evaluating clustering performance using a normalized score; smaller values indicate better performance. See Mantero and Ishwaran (2021) for theoretical background and empirical benchmarking.</p>
+<div class="section">
+<h3 id="evaluating-a-clustering">Evaluating a clustering<a class="anchor" aria-label="anchor" href="#evaluating-a-clustering"></a></h3>
+<p><code>sid.perf.metric</code> measures how well a clustering separates known
+  classes. It evaluates the mixture of true classes within each cluster:
+  a cluster containing only one true class has zero impurity, while a
+  cluster containing several classes has positive impurity. The true
+  labels are supplied for evaluation after clustering. The helper can
+  evaluate SID or any other clustering method.</p>
+<p>Supply <code>truth</code> and <code>cluster</code> for the same observations in the
+  same order. Cluster labels are arbitrary identifiers; they need not
+  match the names or numerical values in <code>truth</code>. The number of
+  clusters may differ from the number of true classes. For a matrix of
+  clustering solutions, evaluate one column at a time. Use complete
+  label vectors with unused factor levels removed.</p>
+<p>Let \(K\) be the number of observed true classes and \(J\) the
+  number of nonempty clusters. In the cross-tabulation
+  <code>table(truth, cluster)</code>, let \(n_{kj}\) count observations from
+  true class \(k\) assigned to cluster \(j\). Write
+  \(n_j=\sum_{k=1}^{K}n_{kj}\) for the size of cluster \(j\),
+  \(n=\sum_{j=1}^{J}n_j\) for the total sample size, and
+  \(p_{kj}=n_{kj}/n_j\) for the within-cluster class proportions.</p>
+<p>For <code>mode = "entropy"</code> (the default), the impurity of cluster
+  \(j\) is
+  $$H_j=-\sum_{k=1}^{K}p_{kj}\log_2(p_{kj}),$$
+  with zero-probability terms contributing zero. Entropy measures the
+  remaining uncertainty about the true class within that cluster, in
+  bits. For <code>mode = "gini"</code>, the impurity is
+  $$G_j=1-\sum_{k=1}^{K}p_{kj}^{2}.$$
+  This is the probability that two independent draws from the cluster's
+  empirical class distribution have different labels.</p>
+<p>The returned <code>result</code> is the cluster-size-weighted average,
+  $$H=\sum_{j=1}^{J}\frac{n_j}{n}H_j
+    \quad\mbox{or}\quad
+    G=\sum_{j=1}^{J}\frac{n_j}{n}G_j.$$
+  Weighting by \(n_j/n\) makes a cluster's contribution proportional
+  to the number of observations it represents, rather than giving a
+  small cluster the same weight as a large one. The weighted entropy
+  is the empirical conditional entropy of the true class given cluster
+  membership. Smaller values indicate purer clusters in either mode.</p>
+</div>
+
+<div class="section">
+<h3 id="normalizing-and-interpreting-the-clustering-score">Normalizing and interpreting the clustering score<a class="anchor" aria-label="anchor" href="#normalizing-and-interpreting-the-clustering-score"></a></h3>
+<p>The maximum impurity of a cluster with \(K\) possible true classes
+  occurs when those classes are equally represented. The maxima are
+  \(\log_2(K)\) for entropy and \(1-1/K\) for Gini. Accordingly,
+  <code>normalized_measure</code> is
+  $$H_{\mathrm{norm}}=\frac{H}{\log_2(K)}
+    \quad\mbox{or}\quad
+    G_{\mathrm{norm}}=\frac{G}{1-1/K}.$$
+  For \(K&gt;1\), the normalized score lies between zero and one. Zero
+  means every cluster contains only one true class; one means every
+  cluster contains the same proportion \(1/K\) of each true class.
+  The score is a fraction of the uniform-class maximum impurity, rather
+  than a misclassification rate. With only one true class, the raw
+  score is zero and the normalized score is undefined.</p>
+<p>For example, suppose there are ten observations from two true classes,
+  A and B. One cluster contains four A observations and is pure; a second
+  contains three A and three B observations and is evenly mixed. Their
+  weights are \(0.4\) and \(0.6\). The entropy impurities are zero
+  and one, giving <code>result = 0.6</code> and
+  <code>normalized_measure = 0.6</code>. The Gini impurities are zero and
+  \(0.5\), giving <code>result = 0.3</code> and
+  <code>normalized_measure = 0.6</code> after division by \(0.5\).</p>
+<p>The normalization uses the uniform-class maximum, not the impurity of
+  the observed marginal class proportions or an expected score under
+  random clustering. Consequently, when the true classes are imbalanced,
+  a clustering that reproduces the overall class proportions in every
+  cluster can provide no class separation and still have a normalized
+  score below one.</p>
+<p>These measures assess within-cluster purity. Dividing one true class
+  into several pure clusters still gives zero impurity, and assigning
+  each observation to its own cluster also gives zero. Thus a low score
+  does not by itself select an appropriate number of clusters or require
+  a one-to-one correspondence with the true classes. For method
+  comparisons, use the same observations and true labels, and compare
+  solutions with the same number of clusters when isolating differences
+  in class separation. See Mantero and Ishwaran (2021) for theoretical
+  background and empirical benchmarking.</p>
+</div>
+
     </div>
     <div id="value">
     <h2>Value</h2>
 
 
-<p>A list with the following components:</p>
+<p><code>sidClustering</code> returns a list with the following components:</p>
 <dl><dt>clustering</dt>
 <dd><p>A vector or matrix assigning each observation to a cluster. If multiple values of <code>k</code> were specified, this is a matrix with one column per clustering solution.</p></dd>
 
@@ -264,7 +364,23 @@ Ishwaran (2021) for further details.</p>
 <dt>sid</dt>
 <dd><p>The SID-transformed data used in the clustering (applies only to <code>method = "sid"</code>). Provided as a list with separate components for the staggered features and their interactions, corresponding to outcomes and predictors in the multivariate forest.</p></dd>
 
+
+</dl><div class="section">
+<h3 id="clustering-performance">Clustering performance<a class="anchor" aria-label="anchor" href="#clustering-performance"></a></h3>
+<p><code>sid.perf.metric</code> returns a list with three components:</p><dl><dt>result</dt>
+<dd><p>The cluster-size-weighted entropy or Gini impurity.</p></dd>
+
+    <dt>measure</dt>
+<dd><p>The selected mode, <code>"entropy"</code> or <code>"gini"</code>.</p></dd>
+
+    <dt>normalized_measure</dt>
+<dd><p>The weighted impurity divided by its maximum
+      for equally represented true classes, as described in Details.</p></dd>
+
+
 </dl></div>
+
+    </div>
     <div id="author">
     <h2>Author</h2>
     <p>Hemant Ishwaran and Udaya B. Kogalur</p>
@@ -319,17 +435,18 @@ Ishwaran (2021) for further details.</p>
 <span>  <span class="co">## default SID call </span></span>
 <span>  <span class="va">o2</span> <span class="op">&lt;-</span> <span class="fu">sidClustering</span><span class="op">(</span><span class="va">glass</span>, k <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">o2</span><span class="op">$</span><span class="va">cl</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="utilities_internal.html">sid.perf.metric</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">o2</span><span class="op">$</span><span class="va">cl</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">sid.perf.metric</span><span class="op">(</span><span class="va">y</span>, <span class="va">o2</span><span class="op">$</span><span class="va">cl</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">sid.perf.metric</span><span class="op">(</span><span class="va">y</span>, <span class="va">o2</span><span class="op">$</span><span class="va">clustering</span>, mode <span class="op">=</span> <span class="st">"gini"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span>  <span class="co">## compare with Shi-Horvath mode 1 </span></span>
 <span>  <span class="va">o2.sh</span> <span class="op">&lt;-</span> <span class="fu">sidClustering</span><span class="op">(</span><span class="va">glass</span>, method <span class="op">=</span> <span class="st">"sh1"</span>, k <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">o2.sh</span><span class="op">$</span><span class="va">cl</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="utilities_internal.html">sid.perf.metric</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">o2.sh</span><span class="op">$</span><span class="va">cl</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">sid.perf.metric</span><span class="op">(</span><span class="va">y</span>, <span class="va">o2.sh</span><span class="op">$</span><span class="va">cl</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span>  <span class="co">## plain-vanilla unsupervised analysis</span></span>
 <span>  <span class="va">o2.un</span> <span class="op">&lt;-</span> <span class="fu">sidClustering</span><span class="op">(</span><span class="va">glass</span>, method <span class="op">=</span> <span class="st">"unsupv"</span>, k <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">o2.un</span><span class="op">$</span><span class="va">cl</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="utilities_internal.html">sid.perf.metric</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">o2.un</span><span class="op">$</span><span class="va">cl</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">sid.perf.metric</span><span class="op">(</span><span class="va">y</span>, <span class="va">o2.un</span><span class="op">$</span><span class="va">cl</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="op">}</span></span>
 <span></span>
@@ -349,24 +466,24 @@ Ishwaran (2021) for further details.</p>
 <span>  <span class="co">## SID </span></span>
 <span>  <span class="va">o3</span> <span class="op">&lt;-</span> <span class="fu">sidClustering</span><span class="op">(</span><span class="va">vowel</span>, k <span class="op">=</span> <span class="fl">11</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">o3</span><span class="op">$</span><span class="va">cl</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="utilities_internal.html">sid.perf.metric</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">o3</span><span class="op">$</span><span class="va">cl</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">sid.perf.metric</span><span class="op">(</span><span class="va">y</span>, <span class="va">o3</span><span class="op">$</span><span class="va">cl</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span>  <span class="co">## compare to Shi-Horvath which performs poorly in</span></span>
 <span>  <span class="co">## mixed variable settings</span></span>
 <span>  <span class="va">o3.sh</span> <span class="op">&lt;-</span> <span class="fu">sidClustering</span><span class="op">(</span><span class="va">vowel</span>, method <span class="op">=</span> <span class="st">"sh1"</span>, k <span class="op">=</span> <span class="fl">11</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">o3.sh</span><span class="op">$</span><span class="va">cl</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="utilities_internal.html">sid.perf.metric</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">o3.sh</span><span class="op">$</span><span class="va">cl</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">sid.perf.metric</span><span class="op">(</span><span class="va">y</span>, <span class="va">o3.sh</span><span class="op">$</span><span class="va">cl</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span>  <span class="co">## Shi-Horvath improves with PAM clustering</span></span>
 <span>  <span class="co">## but still not as good as SID</span></span>
 <span>  <span class="va">o3.sh.pam</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/cluster/man/pam.html" class="external-link">pam</a></span><span class="op">(</span><span class="va">o3.sh</span><span class="op">$</span><span class="va">dist</span>, k <span class="op">=</span> <span class="fl">11</span><span class="op">)</span><span class="op">$</span><span class="va">clustering</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">o3.sh.pam</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="utilities_internal.html">sid.perf.metric</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">o3.sh.pam</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">sid.perf.metric</span><span class="op">(</span><span class="va">y</span>, <span class="va">o3.sh.pam</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span>  <span class="co">## plain-vanilla unsupervised analysis</span></span>
 <span>  <span class="va">o3.un</span> <span class="op">&lt;-</span> <span class="fu">sidClustering</span><span class="op">(</span><span class="va">vowel</span>, method <span class="op">=</span> <span class="st">"unsupv"</span>, k <span class="op">=</span> <span class="fl">11</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">o3.un</span><span class="op">$</span><span class="va">cl</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="utilities_internal.html">sid.perf.metric</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">o3.un</span><span class="op">$</span><span class="va">cl</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">sid.perf.metric</span><span class="op">(</span><span class="va">y</span>, <span class="va">o3.un</span><span class="op">$</span><span class="va">cl</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="op">}</span></span>
 <span></span>
@@ -390,17 +507,17 @@ Ishwaran (2021) for further details.</p>
 <span><span class="co">## SID</span></span>
 <span><span class="va">o4</span> <span class="op">&lt;-</span> <span class="fu">sidClustering</span><span class="op">(</span><span class="va">vclus</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span>, k <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">vclus</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, <span class="va">o4</span><span class="op">$</span><span class="va">cl</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="utilities_internal.html">sid.perf.metric</a></span><span class="op">(</span><span class="va">vclus</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, <span class="va">o4</span><span class="op">$</span><span class="va">cl</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">sid.perf.metric</span><span class="op">(</span><span class="va">vclus</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, <span class="va">o4</span><span class="op">$</span><span class="va">cl</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## Shi-Horvath</span></span>
 <span><span class="va">o4.sh</span> <span class="op">&lt;-</span> <span class="fu">sidClustering</span><span class="op">(</span><span class="va">vclus</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span>, method <span class="op">=</span> <span class="st">"sh1"</span>, k <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">vclus</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, <span class="va">o4.sh</span><span class="op">$</span><span class="va">cl</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="utilities_internal.html">sid.perf.metric</a></span><span class="op">(</span><span class="va">vclus</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, <span class="va">o4.sh</span><span class="op">$</span><span class="va">cl</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">sid.perf.metric</span><span class="op">(</span><span class="va">vclus</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, <span class="va">o4.sh</span><span class="op">$</span><span class="va">cl</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## plain-vanilla unsupervised analysis</span></span>
 <span><span class="va">o4.un</span> <span class="op">&lt;-</span> <span class="fu">sidClustering</span><span class="op">(</span><span class="va">vclus</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span>, method <span class="op">=</span> <span class="st">"unsupv"</span>, k <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">vclus</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, <span class="va">o4.un</span><span class="op">$</span><span class="va">cl</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="utilities_internal.html">sid.perf.metric</a></span><span class="op">(</span><span class="va">vclus</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, <span class="va">o4.un</span><span class="op">$</span><span class="va">cl</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">sid.perf.metric</span><span class="op">(</span><span class="va">vclus</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, <span class="va">o4.un</span><span class="op">$</span><span class="va">cl</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span></span>
 <span><span class="co">## ------------------------------------------------------------</span></span>
@@ -409,7 +526,7 @@ Ishwaran (2021) for further details.</p>
 <span></span>
 <span><span class="va">o5</span> <span class="op">&lt;-</span> <span class="fu">sidClustering</span><span class="op">(</span><span class="va">vclus</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span>, k <span class="op">=</span> <span class="fl">2</span>, fast <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">vclus</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, <span class="va">o5</span><span class="op">$</span><span class="va">cl</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="utilities_internal.html">sid.perf.metric</a></span><span class="op">(</span><span class="va">vclus</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, <span class="va">o5</span><span class="op">$</span><span class="va">cl</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">sid.perf.metric</span><span class="op">(</span><span class="va">vclus</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, <span class="va">o5</span><span class="op">$</span><span class="va">cl</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span></span>
 <span><span class="co"># }</span></span></code></pre></div>

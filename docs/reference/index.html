@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.7.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.8.0</span>
       </span>
     </div>
 
@@ -146,6 +146,14 @@
         </td>
         <td><p>Wisconsin Prognostic Breast Cancer Data</p></td>
       </tr><tr><td>
+          <p><code><a href="classification.performance.html">get.confusion()</a></code> <code><a href="classification.performance.html">get.misclass.error()</a></code> <code><a href="classification.performance.html">get.auc()</a></code> <code><a href="classification.performance.html">get.brier.error()</a></code> <code><a href="classification.performance.html">get.logloss()</a></code> <code><a href="classification.performance.html">get.pr.auc()</a></code> <code><a href="classification.performance.html">get.pr.curve()</a></code> <code><a href="classification.performance.html">get.bayes.rule()</a></code> </p>
+        </td>
+        <td><p>Classification Performance Metrics</p></td>
+      </tr><tr><td>
+          <p><code><a href="fast.saveload.html">fast.save()</a></code> <code><a href="fast.saveload.html">fast.load()</a></code> <code><a href="fast.saveload.html">fast.save.list()</a></code> <code><a href="fast.saveload.html">fast.load.list()</a></code> </p>
+        </td>
+        <td><p>Fast Saving and Loading Objects</p></td>
+      </tr><tr><td>
           <p><code><a href="follic.html">follic</a></code> </p>
         </td>
         <td><p>Follicular Cell Lymphoma</p></td>
@@ -166,9 +174,9 @@
         </td>
         <td><p>Ames Iowa Housing Data</p></td>
       </tr><tr><td>
-          <p><code><a href="imbalanced.rfsrc.html">imbalanced</a></code> </p>
+          <p><code><a href="imbalanced.rfsrc.html">imbalanced</a></code> <code><a href="imbalanced.rfsrc.html">get.imbalanced.performance()</a></code> <code><a href="imbalanced.rfsrc.html">get.imbalanced.optimize()</a></code> <code><a href="imbalanced.rfsrc.html">get.rfq.threshold()</a></code> <code><a href="imbalanced.rfsrc.html">print(<i>&lt;imbalanced.performance&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Imbalanced Two Class Problems</p></td>
+        <td><p>Random Forests for Imbalanced Two-Class Classification</p></td>
       </tr><tr><td>
           <p><code><a href="impute.learn.rfsrc.html">impute.learn.rfsrc()</a></code> <code><a href="impute.learn.rfsrc.html">save.impute.learn.rfsrc()</a></code> <code><a href="impute.learn.rfsrc.html">load.impute.learn.rfsrc()</a></code> <code><a href="impute.learn.rfsrc.html">predict(<i>&lt;impute.learn.rfsrc&gt;</i>)</a></code> <code><a href="impute.learn.rfsrc.html">impute.ood.rfsrc()</a></code> </p>
         </td>
@@ -182,13 +190,17 @@
         </td>
         <td><p>Acquire Maximal Subtree Information</p></td>
       </tr><tr><td>
+          <p><code><a href="multivariate.values.html">get.mv.predicted()</a></code> <code><a href="multivariate.values.html">get.mv.error()</a></code> <code><a href="multivariate.values.html">get.mv.error.block()</a></code> <code><a href="multivariate.values.html">get.mv.vimp()</a></code> <code><a href="multivariate.values.html">get.mv.cserror()</a></code> <code><a href="multivariate.values.html">get.mv.csvimp()</a></code> <code><a href="multivariate.values.html">get.mv.formula()</a></code> </p>
+        </td>
+        <td><p>Extracting Multivariate Values</p></td>
+      </tr><tr><td>
           <p><code><a href="nutrigenomic.html">nutrigenomic</a></code> </p>
         </td>
         <td><p>Nutrigenomic Study</p></td>
       </tr><tr><td>
-          <p><code><a href="partial.rfsrc.html">partial.rfsrc()</a></code> </p>
+          <p><code><a href="partial.rfsrc.html">partial.rfsrc()</a></code> <code><a href="partial.rfsrc.html">get.partial.plot.data()</a></code> </p>
         </td>
-        <td><p>Acquire Partial Effect of a Variable</p></td>
+        <td><p>Compute Partial Dependence Values</p></td>
       </tr><tr><td>
           <p><code><a href="pbc.html">pbc</a></code> </p>
         </td>
@@ -204,7 +216,7 @@
       </tr><tr><td>
           <p><code><a href="plot.quantreg.rfsrc.html">plot.quantreg</a></code> </p>
         </td>
-        <td><p>Plot Quantiles from Quantile Regression Forests</p></td>
+        <td><p>Plot Conditional Quantiles and CRPS Diagnostics</p></td>
       </tr><tr><td>
           <p><code><a href="plot.rfsrc.html">plot</a></code> </p>
         </td>
@@ -212,15 +224,15 @@
       </tr><tr><td>
           <p><code><a href="plot.subsample.rfsrc.html">plot.subsample</a></code> </p>
         </td>
-        <td><p>Plot Subsampled VIMP Confidence Intervals</p></td>
+        <td><p>Plot Subsampling Confidence Intervals for Variable Importance</p></td>
       </tr><tr><td>
-          <p><code><a href="plot.survival.rfsrc.html">plot.survival</a></code> <code><a href="plot.survival.rfsrc.html">get.brier.survival()</a></code> <code><a href="plot.survival.rfsrc.html">get.auct.survival()</a></code> <code><a href="plot.survival.rfsrc.html">plotBrierAUC()</a></code> </p>
+          <p><code><a href="plot.survival.rfsrc.html">plot.survival</a></code> <code><a href="plot.survival.rfsrc.html">get.brier.survival()</a></code> <code><a href="plot.survival.rfsrc.html">get.auct.survival()</a></code> <code><a href="plot.survival.rfsrc.html">plotBrierAUC()</a></code> <code><a href="plot.survival.rfsrc.html">get.cindex()</a></code> </p>
         </td>
         <td><p>Survival Prediction Performance and Diagnostic Plots</p></td>
       </tr><tr><td>
           <p><code><a href="plot.variable.rfsrc.html">plot.variable</a></code> </p>
         </td>
-        <td><p>Plot Marginal Effect of Variables</p></td>
+        <td><p>Plot Marginal and Partial Dependence of Predictors</p></td>
       </tr><tr><td>
           <p><code><a href="predict.rfsrc.html">predict</a></code> </p>
         </td>
@@ -230,7 +242,7 @@
         </td>
         <td><p>Print Summary Output of a RF-SRC Analysis</p></td>
       </tr><tr><td>
-          <p><code><a href="quantreg.rfsrc.html">quantreg</a></code> </p>
+          <p><code><a href="quantreg.rfsrc.html">quantreg</a></code> <code><a href="quantreg.rfsrc.html">extract.quantile()</a></code> <code><a href="quantreg.rfsrc.html">get.quantile()</a></code> <code><a href="quantreg.rfsrc.html">get.quantile.stat()</a></code> <code><a href="quantreg.rfsrc.html">get.quantile.crps()</a></code> <code><a href="quantreg.rfsrc.html">get.pinball.error()</a></code> </p>
         </td>
         <td><p>Quantile Regression Forests</p></td>
       </tr><tr><td>
@@ -254,13 +266,13 @@
         </td>
         <td><p>Show the NEWS file</p></td>
       </tr><tr><td>
-          <p><code><a href="sidClustering.rfsrc.html">sidClustering</a></code> </p>
+          <p><code><a href="sidClustering.rfsrc.html">sidClustering</a></code> <code><a href="sidClustering.rfsrc.html">sid.perf.metric()</a></code> </p>
         </td>
         <td><p>sidClustering using SID (Staggered Interaction Data) for Unsupervised Clustering</p></td>
       </tr><tr><td>
-          <p><code><a href="subsample.rfsrc.html">subsample</a></code> </p>
+          <p><code><a href="subsample.rfsrc.html">subsample</a></code> <code><a href="subsample.rfsrc.html">extract.subsample()</a></code> <code><a href="subsample.rfsrc.html">extract.bootsample()</a></code> <code><a href="subsample.rfsrc.html">print(<i>&lt;subsample&gt;</i>)</a></code> <code><a href="subsample.rfsrc.html">print(<i>&lt;bootsample&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Subsample Forests for VIMP Confidence Intervals</p></td>
+        <td><p>Subsampling Inference for Variable Importance and Prediction Error</p></td>
       </tr><tr><td>
           <p><code><a href="tune.rfsrc.html">tune</a></code> <code><a href="tune.rfsrc.html">tune.nodesize</a></code> </p>
         </td>

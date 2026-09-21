@@ -24,7 +24,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.7.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.8.0</span>
       </span>
     </div>
 
@@ -147,7 +147,8 @@
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for class 'rfsrc'</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span>, outcome.target <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span>, outcome.target <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span>,</span>
+<span>                          quantreg.tau <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -165,6 +166,16 @@
 
   <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Further arguments passed to or from other methods.</p></dd>
+
+  <dt id="arg-quantreg-tau">quantreg.tau<a class="anchor" aria-label="anchor" href="#arg-quantreg-tau"></a></dt>
+<dd><p>Optional numeric vector of finite levels strictly
+    between zero and one for the printed pinball losses of a quantile
+    regression object. Supply this argument by name. When <code>NULL</code>,
+    uses the session option <code>quantreg.tau</code>, then the former
+    <code>rfsrc.pinball.taus</code> option for compatibility, then
+    <code>c(0.1, 0.5, 0.9)</code>. Explicit levels apply to this print call
+    only and do not change the fitted object or session options.
+    See <code><a href="quantreg.rfsrc.html">quantreg</a></code> for details.</p></dd>
 
 </dl></div>
     <div id="author">

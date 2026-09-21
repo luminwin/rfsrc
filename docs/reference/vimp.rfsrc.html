@@ -24,7 +24,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.7.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.8.0</span>
       </span>
     </div>
 
@@ -305,7 +305,7 @@
 <span></span>
 <span><span class="va">o</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">mpg</span><span class="op">~</span><span class="va">.</span>, <span class="va">mtcars</span><span class="op">)</span></span>
 <span><span class="va">v</span> <span class="op">&lt;-</span> <span class="fu">vimp</span><span class="op">(</span><span class="va">o</span>, csv <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">csvimp</span> <span class="op">&lt;-</span> <span class="fu"><a href="utilities_internal.html">get.mv.csvimp</a></span><span class="op">(</span><span class="va">v</span>, standardize<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">csvimp</span> <span class="op">&lt;-</span> <span class="fu"><a href="multivariate.values.html">get.mv.csvimp</a></span><span class="op">(</span><span class="va">v</span>, standardize<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">csvimp</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## ------------------------------------------------------------</span></span>
@@ -315,7 +315,7 @@
 <span></span>
 <span><span class="va">o</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">mpg</span><span class="op">~</span><span class="va">.</span>, <span class="va">mtcars</span><span class="op">)</span></span>
 <span><span class="va">v</span> <span class="op">&lt;-</span> <span class="fu">vimp</span><span class="op">(</span><span class="va">o</span>, joint <span class="op">=</span> <span class="cn">TRUE</span>, csv <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">csvimp</span> <span class="op">&lt;-</span> <span class="fu"><a href="utilities_internal.html">get.mv.csvimp</a></span><span class="op">(</span><span class="va">v</span>, standardize<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">csvimp</span> <span class="op">&lt;-</span> <span class="fu"><a href="multivariate.values.html">get.mv.csvimp</a></span><span class="op">(</span><span class="va">v</span>, standardize<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">csvimp</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## ------------------------------------------------------------</span></span>
@@ -325,7 +325,7 @@
 <span></span>
 <span><span class="va">o</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu">Multivar</span><span class="op">(</span><span class="va">mpg</span>, <span class="va">cyl</span><span class="op">)</span> <span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span>
 <span><span class="va">v</span> <span class="op">&lt;-</span> <span class="fu">vimp</span><span class="op">(</span><span class="va">o</span>, joint <span class="op">=</span> <span class="cn">TRUE</span>, csv <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">csvimp</span> <span class="op">&lt;-</span> <span class="fu"><a href="utilities_internal.html">get.mv.csvimp</a></span><span class="op">(</span><span class="va">v</span>, standardize<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">csvimp</span> <span class="op">&lt;-</span> <span class="fu"><a href="multivariate.values.html">get.mv.csvimp</a></span><span class="op">(</span><span class="va">v</span>, standardize<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">csvimp</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># }</span></span></code></pre></div>

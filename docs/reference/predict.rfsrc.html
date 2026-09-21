@@ -24,7 +24,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.7.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.8.0</span>
       </span>
     </div>
 
@@ -196,7 +196,7 @@
 
 
   <dt id="arg-outcome">outcome<a class="anchor" aria-label="anchor" href="#arg-outcome"></a></dt>
-<dd><p>Specifies whether predicted values should be based on the outcomes from the training data (<code>"train"</code>, default) or test data. Ignored if <code>newdata</code> is missing or if test outcomes are unavailable.</p></dd>
+<dd><p>Specifies whether predicted values should be based on the outcomes from the training data (<code>"train"</code>, default) or test data. Ignored if <code>newdata</code> is missing. The <code>"test"</code> setting requires test outcomes.</p></dd>
 
 
   <dt id="arg-perf-type">perf.type<a class="anchor" aria-label="anchor" href="#arg-perf-type"></a></dt>
@@ -219,7 +219,7 @@
 
 
   <dt id="arg-forest-wt">forest.wt<a class="anchor" aria-label="anchor" href="#arg-forest-wt"></a></dt>
-<dd><p>Whether to compute the forest weight matrix. Options are the same as for <code>proximity</code>.</p></dd>
+<dd><p>Whether to compute the forest weight matrix. Options are <code>FALSE</code> (default), <code>TRUE</code>, <code>"inbag"</code>, <code>"oob"</code>, or <code>"all"</code>.</p></dd>
 
 
   <dt id="arg-ptn-count">ptn.count<a class="anchor" aria-label="anchor" href="#arg-ptn-count"></a></dt>
@@ -227,11 +227,14 @@
 
 
   <dt id="arg-var-used">var.used<a class="anchor" aria-label="anchor" href="#arg-var-used"></a></dt>
-<dd><p>If <code>TRUE</code>, records how many times each variable was used for splitting.</p></dd>
+<dd><p>Record how many times each variable was used for splitting. Options are <code>FALSE</code> (default), <code>"all.trees"</code>, or <code>"by.tree"</code>.</p></dd>
 
 
   <dt id="arg-split-depth">split.depth<a class="anchor" aria-label="anchor" href="#arg-split-depth"></a></dt>
-<dd><p>If <code>TRUE</code>, returns minimal depth of each variable per case.</p></dd>
+<dd><p>Currently disabled in this prediction interface and
+    internally set to <code>FALSE</code>. To obtain split depths for the
+    training data, request <code>split.depth = "all.trees"</code> or
+    <code>split.depth = "by.tree"</code> in <code><a href="rfsrc.html">rfsrc</a></code>.</p></dd>
 
 
   <dt id="arg-case-depth">case.depth<a class="anchor" aria-label="anchor" href="#arg-case-depth"></a></dt>
@@ -271,13 +274,20 @@ retained original training observation, producing an <code>ntest</code> by
 <code>ntrain</code> matrix without constructing a square matrix over the combined
 data. Hybrid mode should not be combined with <code>marginal.xvar</code>.</p>
 <p>If <code>outcome = "test"</code>, predictions are computed using y-outcomes from the test data (which must include outcome values). Terminal node statistics are recalculated using these outcomes, while the tree topology remains fixed from training. Error rates and VIMP are then computed by bootstrapping the test set and applying out-of-bagging to maintain unbiased estimates.</p>
-<p>Set <code>csv = TRUE</code> to return case-specific VIMP, and <code>cse = TRUE</code> to return case-specific error rates. These apply to all families except survival. Both options can also be used at training time.</p>
+<p>Set <code>csv = TRUE</code> to return case-specific VIMP, and <code>cse = TRUE</code> to return case-specific error rates. These apply to all families except survival. Both options can also be used at training time.
+Use <code><a href="multivariate.values.html">get.mv.csvimp</a></code> and <code><a href="multivariate.values.html">get.mv.cserror</a></code>
+to extract these stored values; see
+Extracting Multivariate Values (<code><a href="multivariate.values.html">multivariate.values</a></code>).</p>
+<p>For prediction from a quantile forest, use <code><a href="quantreg.rfsrc.html">quantreg.rfsrc</a></code>
+with <code>object</code> and <code>newdata</code>. Its helpers include
+<code><a href="quantreg.rfsrc.html">get.quantile</a></code> for quantile extraction and
+<code><a href="quantreg.rfsrc.html">get.pinball.error</a></code> for mean pinball losses.</p>
     </div>
     <div id="value">
     <h2>Value</h2>
     <p>An object of class <code>(rfsrc, predict)</code>, which is a list with the following components:</p>
 <dl><dt>call</dt>
-<dd><p>The original grow call to <code>rfsrc</code>.</p></dd>
+<dd><p>The prediction call.</p></dd>
 
   <dt>family</dt>
 <dd><p>The family used in the analysis.</p></dd>
@@ -337,10 +347,11 @@ data. Hybrid mode should not be combined with <code>marginal.xvar</code>.</p>
 <dd><p>Imputed version of the test data. Columns are ordered with responses first, followed by predictors.</p></dd>
 
   <dt>split.depth</dt>
-<dd><p>Matrix or array recording minimal depth of each variable for each case, optionally by tree.</p></dd>
+<dd><p><code>NULL</code>; split-depth calculations are currently
+    disabled in this prediction interface.</p></dd>
 
   <dt>err.rate</dt>
-<dd><p>Cumulative out-of-bag (OOB) error rate, if y-outcomes are present.</p></dd>
+<dd><p>Prediction error, if y-outcomes are present. For ordinary prediction with <code>newdata</code>, this is test error; restoring the training data uses OOB error.</p></dd>
 
   <dt>importance</dt>
 <dd><p>Variable importance (VIMP) for the test data. May be <code>NULL</code>.</p></dd>
@@ -366,14 +377,14 @@ data. Hybrid mode should not be combined with <code>marginal.xvar</code>.</p>
 
 
   <dt>regrOutput</dt>
-<dd><p>(Multivariate only) List of performance measures for multivariate regression outcomes.</p></dd>
+<dd><p>(Multivariate only) Response-named list of predictions and performance measures for continuous outcomes.</p></dd>
 
-  <dt>clasOutput</dt>
-<dd><p>(Multivariate only) List of performance measures for multivariate categorical outcomes.</p></dd>
+  <dt>classOutput</dt>
+<dd><p>(Multivariate only) Response-named list of predictions and performance measures for categorical outcomes.</p></dd>
 
 
   <dt>chf</dt>
-<dd><p>(Survival or competing risks) Cumulative hazard function (CHF).</p></dd>
+<dd><p>(Survival or competing risks) Cumulative hazard function (CHF); cause-specific CHF for competing risks.</p></dd>
 
   <dt>chf.oob</dt>
 <dd><p>(Survival or competing risks) OOB CHF. May be <code>NULL</code>.</p></dd>
@@ -397,12 +408,6 @@ data. Hybrid mode should not be combined with <code>marginal.xvar</code>.</p>
   <dt>cif.oob</dt>
 <dd><p>(Competing risks only) OOB CIF. May be <code>NULL</code>.</p></dd>
 
-  <dt>chf</dt>
-<dd><p>(Competing risks only) Cause-specific cumulative hazard function (CSCHF).</p></dd>
-
-  <dt>chf.oob</dt>
-<dd><p>(Competing risks only) OOB CSCHF. May be <code>NULL</code>.</p></dd>
-
 
 </dl></div>
     <div id="note">
@@ -410,7 +415,14 @@ data. Hybrid mode should not be combined with <code>marginal.xvar</code>.</p>
 
 
 <p>The dimensions and contents of returned objects depend on the forest family and whether y-outcomes are available in the test data. In particular, performance-related components (e.g., error rate, VIMP) will be <code>NULL</code> if y-outcomes are missing.</p>
-<p>For multivariate families, predicted values, VIMP, error rates, and performance metrics are stored in the lists <code>regrOutput</code> and <code>clasOutput</code>. These can be accessed using the helper functions <code><a href="utilities_internal.html">get.mv.predicted</a></code>, <code><a href="utilities_internal.html">get.mv.vimp</a></code>, and <code><a href="utilities_internal.html">get.mv.error</a></code>.</p>
+<p>For multivariate families, predicted values, VIMP, error rates, and performance metrics are stored in the lists <code>regrOutput</code> and <code>classOutput</code>. These can be accessed using the helper functions <code><a href="multivariate.values.html">get.mv.predicted</a></code>, <code><a href="multivariate.values.html">get.mv.vimp</a></code>, and <code><a href="multivariate.values.html">get.mv.error</a></code>.
+See Extracting Multivariate Values (<code><a href="multivariate.values.html">multivariate.values</a></code>) for OOB
+selection, standardization, block errors, and return formats.</p>
+<p>Additional classification scores are documented under
+Classification Performance Metrics (<code><a href="classification.performance.html">classification.performance</a></code>);
+<code><a href="imbalanced.rfsrc.html">get.imbalanced.performance</a></code> provides binary-class summaries
+with selectable thresholds. For right-censored survival diagnostics,
+see <code><a href="plot.survival.rfsrc.html">plotBrierAUC</a></code>.</p>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -427,14 +439,23 @@ data. Hybrid mode should not be combined with <code>marginal.xvar</code>.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p><code class="command"><a href="holdout.vimp.rfsrc.html">holdout.vimp.rfsrc</a></code>,
-  <code class="command"><a href="plot.competing.risk.rfsrc.html">plot.competing.risk.rfsrc</a></code>,
-  <code class="command"><a href="plot.rfsrc.html">plot.rfsrc</a></code>,
-  <code class="command"><a href="plot.survival.rfsrc.html">plot.survival.rfsrc</a></code>,
-  <code class="command"><a href="plot.variable.rfsrc.html">plot.variable.rfsrc</a></code>,
-  <code class="command"><a href="rfsrc.html">rfsrc</a></code>,
-  <code class="command"><a href="rfsrc.fast.html">rfsrc.fast</a></code>,
-  <code class="command"><a href="vimp.rfsrc.html">vimp.rfsrc</a></code></p></div>
+    <div class="dont-index"><p>Classification Performance Metrics (<code><a href="classification.performance.html">classification.performance</a></code>),
+  Extracting Multivariate Values (<code><a href="multivariate.values.html">multivariate.values</a></code>),
+  Fast Saving and Loading Objects (<code><a href="fast.saveload.html">fast.saveload</a></code>),
+  <code><a href="holdout.vimp.rfsrc.html">holdout.vimp</a></code>,
+  <code><a href="imbalanced.rfsrc.html">imbalanced.rfsrc</a></code>,
+  <code><a href="impute.learn.rfsrc.html">impute.learn.rfsrc</a></code>,
+  <code><a href="plot.competing.risk.rfsrc.html">plot.competing.risk.rfsrc</a></code>,
+  <code><a href="plot.rfsrc.html">plot.rfsrc</a></code>,
+  <code><a href="plot.quantreg.rfsrc.html">plot.quantreg.rfsrc</a></code>,
+  <code><a href="plot.survival.rfsrc.html">plot.survival.rfsrc</a></code>,
+  <code><a href="plot.survival.rfsrc.html">plotBrierAUC</a></code>,
+  <code><a href="plot.variable.rfsrc.html">plot.variable.rfsrc</a></code>,
+  <code><a href="print.rfsrc.html">print.rfsrc</a></code>,
+  <code><a href="quantreg.rfsrc.html">quantreg.rfsrc</a></code>,
+  <code><a href="rfsrc.html">rfsrc</a></code>,
+  <code><a href="rfsrc.fast.html">rfsrc.fast</a></code>,
+  <code><a href="vimp.rfsrc.html">vimp.rfsrc</a></code></p></div>
     </div>
 
     <div id="ref-examples">
@@ -569,7 +590,7 @@ data. Hybrid mode should not be combined with <code>marginal.xvar</code>.</p>
 <span></span>
 <span><span class="va">o</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">mpg</span><span class="op">~</span><span class="va">.</span>, <span class="va">mtcars</span><span class="op">)</span></span>
 <span><span class="va">op</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">o</span>, importance <span class="op">=</span> <span class="cn">TRUE</span>, csv <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">csvimp</span> <span class="op">&lt;-</span> <span class="fu"><a href="utilities_internal.html">get.mv.csvimp</a></span><span class="op">(</span><span class="va">op</span>, standardize<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">csvimp</span> <span class="op">&lt;-</span> <span class="fu"><a href="multivariate.values.html">get.mv.csvimp</a></span><span class="op">(</span><span class="va">op</span>, standardize<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">csvimp</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## ------------------------------------------------------------</span></span>
@@ -579,7 +600,7 @@ data. Hybrid mode should not be combined with <code>marginal.xvar</code>.</p>
 <span></span>
 <span><span class="va">o</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">mpg</span><span class="op">~</span><span class="va">.</span>, <span class="va">mtcars</span><span class="op">)</span></span>
 <span><span class="va">op</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">o</span>, importance <span class="op">=</span> <span class="cn">TRUE</span>, cse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">cserror</span> <span class="op">&lt;-</span> <span class="fu"><a href="utilities_internal.html">get.mv.cserror</a></span><span class="op">(</span><span class="va">op</span>, standardize<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">cserror</span> <span class="op">&lt;-</span> <span class="fu"><a href="multivariate.values.html">get.mv.cserror</a></span><span class="op">(</span><span class="va">op</span>, standardize<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">cserror</span><span class="op">)</span></span>
 <span></span>
 <span></span>
