@@ -89,7 +89,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Development version">3.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Development version">3.9.0</span>
       </span>
     </div>
 
@@ -201,6 +201,23 @@
       
     </div>
     
+                                                                <div id="release-390" class="section level2">
+<h2 class="hasAnchor">
+<a href="#release-390" class="anchor"></a>RELEASE 3.9.0</h2>
+<h3>Forest storage and imputation</h3>
+<ul>
+<li>Added optional <code>compact = TRUE</code> saving to <code>fast.save()</code> and <code>fast.save.list()</code>. Compact saves omit terminal-node information and reconstruct it during prediction without growing new trees. This can reduce disk use at the cost of additional prediction time. The fitted object is unchanged, and both saving modes use the existing loaders. The default remains <code>compact = FALSE</code>.</li>
+<li>Added compact-save eligibility checks before removing an existing destination, including checks of every forest when saving a list. Compact saving requires a non-anonymous forest with retained training predictors and responses, and a sampling-size specification that preserves the training sample size after loading. <code>fast.save()</code> also checks the grow-object class before removing its destination.</li>
+<li><code>impute.learn()</code> now accepts <code>terminal.qualts</code> and <code>terminal.quants</code> in <code>full.sweep.options</code>, allowing terminal-node storage controls to reach the saved target learners. These settings are independent of initial-imputation and supervised auxiliary-forest options.</li>
+</ul>
+<h3>Documentation and build</h3>
+<ul>
+<li>Reorganized and clarified help for forest saving and loading, imputation and OOD scoring, quantile regression, survival and classification performance, multivariate extraction, partial dependence, subsampling, tuning, and associated plots. Expanded explanations of prediction selection, score and interval interpretation, returned values, graphical controls, and examples.</li>
+</ul>
+<hr>
+</div>
+
+
                                                                 <div id="release-380" class="section level2">
 <h2 class="hasAnchor">
 <a href="#release-380" class="anchor"></a>RELEASE 3.8.0</h2>

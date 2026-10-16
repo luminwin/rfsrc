@@ -31,7 +31,7 @@ Companion helpers summarize performance, select a probability
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.9.0</span>
       </span>
     </div>
 
@@ -384,65 +384,101 @@ Companion helpers summarize performance, select a probability
     scheme.  Use a separate evaluation sample when OOB support is absent.</p>
 </div><p></p><div class="section">
 <h3 id="detailed-performance-summaries">Detailed performance summaries<a class="anchor" aria-label="anchor" href="#detailed-performance-summaries"></a></h3>
-<p><code>get.imbalanced.performance</code> accepts a fitted or predicted
-    forest object, or a two-level factor supplied as <code>obj</code> together
-    with <code>prob</code>.  For a forest object, it prefers
-    <code>predicted.oob</code> when that component exists and is not entirely
-    missing; otherwise it uses <code>predicted</code>.  A partially missing OOB
-    component is not filled with full-ensemble predictions.</p>
-<p>A numeric vector or one-column matrix or data frame represents
-    minority-class probabilities, with one value per response.  No column
-    name is needed for these inputs.  A two-column matrix or data frame
-    contains both class probabilities.  Named columns are matched to the
-    response factor levels; unnamed columns follow factor-level order.
-    The response and probability rows must already be aligned.</p>
-<p>Finite probabilities are restricted to \([0,1]\) using the existing
-    clipping rule.  Finite two-column rows must sum to one within numerical
-    tolerance.  Rows with a missing response or a nonfinite probability are
-    excluded from scoring; both columns must be finite for a two-column
-    input.  Unavailable scores are returned as <code>NA</code>.  Class counts,
-    minority identity, and the default threshold are determined from all
-    observed evaluation responses before excluding unavailable predictions.</p>
-<p>The helper determines the minority class and its proportion from the
-    response supplied for evaluation.  If the class counts tie, the first
-    factor level is selected.  The default <code>threshold = NULL</code> uses
-    this evaluation proportion for all forest methods.</p>
-<p>With <code>threshold = "auto"</code>, the saved <code>forest$rfq</code> flag
-    selects the cutoff: <code>TRUE</code> uses the same evaluation prevalence
-    as <code>NULL</code>, and otherwise the cutoff is \(0.5\).  This applies
-    to both grow and prediction objects.  For RFQ test predictions the
-    prevalence is therefore calculated from the evaluation responses,
-    not substituted from the training responses.  Splitting rules and
-    <code>perf.type</code> do not determine whether the classifier is RFQ.
-    Direct response/probability inputs have no fitted-classifier flag,
-    so <code>"auto"</code> uses \(0.5\).  Use <code>threshold = "bayes"</code>
-    to request \(0.5\) explicitly for any classifier.</p>
-<p>All settings threshold the probabilities rather than reading the
-    stored <code>class</code> component.  Supply a single finite numeric
-    <code>threshold</code> to examine a different cutoff; finite values outside
-    \([0,1]\) are clipped to that interval.  Threshold ties are assigned
-    to the minority class.  A supplied threshold changes the cutoff, not
-    how the minority class is identified or how the forest was fitted.</p>
-<p>Besides the four rates <code>sens</code>, <code>spec</code>, <code>prec</code>, and
-    <code>npv</code>, the summary includes <code>misclass</code>, <code>brier</code>,
-    <code>brier.norm</code>, <code>auc</code>, <code>logloss</code>, and <code>pr.auc</code>.
-    For complementary binary probabilities, <code>brier</code> is the mean
-    squared error of the minority probability and <code>brier.norm</code> is
-    four times this value.  The current log-loss helper excludes infinite
-    losses rather than clipping zero probabilities.</p>
-<p><code>F1</code> is the harmonic mean of precision and sensitivity;
-    <code>F1mod</code> is the harmonic mean of sensitivity, specificity,
-    precision, and negative predictive value.  <code>F1gmean</code> averages
-    F1 and G-mean; <code>F1modgmean</code> averages F1mod and G-mean.  A
-    harmonic mean is zero when all its component rates are defined and at
-    least one is zero.  It is <code>NA</code> when any required rate is undefined.</p>
-<p><code>robust = TRUE</code> adds one to the two diagonal counts when
-    calculating the four rates and their derived summaries.  It does not
-    change the returned confusion counts, misclassification error, or
-    probability-based scores.  Use <code>confusion = TRUE</code> to return the
-    confusion matrix in addition to the metrics.  Its rows are observed
-    classes and columns are predicted classes, with <code>0</code> denoting the
-    majority and <code>1</code> the minority.</p>
+<p><code>get.imbalanced.performance</code> calculates performance from
+    observed responses and predicted probabilities.</p><dl><dt>Probability inputs.</dt>
+<dd><p>Supply a grow or prediction object, or
+        a two-level response factor with <code>prob</code>.  With
+        <code>prob = NULL</code>, the helper uses <code>predicted.oob</code> when
+        present and not entirely missing; otherwise it uses
+        <code>predicted</code>.  When only some OOB predictions are missing,
+        those entries remain missing.</p>
+<p>A numeric vector or one-column matrix or data frame supplies
+        minority-class probabilities; no column name is required.
+        Two-column inputs supply both class probabilities; named columns
+        are matched to factor levels, and unnamed columns
+        follow factor-level order.  Rows must align with the responses.</p></dd>
+
+
+      <dt>Evaluation classes.</dt>
+<dd><p>All observed evaluation responses
+        determine class counts, the minority class, and its proportion,
+        before excluding unavailable predictions.  The first factor level
+        is the minority when counts tie.</p></dd>
+
+
+      <dt>Probability checks.</dt>
+<dd><p>Finite probabilities below zero are set
+        to zero, and those above one are set to one.  Finite two-column
+        rows must sum to one within numerical tolerance.  Scoring excludes
+        rows with missing responses or nonfinite probabilities; both
+        columns must be finite for two-column inputs.  Unavailable scores
+        are <code>NA</code>.</p></dd>
+
+
+      <dt>Classification threshold.</dt>
+<dd><p>An observation is assigned to the
+        minority class when its predicted minority-class probability is
+        at least the threshold, and to the majority class otherwise.
+        The <code>threshold</code> choices are:</p><dl><dt><code>NULL</code></dt>
+<dd><p>The evaluation minority proportion for
+            every method (default).</p></dd>
+
+          <dt><code>"auto"</code></dt>
+<dd><p>The evaluation minority proportion when
+            <code>forest$rfq</code> is <code>TRUE</code>; \(0.5\) otherwise,
+            including direct response/probability inputs.</p></dd>
+
+          <dt><code>"bayes"</code></dt>
+<dd><p>\(0.5\) for every method.</p></dd>
+
+          <dt>Numeric</dt>
+<dd><p>A single finite cutoff.  Values below zero are
+            set to zero, and values above one are set to one.</p></dd>
+
+
+</dl><p>For RFQ test predictions, <code>NULL</code> and <code>"auto"</code> use
+        evaluation prevalence, not training prevalence.  The RFQ flag,
+        rather than <code>splitrule</code> or <code>perf.type</code>, determines
+        the <code>"auto"</code> choice.  Changing the threshold preserves
+        the evaluation minority definition and the fitted forest.</p></dd>
+
+
+      <dt>Performance measures.</dt>
+<dd><p>The summary includes sensitivity
+        (<code>sens</code>), specificity (<code>spec</code>), precision (<code>prec</code>),
+        negative predictive value (<code>npv</code>), G-mean, <code>misclass</code>,
+        <code>brier</code>, <code>brier.norm</code>, <code>auc</code>, <code>logloss</code>, and
+        <code>pr.auc</code>.  For complementary binary probabilities,
+        <code>brier</code> is the mean squared error of the minority probability;
+        <code>brier.norm</code> is four times this value.  Log loss excludes
+        infinite losses without clipping zero probabilities.</p></dd>
+
+
+      <dt>F-measures.</dt>
+<dd><p><code>F1</code> is the harmonic mean of precision and
+        sensitivity; <code>F1mod</code> is the harmonic mean of all four
+        classification rates.  <code>F1gmean</code> averages F1 and G-mean;
+        <code>F1modgmean</code> averages
+        F1mod and G-mean.  A harmonic mean is zero if any component rate
+        is zero and all are defined; it is <code>NA</code> if any required
+        rate is undefined.</p></dd>
+
+
+      <dt>Robust summaries.</dt>
+<dd><p><code>robust = TRUE</code> adds one to each
+        diagonal confusion count when calculating the four rates and
+        their derived summaries.  Returned confusion counts,
+        misclassification error, and probability-based scores are unchanged.</p></dd>
+
+
+      <dt>Confusion matrix.</dt>
+<dd><p><code>confusion = TRUE</code> includes the
+        confusion matrix: rows are observed classes and columns are
+        predicted classes, with <code>0</code> denoting the majority and
+        <code>1</code> the minority.</p></dd>
+
+
+</dl><p></p>
 </div><p></p><div class="section">
 <h3 id="random-score-reference">Random-score reference<a class="anchor" aria-label="anchor" href="#random-score-reference"></a></h3>
 <p>The performance summary has a <code>"rand"</code> attribute containing
