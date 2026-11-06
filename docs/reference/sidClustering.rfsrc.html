@@ -25,7 +25,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.9.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.10.0</span>
       </span>
     </div>
 
@@ -245,6 +245,17 @@
 
 
 <p>Given an unsupervised dataset, random forests is used to compute a distance matrix measuring dissimilarity between all pairs of observations. By default, hierarchical clustering is applied to this distance matrix, although users may apply any other clustering algorithm. See the examples below for alternative workflows.</p>
+<p>For <code>method = "sid"</code>, missing values are handled before variable
+reduction and SID transformation. The <code>na.action</code> argument in
+<code>...</code> defaults to <code>"na.omit"</code>, which removes incomplete rows
+jointly from <code>data</code> and a separately supplied <code>x.no.sid</code>.
+With <code>na.action = "na.impute"</code>, an initial unsupervised forest imputes
+these inputs jointly. This additional forest uses <code>ntree</code> and
+<code>fast</code>, and accepts <code>nodesize</code>, <code>nsplit</code>, <code>nimpute</code>,
+and <code>seed</code> from <code>...</code>. Entirely missing rows and columns are
+removed by the imputation preprocessing. At least two rows and two
+variables in <code>data</code> must remain. Clustering is performed on the
+retained rows, in their original order.</p>
 <p>The default method, <code>method = "sid"</code>, implements SID clustering (sidClustering). The algorithm begins by enhancing the original feature space using Staggered Interaction Data (SID). This transformation creates:</p>
 <ul><li><p>SID main features: shifted and staggered versions of the original features that are made strictly positive and mutually non-overlapping in range;</p></li>
 <li><p>SID interaction features: pairwise multiplicative interactions formed between all SID main features.</p></li>

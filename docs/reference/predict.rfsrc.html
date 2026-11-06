@@ -24,7 +24,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.9.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.10.0</span>
       </span>
     </div>
 
@@ -176,7 +176,9 @@
 
 
   <dt id="arg-newdata">newdata<a class="anchor" aria-label="anchor" href="#arg-newdata"></a></dt>
-<dd><p>Test data. If omitted, the original training data is used.</p></dd>
+<dd><p>Test data. If omitted, the original training data is used.
+  For an autoencoder forest, supply the original predictor variables;
+  absent response copies are created automatically.</p></dd>
 
 
   <dt id="arg-importance">importance<a class="anchor" aria-label="anchor" href="#arg-importance"></a></dt>
@@ -231,10 +233,13 @@
 
 
   <dt id="arg-split-depth">split.depth<a class="anchor" aria-label="anchor" href="#arg-split-depth"></a></dt>
-<dd><p>Currently disabled in this prediction interface and
-    internally set to <code>FALSE</code>. To obtain split depths for the
-    training data, request <code>split.depth = "all.trees"</code> or
-    <code>split.depth = "by.tree"</code> in <code><a href="rfsrc.html">rfsrc</a></code>.</p></dd>
+<dd><p>Record each predictor's minimum split depth along
+    each training observation's path. Options are <code>FALSE</code> (default),
+    <code>"all.trees"</code> to average depths across trees, or <code>"by.tree"</code>
+    to retain individual-tree depths. Available only when <code>newdata</code>
+    is omitted. Requesting split depths forces full, non-JIT tree
+    restoration, overriding <code>jitt = TRUE</code> supplied via <code>...</code>.
+    When <code>newdata</code> is supplied, this option is set to <code>FALSE</code>.</p></dd>
 
 
   <dt id="arg-case-depth">case.depth<a class="anchor" aria-label="anchor" href="#arg-case-depth"></a></dt>
@@ -267,6 +272,16 @@
 
 <p>Predicted values are obtained by "dropping" the test data down the trained forest-i.e., the forest grown using the training data. If the test data includes y-outcome values, performance metrics are also returned. Variable importance (VIMP), including joint VIMP, is returned if requested.</p>
 <p>If no test data is supplied, the function uses the original training data and enters "restore" mode. This allows users to extract outputs from the trained forest that were not requested during the original grow call.</p>
+<p>For an autoencoder forest grown with <code>rfsrc(data = X,
+splitrule = "auto")</code>, predictions reconstruct the input variables.
+Supply the original predictors in <code>newdata</code>. The saved
+<code>autoencoder</code> mapping is used to create any absent response copies;
+explicitly supplied response columns are retained. The resulting observed
+responses allow reconstruction error and, when requested, VIMP to be
+computed using the usual multivariate forest options. Missing values
+follow <code>na.action</code>. Use <code><a href="multivariate.values.html">get.mv.predicted</a></code>,
+<code><a href="multivariate.values.html">get.mv.error</a></code>, and <code><a href="multivariate.values.html">get.mv.vimp</a></code> to extract
+results.</p>
 <p>When <code>newdata</code> is supplied, non-hybrid proximity and distance matrices
 compare test observations with one another. Setting either option to
 <code>"hybrid"</code> instead compares each retained test observation with each
@@ -285,9 +300,15 @@ with <code>object</code> and <code>newdata</code>. Its helpers include
     </div>
     <div id="value">
     <h2>Value</h2>
-    <p>An object of class <code>(rfsrc, predict)</code>, which is a list with the following components:</p>
+    <p>An object with classes <code>"rfsrc"</code>, <code>"predict"</code>, and the fitted
+family. Autoencoder predictions also have <code>"auto"</code> as the final
+class. The returned object is a list with the following components:</p>
 <dl><dt>call</dt>
 <dd><p>The prediction call.</p></dd>
+
+  <dt>autoencoder</dt>
+<dd><p>(Autoencoder) Named character vector mapping response
+    copy names to original predictor names.</p></dd>
 
   <dt>family</dt>
 <dd><p>The family used in the analysis.</p></dd>
@@ -347,8 +368,10 @@ with <code>object</code> and <code>newdata</code>. Its helpers include
 <dd><p>Imputed version of the test data. Columns are ordered with responses first, followed by predictors.</p></dd>
 
   <dt>split.depth</dt>
-<dd><p><code>NULL</code>; split-depth calculations are currently
-    disabled in this prediction interface.</p></dd>
+<dd><p>When restoring the training data, a matrix of
+    observations by predictors for <code>"all.trees"</code>, or an array of
+    observations by predictors by trees for <code>"by.tree"</code>.
+    <code>NULL</code> when not requested or when <code>newdata</code> is supplied.</p></dd>
 
   <dt>err.rate</dt>
 <dd><p>Prediction error, if y-outcomes are present. For ordinary prediction with <code>newdata</code>, this is test error; restoring the training data uses OOB error.</p></dd>
@@ -471,6 +494,17 @@ see <code><a href="plot.survival.rfsrc.html">plotBrierAUC</a></code>.</p>
 <span><span class="va">veteran.pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">veteran.grow</span>, <span class="va">veteran</span><span class="op">[</span><span class="op">-</span><span class="va">train</span>, <span class="op">]</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">veteran.grow</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">veteran.pred</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## autoencoder prediction using the original predictor columns</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="va">auto.grow</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">mtcars</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">24</span>, <span class="op">]</span>, splitrule <span class="op">=</span> <span class="st">"auto"</span><span class="op">)</span></span>
+<span><span class="va">auto.test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">auto.grow</span>, newdata <span class="op">=</span> <span class="va">mtcars</span><span class="op">[</span><span class="fl">25</span><span class="op">:</span><span class="fl">32</span>, <span class="op">]</span>,</span>
+<span>                     importance <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">auto.pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="multivariate.values.html">get.mv.predicted</a></span><span class="op">(</span><span class="va">auto.test</span><span class="op">)</span></span>
+<span><span class="va">auto.error</span> <span class="op">&lt;-</span> <span class="fu"><a href="multivariate.values.html">get.mv.error</a></span><span class="op">(</span><span class="va">auto.test</span><span class="op">)</span></span>
+<span><span class="va">auto.vimp</span> <span class="op">&lt;-</span> <span class="fu"><a href="multivariate.values.html">get.mv.vimp</a></span><span class="op">(</span><span class="va">auto.test</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## ------------------------------------------------------------</span></span>
 <span><span class="co">## hybrid proximity and distance</span></span>

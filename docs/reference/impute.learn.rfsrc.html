@@ -47,7 +47,7 @@ If supervised.formula is supplied, the function also fits an
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.9.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.10.0</span>
       </span>
     </div>
 
@@ -212,9 +212,12 @@ If supervised.formula is supplied, the function also fits an
 <span>  keep.ximp <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  save.on.fit <span class="op">=</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">out.dir</span><span class="op">)</span>,</span>
 <span>  save.ood <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  weight <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span>  weight <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  compress <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>  share.xvar <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">save.impute.learn.rfsrc</span><span class="op">(</span><span class="va">object</span>, <span class="va">path</span>, wipe <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu">save.impute.learn.rfsrc</span><span class="op">(</span><span class="va">object</span>, <span class="va">path</span>, wipe <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  compress <span class="op">=</span> <span class="fl">50</span>, share.xvar <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">load.impute.learn.rfsrc</span><span class="op">(</span><span class="va">path</span>, targets <span class="op">=</span> <span class="cn">NULL</span>, lazy <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
@@ -306,7 +309,7 @@ If supervised.formula is supplied, the function also fits an
 
   <dt id="arg-eps">eps<a class="anchor" aria-label="anchor" href="#arg-eps"></a></dt>
 <dd><p>Finite nonnegative convergence threshold. In <code>impute.learn</code> this
-    controls the initial training-data imputation. In
+    controls the initial <code>missForest</code> imputation. In
     <code>predict.impute.learn</code> and <code>impute.ood</code> it controls early
     stopping for the prediction-time sweep.</p></dd>
 
@@ -412,23 +415,23 @@ If supervised.formula is supplied, the function also fits an
     learner root. <code>learner.root</code> must be a relative directory path
     within the imputer directory. <code>learner.prefix</code> must be a single
     file-name component. Absolute paths and parent-directory components
-    are not allowed.</p></dd>
+    are not allowed. The top-level name <code class="file">manifest.rds</code> is reserved.</p></dd>
 
 
   <dt id="arg-out-dir">out.dir<a class="anchor" aria-label="anchor" href="#arg-out-dir"></a></dt>
 <dd><p>Optional output directory. If supplied and
     <code>save.on.fit = TRUE</code>, the manifest and the saved full-sweep
     learners are written to this directory during fitting. This requires
-    the <span class="pkg">fst</span> package because learners are serialized with
-    <code>fast.save</code>. If <code>supervised.formula</code> is supplied, the
+    the <span class="pkg">fst</span> package because learner components are serialized
+    in FST format. If <code>supervised.formula</code> is supplied, the
     internal supervised forest is also saved there.</p></dd>
 
 
   <dt id="arg-wipe">wipe<a class="anchor" aria-label="anchor" href="#arg-wipe"></a></dt>
-<dd><p>If <code>TRUE</code>, replaces an existing output directory
+<dd><p>If <code>TRUE</code>, replaces an existing saved-imputer directory
     after the new imputer has been written and verified. If <code>FALSE</code>,
-    unrelated existing files are retained. Saving uses a temporary
-    bundle and requires additional disk space.</p></dd>
+    other files already inside that directory are retained. Saving uses
+    a temporary bundle and requires additional disk space.</p></dd>
 
 
   <dt id="arg-keep-models">keep.models<a class="anchor" aria-label="anchor" href="#arg-keep-models"></a></dt>
@@ -451,6 +454,17 @@ If supervised.formula is supplied, the function also fits an
     writes the imputer to disk during fitting.</p></dd>
 
 
+  <dt id="arg-compress">compress<a class="anchor" aria-label="anchor" href="#arg-compress"></a></dt>
+<dd><p>A single number from 0 to 100 controlling lossless
+    FST compression of saved learners. The default, 50, balances file
+    size and saving speed. Use 100 for stronger compression at the cost
+    of slower saving. Applies to the target learners and the optional
+    supervised forest. In <code>impute.learn.rfsrc</code>, this controls saving
+    during fitting; in <code>save.impute.learn.rfsrc</code>, it controls the
+    current save call and defaults to 50 independently of any earlier
+    setting. It does not change forest fitting or prediction.</p></dd>
+
+
   <dt id="arg-save-ood">save.ood<a class="anchor" aria-label="anchor" href="#arg-save-ood"></a></dt>
 <dd><p>If <code>TRUE</code>, computes and stores an OOD reference.
     The reference is built during training from target-wise out-of-bag
@@ -463,20 +477,32 @@ If supervised.formula is supplied, the function also fits an
     and alternate row aggregates besides the weighted mean.</p></dd>
 
 
+  <dt id="arg-share-xvar">share.xvar<a class="anchor" aria-label="anchor" href="#arg-share-xvar"></a></dt>
+<dd><p>Share the completed training predictor table across
+    non-anonymous target learners instead of writing a separate
+    <code class="file">xvar.rda</code> for each learner. The fitting default is <code>FALSE</code>.
+    Set <code>share.xvar = TRUE</code> and <code>anonymous = FALSE</code> when fitting
+    to capture the common table and exact learner row/column mappings.
+    The option applies to saving during fitting and to later explicit
+    saving. For <code>save.impute.learn</code>, <code>NULL</code> uses the object's
+    shared-storage setting; <code>FALSE</code> writes self-contained learners.
+    An older bank fitted without shared mappings cannot be converted by
+    setting this argument alone. See Details.</p></dd>
+
+
   <dt id="arg-object">object<a class="anchor" aria-label="anchor" href="#arg-object"></a></dt>
 <dd><p>An object returned by <code>impute.learn</code> or
     <code>load.impute.learn</code>.</p></dd>
 
 
   <dt id="arg-path">path<a class="anchor" aria-label="anchor" href="#arg-path"></a></dt>
-<dd><p>Directory containing a saved imputer. Use a dedicated
-    directory rather than a filesystem root, home directory, working
-    directory, or an ancestor of these. A complete bank can be saved
-    back to its source path. Otherwise, source and destination directories
-    must not contain one another. An object loaded with a target subset
-    must be saved to a different directory. Save and load operations
-    require the <span class="pkg">fst</span> package because learners are read and written
-    with <code>fast.save</code> and <code>fast.load</code>.</p></dd>
+<dd><p>For <code>save.impute.learn</code>, the destination directory.
+    For <code>load.impute.learn</code>, the directory containing the saved
+    imputer. Relative paths are resolved from the current working
+    directory. Saving restrictions are described in Details; they do
+    not apply to loading. Both operations require the <span class="pkg">fst</span>
+    package. Use <code>load.impute.learn</code> to load the complete imputer,
+    including its shared predictors when present.</p></dd>
 
 
   <dt id="arg-targets">targets<a class="anchor" aria-label="anchor" href="#arg-targets"></a></dt>
@@ -640,9 +666,9 @@ If supervised.formula is supplied, the function also fits an
         function. With <code>mf.q = 1</code> and <code>always.use = NULL</code>,
         targets are updated one at a time. Other positive settings use
         the multivariate <code>missForest</code> generalization.</p>
-<p>If <code>mf.q</code> is omitted, on-the-fly imputation is used when
-        <code>formula</code> is specified; otherwise default unsupervised
-        imputation is used. Complete training data with
+<p>If <code>mf.q</code> is omitted, on-the-fly imputation is used. It is
+        supervised when an initial-imputation formula is used, and
+        unsupervised otherwise. Complete training data with
         <code>target.mode = "all"</code> skip this stage.</p></li>
 <li><p><strong>Fit the saved learners.</strong> A full forest sweep is
         fitted on the completed training data. For each target selected
@@ -679,21 +705,84 @@ If supervised.formula is supplied, the function also fits an
     saved target's predictor set. <code>deployment.xvars</code> restricts
     only the raw predictors; users do not need to supply auxiliary
     columns in new data.</p>
+<p>Ordinary forest predictions fill unavailable auxiliary predictions,
+    including when the supervised forest has no OOB predictions, as
+    with <code>supervised.args = list(bootstrap = "none")</code>.
+    This fallback applies only to auxiliary predictors. OOD reference
+    discrepancies always use the final target learners' OOB predictions.</p>
 </div>
 
 <p></p><div class="section">
 <h3 id="saving-and-loading">Saving and loading<a class="anchor" aria-label="anchor" href="#saving-and-loading"></a></h3>
-<p>A saved imputer consists of a small manifest and a directory of
-    learners. Each learner is saved with <code>fast.save</code> and loaded
-    with <code>fast.load</code>, so save and load operations require the
-    <span class="pkg">fst</span> package. The supervised forest, when used, is saved
+<p>A saved imputer consists of a manifest and a directory of learners,
+    with an optional shared predictor table. Learner components use the
+    same serializers as <code>fast.save</code> and <code>fast.load</code>, so saving
+    and loading require the <span class="pkg">fst</span> package. The supervised forest, when used, is saved
     alongside the target learners. The explicit save method can save
-    learners from memory or load them from an attached saved path.</p>
+    learners from memory or from the directory where the imputer is
+    already saved.</p>
+<p>Each imputer has its own directory, which can be inside a project
+    directory; for example, <code>file.path(getwd(), "imputer")</code>.
+    Saving accepts a new directory, an empty directory, or a directory
+    recognized as a saved imputer by its manifest. Other nonempty
+    directories are rejected with either setting of <code>wipe</code>.</p>
+<p>Saving cannot replace the current working directory, home directory,
+    filesystem root, or their ancestors. A complete imputer can be saved
+    back to the same directory. A different destination must neither
+    contain nor be inside the existing imputer directory. An object
+    loaded with a target subset must be saved to a different directory.
+    Loading has none of these location restrictions.</p>
+<p>Set <code>compress = 100</code> for stronger FST compression when saving
+    a deployment bundle. Supply this directly to <code>impute.learn</code>
+    or <code>save.impute.learn</code>, rather than in
+    <code>full.sweep.options</code>. The manifest and remaining RDS metadata
+    use their existing compression settings. Loading requires no
+    compression argument.</p>
 <p>Both training-time and explicit saving write and verify the new
     learners before replacing an existing destination. A failed staging
     operation leaves the previous saved imputer unchanged. If replacement
     fails, restoration of the previous directory is attempted; an
     unrecovered backup path is reported.</p>
+</div>
+
+<p></p><div class="section">
+<h3 id="shared-training-predictors">Shared training predictors<a class="anchor" aria-label="anchor" href="#shared-training-predictors"></a></h3>
+<p>With <code>share.xvar = TRUE</code>, the completed training table used by
+    the final target learners is saved once in
+    <code class="file">_shared_xvar/xvar.fst</code>. In supervised mode this table also
+    includes the auxiliary training predictors actually used in those
+    fits. Each target stores its exact training-row indices, predictor
+    names and column encodings. These reconstruct the learner's
+    training predictors before prediction. Reconstruction is checked
+    against the fitted forest before its separate <code class="file">xvar.rda</code> is
+    omitted. Trees, responses, terminal information and OOD references
+    keep their existing representations. The single supervised forest
+    remains self-contained.</p>
+<p>Shared storage requires <code>anonymous = FALSE</code>. It is independent
+    of <code>compress</code>, <code>terminal.qualts</code> and
+    <code>terminal.quants</code>; their existing settings still apply.
+    <code>keep.ximp</code> continues to control the returned raw completed
+    table. An in-memory shared-capable fit separately holds the common
+    predictor table needed for deferred saving. Saved shared banks
+    and eagerly loaded shared objects can be saved again without
+    reconstructing row identities from predictor values.</p>
+<p>Load the whole imputer with <code>load.impute.learn</code>. Shared learner
+    subdirectories are not independently portable, and direct
+    <code>fast.load</code> calls on them stop with an explanatory message.
+    Keep the manifest, shared table and learners together when moving
+    or archiving the bank. A compatible shared-aware package version
+    is required. The updated loader also accepts the existing
+    independent-learner format. Saving a shared object with
+    <code>share.xvar = FALSE</code> writes that independent format.</p>
+<p>Lazy loading leaves the common table on disk until first use. Each
+    prediction or OOD operation loads it at most once and reuses it
+    across learner accesses, including when
+    <code>cache.learners = "none"</code>. Reconstructed learners remain normal
+    forest objects: caching or eagerly loading many learners can still
+    use memory for their individual predictor tables. Shared storage
+    primarily reduces repeated serialization and on-disk duplication.
+    Missing shared files, checksum mismatches and invalid mappings
+    cause errors rather than silently substituting initialization fills.</p>
 </div>
 
 <p></p><div class="section">
@@ -731,11 +820,22 @@ If supervised.formula is supplied, the function also fits an
     predictions are compared with observed training values to form
     target-wise reconstruction discrepancies:</p><ul><li><p>Continuous and integer targets use absolute reconstruction
         error.</p></li>
-<li><p>Factor targets use negative log predictive probabilities.
-        Unavailable or invalid probabilities give missing discrepancies;
-        zero probabilities are scored using the probability floor.</p></li>
-</ul><p>The references are stored in the manifest. Each learner entry records
-    <code>n.oob.finite</code> and <code>n.oob.nonfinite</code>.</p>
+<li><p>Factor targets use the negative log probability of the
+        observed class when OOB class probabilities are available.
+        If only OOB class labels are available, unordered factors use
+        misclassification error and ordered factors use scaled distance
+        between ordered levels.</p></li>
+</ul><p>Each target's discrepancy rule is saved with its reference and used
+    unchanged for new data. For probability-based discrepancies, the
+    saved probability floor is <code>1e-12</code>; finite zero probabilities
+    use this floor. Unavailable or invalid predictions give missing
+    discrepancies, without switching to another rule. Each learner entry
+    records <code>n.oob.finite</code> and <code>n.oob.nonfinite</code>.</p>
+<p>OOB predictions come from the final target forests after training-data
+    imputation and auxiliary predictor construction. Those earlier steps
+    are not repeated for each OOB sample. Missing OOB predictions are
+    never replaced by ordinary training predictions when constructing
+    these references.</p>
 <p>The training-time row reference combines calibrated target scores
     using a weighted mean. If <code>weight</code> is omitted, all saved OOD
     targets receive weight 1. Named weights are matched to targets, and
@@ -759,6 +859,9 @@ If supervised.formula is supplied, the function also fits an
     and empty references are unscored.</p>
 <p>In supervised mode, the auxiliary variables are predictors for
     reconstruction; the supervised response is not used in new data.</p>
+<p>Older saved imputers that do not record the factor discrepancy rule
+    must be refitted before OOD scoring those targets. They remain usable
+    for imputation and numeric-only OOD scoring.</p>
 </div>
 
 <p></p><div class="section">
@@ -778,7 +881,8 @@ If supervised.formula is supplied, the function also fits an
         training reference rebuilt from the saved target-wise training
         OOD scores. The reference uses the requested target subset,
         weights, and row aggregate, so percentile calibration remains
-        available when any of these settings change.</p></dd>
+        available when any of these settings change. It is not
+        conditioned on each new row's pattern of observed targets.</p></dd>
 
 
 </dl><p></p>
@@ -808,6 +912,12 @@ If supervised.formula is supplied, the function also fits an
   When supervised mode is active, the manifest also records the
   supervised family, response names, and the internally created
   auxiliary <code>predicted.*</code> variable names.</p>
+<p>Shared-capable fits also contain <code>manifest$shared.xvar</code>,
+  the common-table specification, and per-learner <code>xvar.ref</code>
+  reconstruction mappings. <code>shared.xvar.data</code> holds the common
+  table for in-memory fits with <code>keep.models = TRUE</code> and eagerly
+  loaded shared objects. It is <code>NULL</code> for disk-backed lazy objects.
+  This component is separate from <code>ximp</code>.</p>
 <p><code>load.impute.learn</code> returns an object of the same class.</p>
 <p><code>predict.impute.learn</code> returns a data frame with imputed values
   overlaid on the raw predictor table, retaining its row names. An attribute named
@@ -918,6 +1028,33 @@ If supervised.formula is supplied, the function also fits an
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">test.imp</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># \donttest{</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## Shared training predictors for a deployment bank</span></span>
+<span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## Keep these objects separate from the airquality examples below.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/eval.html" class="external-link">local</a></span><span class="op">(</span><span class="op">{</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"fst"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">&amp;&amp;</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"data.table"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">17</span><span class="op">)</span></span>
+<span>    <span class="va">train</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>, x2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>,</span>
+<span>                        group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span><span class="op">)</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="va">bank.dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="st">"shared-imputer-"</span><span class="op">)</span></span>
+<span>    <span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu">impute.learn</span><span class="op">(</span></span>
+<span>      data <span class="op">=</span> <span class="va">train</span>, target.mode <span class="op">=</span> <span class="st">"all"</span>, anonymous <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>      share.xvar <span class="op">=</span> <span class="cn">TRUE</span>, compress <span class="op">=</span> <span class="fl">100</span>, out.dir <span class="op">=</span> <span class="va">bank.dir</span>,</span>
+<span>      full.sweep.options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ntree <span class="op">=</span> <span class="fl">50</span>, nsplit <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>                                terminal.qualts <span class="op">=</span> <span class="cn">FALSE</span>, terminal.quants <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,</span>
+<span>      verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>    <span class="op">)</span></span>
+<span>    <span class="va">imp</span> <span class="op">&lt;-</span> <span class="fu">load.impute.learn</span><span class="op">(</span><span class="va">bank.dir</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>    <span class="va">test</span> <span class="op">&lt;-</span> <span class="va">train</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span></span>
+<span>    <span class="va">test</span><span class="op">$</span><span class="va">x1</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA_real_</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">imp</span>, <span class="va">test</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">bank.dir</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span></span>
+<span></span>
 <span></span>
 <span><span class="co">## OOD scoring is most informative when every deployment-time</span></span>
 <span><span class="co">## variable can be reconstructed, so target.mode = "all" is recommended.</span></span>
@@ -1012,7 +1149,8 @@ If supervised.formula is supplied, the function also fits an
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">save.impute.learn</span><span class="op">(</span><span class="va">fit</span>, <span class="va">bundle.dir</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">## Stronger compression for a deployment bundle.</span></span>
+<span><span class="fu">save.impute.learn</span><span class="op">(</span><span class="va">fit</span>, <span class="va">bundle.dir</span>, compress <span class="op">=</span> <span class="fl">100</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">imp</span> <span class="op">&lt;-</span> <span class="fu">load.impute.learn</span><span class="op">(</span><span class="va">bundle.dir</span>, lazy <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">test.imp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">imp</span>, <span class="va">test</span>, max.predict.iter <span class="op">=</span> <span class="fl">2</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>

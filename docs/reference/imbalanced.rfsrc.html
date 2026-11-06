@@ -4,7 +4,8 @@
   classification.  RFQ changes the probability threshold used to assign
   class labels; BRF changes the sampling used to grow the trees.  The
   splitting rule, performance measure, and variable importance can be
-  specified separately.
+  specified separately.  RFQ and BRF use normalized Brier performance
+  by default for prediction error and variable importance.
 Companion helpers summarize performance, select a probability
   threshold, or extract the class-frequency threshold from response
   labels."><meta property="og:image" content="https://www.randomforestsrc.org/logo.svg"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -31,7 +32,7 @@ Companion helpers summarize performance, select a probability
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.9.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.10.0</span>
       </span>
     </div>
 
@@ -153,7 +154,8 @@ Companion helpers summarize performance, select a probability
   classification.  RFQ changes the probability threshold used to assign
   class labels; BRF changes the sampling used to grow the trees.  The
   splitting rule, performance measure, and variable importance can be
-  specified separately.</p>
+  specified separately.  RFQ and BRF use normalized Brier performance
+  by default for prediction error and variable importance.</p>
 <p>Companion helpers summarize performance, select a probability
   threshold, or extract the class-frequency threshold from response
   labels.</p>
@@ -199,7 +201,7 @@ Companion helpers summarize performance, select a probability
 <dd><p>Classification method.  <code>"rfq"</code>, the default, uses
     the RFQ decision rule of O'Brien and Ishwaran (2019).
     <code>"brf"</code> uses class-weighted sampling with replacement and a
-    reduced tree sample size.  <code>"standard"</code> uses ordinary random
+    reduced tree sample size.  <code>"standard"</code> uses random
     forest classification without enabling the RFQ rule.  See Details.</p></dd>
 
 
@@ -212,10 +214,13 @@ Companion helpers summarize performance, select a probability
 
 
   <dt id="arg-perf-type">perf.type<a class="anchor" aria-label="anchor" href="#arg-perf-type"></a></dt>
-<dd><p>Performance measure used by the forest and its
-    variable importance calculations.  The default is <code>"gmean"</code>
-    for RFQ and BRF, and <code>"default"</code> (misclassification error) for
-    standard classification.  Choices accepted by this wrapper are
+<dd><p>Performance measure used for the forest's prediction
+    error (<code>err.rate</code>), variable importance (VIMP), and downstream
+    inference based on these quantities.  With <code>NULL</code>, the default
+    is <code>"brier"</code> (normalized Brier score) for RFQ and BRF, and
+    <code>"default"</code> (misclassification error) for standard
+    classification.  Set <code>perf.type = "gmean"</code> to use the previous
+    RFQ/BRF default.  Choices accepted by this wrapper are
     <code>"none"</code>, <code>"default"</code>, <code>"standard"</code>,
     <code>"misclass"</code>, <code>"brier"</code>, <code>"gmean"</code>, and the legacy
     spelling <code>"g.mean"</code>.  The latter is converted to
@@ -346,7 +351,7 @@ Companion helpers summarize performance, select a probability
     \(\widehat p(x) \geq \pi\).  The class-frequency
     threshold can identify minority observations whose predicted
     probability is below one half.  The standard method instead uses
-    ordinary class assignment based on the largest predicted probability.
+    class assignment based on the largest predicted probability.
     RFQ here is a classification rule, distinct from the continuous-response
     quantile estimation performed by <code><a href="quantreg.rfsrc.html">quantreg</a></code>.</p>
 <p>BRF calls the grow function with replacement sampling, a tree sample
@@ -356,18 +361,50 @@ Companion helpers summarize performance, select a probability
     <code>fast</code> and <code>ratio</code> are ignored in this branch.</p>
 </div><p></p><div class="section">
 <h3 id="performance-and-variable-importance">Performance and variable importance<a class="anchor" aria-label="anchor" href="#performance-and-variable-importance"></a></h3>
-<p>G-mean is the geometric mean of minority sensitivity and majority
-    specificity, \(\sqrt{\mathrm{sensitivity}\,
-    \mathrm{specificity}}\).  Larger
-    values indicate better balance between the two class-specific rates.
-    Misclassification and Brier scores are error measures for which smaller
-    values are better.  Changing <code>perf.type</code> selects the forest
-    performance measure; it does not select the RFQ decision rule.</p>
-<p>Request permutation VIMP explicitly with
-    <code>importance = "permute"</code>.  For comparisons, use a common
+<p>The default performance measure for RFQ and BRF is the normalized
+    Brier score, selected by <code>perf.type = "brier"</code>.  For binary
+    outcomes \(Y_i \in \{0,1\}\), with \(Y_i = 1\) denoting the
+    minority class, and predicted minority-class probabilities
+    \(\widehat p_i\), the overall score is
+    $$\mathrm{BS}^{*} = \frac{4}{n}\sum_{i=1}^{n}
+      (Y_i - \widehat p_i)^2.$$
+    The mean is taken over the observations being scored.  Smaller values
+    are better.  This is four times the binary Brier score; the
+    normalization does not reweight the classes or change VIMP rankings.</p>
+<p>Brier performance responds to changes in predicted probabilities even
+    when the assigned classes stay the same.  This can improve the
+    separation of predictive variables from noise in difficult imbalanced
+    problems.  Request permutation VIMP with
+    <code>importance = "permute"</code>; it measures the increase in the
+    selected prediction error after a variable is permuted.</p>
+<p>G-mean remains available with <code>perf.type = "gmean"</code>.  It is
+    the geometric mean of minority sensitivity and majority specificity,
+    \(\sqrt{\mathrm{sensitivity}\,
+    \mathrm{specificity}}\).
+    Larger G-mean values are better;
+    the forest uses one minus G-mean as overall prediction error.  Unlike Brier
+    performance, it depends on the class assignments.  Changing
+    <code>perf.type</code> changes the performance measure, while
+    <code>method</code> selects the classifier and <code>splitrule</code> selects
+    the splitting criterion.</p>
+<p>The selected metric is used for <code>err.rate</code> and VIMP and is
+    inherited by prediction and VIMP calculations unless overridden.
+    <code><a href="subsample.rfsrc.html">subsample</a></code> also uses the fitted forest's metric for
+    inference on VIMP and prediction error.  The helper
+    <code>get.imbalanced.performance</code> continues to report all its
+    performance measures, regardless of <code>perf.type</code>.  Selecting a
+    classification threshold with <code>get.imbalanced.optimize</code>
+    remains a separate operation; changing that threshold does not change
+    a Brier score calculated from the same probabilities.</p>
+<p>For comparisons, use a common
     <code>perf.type</code>, splitting rule, and <code>block.size</code>, unless the
-    comparison is intended to study those settings.  Increase <code>ntree</code>
-    as needed to assess the stability of OOB performance and VIMP.</p>
+    comparison is intended to study those settings.  To compare performance
+    metrics, <code><a href="vimp.rfsrc.html">vimp</a></code> can score the same fitted forest under
+    each metric.  Compare recovery or ranking of predictive variables,
+    rather than raw VIMP magnitudes on different scales.  Increase
+    <code>ntree</code> as needed to assess the stability of OOB performance and
+    VIMP.  The simulation example compares Brier and G-mean VIMP using
+    known signal and noise variables.</p>
 </div><p></p><div class="section">
 <h3 id="sampling-and-missing-values">Sampling and missing values<a class="anchor" aria-label="anchor" href="#sampling-and-missing-values"></a></h3>
 <p>With <code>ratio = NULL</code>, the RFQ and standard branches pass
@@ -540,7 +577,11 @@ Companion helpers summarize performance, select a probability
   function.  Usual components include the class-probability matrices
   <code>predicted</code>
   and <code>predicted.oob</code>, class assignments <code>class</code> and
-  <code>class.oob</code>, and requested performance and importance values.
+  <code>class.oob</code>, prediction error <code>err.rate</code>, and requested
+  VIMP <code>importance</code>.  Prediction error and VIMP use the selected
+  <code>perf.type</code>; for RFQ and BRF the default is normalized Brier.
+  The first column of <code>err.rate</code> and <code>importance</code> contains
+  the overall error and VIMP, respectively.
   Availability depends on the selected grow interface and sampling
   options; see <code><a href="rfsrc.html">rfsrc</a></code> and <code><a href="rfsrc.fast.html">rfsrc.fast</a></code>.</p>
 <p></p><div class="section">
@@ -593,7 +634,8 @@ Companion helpers summarize performance, select a probability
     <div id="see-also">
     <h2>See also</h2>
     <div class="dont-index"><p><code><a href="rfsrc.html">rfsrc</a></code>, <code><a href="rfsrc.fast.html">rfsrc.fast</a></code>,
-  <code>get.imbalanced.performance</code>, <code><a href="subsample.rfsrc.html">subsample</a></code></p></div>
+  <code>get.imbalanced.performance</code>, <code><a href="vimp.rfsrc.html">vimp</a></code>,
+  <code><a href="subsample.rfsrc.html">subsample</a></code></p></div>
     </div>
 
     <div id="ref-examples">
@@ -606,19 +648,45 @@ Companion helpers summarize performance, select a probability
 <span><span class="va">dta</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html" class="external-link">na.omit</a></span><span class="op">(</span><span class="va">breast</span><span class="op">)</span></span>
 <span><span class="va">f</span> <span class="op">&lt;-</span> <span class="va">status</span> <span class="op">~</span> <span class="va">.</span></span>
 <span></span>
+<span><span class="co">## Use 300 trees for illustration; imbalanced() defaults to 3000.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">19</span><span class="op">)</span></span>
 <span><span class="va">rfq</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">dta</span>, ntree <span class="op">=</span> <span class="fl">300</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">rfq</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">get.imbalanced.performance</span><span class="op">(</span><span class="va">rfq</span>, confusion <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
+<span><span class="co">## Equivalent direct RFQ call using rfsrc().</span></span>
+<span><span class="co">## RFQ uses equal case weights and sampling without replacement.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">19</span><span class="op">)</span></span>
+<span><span class="va">rfq.direct</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">f</span>, <span class="va">dta</span>, ntree <span class="op">=</span> <span class="fl">300</span>,</span>
+<span>                    rfq <span class="op">=</span> <span class="cn">TRUE</span>, splitrule <span class="op">=</span> <span class="st">"auc"</span>, perf.type <span class="op">=</span> <span class="st">"brier"</span>,</span>
+<span>                    block.size <span class="op">=</span> <span class="cn">NULL</span>, bootstrap <span class="op">=</span> <span class="st">"by.root"</span>,</span>
+<span>                    samptype <span class="op">=</span> <span class="st">"swor"</span>, sampsize <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span><span class="op">)</span> <span class="va">n</span> <span class="op">*</span> <span class="fl">.632</span>,</span>
+<span>                    case.wt <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">rfq</span><span class="op">$</span><span class="va">predicted.oob</span>, <span class="va">rfq.direct</span><span class="op">$</span><span class="va">predicted.oob</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
 <span><span class="co">## Extract the class-frequency threshold from the observed responses.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">get.rfq.threshold</span><span class="op">(</span><span class="va">rfq</span><span class="op">$</span><span class="va">yvar</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span></span>
 <span><span class="va">brf</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">dta</span>, ntree <span class="op">=</span> <span class="fl">300</span>, method <span class="op">=</span> <span class="st">"brf"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Equivalent direct BRF call using rfsrc().</span></span>
+<span><span class="co">## Each class has equal total sampling weight; sampling is with replacement.</span></span>
+<span><span class="va">class.frequency</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">dta</span><span class="op">$</span><span class="va">status</span><span class="op">)</span></span>
+<span><span class="va">case.wt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">class.frequency</span><span class="op">)</span> <span class="op">/</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">class.frequency</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">dta</span><span class="op">$</span><span class="va">status</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span></span>
+<span><span class="va">brf.direct</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="va">f</span>, <span class="va">dta</span>, ntree <span class="op">=</span> <span class="fl">300</span>,</span>
+<span>                    rfq <span class="op">=</span> <span class="cn">FALSE</span>, splitrule <span class="op">=</span> <span class="st">"auc"</span>, perf.type <span class="op">=</span> <span class="st">"brier"</span>,</span>
+<span>                    block.size <span class="op">=</span> <span class="cn">NULL</span>, bootstrap <span class="op">=</span> <span class="st">"by.root"</span>,</span>
+<span>                    samptype <span class="op">=</span> <span class="st">"swr"</span>, sampsize <span class="op">=</span> <span class="fl">2L</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">class.frequency</span><span class="op">)</span>,</span>
+<span>                    case.wt <span class="op">=</span> <span class="va">case.wt</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">brf</span><span class="op">$</span><span class="va">predicted.oob</span>, <span class="va">brf.direct</span><span class="op">$</span><span class="va">predicted.oob</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
 <span><span class="va">standard</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">dta</span>, ntree <span class="op">=</span> <span class="fl">300</span>, method <span class="op">=</span> <span class="st">"standard"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## Compare all three using the helper's default evaluation rule.</span></span>
-<span><span class="va">metrics</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sens"</span>, <span class="st">"spec"</span>, <span class="st">"gmean"</span>, <span class="st">"misclass"</span>, <span class="st">"brier"</span>, <span class="st">"auc"</span><span class="op">)</span></span>
+<span><span class="va">metrics</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sens"</span>, <span class="st">"spec"</span>, <span class="st">"gmean"</span>, <span class="st">"misclass"</span>, <span class="st">"brier.norm"</span>, <span class="st">"auc"</span><span class="op">)</span></span>
 <span><span class="va">comparison</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span></span>
 <span>  RFQ <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu">get.imbalanced.performance</span><span class="op">(</span><span class="va">rfq</span><span class="op">)</span><span class="op">[</span><span class="va">metrics</span><span class="op">]</span><span class="op">)</span>,</span>
 <span>  BRF <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu">get.imbalanced.performance</span><span class="op">(</span><span class="va">brf</span><span class="op">)</span><span class="op">[</span><span class="va">metrics</span><span class="op">]</span><span class="op">)</span>,</span>
@@ -686,6 +754,7 @@ Companion helpers summarize performance, select a probability
 <span><span class="co">## ------------------------------------------------------------</span></span>
 <span><span class="co">## Explicit permutation VIMP and blocking</span></span>
 <span><span class="co">## ------------------------------------------------------------</span></span>
+<span><span class="co">## RFQ uses normalized Brier performance by default.</span></span>
 <span><span class="va">rfq.vimp</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">dta</span>, ntree <span class="op">=</span> <span class="fl">300</span>,</span>
 <span>                       importance <span class="op">=</span> <span class="st">"permute"</span>, block.size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">rfq.block</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">dta</span>, ntree <span class="op">=</span> <span class="fl">300</span>,</span>
@@ -699,12 +768,62 @@ Companion helpers summarize performance, select a probability
 <span><span class="fu"><a href="plot.subsample.rfsrc.html">plot.subsample</a></span><span class="op">(</span><span class="va">smp</span>, cex.axis <span class="op">=</span> <span class="fl">.7</span>, alpha <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## ------------------------------------------------------------</span></span>
-<span><span class="co">## Optional sampling and grow-interface choices</span></span>
+<span><span class="co">## Strong imbalance: probability signals and permutation VIMP</span></span>
 <span><span class="co">## ------------------------------------------------------------</span></span>
-<span><span class="va">rfq.sample</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">dta</span>, ntree <span class="op">=</span> <span class="fl">300</span>, ratio <span class="op">=</span> <span class="fl">.25</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">get.imbalanced.performance</span><span class="op">(</span><span class="va">rfq.sample</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">rfq.fast</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">f</span>, <span class="va">dta</span>, ntree <span class="op">=</span> <span class="fl">300</span>, fast <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">get.imbalanced.performance</span><span class="op">(</span><span class="va">rfq.fast</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">## x1 identifies a small subgroup; x2 changes risk within it.</span></span>
+<span><span class="co">## Both affect the outcome probability.  The other variables are noise.</span></span>
+<span><span class="co">## Expected minority prevalence is .04 * (.15 + .5 / 2) = .016.</span></span>
+<span><span class="co">## Within the subgroup, all true probabilities exceed this prevalence,</span></span>
+<span><span class="co">## so the population RFQ class rule uses x1 alone.  Brier performance</span></span>
+<span><span class="co">## can also detect the probability information supplied by x2.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/eval.html" class="external-link">local</a></span><span class="op">(</span><span class="op">{</span></span>
+<span>  <span class="co">## One thread makes the blocked VIMP comparison reproducible.</span></span>
+<span>  <span class="va">old.options</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>rf.cores <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/on.exit.html" class="external-link">on.exit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span><span class="va">old.options</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">47</span><span class="op">)</span></span>
+<span>  <span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">4000</span></span>
+<span>  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fl">20</span></span>
+<span>  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="va">n</span> <span class="op">*</span> <span class="va">p</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="va">p</span><span class="op">)</span></span>
+<span>  <span class="va">x</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span> <span class="op">&lt;</span> <span class="fl">.04</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="va">prob</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span> <span class="op">*</span> <span class="op">(</span><span class="fl">.15</span> <span class="op">+</span> <span class="fl">.5</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
+<span>  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">rbinom</a></span><span class="op">(</span><span class="va">n</span>, <span class="fl">1</span>, <span class="va">prob</span><span class="op">)</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>              labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"majority"</span>, <span class="st">"minority"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="va">sim.data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">y</span>, <span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co">## Grow one RFQ forest, then use the same trees for both metrics.</span></span>
+<span>  <span class="co">## Brier is explicit here; it is also the RFQ default.</span></span>
+<span>  <span class="va">sim.fit</span> <span class="op">&lt;-</span> <span class="fu">imbalanced</span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">sim.data</span>, ntree <span class="op">=</span> <span class="fl">500</span>, mtry <span class="op">=</span> <span class="va">p</span>,</span>
+<span>                         splitrule <span class="op">=</span> <span class="st">"auc"</span>, perf.type <span class="op">=</span> <span class="st">"brier"</span>,</span>
+<span>                         block.size <span class="op">=</span> <span class="fl">50</span>, seed <span class="op">=</span> <span class="op">-</span><span class="fl">103</span><span class="op">)</span></span>
+<span>  <span class="va">brier</span> <span class="op">&lt;-</span> <span class="fu"><a href="vimp.rfsrc.html">vimp</a></span><span class="op">(</span><span class="va">sim.fit</span>, importance <span class="op">=</span> <span class="st">"permute"</span>, perf.type <span class="op">=</span> <span class="st">"brier"</span>,</span>
+<span>                 block.size <span class="op">=</span> <span class="fl">50</span>, seed <span class="op">=</span> <span class="op">-</span><span class="fl">107</span><span class="op">)</span></span>
+<span>  <span class="va">gmean</span> <span class="op">&lt;-</span> <span class="fu"><a href="vimp.rfsrc.html">vimp</a></span><span class="op">(</span><span class="va">sim.fit</span>, importance <span class="op">=</span> <span class="st">"permute"</span>, perf.type <span class="op">=</span> <span class="st">"gmean"</span>,</span>
+<span>                 block.size <span class="op">=</span> <span class="fl">50</span>, seed <span class="op">=</span> <span class="op">-</span><span class="fl">107</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="va">counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"\nClass counts and majority/minority ratio\n"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>n.majority <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">counts</span><span class="op">[</span><span class="st">"majority"</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>          n.minority <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">counts</span><span class="op">[</span><span class="st">"minority"</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>          iratio <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">counts</span><span class="op">[</span><span class="st">"majority"</span><span class="op">]</span> <span class="op">/</span> <span class="va">counts</span><span class="op">[</span><span class="st">"minority"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co">## Compare signals with noise within each metric's own scale.</span></span>
+<span>  <span class="va">vimp.values</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span>Brier <span class="op">=</span> <span class="va">brier</span><span class="op">$</span><span class="va">importance</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>,</span>
+<span>                       Gmean <span class="op">=</span> <span class="va">gmean</span><span class="op">$</span><span class="va">importance</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"\nPermutation VIMP: true signals and largest noise value\n"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">vimp.values</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span>,</span>
+<span>               largest.noise <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">vimp.values</span><span class="op">[</span><span class="op">-</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span>,</span>
+<span>                                     <span class="fl">2</span>, <span class="va">max</span><span class="op">)</span><span class="op">)</span>, digits <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co">## A smaller rank is better; the ideal ranks are 1 and 2.</span></span>
+<span>  <span class="va">vimp.ranks</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">vimp.values</span>, <span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/rank.html" class="external-link">rank</a></span><span class="op">(</span><span class="op">-</span><span class="va">z</span>, ties.method <span class="op">=</span> <span class="st">"average"</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"\nRanks of the two true signals among all 20 variables\n"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">vimp.ranks</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span></span>
 <span><span class="co"># }</span></span></code></pre></div>
     </div>
   </div>

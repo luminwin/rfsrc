@@ -27,7 +27,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.9.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.10.0</span>
       </span>
     </div>
 
@@ -152,11 +152,13 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fast.save</span><span class="op">(</span><span class="va">o</span>, path <span class="op">=</span> <span class="cn">NULL</span>, testing <span class="op">=</span> <span class="cn">TRUE</span>, units <span class="op">=</span> <span class="st">"Mb"</span>, compact <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fast.save</span><span class="op">(</span><span class="va">o</span>, path <span class="op">=</span> <span class="cn">NULL</span>, testing <span class="op">=</span> <span class="cn">TRUE</span>, units <span class="op">=</span> <span class="st">"Mb"</span>, compact <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>          compress <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">fast.load</span><span class="op">(</span><span class="va">directory</span>, path <span class="op">=</span> <span class="cn">NULL</span>, testing <span class="op">=</span> <span class="cn">FALSE</span>, units <span class="op">=</span> <span class="st">"Mb"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">fast.save.list</span><span class="op">(</span><span class="va">o</span>, path <span class="op">=</span> <span class="cn">NULL</span>, testing <span class="op">=</span> <span class="cn">FALSE</span>, units <span class="op">=</span> <span class="st">"Mb"</span>, compact <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu">fast.save.list</span><span class="op">(</span><span class="va">o</span>, path <span class="op">=</span> <span class="cn">NULL</span>, testing <span class="op">=</span> <span class="cn">FALSE</span>, units <span class="op">=</span> <span class="st">"Mb"</span>, compact <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>               compress <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">fast.load.list</span><span class="op">(</span><span class="va">directory</span>, path <span class="op">=</span> <span class="cn">NULL</span>, testing <span class="op">=</span> <span class="cn">FALSE</span>, units <span class="op">=</span> <span class="st">"Mb"</span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -199,6 +201,12 @@
     If <code>FALSE</code> (default), save the forest with its available
     terminal-node information.  See <em>Compact saving</em> below.</p></dd>
 
+  <dt id="arg-compress">compress<a class="anchor" aria-label="anchor" href="#arg-compress"></a></dt>
+<dd><p>A single finite number between 0 and 100 specifying the
+    FST compression level.  The default is 50 for fast saving.  Use 100
+    for maximum compression when smaller files are more important than
+    saving speed.  This setting is independent of <code>compact</code>.</p></dd>
+
 </dl></div>
     <div id="details">
     <h2>Details</h2>
@@ -219,6 +227,20 @@
     Keep the directory's files together and load the forest with
     <code>fast.load()</code>.</p>
 </div><p></p><div class="section">
+<h3 id="compression">Compression<a class="anchor" aria-label="anchor" href="#compression"></a></h3>
+<p>The <code>compress</code> setting is passed to every
+    <code><a href="http://www.fstpackage.org/reference/write_fst.html" class="external-link">fst::write_fst()</a></code> call, including each forest saved by
+    <code>fast.save.list()</code>.  Higher compression can reduce file sizes
+    at the cost of slower saving; the reduction depends on the saved
+    components.  The remaining forest information in <code class="file">forest.rda</code>
+    continues to use <code>saveRDS(..., compress = FALSE)</code>.</p>
+<p>Compression changes the encoding of the saved components, not the
+    fitted forest or the choice of components.  It can be combined with
+    <code>compact = TRUE</code>.  Use the same <code>fast.load()</code> or
+    <code>fast.load.list()</code> call for any compression level; no compression
+    argument is needed when loading.  Invalid compression values are
+    rejected before the destination is deleted.</p>
+</div><p></p><div class="section">
 <h3 id="compact-saving">Compact saving<a class="anchor" aria-label="anchor" href="#compact-saving"></a></h3>
 <p>With <code>compact = TRUE</code>, the saved forest includes the tree
     structure, factor-split information, training data, seeds, and other
@@ -234,6 +256,15 @@
 <p>Use <code>compact = FALSE</code> for anonymous forests.  Compact saving
     includes the training data.  Eligibility checks run before the
     destination is deleted; for lists, every forest is checked first.</p>
+</div><p></p><div class="section">
+<h3 id="shared-imputer-banks">Shared imputer banks<a class="anchor" aria-label="anchor" href="#shared-imputer-banks"></a></h3>
+<p>Standalone <code>fast.save()</code> always writes a self-contained forest.
+    Imputers fitted with <code>share.xvar = TRUE</code> use the same component
+    serializers but store their repeated training predictors once per
+    bank. Load those complete banks with <code><a href="impute.learn.rfsrc.html">load.impute.learn</a></code>.
+    Direct <code>fast.load()</code> calls on shared learner subdirectories
+    stop because their predictors depend on the bank's common table
+    and reconstruction mappings.</p>
 </div><p></p><div class="section">
 <h3 id="directories">Directories<a class="anchor" aria-label="anchor" href="#directories"></a></h3>
 <p><strong>Both save functions delete an existing destination directory

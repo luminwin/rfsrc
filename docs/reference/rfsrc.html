@@ -70,7 +70,7 @@ whole, see package?randomForestSRC."><meta property="og:image" content="https://
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Fast Unified Random Forests with randomForestSRC</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.9.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.10.0</span>
       </span>
     </div>
 
@@ -269,7 +269,9 @@ whole, see <code><a href="randomForestSRC_package.html">package?randomForestSRC<
 
 <p></p>
 <dl><dt id="arg-formula">formula<a class="anchor" aria-label="anchor" href="#arg-formula"></a></dt>
-<dd><p>A formula describing the model to fit. Interaction terms are not supported. If missing, unsupervised splitting is used.</p></dd>
+<dd><p>A formula describing the model to fit. Interaction terms
+  are not supported. If omitted or <code>NULL</code>, unsupervised splitting is
+  used; add <code>splitrule = "auto"</code> to grow an autoencoder forest.</p></dd>
 
 
   <dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
@@ -285,7 +287,12 @@ whole, see <code><a href="randomForestSRC_package.html">package?randomForestSRC<
 
 
   <dt id="arg-ytry">ytry<a class="anchor" aria-label="anchor" href="#arg-ytry"></a></dt>
-<dd><p>Number of pseudo-response variables randomly selected for unsupervised splitting. Default is 1.</p></dd>
+<dd><p>Number of responses sampled at each node in multivariate
+  forests; the default is all responses. For autoencoder forests, the
+  default is <code>p</code>, the number of retained variables; an integer from
+  <code>1</code> to <code>p</code> can be specified. For ordinary unsupervised
+  splitting, this is the number of pseudo-responses sampled for each
+  candidate predictor, with default <code>1</code>.</p></dd>
 
 
   <dt id="arg-nodesize">nodesize<a class="anchor" aria-label="anchor" href="#arg-nodesize"></a></dt>
@@ -297,7 +304,9 @@ whole, see <code><a href="randomForestSRC_package.html">package?randomForestSRC<
 
 
   <dt id="arg-splitrule">splitrule<a class="anchor" aria-label="anchor" href="#arg-splitrule"></a></dt>
-<dd><p>Splitting rule. See Details.</p></dd>
+<dd><p>Splitting rule. With <code>formula</code> omitted or
+  <code>NULL</code>, <code>"auto"</code> regresses the variables in <code>data</code>
+  against themselves using an autoencoder forest. See Details.</p></dd>
 
 
   <dt id="arg-nsplit">nsplit<a class="anchor" aria-label="anchor" href="#arg-nsplit"></a></dt>
@@ -407,7 +416,10 @@ whole, see <code><a href="randomForestSRC_package.html">package?randomForestSRC<
 
 
   <dt id="arg-seed">seed<a class="anchor" aria-label="anchor" href="#arg-seed"></a></dt>
-<dd><p>Integer seed for reproducibility (negative values only).</p></dd>
+<dd><p>Integer seed for reproducibility (negative values only).
+    For reproducing or testing legacy behavior, see
+    <code><a href="rfsrc.RNGversion.html">rfsrc.RNGversion</a></code>. Most users should use the default
+    wide generator without setting an RNG version.</p></dd>
 
 
   <dt id="arg-do-trace">do.trace<a class="anchor" aria-label="anchor" href="#arg-do-trace"></a></dt>
@@ -425,7 +437,7 @@ whole, see <code><a href="randomForestSRC_package.html">package?randomForestSRC<
 <p></p><ul><li><p>Regression forests for continuous outcomes.</p></li>
 <li><p>Classification forests for factor outcomes.</p></li>
 <li><p>Multivariate forests for continuous, categorical, or mixed outcomes.</p></li>
-<li><p>Unsupervised forests when no outcome is specified.</p></li>
+<li><p>Unsupervised forests, including autoencoder forests, when no outcome is specified.</p></li>
 <li><p>Survival forests for right-censored time-to-event data.</p></li>
 <li><p>Competing risk forests for multi-event survival settings.</p></li>
 </ul></li>
@@ -454,7 +466,10 @@ whole, see <code><a href="randomForestSRC_package.html">package?randomForestSRC<
 <li><p><code>"mahalanobis"</code>: Mahalanobis splitting with optional covariance matrix; for multivariate regression.</p></li>
 </ol></li>
 <li><p><strong>Unsupervised</strong>
-    Splitting uses pseudo-outcomes and the composite rule. See <code><a href="sidClustering.rfsrc.html">sidClustering</a></code> for advanced unsupervised analysis.</p></li>
+    Ordinary unsupervised splitting uses pseudo-outcomes and the composite
+    rule. The <code>"auto"</code> option uses the usual multivariate splitting
+    rule on copies of the predictors as responses. See
+    <code><a href="sidClustering.rfsrc.html">sidClustering</a></code> for advanced unsupervised analysis.</p></li>
 <li><p><strong>Custom splitting</strong>
     Custom rules can be defined using <code>splitCustom.c</code>. Up to 16 rules per family are allowed. Use <code>"custom"</code>, <code>"custom1"</code>, etc. Compilation required.</p></li>
 </ul></li>
@@ -496,7 +511,31 @@ whole, see <code><a href="randomForestSRC_package.html">package?randomForestSRC<
 <li><p><em>Unsupervised Forests</em></p>
 <p>Use:</p><div class="sourceCode"><pre><code><span><span class="fu"><a href="../reference/rfsrc.html">rfsrc</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">X</span><span class="op">)</span></span></code></pre></div><p>or</p><div class="sourceCode"><pre><code><span><span class="fu"><a href="../reference/rfsrc.html">rfsrc</a></span><span class="op">(</span><span class="fu">Unsupervised</span><span class="op">(</span><span class="va">ytry</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">X</span><span class="op">)</span></span></code></pre></div>
 
-<p>Random subsets of <code>ytry</code> pseudo-responses are used for each <code>mtry</code> variable. No performance metrics are computed.</p></li>
+<p>Random subsets of <code>ytry</code> pseudo-responses are used for each
+  candidate predictor. The default is <code>ytry = 1</code>. These forests do
+  not return response predictions, error rates, or VIMP.</p>
+<p>To regress the variables against themselves, use an autoencoder forest:</p><div class="sourceCode"><pre><code><span><span class="fu"><a href="../reference/rfsrc.html">rfsrc</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">X</span>, splitrule <span class="op">=</span> <span class="st">"auto"</span><span class="op">)</span></span></code></pre></div>
+
+<p>Leave <code>formula</code> omitted or <code>NULL</code>. Each variable is copied as
+  a response, while the original variables remain predictors. Continuous
+  variables, factors, and mixtures of both are supported. Entirely missing
+  variables are removed before making the copies; other missing values
+  follow <code>na.action</code>. By default, all retained variables are used as
+  responses for splitting (<code>ytry = p</code>); set a smaller <code>ytry</code> to
+  sample responses at each node.</p>
+<p>Predictions reconstruct the input variables. OOB predictions, error
+  rates, and VIMP are available under the usual multivariate forest
+  options. Use <code><a href="multivariate.values.html">get.mv.predicted</a></code>,
+  <code><a href="multivariate.values.html">get.mv.error</a></code>, and <code><a href="multivariate.values.html">get.mv.vimp</a></code> to extract
+  them. Each variable is also available as a predictor of its own response
+  copy, so VIMP measures a predictor's contribution to reconstruction.</p>
+<p>Response copies are named <code>y.</code> followed by the original variable
+  name, with suffixes added when needed to keep names unique. The returned
+  <code>autoencoder</code> mapping identifies the original variables. The
+  object's <code>family</code> and <code>splitrule</code> record the underlying
+  regression, classification, or mixed forest and its resolved splitting
+  rule. For new observations, supply the original variables to
+  <code><a href="predict.rfsrc.html">predict.rfsrc</a></code>; response copies are created automatically.</p></li>
 <li><p><em>Survival, Competing Risks</em></p>
 <p></p><ul><li><p>Survival: use <code>Surv(time, status) ~ .</code>. Status must be 0 (censored) or 1 (event).</p></li>
 <li><p>Competing risks: status = 0 (censored), 1-J (event types). Use <code>cause</code> to target specific events.</p></li>
@@ -513,9 +552,18 @@ whole, see <code><a href="randomForestSRC_package.html">package?randomForestSRC<
 </ol></div>
     <div id="value">
     <h2>Value</h2>
-    <p>An object of class <code>(rfsrc, grow)</code> with the following components:</p>
+    <p>An object with classes <code>"rfsrc"</code>, <code>"grow"</code>, and the fitted
+family. Autoencoder fits and their saved forests also have <code>"auto"</code>
+as the final class. The returned object has the following components:</p>
 <dl><dt>call</dt>
 <dd><p>The original call to <code>rfsrc</code>.</p></dd>
+
+  <dt>formula</dt>
+<dd><p>(Autoencoder) The generated multivariate formula.</p></dd>
+
+  <dt>autoencoder</dt>
+<dd><p>(Autoencoder) Named character vector mapping response
+  copy names to original predictor names. Also stored in <code>forest</code>.</p></dd>
 
   <dt>family</dt>
 <dd><p>The family used in the analysis.</p></dd>
@@ -791,7 +839,7 @@ whole, see <code><a href="randomForestSRC_package.html">package?randomForestSRC<
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">veteran</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span></span>
 <span><span class="va">v.obj</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">veteran</span>, block.size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## plot tree number 3</span></span>
+<span><span class="co">## plot tree number 3 (see get.tree for details and more examples)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="get.tree.rfsrc.html">get.tree</a></span><span class="op">(</span><span class="va">v.obj</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## print results of trained forest</span></span>
@@ -851,26 +899,6 @@ whole, see <code><a href="randomForestSRC_package.html">package?randomForestSRC<
 <span>            ntree <span class="op">=</span> <span class="fl">25000</span>, nodesize <span class="op">=</span> <span class="fl">1</span>, save.memory <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span></span>
-<span></span>
-<span><span class="co">##------------------------------------------------------------</span></span>
-<span><span class="co">## trees can be plotted for any family </span></span>
-<span><span class="co">## see get.tree for details and more examples</span></span>
-<span><span class="co">##------------------------------------------------------------</span></span>
-<span></span>
-<span><span class="co">## survival where factors have many levels</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">veteran</span>, package <span class="op">=</span> <span class="st">"randomForestSRC"</span><span class="op">)</span></span>
-<span><span class="va">vd</span> <span class="op">&lt;-</span> <span class="va">veteran</span></span>
-<span><span class="va">vd</span><span class="op">$</span><span class="va">celltype</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">vd</span><span class="op">$</span><span class="va">celltype</span><span class="op">)</span></span>
-<span><span class="va">vd</span><span class="op">$</span><span class="va">diagtime</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">vd</span><span class="op">$</span><span class="va">diagtime</span><span class="op">)</span></span>
-<span><span class="va">vd.obj</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">time</span>,<span class="va">status</span><span class="op">)</span><span class="op">~</span><span class="va">.</span>, <span class="va">vd</span>, ntree <span class="op">=</span> <span class="fl">100</span>, nodesize <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="get.tree.rfsrc.html">get.tree</a></span><span class="op">(</span><span class="va">vd.obj</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## classification</span></span>
-<span><span class="va">iris.obj</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="va">Species</span> <span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">iris</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="get.tree.rfsrc.html">get.tree</a></span><span class="op">(</span><span class="va">iris.obj</span>, <span class="fl">25</span>, class.type <span class="op">=</span> <span class="st">"bayes"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="get.tree.rfsrc.html">get.tree</a></span><span class="op">(</span><span class="va">iris.obj</span>, <span class="fl">25</span>, target <span class="op">=</span> <span class="st">"setosa"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="get.tree.rfsrc.html">get.tree</a></span><span class="op">(</span><span class="va">iris.obj</span>, <span class="fl">25</span>, target <span class="op">=</span> <span class="st">"versicolor"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="get.tree.rfsrc.html">get.tree</a></span><span class="op">(</span><span class="va">iris.obj</span>, <span class="fl">25</span>, target <span class="op">=</span> <span class="st">"virginica"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## ------------------------------------------------------------</span></span>
 <span><span class="co">## simple example of VIMP using iris classification</span></span>
@@ -1136,12 +1164,18 @@ whole, see <code><a href="randomForestSRC_package.html">package?randomForestSRC<
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="imbalanced.rfsrc.html">get.imbalanced.performance</a></span><span class="op">(</span><span class="va">oqauc</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## ------------------------------------------------------------</span></span>
-<span><span class="co">## unsupervised analysis</span></span>
+<span><span class="co">## unsupervised analysis - including autoencoder example</span></span>
 <span><span class="co">## ------------------------------------------------------------</span></span>
 <span></span>
 <span><span class="co">## two equivalent ways to implement unsupervised forests</span></span>
 <span><span class="va">mtcars.unspv</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span><span class="fu">Unsupervised</span><span class="op">(</span><span class="op">)</span> <span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span>
 <span><span class="va">mtcars2.unspv</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span>data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## autoencoder: reconstruct each variable using the original variables</span></span>
+<span><span class="va">mtcars.auto</span> <span class="op">&lt;-</span> <span class="fu">rfsrc</span><span class="op">(</span>data <span class="op">=</span> <span class="va">mtcars</span>, splitrule <span class="op">=</span> <span class="st">"auto"</span>, importance <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">auto.pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="multivariate.values.html">get.mv.predicted</a></span><span class="op">(</span><span class="va">mtcars.auto</span><span class="op">)</span></span>
+<span><span class="va">auto.vimp</span> <span class="op">&lt;-</span> <span class="fu"><a href="multivariate.values.html">get.mv.vimp</a></span><span class="op">(</span><span class="va">mtcars.auto</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">mtcars.auto</span><span class="op">$</span><span class="va">autoencoder</span><span class="op">)</span></span>
 <span></span>
 <span></span>
 <span><span class="co">## illustration of sidClustering for the mtcars data</span></span>
